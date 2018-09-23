@@ -2,19 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block : MonoBehaviour {
-    public float CurrentDurability;
+public class Block : MonoBehaviour
+{
     public float MaxDurability;
-    public PlayerController Player;
+    public float CurrentDurability;
 
     public Block()
     {
-        MaxDurability = 1.5f;
+        MaxDurability = 2;
         CurrentDurability = MaxDurability;
     }
 
-    public void Start()
+    public void DestroyBlock()
     {
-        Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        WorldManager.RemoveBlock(gameObject.transform.position);
+        Destroy(gameObject);
+    }
+
+    public bool Mine(float strength)
+    {
+        CurrentDurability -= (strength * Time.deltaTime);
+        if (CurrentDurability <= 0)
+        {
+            DestroyBlock();
+        }
+        return CurrentDurability <= 0;
+    }
+
+    public void ResetDurability()
+    {
+        CurrentDurability = MaxDurability;
     }
 }
