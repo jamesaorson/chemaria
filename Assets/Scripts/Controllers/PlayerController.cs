@@ -4,28 +4,19 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public Collider2D Collider;
-    public Rigidbody2D Rigidbody;
+    public static Collider2D Collider;
+    public static Rigidbody2D Rigidbody;
 
-    public float WalkingAcceleration = 30;
-    public float MaxVelocity = 8;
+    public static float WalkingAcceleration = 30;
+    public static float MaxVelocity = 8;
+    public static float MiningRange = 5;
+    public static float MiningStrength = 1;
 
-    void Start ()
+    private static Block TargetedBlock;
+
+    /* Public Methods */
+    public void FixedUpdate()
     {
-        Rigidbody = GetComponent<Rigidbody2D>();
-        Collider = GetComponent<Collider2D>();
-	}
-	
-	// Update is called once per frame
-	void FixedUpdate ()
-    {
-        float horizontalAxis = Input.GetAxis("Horizontal");
-
-        if (horizontalAxis != 0 && Mathf.Abs(Rigidbody.velocity.x) < MaxVelocity)
-        {
-            Rigidbody.AddForce(new Vector2(WalkingAcceleration * horizontalAxis * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);
-        }
-
         if (Rigidbody.velocity.sqrMagnitude > 0)
         {
             var playerPosition = Rigidbody.position;
@@ -34,6 +25,70 @@ public class PlayerController : MonoBehaviour
             Camera.main.transform.position = cameraPosition;
         }
 
-        Debug.Log("Framerate: " + (1.0f / Time.fixedDeltaTime));
+        PrintFramerate();
+    }
+    
+    public void Start()
+    {
+        Rigidbody = GetComponent<Rigidbody2D>();
+        Collider = GetComponent<Collider2D>();
+	}
+
+    /* Static Methods */
+    public static void BreakBlock()
+    {
+        bool shouldResetDurability = false;
+        var block = WorldManager.GetBlockFromMouse();
+        
+        if (block != null)
+        {
+            //print("Targeted a block");
+            if (!IsCloseEnoughToMine(block))
+            {
+                block = null;
+                shouldResetDurability = true;
+            }
+            else
+            {
+                if (TargetedBlock != null && TargetedBlock != block)
+                {
+                    shouldResetDurability = true;
+                }
+                if (block.Mine(MiningStrength))
+                {
+                    block = null;
+                }
+            }
+        }
+        else if (TargetedBlock != null)
+        {
+            shouldResetDurability = true;
+        }
+
+        if (shouldResetDurability && TargetedBlock != null)
+        {
+            TargetedBlock.ResetDurability();
+        }
+
+        TargetedBlock = block;
+    }
+
+    public static void Move(float horizontalAxis)
+    {
+        if (Mathf.Abs(Rigidbody.velocity.x) < MaxVelocity)
+        {
+            Rigidbody.AddForce(new Vector2(WalkingAcceleration * horizontalAxis * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);
+        }
+    }
+
+    /* Private Methods */
+    private static bool IsCloseEnoughToMine(Block block)
+    {
+        return Vector3.Distance(block.transform.position, Rigidbody.transform.position) <= MiningRange;
+    }
+
+    private static void PrintFramerate()
+    {
+        //print("Framerate: " + (1.0f / Time.fixedDeltaTime));
     }
 }

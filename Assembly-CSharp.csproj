@@ -61,9 +61,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Blocks\Block.cs" />
+    <Compile Include="Assets\Scripts\Blocks\Dirt.cs" />
+    <Compile Include="Assets\Scripts\Blocks\Stone.cs" />
+    <Compile Include="Assets\Scripts\Constants.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Factory Scripts\DirtFactory.cs" />
     <Compile Include="Assets\Scripts\Factory Scripts\StoneFactory.cs" />
+    <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\WorldManager.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/James Osborne/Documents/Unity/Chemaria/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

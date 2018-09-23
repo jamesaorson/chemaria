@@ -24,6 +24,8 @@ public class StoneFactory : MonoBehaviour
 
     public GameObject CreateStone(Vector3 position)
     {
-        return Instantiate(Stone, position, Quaternion.identity).gameObject;
+        var newBlock = Instantiate(Stone, position, Quaternion.identity).gameObject;
+        WorldManager.AddBlock(position, newBlock);
+        return newBlock;
     }
 }

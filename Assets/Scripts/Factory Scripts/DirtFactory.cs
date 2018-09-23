@@ -24,6 +24,8 @@ public class DirtFactory : MonoBehaviour
 
     public GameObject CreateDirt(Vector3 position)
     {
-        return Instantiate(Dirt, position, Quaternion.identity).gameObject;
+        var newBlock = Instantiate(Dirt, position, Quaternion.identity).gameObject;
+        WorldManager.AddBlock(position, newBlock);
+        return newBlock;
     }
 }
