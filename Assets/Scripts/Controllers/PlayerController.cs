@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public static float MiningStrength = 1;
 
     private static Block TargetedBlock;
+    private static float DeltaTime;
 
     /* Public Methods */
     public void FixedUpdate()
@@ -89,6 +90,7 @@ public class PlayerController : MonoBehaviour
 
     private static void PrintFramerate()
     {
-        //print("Framerate: " + (1.0f / Time.fixedDeltaTime));
+        DeltaTime += (Time.unscaledDeltaTime - DeltaTime) * 0.1f;
+        print("Framerate: " + (1.0f / DeltaTime));
     }
 }

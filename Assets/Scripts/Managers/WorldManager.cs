@@ -6,6 +6,16 @@ public class WorldManager : MonoBehaviour
 {
     public static Dictionary<int, Dictionary<int, GameObject>> Blocks = new Dictionary<int, Dictionary<int, GameObject>>();
 
+    public void Awake()
+    {
+        QualitySettings.vSyncCount = 0;
+
+        if (QualitySettings.vSyncCount == 0)
+        {
+            Application.targetFrameRate = 60;
+        }
+    }
+
     public static void AddBlock(Vector3 position, GameObject block)
     {
         int x = (int)position.x;
