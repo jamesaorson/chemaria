@@ -70,6 +70,8 @@
     <Compile Include="Assets\Scripts\Factory Scripts\StoneFactory.cs" />
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
     <Compile Include="Assets\Scripts\Managers\WorldManager.cs" />
+    <None Include="Assets\Mini Profiler\README.txt" />
+    <None Include="Assets\Mini Profiler\CHANGELOG.txt" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/James Osborne/Documents/Unity/Chemaria/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
@@ -291,6 +293,9 @@
     </Reference>
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/James Osborne/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="Mini Profiler">
+      <HintPath>C:/Users/James Osborne/Documents/Unity/Chemaria/Assets/Mini Profiler/Mini Profiler.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/unity/mscorlib.dll</HintPath>

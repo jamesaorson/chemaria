@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static Vector3 PlayerPosition { get
+        {
+            var position2d = Rigidbody.position;
+            return new Vector3(position2d.x, position2d.y, 0);
+        }
+    }
+
     public static Collider2D Collider;
     public static Rigidbody2D Rigidbody;
 
-    public static float WalkingAcceleration = 30;
+    public static float JumpingStrength = 10;
     public static float MaxVelocity = 8;
     public static float MiningRange = 5;
     public static float MiningStrength = 1;
+    public static float WalkingAcceleration = 30;
 
     private static Block TargetedBlock;
     private static float DeltaTime;
@@ -25,14 +33,12 @@ public class PlayerController : MonoBehaviour
             cameraPosition = new Vector3(playerPosition.x, playerPosition.y, cameraPosition.z);
             Camera.main.transform.position = cameraPosition;
         }
-
-        PrintFramerate();
     }
     
     public void Start()
     {
-        Rigidbody = GetComponent<Rigidbody2D>();
         Collider = GetComponent<Collider2D>();
+        Rigidbody = GetComponent<Rigidbody2D>();
 	}
 
     /* Static Methods */
@@ -43,8 +49,7 @@ public class PlayerController : MonoBehaviour
         
         if (block != null)
         {
-            //print("Targeted a block");
-            if (!IsCloseEnoughToMine(block))
+            if (!CanMine(block))
             {
                 block = null;
                 shouldResetDurability = true;
@@ -74,23 +79,30 @@ public class PlayerController : MonoBehaviour
         TargetedBlock = block;
     }
 
+    public static void Jump()
+    {
+        if (CanJump())
+        {
+            Rigidbody.AddForce(new Vector2(0, JumpingStrength), ForceMode2D.Impulse);
+        }
+    }
+
     public static void Move(float horizontalAxis)
     {
         if (Mathf.Abs(Rigidbody.velocity.x) < MaxVelocity)
         {
-            Rigidbody.AddForce(new Vector2(WalkingAcceleration * horizontalAxis * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);
+            Rigidbody.AddForce(new Vector2(WalkingAcceleration * horizontalAxis * Time.deltaTime, 0), ForceMode2D.Impulse);
         }
     }
 
     /* Private Methods */
-    private static bool IsCloseEnoughToMine(Block block)
+    private static bool CanJump()
     {
-        return Vector3.Distance(block.transform.position, Rigidbody.transform.position) <= MiningRange;
+        return Physics2D.Raycast(PlayerPosition, Vector2.down, (Rigidbody.transform.localScale.y / 2.0f) + 0.05f, Constants.GroundLayer);
     }
 
-    private static void PrintFramerate()
+    private static bool CanMine(Block block)
     {
-        DeltaTime += (Time.unscaledDeltaTime - DeltaTime) * 0.1f;
-        print("Framerate: " + (1.0f / DeltaTime));
+        return Vector3.Distance(block.transform.position, Rigidbody.transform.position) <= MiningRange;
     }
 }

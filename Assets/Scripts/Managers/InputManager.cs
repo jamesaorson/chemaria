@@ -25,5 +25,9 @@ public class InputManager : MonoBehaviour
         {
             PlayerController.BreakBlock();
         }
+        if (Input.GetButtonDown(Constants.JumpName))
+        {
+            PlayerController.Jump();
+        }
     }
 }

@@ -10,7 +10,7 @@ public class DirtFactory : MonoBehaviour
     {
         for (int y = 0; y > -20; --y)
         {
-            for (int x = 1; x <= 100; ++x)
+            for (int x = 0; x < 100; ++x)
             {
                 CreateDirt(x, y);
             }

@@ -23,12 +23,12 @@ GameObject:
   - component: {fileID: 50012032247524024}
   - component: {fileID: 61818419445504068}
   - component: {fileID: 114214636858802204}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Stone
-  m_TagString: Untagged
+  m_TagString: Stone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &1717328322685052
 GameObject:
@@ -39,12 +39,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4405728531389740}
   - component: {fileID: 212103215154823690}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Stone Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4405728531389740
 Transform:
