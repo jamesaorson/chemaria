@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public static Collider2D Collider;
     public static Rigidbody2D Rigidbody;
 
-    public static float JumpingStrength = 10;
+    public static float JumpingStrength = 30;
     public static float MaxVelocity = 8;
     public static float MiningRange = 5;
     public static float MiningStrength = 1;
@@ -28,10 +28,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Rigidbody.velocity.sqrMagnitude > 0)
         {
-            var playerPosition = Rigidbody.position;
-            var cameraPosition = Camera.main.transform.position;
-            cameraPosition = new Vector3(playerPosition.x, playerPosition.y, cameraPosition.z);
-            Camera.main.transform.position = cameraPosition;
+            MoveCamera(Rigidbody.transform.position);
         }
     }
     
@@ -93,6 +90,18 @@ public class PlayerController : MonoBehaviour
         {
             Rigidbody.AddForce(new Vector2(WalkingAcceleration * horizontalAxis * Time.deltaTime, 0), ForceMode2D.Impulse);
         }
+    }
+
+    public static void MoveCamera(Vector2 newCameraPosition)
+    {
+        var cameraPosition = Camera.main.transform.position;
+        Camera.main.transform.position = new Vector3(newCameraPosition.x, newCameraPosition.y, cameraPosition.z);
+    }
+
+    public static void ResetPhysicsConditions()
+    {
+        Rigidbody.velocity = Vector3.zero;
+        Rigidbody.angularVelocity = 0;
     }
 
     /* Private Methods */
