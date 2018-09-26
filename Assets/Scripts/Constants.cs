@@ -25,4 +25,12 @@ public class Constants : MonoBehaviour
     public static string MouseYName = "Mouse Y";
     public static string SubmitName = "Submit";
     public static string VerticalAxisName = "Vertical";
+
+    /* Layers */
+    public static LayerMask GroundLayer;
+
+    public void Start()
+    {
+        GroundLayer = LayerMask.GetMask("Ground");
+    }
 }

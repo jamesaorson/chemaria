@@ -51,4 +51,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3f920c6258c60488f1dca39635b3a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Dirt: {fileID: 0}
+  Dirt: {fileID: 4797479689676662, guid: f781d0bc9311bdb408826aed1836e745, type: 2}

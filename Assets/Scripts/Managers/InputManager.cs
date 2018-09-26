@@ -25,5 +25,17 @@ public class InputManager : MonoBehaviour
         {
             PlayerController.BreakBlock();
         }
+        if (Input.GetButtonDown(Constants.JumpName))
+        {
+            PlayerController.Jump();
+        }
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            WorldManager.SaveWorld("default");
+        }
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            WorldManager.LoadWorld("default");
+        }
     }
 }

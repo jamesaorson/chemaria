@@ -4,34 +4,38 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static Vector3 PlayerPosition { get
+        {
+            var position2d = Rigidbody.position;
+            return new Vector3(position2d.x, position2d.y, 0);
+        }
+    }
+
     public static Collider2D Collider;
     public static Rigidbody2D Rigidbody;
 
-    public static float WalkingAcceleration = 30;
+    public static float JumpingStrength = 30;
     public static float MaxVelocity = 8;
     public static float MiningRange = 5;
     public static float MiningStrength = 1;
+    public static float WalkingAcceleration = 30;
 
     private static Block TargetedBlock;
+    private static float DeltaTime;
 
     /* Public Methods */
     public void FixedUpdate()
     {
         if (Rigidbody.velocity.sqrMagnitude > 0)
         {
-            var playerPosition = Rigidbody.position;
-            var cameraPosition = Camera.main.transform.position;
-            cameraPosition = new Vector3(playerPosition.x, playerPosition.y, cameraPosition.z);
-            Camera.main.transform.position = cameraPosition;
+            MoveCamera(Rigidbody.transform.position);
         }
-
-        PrintFramerate();
     }
     
     public void Start()
     {
-        Rigidbody = GetComponent<Rigidbody2D>();
         Collider = GetComponent<Collider2D>();
+        Rigidbody = GetComponent<Rigidbody2D>();
 	}
 
     /* Static Methods */
@@ -42,8 +46,7 @@ public class PlayerController : MonoBehaviour
         
         if (block != null)
         {
-            //print("Targeted a block");
-            if (!IsCloseEnoughToMine(block))
+            if (!CanMine(block))
             {
                 block = null;
                 shouldResetDurability = true;
@@ -73,22 +76,42 @@ public class PlayerController : MonoBehaviour
         TargetedBlock = block;
     }
 
+    public static void Jump()
+    {
+        if (CanJump())
+        {
+            Rigidbody.AddForce(new Vector2(0, JumpingStrength), ForceMode2D.Impulse);
+        }
+    }
+
     public static void Move(float horizontalAxis)
     {
         if (Mathf.Abs(Rigidbody.velocity.x) < MaxVelocity)
         {
-            Rigidbody.AddForce(new Vector2(WalkingAcceleration * horizontalAxis * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);
+            Rigidbody.AddForce(new Vector2(WalkingAcceleration * horizontalAxis * Time.deltaTime, 0), ForceMode2D.Impulse);
         }
     }
 
-    /* Private Methods */
-    private static bool IsCloseEnoughToMine(Block block)
+    public static void MoveCamera(Vector2 newCameraPosition)
     {
-        return Vector3.Distance(block.transform.position, Rigidbody.transform.position) <= MiningRange;
+        var cameraPosition = Camera.main.transform.position;
+        Camera.main.transform.position = new Vector3(newCameraPosition.x, newCameraPosition.y, cameraPosition.z);
     }
 
-    private static void PrintFramerate()
+    public static void ResetPhysicsConditions()
     {
-        //print("Framerate: " + (1.0f / Time.fixedDeltaTime));
+        Rigidbody.velocity = Vector3.zero;
+        Rigidbody.angularVelocity = 0;
+    }
+
+    /* Private Methods */
+    private static bool CanJump()
+    {
+        return Physics2D.Raycast(PlayerPosition, Vector2.down, (Rigidbody.transform.localScale.y / 2.0f) + 0.05f, Constants.GroundLayer);
+    }
+
+    private static bool CanMine(Block block)
+    {
+        return Vector3.Distance(block.transform.position, Rigidbody.transform.position) <= MiningRange;
     }
 }
