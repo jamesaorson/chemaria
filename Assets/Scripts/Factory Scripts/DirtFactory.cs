@@ -8,9 +8,9 @@ public class DirtFactory : MonoBehaviour
 
     public void Start()
     {
-        for (int y = 0; y > -10; --y)
+        for (int y = 0; y > -16; --y)
         {
-            for (int x = -25; x <= 25; ++x)
+            for (int x = 1; x <= 16; ++x)
             {
                 CreateDirt(x, y);
             }

@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-C:/Users/James Osborne/Documents/Unity/Chemaria/Builds/Chemaria.exe
+C:/Users/James Osborne/Documents/Unity/Chemaria/Builds/Windows/x86_64/Chemaria.exe
 SceneListBegin?
 Assets/Scenes/GameScene.unity
 SceneListEnd?
