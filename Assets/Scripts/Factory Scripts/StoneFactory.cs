@@ -8,13 +8,13 @@ public class StoneFactory : MonoBehaviour
 
     public void Start()
     {
-        /*for (int y = 0; y > -10; --y)
+        for (int y = 0; y > -16; --y)
         {
-            for (int x = 0; x > -10; --x)
+            for (int x = -16; x <= 0; ++x)
             {
                 CreateStone(x, y);
             }
-        }*/
+        }
     }
 
     public GameObject CreateStone(float x = 0, float y = 0)
