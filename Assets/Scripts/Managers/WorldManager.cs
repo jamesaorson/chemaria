@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class WorldManager : MonoBehaviour
 {
+    private static LocalPlayerController LocalPlayer;
     public static Dictionary<int, Dictionary<int, GameObject>> Blocks = new Dictionary<int, Dictionary<int, GameObject>>();
 
     public static string SaveFilePath
@@ -26,6 +27,15 @@ public class WorldManager : MonoBehaviour
         {
             Application.targetFrameRate = 60;
         }*/
+    }
+
+    public void Start()
+    {
+        LocalPlayer = FindObjectOfType<LocalPlayerController>();
+        if (LocalPlayer == null)
+        {
+            Debug.LogError("Player was null in WorldManager");
+        }
     }
 
     public static void AddBlock(Vector3 position, GameObject block)
@@ -151,7 +161,7 @@ public class WorldManager : MonoBehaviour
             }
         }
 
-        saveFile.PlayerPosition = new SaveFile.SerializableVector(PlayerController.Rigidbody.transform.position);
+        saveFile.PlayerPosition = new SaveFile.SerializableVector(LocalPlayer.Rigidbody.transform.position);
 
         return saveFile;
     }
@@ -180,10 +190,11 @@ public class WorldManager : MonoBehaviour
         }
 
         Blocks.Clear();
-        PlayerController.ResetPhysicsConditions();
+        LocalPlayer.ResetPhysicsConditions();
+
         var playerPosition = new Vector2(saveFile.PlayerPosition.x, saveFile.PlayerPosition.y);
-        PlayerController.Rigidbody.MovePosition(playerPosition);
-        PlayerController.MoveCamera(playerPosition);
+        LocalPlayer.Rigidbody.MovePosition(playerPosition);
+        LocalPlayer.MoveCamera(playerPosition);
     }
 
     [Serializable]
