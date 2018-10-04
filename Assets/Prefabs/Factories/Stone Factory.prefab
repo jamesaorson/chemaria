@@ -51,4 +51,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26cfd63900d9c6343acc515cd4c71cf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Stone: {fileID: 0}
+  Stone: {fileID: 4797479689676662, guid: 5a3107c18af1c6c4592ed5c615003adf, type: 2}

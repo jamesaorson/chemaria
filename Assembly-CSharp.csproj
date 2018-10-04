@@ -65,7 +65,7 @@
     <Compile Include="Assets\Scripts\Blocks\Dirt.cs" />
     <Compile Include="Assets\Scripts\Blocks\Stone.cs" />
     <Compile Include="Assets\Scripts\Constants.cs" />
-    <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\LocalPlayerController.cs" />
     <Compile Include="Assets\Scripts\Factory Scripts\DirtFactory.cs" />
     <Compile Include="Assets\Scripts\Factory Scripts\StoneFactory.cs" />
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />

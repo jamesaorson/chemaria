@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 68002621546494584}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Player
+  m_TagString: LocalPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -84,7 +84,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 3
   m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -123,6 +123,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afc8330aa6d1d84498011b6322369c93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Collider: {fileID: 0}
+  Rigidbody: {fileID: 0}
+  JumpingStrength: 30
+  MaxVelocity: 8
+  MiningRange: 5
+  MiningStrength: 1
+  WalkingAcceleration: 30
 --- !u!212 &212357787275703628
 SpriteRenderer:
   m_ObjectHideFlags: 1

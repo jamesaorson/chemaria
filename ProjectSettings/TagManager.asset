@@ -9,6 +9,7 @@ TagManager:
   - Manager
   - DirtFactory
   - StoneFactory
+  - LocalPlayer
   layers:
   - Default
   - TransparentFX

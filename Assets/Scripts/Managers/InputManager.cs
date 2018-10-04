@@ -15,19 +15,30 @@ public class InputManager : MonoBehaviour
     private float MouseYAxis { get { return Input.GetAxis(Constants.MouseYName); } }
     private float SubmitAxis { get { return Input.GetAxis(Constants.SubmitName); } }
     private float VerticalAxis { get { return Input.GetAxis(Constants.VerticalAxisName); } }
-	
-	public void FixedUpdate() {
+
+    private LocalPlayerController LocalPlayer;
+
+    public void Start()
+    {
+        LocalPlayer = FindObjectOfType<LocalPlayerController>();
+        if (LocalPlayer == null)
+        {
+            Debug.LogError("Player was null in InputManager");
+        }
+    }
+
+    public void FixedUpdate() {
         if (HorizontalAxis != 0)
         {
-            PlayerController.Move(HorizontalAxis);
+            LocalPlayer.Move(HorizontalAxis);
         }
         if (Fire1Axis != 0)
         {
-            PlayerController.BreakBlock();
+            LocalPlayer.BreakBlock();
         }
         if (Input.GetButtonDown(Constants.JumpName))
         {
-            PlayerController.Jump();
+            LocalPlayer.Jump();
         }
         if (Input.GetKeyDown(KeyCode.F1))
         {
