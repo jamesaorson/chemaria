@@ -1,0 +1,17 @@
+function init(self)
+	self.blocks = {}
+	local url = "/dirt_factory#dirt_factory"
+	for i = 0, 20 do
+		local position = vmath.vector3(i * 32 + 16, 16, 0)
+		create_block(self, url, position)
+	end
+end
+
+function create_block(self, url, position)
+	local rotation = nil
+	local properties = {}
+	local scale = 1.0
+	
+	local block = factory.create(url, position, rotation, properties, scale)
+	table.insert(self.blocks, block)
+end
