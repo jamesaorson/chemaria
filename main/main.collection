@@ -1,50 +1,11 @@
 name: "main"
 instances {
-  id: "stone"
-  prototype: "/main/block/stone/stone.go"
-  position {
-    x: 50.0
-    y: 100.0
-    z: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-  }
-}
-instances {
-  id: "dirt"
-  prototype: "/main/block/dirt/dirt.go"
-  position {
-    x: 82.0
-    y: 100.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-  }
-}
-instances {
   id: "player"
   prototype: "/main/player/player.go"
+  children: "camera"
   position {
-    x: 500.0
-    y: 150.0
+    x: 16.0
+    y: 64.0
     z: 0.0
   }
   rotation {
@@ -56,6 +17,86 @@ instances {
   scale3 {
     x: 10.0
     y: 10.0
+    z: 1.0
+  }
+}
+instances {
+  id: "world"
+  prototype: "/main/world/world.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "dirt_factory"
+  prototype: "/main/block/dirt/dirt_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "stone_factory"
+  prototype: "/main/block/stone/stone_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "camera"
+  prototype: "/main/camera/camera.go"
+  position {
+    x: -64.0
+    y: -20.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
     z: 1.0
   }
 }

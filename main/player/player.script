@@ -4,6 +4,8 @@ function init(self)
 	-- Add initialization code here
 	-- Remove this function if not needed
 	self.velocity = vmath.vector3()
+
+	msg.post("/camera", "acquire_camera_focus")
 end
 
 function final(self)
