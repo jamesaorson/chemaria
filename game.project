@@ -1,5 +1,6 @@
 [project]
 title = Chemaria
+write_log = 0
 
 [bootstrap]
 main_collection = /main/main.collectionc
@@ -17,8 +18,17 @@ fullscreen = 1
 shared_state = 1
 
 [windows]
-app_icon = /assets/appicons/appicon.ico
+app_icon = /assets/app_icons/appicon.ico
 
 [osx]
 app_icon = /assets/appicons/appicon.icns
+
+[physics]
+debug = 1
+
+[android]
+app_icon_36x36 = /assets/app_icons/appicon.png
+
+[ios]
+app_icon_57x57 = /assets/app_icons/appicon.png
 
