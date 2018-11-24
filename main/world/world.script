@@ -1,17 +1,73 @@
+local constants = require "modules.constants"
+local urls = require "modules.urls"
+
+require "modules.models.Block"
+require "modules.models.Chunk"
+
 function init(self)
-	self.blocks = {}
-	local url = "/dirt_factory#dirt_factory"
-	for i = 0, 20 do
-		local position = vmath.vector3(i * 32 + 16, 16, 0)
-		create_block(self, url, position)
+	local dirtUrl = urls.get_factory_url("dirt")
+	local stoneUrl = urls.get_factory_url("stone")
+	local dirtChunks = {}
+	local stoneChunks = {}
+
+	-- Dirt chunks
+	for i = 0, 3 do
+		local chunkToInsert = Chunk:new()
+		chunkToInsert.origin = vmath.vector3(i * constants.CHUNK_UNIT, 0, 0)
+		table.insert(dirtChunks, chunkToInsert)
+	end
+
+	for chunkIndex, chunk in ipairs(dirtChunks) do
+		for y = -1, -constants.CHUNK_UNIT, -1 do
+			for x = 1, constants.CHUNK_UNIT do
+				local blockToInsert = Block:new()
+				blockToInsert.position = vmath.vector3(chunk.origin.x + x, chunk.origin.y + y, 0)
+				blockToInsert.type = "dirt"
+				chunk:add_block(blockToInsert)
+			end
+		end
+	end
+	
+	-- Stone chunks
+	for i = 0, 3 do
+		local chunkToInsert = Chunk:new()
+		chunkToInsert.origin = vmath.vector3(i * constants.CHUNK_UNIT, -12, 0)
+		table.insert(stoneChunks, chunkToInsert)
+	end
+	
+	for chunkIndex, chunk in ipairs(stoneChunks) do
+		for y = -1, -constants.CHUNK_UNIT, -1 do
+			for x = 1, constants.CHUNK_UNIT do
+				local blockToInsert = Block:new()
+				blockToInsert.position = vmath.vector3(chunk.origin.x + x, chunk.origin.y + y, 0)
+				blockToInsert.type = "stone"
+				chunk:add_block(blockToInsert)
+			end
+		end
+	end
+
+	local chunks = {}
+
+	for i, dirtChunk in ipairs(dirtChunks) do
+		table.insert(chunks, dirtChunk)
+	end
+	for i, stoneChunk in ipairs(stoneChunks) do
+		table.insert(chunks, stoneChunk)
+	end
+
+	for i, chunk in ipairs(chunks) do
+		for j, block in ipairs(chunk.blocks) do
+			create_block(self, block)
+		end
 	end
 end
 
-function create_block(self, url, position)
+function create_block(self, block)
 	local rotation = nil
 	local properties = {}
 	local scale = 1.0
+
+	local truePosition = block.position * 32
 	
-	local block = factory.create(url, position, rotation, properties, scale)
-	table.insert(self.blocks, block)
+	local block = factory.create(urls.get_factory_url(block.type), truePosition, rotation, properties, scale)
 end
