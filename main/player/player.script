@@ -1,16 +1,9 @@
-local MOVE_SPEED = 30
+local constants = require "modules.constants"
 
 function init(self)
 	-- Add initialization code here
 	-- Remove this function if not needed
 	self.velocity = vmath.vector3()
-
-	msg.post("/camera", "acquire_camera_focus")
-end
-
-function final(self)
-	-- Add finalization code here
-	-- Remove this function if not needed
 end
 
 function update(self, dt)
@@ -20,17 +13,12 @@ end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("up") then
-		self.velocity = self.velocity + vmath.vector3(0, MOVE_SPEED, 0)
+		self.velocity = self.velocity + vmath.vector3(0, constants.PLAYER_MOVE_SPEED, 0)
 	elseif message_id == hash("down") then
-		self.velocity = self.velocity + vmath.vector3(0, -MOVE_SPEED, 0)
+		self.velocity = self.velocity + vmath.vector3(0, -constants.PLAYER_MOVE_SPEED, 0)
 	elseif message_id == hash("left") then
-		self.velocity = self.velocity + vmath.vector3(-MOVE_SPEED, 0, 0)
+		self.velocity = self.velocity + vmath.vector3(-constants.PLAYER_MOVE_SPEED, 0, 0)
 	elseif message_id == hash("right") then
-		self.velocity = self.velocity + vmath.vector3(MOVE_SPEED, 0, 0)
+		self.velocity = self.velocity + vmath.vector3(constants.PLAYER_MOVE_SPEED, 0, 0)
 	end
-end
-
-function on_reload(self)
-	-- Add reload-handling code here
-	-- Remove this function if not needed
 end
