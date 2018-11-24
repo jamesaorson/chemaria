@@ -1,24 +1,63 @@
 local constants = require "modules.constants"
 
+local GRAVITY = -50
+
 function init(self)
 	-- Add initialization code here
 	-- Remove this function if not needed
+	self.position = go.get_position()
 	self.velocity = vmath.vector3()
+	self.correction = vmath.vector3()
 end
 
 function update(self, dt)
+	local GRAVITY = vmath.vector3(0, GRAVITY, 0)
+
+	if not self.ground_contact then
+		-- Apply gravity if there's no ground contact
+		self.velocity = self.velocity + GRAVITY
+	end
+	
+	-- Apply velocity to the player character
 	go.set_position(go.get_position() + self.velocity * dt)
 	self.velocity = vmath.vector3()
+	self.correction = vmath.vector3()
+	self.ground_contact = false
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("up") then
-		self.velocity = self.velocity + vmath.vector3(0, constants.PLAYER_MOVE_SPEED, 0)
-	elseif message_id == hash("down") then
-		self.velocity = self.velocity + vmath.vector3(0, -constants.PLAYER_MOVE_SPEED, 0)
-	elseif message_id == hash("left") then
+	if message_id == hash("left") then
 		self.velocity = self.velocity + vmath.vector3(-constants.PLAYER_MOVE_SPEED, 0, 0)
 	elseif message_id == hash("right") then
 		self.velocity = self.velocity + vmath.vector3(constants.PLAYER_MOVE_SPEED, 0, 0)
+	elseif message_id == hash("contact_point_response") then
+		if message.group == hash("block") then
+			handle_block_contact(self, message.distance, message.normal)
+		end
+	end
+end
+
+function handle_block_contact(self, distance, normal)
+	-- Get the info needed to move out of collision. We might
+	-- get several contact points back and have to calculate
+	-- how to move out of all of them by accumulating a 
+	-- correction vector for this frame:
+	if distance > 0 then
+		-- First, project the accumulated correction onto
+		-- the penetration vector
+		local proj = vmath.project(self.correction, normal * distance)
+		if proj < 1 then
+			-- Only care for projections that does not overshoot.
+			local compensation = (distance - distance * proj) * normal
+			-- Apply compensation
+			go.set_position(go.get_position() + compensation)
+			-- Accumulate correction done
+			self.correction = self.correction + compensation
+		end
+		-- Check if the normal points enough up to consider the player standing on the ground
+		-- (0.7 is roughly equal to 45 degrees deviation from pure vertical direction)
+		if normal.y > 0.7 then
+			self.ground_contact = true
+		end
 	end
 end

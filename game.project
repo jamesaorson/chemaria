@@ -27,6 +27,7 @@ app_icon = /assets/appicons/appicon.icns
 
 [physics]
 debug = 1
+debug_alpha = 0.4
 
 [android]
 app_icon_36x36 = /assets/app_icons/appicon.png
@@ -39,6 +40,7 @@ max_count = 4096
 
 [graphics]
 max_draw_calls = 4096
+max_debug_vertices = 100000
 
 [resource]
 max_resources = 4096

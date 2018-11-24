@@ -11,7 +11,7 @@ function init(self)
 	local stoneChunks = {}
 
 	-- Dirt chunks
-	for i = 0, 3 do
+	for i = 0, 1 do
 		local chunkToInsert = Chunk:new()
 		chunkToInsert.origin = vmath.vector3(i * constants.CHUNK_UNIT, 0, 0)
 		table.insert(dirtChunks, chunkToInsert)
