@@ -18,8 +18,11 @@ function on_input(self, actionId, action)
 		elseif actionId == hash("quit") and action.pressed then
 			quit_game()
 		end
-	elseif actionId == hash("toggle_profiler") then
+	end
+	if actionId == hash("toggle_profile") and action.pressed then
 		msg.post("@system:", "toggle_profile")
+	elseif actionId == hash("toggle_fullscreen") and action.pressed then
+		defos.toggle_fullscreen()
 	end
 end
 

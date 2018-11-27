@@ -1,7 +1,7 @@
 [project]
 title = Chemaria
 write_log = 0
-dependencies = https://github.com/rgrams/rendercam/archive/v1.0.zip,https://github.com/britzl/Platypus/archive/master.zip
+dependencies = https://github.com/rgrams/rendercam/archive/v1.0.zip,https://github.com/britzl/Platypus/archive/master.zip,https://github.com/subsoap/defos/archive/master.zip
 
 [bootstrap]
 main_collection = /main/main.collectionc
@@ -14,7 +14,7 @@ use_accelerometer = 0
 [display]
 width = 1920
 height = 1080
-fullscreen = 1
+fullscreen = 0
 
 [script]
 shared_state = 1
