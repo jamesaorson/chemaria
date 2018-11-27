@@ -1,75 +1,39 @@
 local constants = require "modules.constants"
+local platypus = require "platypus.platypus"
 
-local GRAVITY = -5
+local PLATYPUS_CONFIG = {
+	collisions = {
+		separation = platypus.SEPARATION_SHAPES,
+		groups = {
+			[hash("block")] = platypus.DIR_ALL
+		},
+		left = 16, right = 16, top = 32, bottom = 32,
+	},
+	gravity = constants.GRAVITY,
+	max_velocity = constants.PLAYER_MAX_VELOCITY,
+	allow_double_jump = true,
+	allow_wall_jump = false
+}
 
 function init(self)
-	-- Add initialization code here
-	-- Remove this function if not needed
-	self.position = go.get_position()
-	self.acceleration = vmath.vector3()
-	self.velocity = vmath.vector3()
-	self.correction = vmath.vector3()
-	self.groundContact = false
+	self.platypus = platypus.create(PLATYPUS_CONFIG)
 end
 
 function update(self, dt)
-	local GRAVITY = vmath.vector3(0, GRAVITY, 0)
+	self.platypus.update(dt)
+end
 
-	if not self.groundContact then
-		-- Apply gravity if there's no ground contact
-		self.velocity = self.velocity + GRAVITY
-	end
-	if math.abs(self.velocity.x) > constants.PLAYER_MAX_X_VELOCITY then
-		if self.velocity.x < 0 then
-			self.velocity.x = -constants.PLAYER_MAX_X_VELOCITY
-		else
-			self.velocity.x = constants.PLAYER_MAX_X_VELOCITY
+function on_message(self, messageId, message, sender)
+	self.platypus.on_message(messageId, message)
+	if messageId == hash("left") then
+		self.platypus.left(constants.PLAYER_VELOCITY.x)
+	elseif messageId == hash("right") then
+		self.platypus.right(constants.PLAYER_VELOCITY.x)
+	elseif messageId == hash("jump") then
+		if message.pressed then
+			self.platypus.jump(constants.PLAYER_JUMP_FORCE)
+		elseif message.released then
+			self.platypus.abort_jump(0.5)
 		end
-	end
-
-	-- Apply velocity to the player character
-	go.set_position(go.get_position() + self.velocity * dt)
-
-	-- Reset volatile state
-	self.correction = vmath.vector3()
-	self.groundContact = false
-	self.velocity.x = self.velocity.x * constants.PLAYER_LINEAR_DAMPING
-end
-
-function on_message(self, message_id, message, sender)
-	if message_id == hash("left") then
-		self.velocity = self.velocity + vmath.vector3(-constants.PLAYER_X_ACCELERATION, 0, 0)
-	elseif message_id == hash("right") then
-		self.velocity = self.velocity + vmath.vector3(constants.PLAYER_X_ACCELERATION, 0, 0)
-	elseif message_id == hash("contact_point_response") then
-		handle_block_contact(self, message.normal, message.distance)
-	end
-end
-
-function handle_block_contact(self, normal, distance)
-	-- Project the correction vector onto the contact normal
-	-- (the correction vector is the 0-vector for the first contact point)
-	local projection = vmath.dot(self.correction, normal)
-	-- Calculate the compensation we need to make for this contact point
-	local compensation = (distance - projection) * normal
-
-	-- Add it to the correction vector
-	self.correction = self.correction + compensation
-	-- Apply the compensation to the player character
-	go.set_position(go.get_position() + compensation)
-
-	-- Check if the normal points enough up to consider the player standing on the ground
-	-- (0.7 is roughly equal to 45 degrees deviation from pure vertical direction)
-	if normal.y > 0.7 then
-		self.groundContact = true
-	end
-
-	-- Project the velocity onto the normal
-	projection = vmath.dot(self.velocity, normal)
-
-	-- If the projection is negative, it means that some of the velocity points towards the contact point
-	if projection < 0 then
-		-- Remove that component in that case
-		self.velocity = self.velocity - projection * normal
 	end
 end
