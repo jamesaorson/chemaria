@@ -1,6 +1,6 @@
 key_trigger {
   input: KEY_ESC
-  action: "escape"
+  action: "quit"
 }
 key_trigger {
   input: KEY_W
@@ -35,8 +35,12 @@ key_trigger {
   action: "right"
 }
 key_trigger {
-  input: KEY_BACKQUOTE
+  input: KEY_TILDE
   action: "toggle_profiler"
+}
+key_trigger {
+  input: KEY_SPACE
+  action: "jump"
 }
 mouse_trigger {
   input: MOUSE_BUTTON_LEFT
