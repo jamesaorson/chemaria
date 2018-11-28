@@ -4,8 +4,8 @@ instances {
   prototype: "/main/player/player.go"
   children: "camera"
   position {
-    x: 149.0
-    y: 70.0
+    x: 48.0
+    y: 96.0
     z: 0.0
   }
   rotation {
@@ -101,8 +101,8 @@ instances {
   }
 }
 instances {
-  id: "inventory"
-  prototype: "/main/ui/inventory/inventory.go"
+  id: "ui"
+  prototype: "/main/ui/ui.go"
   position {
     x: 0.0
     y: 80.0
