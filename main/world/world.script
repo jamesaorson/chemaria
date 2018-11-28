@@ -11,7 +11,7 @@ function init(self)
 	local stoneChunks = {}
 
 	-- Dirt chunks
-	for i = 0, 3 do
+	for i = 0, 0 do
 		local chunkToInsert = Chunk:new()
 		chunkToInsert.origin = vmath.vector3(i * constants.CHUNK_UNIT, 0, 0)
 		table.insert(dirtChunks, chunkToInsert)
@@ -46,18 +46,21 @@ function init(self)
 		end
 	end
 
-	local chunks = {}
+	self.chunks = {}
 
 	for i, dirtChunk in ipairs(dirtChunks) do
-		table.insert(chunks, dirtChunk)
+		table.insert(self.chunks, dirtChunk)
 	end
 	for i, stoneChunk in ipairs(stoneChunks) do
-		table.insert(chunks, stoneChunk)
+		table.insert(self.chunks, stoneChunk)
 	end
 
-	for i, chunk in ipairs(chunks) do
-		for j, block in ipairs(chunk.blocks) do
-			create_block(self, block)
+	for i, chunk in pairs(self.chunks) do
+		for j, xRow in pairs(chunk.blocks) do
+			local blockColumn = chunk.blocks[j]
+			for k, block in pairs(blockColumn) do
+				create_block(self, block)
+			end
 		end
 	end
 end
@@ -68,22 +71,30 @@ function on_message(self, messageId, message, sender)
 		message.x = miningPosition.x
 		message.y = miningPosition.y
 		goput.on_input(messageId, message)
+	elseif messageId == hash("place_block") then
+		local placementPosition = rendercam.screen_to_world_2d(message.x, message.y)
+		local block = {
+			position = vmath.vector3(placementPosition.x, placementPosition.y, 0),
+			type = message.type
+		}
+		create_block(self, block)
 	end
 end
 
 function create_block(self, block)
+	local truePosition = block.position * 32
 	local rotation = nil
 	local properties = {}
 	local scale = 1.0
-
-	local truePosition = block.position * 32
 	
-	local block = factory.create(urls.get_factory_url(block.type), truePosition, rotation, properties, scale)
+	block = factory.create(urls.get_factory_url(block.type), truePosition, rotation, properties, scale)
 	local blockSpriteUrl = msg.url(block)
 	blockSpriteUrl = urls.url_hash_to_string(blockSpriteUrl) .. "#sprite"
 	goput.add(blockSpriteUrl, nil, mine_block)
 end
 
 function mine_block(url, actionId, action)
-	print(actionId .. " " .. urls.url_hash_to_string(url))
+	local blockSpriteUrl = urls.url_hash_to_string(url) .. "#sprite"
+	goput.remove(blockSpriteUrl)
+	go.delete(url)
 end

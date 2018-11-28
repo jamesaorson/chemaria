@@ -4,7 +4,7 @@ instances {
   prototype: "/main/player/player.go"
   children: "camera"
   position {
-    x: 48.0
+    x: 0.0
     y: 96.0
     z: 0.0
   }
@@ -93,6 +93,14 @@ instances {
     y: 0.0
     z: 0.0
     w: 1.0
+  }
+  component_properties {
+    id: "script"
+    properties {
+      id: "orthoScale"
+      value: "1.5"
+      type: PROPERTY_TYPE_NUMBER
+    }
   }
   scale3 {
     x: 1.0

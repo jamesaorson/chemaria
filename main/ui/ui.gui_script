@@ -5,6 +5,18 @@ function init(self)
 	self.previousSelectedToolbarItem = nil
 	self.selectedToolbarItem = 1
 	self.shouldUpdateToolbar = true
+	self.toolbar = {}
+
+	for i = 1, 10 do
+		local newToolbarItem = {
+			index = i,
+			count = 5,
+			type = "dirt"
+		}
+		self.shouldUpdateToolbar = true
+		self.toolbar[i] = newToolbarItem
+		msg.post("/player#player_script", "update_toolbar_item", newToolbarItem)
+	end
 end
 
 function update(self, dt)
@@ -15,8 +27,12 @@ function update(self, dt)
 		if self.previousSelectedToolbarItem then
 			local previousToolbarNode = gui.get_node("toolbar/" ..  self.previousSelectedToolbarItem)
 			gui.set_color(previousToolbarNode, constants.TOOLBAR_UNSELECTED_COLOR)
-			self.shouldUpdateToolbar = false
 		end
+		for i, toolbarItem in pairs(self.toolbar) do
+			local toolbarNode = gui.get_node("toolbar/text" ..  i)
+			gui.set_text(toolbarNode, toolbarItem.count .. " " .. toolbarItem.type)
+		end
+		self.shouldUpdateToolbar = false
 	end
 end
 
