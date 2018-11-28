@@ -2,11 +2,6 @@ local constants = require "modules.constants"
 local rendercam = require "rendercam.rendercam"
 
 function init(self)
-	for i = 1, 10 do
-		local textNode = gui.get_node("toolbar/text" .. i)
-		gui.set_text(textNode, i)
-	end
-
 	self.previousSelectedToolbarItem = nil
 	self.selectedToolbarItem = 1
 	self.shouldUpdateToolbar = true

@@ -5,20 +5,17 @@ end
 
 function on_input(self, actionId, action)
 	if self.game_mode == "play" then
-		if actionId == hash("up") then
-			send_player_action("up", action)
-		elseif actionId == hash("down") then
-			send_player_action("down", action)
-		elseif actionId == hash("left") then
-			send_player_action("left", action)
+		if actionId == hash("left") then
+			send_player_action(actionId, action)
 		elseif actionId == hash("right") then
-			send_player_action("right", action)
+			send_player_action(actionId, action)
 		elseif actionId == hash("jump") then
-			send_player_action("jump", action)
+			send_player_action(actionId, action)
 		elseif actionId == hash("quit") and action.pressed then
 			quit_game()
 		elseif actionId == hash("left_click") then
 			send_gui_action(actionId, action)
+			send_player_action(actionId, action)
 		end
 	end
 	if actionId == hash("toggle_profile") and action.pressed then
