@@ -1,7 +1,4 @@
 images {
-  image: "/main/block/assets/default.png"
-}
-images {
   image: "/main/block/assets/dirt.png"
 }
 images {
