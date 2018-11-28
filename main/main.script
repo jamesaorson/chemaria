@@ -16,6 +16,8 @@ function on_input(self, actionId, action)
 		elseif actionId == hash("left_click") then
 			send_gui_action(actionId, action)
 			send_player_action(actionId, action)
+		elseif actionId == hash("right_click") then
+			send_player_action(actionId, action)
 		end
 	end
 	if actionId == hash("toggle_profile") and action.pressed then

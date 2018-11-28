@@ -2,6 +2,7 @@ local constants = require "modules.constants"
 local urls = require "modules.urls"
 local rendercam = require "rendercam.rendercam"
 local goput = require "modules.goput"
+local positionHelpers = require "modules.positionHelpers"
 
 require "modules.models.Block"
 require "modules.models.Chunk"
@@ -67,14 +68,13 @@ end
 
 function on_message(self, messageId, message, sender)
 	if messageId == hash("mine_block") then
-		local miningPosition = rendercam.screen_to_world_2d(message.x, message.y)
+		local miningPosition = rendercam.screen_to_world_2d(message.screen_x, message.screen_y)
 		message.x = miningPosition.x
 		message.y = miningPosition.y
 		goput.on_input(messageId, message)
-	elseif messageId == hash("place_block") then
-		local placementPosition = rendercam.screen_to_world_2d(message.x, message.y)
+	elseif messageId == hash("place_block") and message.pressed then
 		local block = {
-			position = vmath.vector3(placementPosition.x, placementPosition.y, 0),
+			position = positionHelpers.screen_to_block_position(vmath.vector3(message.x, message.y, 0)),
 			type = message.type
 		}
 		create_block(self, block)
@@ -83,6 +83,7 @@ end
 
 function create_block(self, block)
 	local truePosition = block.position * 32
+
 	local rotation = nil
 	local properties = {}
 	local scale = 1.0

@@ -1,6 +1,7 @@
 local constants = require "modules.constants"
 local platypus = require "platypus.platypus"
 local rendercam = require "rendercam.rendercam"
+local globals = require "modules.globals"
 
 local PLATYPUS_CONFIG = {
 	collisions = {
@@ -21,7 +22,7 @@ function init(self)
 	self.selectedToolbarItem = 1
 	self.isMining = false
 	self.miningStartTime = nil
-	self.toolbar = {}
+	self.toolbar = globals.get_toolbar()
 end
 
 function update(self, dt)
@@ -55,7 +56,7 @@ function on_message(self, messageId, message, sender)
 			end
 		end
 	elseif messageId == hash("right_click") then
-		message.type = 
+		message.type = self.toolbar[self.selectedToolbarItem].type
 		msg.post("/world#world_script", "place_block", message)
 	elseif messageId == hash("update_toolbar_item") then
 		self.toolbar[message.index] = message

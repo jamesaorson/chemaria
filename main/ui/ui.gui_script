@@ -1,11 +1,12 @@
 local constants = require "modules.constants"
 local rendercam = require "rendercam.rendercam"
+local globals = require "modules.globals"
 
 function init(self)
 	self.previousSelectedToolbarItem = nil
 	self.selectedToolbarItem = 1
 	self.shouldUpdateToolbar = true
-	self.toolbar = {}
+	self.toolbar = globals.get_toolbar()
 
 	for i = 1, 10 do
 		local newToolbarItem = {
@@ -14,8 +15,7 @@ function init(self)
 			type = "dirt"
 		}
 		self.shouldUpdateToolbar = true
-		self.toolbar[i] = newToolbarItem
-		msg.post("/player#player_script", "update_toolbar_item", newToolbarItem)
+		globals.add_to_toolbar(newToolbarItem)
 	end
 end
 
