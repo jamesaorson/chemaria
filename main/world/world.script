@@ -1,12 +1,12 @@
 local constants = require "modules.constants"
 local urls = require "modules.urls"
+local rendercam = require "rendercam.rendercam"
+local goput = require "modules.goput"
 
 require "modules.models.Block"
 require "modules.models.Chunk"
 
 function init(self)
-	local dirtUrl = urls.get_factory_url("dirt")
-	local stoneUrl = urls.get_factory_url("stone")
 	local dirtChunks = {}
 	local stoneChunks = {}
 
@@ -62,6 +62,15 @@ function init(self)
 	end
 end
 
+function on_message(self, messageId, message, sender)
+	if messageId == hash("mine_block") then
+		local miningPosition = rendercam.screen_to_world_2d(message.x, message.y)
+		message.x = miningPosition.x
+		message.y = miningPosition.y
+		goput.on_input(messageId, message)
+	end
+end
+
 function create_block(self, block)
 	local rotation = nil
 	local properties = {}
@@ -70,4 +79,11 @@ function create_block(self, block)
 	local truePosition = block.position * 32
 	
 	local block = factory.create(urls.get_factory_url(block.type), truePosition, rotation, properties, scale)
+	local blockSpriteUrl = msg.url(block)
+	blockSpriteUrl = urls.url_hash_to_string(blockSpriteUrl) .. "#sprite"
+	goput.add(blockSpriteUrl, nil, mine_block)
+end
+
+function mine_block(url, actionId, action)
+	print(actionId .. " " .. urls.url_hash_to_string(url))
 end

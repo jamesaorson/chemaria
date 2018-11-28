@@ -1,5 +1,5 @@
 components {
-  id: "dirt_sprite"
+  id: "sprite"
   component: "/main/block/dirt/dirt.sprite"
   position {
     x: 0.0

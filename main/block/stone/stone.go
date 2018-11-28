@@ -1,5 +1,5 @@
 components {
-  id: "stone_sprite"
+  id: "sprite"
   component: "/main/block/stone/stone.sprite"
   position {
     x: 0.0
