@@ -17,6 +17,8 @@ function on_input(self, actionId, action)
 			send_player_action("jump", action)
 		elseif actionId == hash("quit") and action.pressed then
 			quit_game()
+		elseif actionId == hash("left_click") then
+			send_gui_action(actionId, action)
 		end
 	end
 	if actionId == hash("toggle_profile") and action.pressed then
@@ -32,4 +34,8 @@ end
 
 function send_player_action(actionId, action)
 	msg.post("/player#player_script", actionId, action)
+end
+
+function send_gui_action(actionId, action)
+	msg.post("/ui#ui", actionId, action)
 end

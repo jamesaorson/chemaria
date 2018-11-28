@@ -1,5 +1,5 @@
 components {
-  id: "inventory"
+  id: "ui"
   component: "/main/ui/ui.gui"
   position {
     x: 0.0

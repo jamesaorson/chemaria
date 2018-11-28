@@ -1,0 +1,49 @@
+local constants = require "modules.constants"
+local rendercam = require "rendercam.rendercam"
+
+function init(self)
+	-- Add initialization code here
+	-- Remove this function if not needed
+	for i = 1, 10 do
+		local textNode = gui.get_node("toolbar/text" .. i)
+		gui.set_text(textNode, i)
+	end
+
+	self.previousSelectedToolbarItem = nil
+	self.selectedToolbarItem = 1
+	self.shouldUpdateToolbar = true
+end
+
+function update(self, dt)
+	if self.shouldUpdateToolbar then
+		local selectedToolbarNode = gui.get_node("toolbar/" ..  self.selectedToolbarItem)
+		gui.set_color(selectedToolbarNode, constants.TOOLBAR_SELECTED_COLOR)
+
+		if self.previousSelectedToolbarItem then
+			local previousToolbarNode = gui.get_node("toolbar/" ..  self.previousSelectedToolbarItem)
+			gui.set_color(previousToolbarNode, constants.TOOLBAR_UNSELECTED_COLOR)
+			self.shouldUpdateToolbar = false
+		end
+	end
+end
+
+function on_message(self, messageId, message, sender)
+	local clickedNode = nil
+	if messageId == hash("left_click") and message.released then
+		for i = 1, 10 do
+			local toolbarItem = gui.get_node("toolbar/text" .. i)
+			local guiPickX, guiPickY = rendercam.screen_to_gui_pick(message.x, message.y)
+			if gui.pick_node(toolbarItem, guiPickX, guiPickY) then
+				clickedNode = toolbarItem
+				msg.post("/player#player_script", "switch_selected_toolbar_item", { toolbarIndex = i })
+				if i ~= self.selectedToolbarItem then
+					self.previousSelectedToolbarItem = self.selectedToolbarItem
+					self.selectedToolbarItem = i
+					self.shouldUpdateToolbar = true
+					print(message.x .. ", " .. message.y)
+				end
+				break
+			end
+		end
+	end
+end

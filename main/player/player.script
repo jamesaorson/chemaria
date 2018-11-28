@@ -17,6 +17,7 @@ local PLATYPUS_CONFIG = {
 
 function init(self)
 	self.platypus = platypus.create(PLATYPUS_CONFIG)
+	self.selectedToolbarItem = 1
 end
 
 function update(self, dt)
@@ -35,5 +36,7 @@ function on_message(self, messageId, message, sender)
 		elseif message.released then
 			self.platypus.abort_jump(0.5)
 		end
+	elseif messageId == hash("switch_selected_toolbar_item") then
+		self.selectedToolbarItem = message.toolbarIndex
 	end
 end
