@@ -14,7 +14,7 @@ use_accelerometer = 0
 [display]
 width = 1920
 height = 1080
-fullscreen = 0
+fullscreen = 1
 
 [script]
 shared_state = 1
@@ -26,7 +26,7 @@ app_icon = /assets/app_icons/appicon.ico
 app_icon = /assets/appicons/appicon.icns
 
 [physics]
-debug = 1
+debug = 0
 debug_alpha = 0.4
 
 [android]

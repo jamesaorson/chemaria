@@ -2,8 +2,6 @@ local constants = require "modules.constants"
 local rendercam = require "rendercam.rendercam"
 
 function init(self)
-	-- Add initialization code here
-	-- Remove this function if not needed
 	for i = 1, 10 do
 		local textNode = gui.get_node("toolbar/text" .. i)
 		gui.set_text(textNode, i)
@@ -40,7 +38,6 @@ function on_message(self, messageId, message, sender)
 					self.previousSelectedToolbarItem = self.selectedToolbarItem
 					self.selectedToolbarItem = i
 					self.shouldUpdateToolbar = true
-					print(message.x .. ", " .. message.y)
 				end
 				break
 			end
