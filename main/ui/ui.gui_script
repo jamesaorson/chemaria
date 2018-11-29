@@ -52,6 +52,16 @@ function on_message(self, messageId, message, sender)
 				break
 			end
 		end
+	elseif messageId == hash("mouse_wheel_up") then
+		if self.selectedToolbarItem ~= 1 then
+			local index = (self.selectedToolbarItem - 1 + constants.TOOLBAR_MAX_SLOTS) % constants.TOOLBAR_MAX_SLOTS
+			switch_selected_toolbar_item(self, index)
+		end
+	elseif messageId == hash("mouse_wheel_down") then
+		if self.selectedToolbarItem ~= constants.TOOLBAR_MAX_SLOTS then
+			local index = (self.selectedToolbarItem + 1) % (constants.TOOLBAR_MAX_SLOTS + 1)
+			switch_selected_toolbar_item(self, index)
+		end
 	elseif messageId == hash("update_toolbar") then
 		self.shouldUpdateToolbar = true
 	elseif messageId == hash("inventory_switch_1") then
