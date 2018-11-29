@@ -3,7 +3,6 @@ local rendercam = require "rendercam.rendercam"
 local globals = require "modules.globals"
 
 function init(self)
-	self.previousSelectedToolbarItem = nil
 	self.selectedToolbarItem = 1
 	self.shouldUpdateToolbar = true
 	self.toolbar = globals.get_toolbar()
@@ -21,17 +20,20 @@ end
 
 function update(self, dt)
 	if self.shouldUpdateToolbar then
+		for i, toolbarItem in pairs(self.toolbar) do
+			local toolbarNode = gui.get_node("toolbar/" ..  i)
+			local toolbarTextNode = gui.get_node("toolbar/text" ..  i)
+			if toolbarItem and toolbarItem.type ~= "empty" then
+				gui.set_text(toolbarTextNode, toolbarItem.count .. " " .. toolbarItem.type)
+			else
+				gui.set_text(toolbarTextNode, "None")
+			end
+			gui.set_color(toolbarNode, constants.TOOLBAR_UNSELECTED_COLOR)
+		end
+
 		local selectedToolbarNode = gui.get_node("toolbar/" ..  self.selectedToolbarItem)
 		gui.set_color(selectedToolbarNode, constants.TOOLBAR_SELECTED_COLOR)
-
-		if self.previousSelectedToolbarItem then
-			local previousToolbarNode = gui.get_node("toolbar/" ..  self.previousSelectedToolbarItem)
-			gui.set_color(previousToolbarNode, constants.TOOLBAR_UNSELECTED_COLOR)
-		end
-		for i, toolbarItem in pairs(self.toolbar) do
-			local toolbarNode = gui.get_node("toolbar/text" ..  i)
-			gui.set_text(toolbarNode, toolbarItem.count .. " " .. toolbarItem.type)
-		end
+		
 		self.shouldUpdateToolbar = false
 	end
 end
@@ -44,14 +46,39 @@ function on_message(self, messageId, message, sender)
 			local guiPickX, guiPickY = rendercam.screen_to_gui_pick(message.x, message.y)
 			if gui.pick_node(toolbarItem, guiPickX, guiPickY) then
 				clickedNode = toolbarItem
-				msg.post("/player#player_script", "switch_selected_toolbar_item", { toolbarIndex = i })
 				if i ~= self.selectedToolbarItem then
-					self.previousSelectedToolbarItem = self.selectedToolbarItem
-					self.selectedToolbarItem = i
-					self.shouldUpdateToolbar = true
+					switch_selected_toolbar_item(self, i)
 				end
 				break
 			end
 		end
+	elseif messageId == hash("update_toolbar") then
+		self.shouldUpdateToolbar = true
+	elseif messageId == hash("inventory_switch_1") then
+		switch_selected_toolbar_item(self, 1)
+	elseif messageId == hash("inventory_switch_2") then
+		switch_selected_toolbar_item(self, 2)
+	elseif messageId == hash("inventory_switch_3") then
+		switch_selected_toolbar_item(self, 3)
+	elseif messageId == hash("inventory_switch_4") then
+		switch_selected_toolbar_item(self, 4)
+	elseif messageId == hash("inventory_switch_5") then
+		switch_selected_toolbar_item(self, 5)
+	elseif messageId == hash("inventory_switch_6") then
+		switch_selected_toolbar_item(self, 6)
+	elseif messageId == hash("inventory_switch_7") then
+		switch_selected_toolbar_item(self, 7)
+	elseif messageId == hash("inventory_switch_8") then
+		switch_selected_toolbar_item(self, 8)
+	elseif messageId == hash("inventory_switch_9") then
+		switch_selected_toolbar_item(self, 9)
+	elseif messageId == hash("inventory_switch_10") then
+		switch_selected_toolbar_item(self, 10)
 	end
+end
+
+function switch_selected_toolbar_item(self, index)
+	self.selectedToolbarItem = index
+	self.shouldUpdateToolbar = true
+	msg.post("/player#player_script", "switch_selected_toolbar_item", { toolbarIndex = index })
 end

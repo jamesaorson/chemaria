@@ -1,6 +1,6 @@
 font: "/assets/fonts/Montserrat-Regular.ttf"
 material: "/builtins/fonts/font-df.material"
-size: 40
+size: 36
 antialias: 1
 alpha: 1.0
 outline_alpha: 0.0

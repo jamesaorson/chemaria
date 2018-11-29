@@ -46,6 +46,46 @@ key_trigger {
   input: KEY_F11
   action: "toggle_fullscreen"
 }
+key_trigger {
+  input: KEY_1
+  action: "inventory_switch_1"
+}
+key_trigger {
+  input: KEY_2
+  action: "inventory_switch_2"
+}
+key_trigger {
+  input: KEY_3
+  action: "inventory_switch_3"
+}
+key_trigger {
+  input: KEY_4
+  action: "inventory_switch_4"
+}
+key_trigger {
+  input: KEY_5
+  action: "inventory_switch_5"
+}
+key_trigger {
+  input: KEY_6
+  action: "inventory_switch_6"
+}
+key_trigger {
+  input: KEY_7
+  action: "inventory_switch_7"
+}
+key_trigger {
+  input: KEY_8
+  action: "inventory_switch_8"
+}
+key_trigger {
+  input: KEY_9
+  action: "inventory_switch_9"
+}
+key_trigger {
+  input: KEY_0
+  action: "inventory_switch_10"
+}
 mouse_trigger {
   input: MOUSE_BUTTON_LEFT
   action: "left_click"
