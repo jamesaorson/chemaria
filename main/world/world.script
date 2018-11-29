@@ -2,27 +2,30 @@ local constants = require "modules.constants"
 local urls = require "modules.urls"
 local rendercam = require "rendercam.rendercam"
 local goput = require "modules.goput"
-local positionHelpers = require "modules.positionHelpers"
+local position_helpers = require "modules.position_helpers"
 
 require "modules.models.Block"
 require "modules.models.Chunk"
+require "modules.models.World"
 
 function init(self)
+	self.world = World:new()
 	local dirtChunks = {}
 	local stoneChunks = {}
 
 	-- Dirt chunks
-	for i = 0, 0 do
+	for i = 0, 3 do
 		local chunkToInsert = Chunk:new()
-		chunkToInsert.origin = vmath.vector3(i * constants.CHUNK_SIZE, 0, 0)
+		chunkToInsert.position = vmath.vector3(i, 0, 0)
 		table.insert(dirtChunks, chunkToInsert)
 	end
 
-	for chunkIndex, chunk in ipairs(dirtChunks) do
-		for y = -1, -constants.CHUNK_SIZE, -1 do
-			for x = 1, constants.CHUNK_SIZE do
+	for chunkIndex, chunk in pairs(dirtChunks) do
+		for y = 0, constants.CHUNK_SIZE - 1 do
+			for x = 0, constants.CHUNK_SIZE - 1 do
 				local blockToInsert = Block:new()
-				blockToInsert.position = vmath.vector3(chunk.origin.x + x, chunk.origin.y + y, 0)
+				blockToInsert.chunk = chunk
+				blockToInsert.position = vmath.vector3(x, -y, 0)
 				blockToInsert.type = "dirt"
 				chunk:add_block(blockToInsert)
 			end
@@ -32,35 +35,37 @@ function init(self)
 	-- Stone chunks
 	for i = 0, 3 do
 		local chunkToInsert = Chunk:new()
-		chunkToInsert.origin = vmath.vector3(i * constants.CHUNK_SIZE, -12, 0)
+		chunkToInsert.position = vmath.vector3(i, -1, 0)
 		table.insert(stoneChunks, chunkToInsert)
 	end
 	
-	for chunkIndex, chunk in ipairs(stoneChunks) do
-		for y = -1, -constants.CHUNK_SIZE, -1 do
-			for x = 1, constants.CHUNK_SIZE do
+	for chunkIndex, chunk in pairs(stoneChunks) do
+		for y = 0, constants.CHUNK_SIZE - 1 do
+			for x = 0, constants.CHUNK_SIZE - 1 do
 				local blockToInsert = Block:new()
-				blockToInsert.position = vmath.vector3(chunk.origin.x + x, chunk.origin.y + y, 0)
+				blockToInsert.chunk = chunk
+				blockToInsert.position = vmath.vector3(x, -y, 0)
 				blockToInsert.type = "stone"
 				chunk:add_block(blockToInsert)
 			end
 		end
 	end
 
-	self.chunks = {}
-
-	for i, dirtChunk in ipairs(dirtChunks) do
-		table.insert(self.chunks, dirtChunk)
+	for i, dirtChunk in pairs(dirtChunks) do
+		self.world:add_chunk(dirtChunk)
 	end
-	for i, stoneChunk in ipairs(stoneChunks) do
-		table.insert(self.chunks, stoneChunk)
+	for i, stoneChunk in pairs(stoneChunks) do
+		self.world:add_chunk(stoneChunk)
 	end
 
-	for i, chunk in pairs(self.chunks) do
-		for j, xRow in pairs(chunk.blocks) do
-			local blockColumn = chunk.blocks[j]
-			for k, block in pairs(blockColumn) do
-				create_block(self, block)
+	for chunkX, chunk in pairs(self.world.chunks) do
+		for chunkY, chunkXColumn in pairs(chunk) do
+			for i, blocks in pairs(chunkXColumn) do
+				for blockX, blockXColumn in pairs(blocks) do
+					for blockY, block in pairs(blockXColumn) do
+						create_block(self, block)
+					end
+				end
 			end
 		end
 	end
@@ -75,8 +80,9 @@ function on_message(self, messageId, message, sender)
 	elseif messageId == hash("place_block") and message.pressed then
 		local toolbarItem = message.toolbarItem
 		if toolbarItem and toolbarItem.type ~= "empty" then
+			local chunkPosition = position_helpers.screen_to_chunk_position(vmath.vector3(message.x, message.y, 0))
 			local block = {
-				position = positionHelpers.screen_to_block_position(vmath.vector3(message.x, message.y, 0)),
+				position = position_helpers.screen_to_block_position(vmath.vector3(message.x, message.y, 0)),
 				type = toolbarItem.type
 			}
 			if create_block(self, block) then
@@ -88,7 +94,8 @@ function on_message(self, messageId, message, sender)
 end
 
 function create_block(self, block)
-	local truePosition = block.position * 32
+	pprint(block)
+	local truePosition = vmath.vector3(block.position.x + (block.chunk.position.x) * constants.CHUNK_SIZE, block.position.y + (block.chunk.position.y) * 12, 0) * constants.BLOCK_SIZE
 
 	local rotation = nil
 	local properties = {}

@@ -1,6 +1,7 @@
 Chunk = {
 	blocks = {},
-	origin = vmath.vector3()
+	position = vmath.vector3(),
+	world = nil
 }
 
 function Chunk:new()
@@ -8,7 +9,7 @@ function Chunk:new()
 	setmetatable(chunk, self)
 	self.__index = self
 	chunk.blocks = {}
-	chunk.origin = vmath.vector3()
+	chunk.position = vmath.vector3()
 	return chunk
 end
 
@@ -20,6 +21,7 @@ function Chunk:add_block(blockToAdd)
 		self.blocks[blockToAdd.position.x] = {}
 	end
 	self.blocks[blockToAdd.position.x][blockToAdd.position.y] = blockToAdd
+	blockToAdd.chunk = self
 end
 
 function Chunk:remove_block(blockToRemove)
@@ -28,10 +30,8 @@ end
 
 function Chunk:remove_block_at_position(position)
 	removed  = false
-	pprint(position)
 	if self.blocks[position.x][position.y] then
 		table.remove(self.blocks[position.x], position.y)
-		print(table.getn(self.blocks[position.x]))
 		if table.getn(self.blocks[position.x]) == 0 then
 			table.remove(self.blocks, position.x)
 		end
