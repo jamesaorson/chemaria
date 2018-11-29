@@ -21,6 +21,13 @@ function World:add_chunk(chunkToAdd)
 	chunkToAdd.world = self
 end
 
+function World:get_chunk_at_position(position)
+	if self.chunks[position.x] then
+		return self.chunks[position.x][position.y]
+	end
+	return nil
+end
+
 function World:remove_chunk(chunkToRemove)
 	return World:remove_chunk_at_position(chunkToRemove.position)
 end
