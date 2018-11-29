@@ -14,13 +14,13 @@ function init(self)
 	-- Dirt chunks
 	for i = 0, 0 do
 		local chunkToInsert = Chunk:new()
-		chunkToInsert.origin = vmath.vector3(i * constants.CHUNK_UNIT, 0, 0)
+		chunkToInsert.origin = vmath.vector3(i * constants.CHUNK_SIZE, 0, 0)
 		table.insert(dirtChunks, chunkToInsert)
 	end
 
 	for chunkIndex, chunk in ipairs(dirtChunks) do
-		for y = -1, -constants.CHUNK_UNIT, -1 do
-			for x = 1, constants.CHUNK_UNIT do
+		for y = -1, -constants.CHUNK_SIZE, -1 do
+			for x = 1, constants.CHUNK_SIZE do
 				local blockToInsert = Block:new()
 				blockToInsert.position = vmath.vector3(chunk.origin.x + x, chunk.origin.y + y, 0)
 				blockToInsert.type = "dirt"
@@ -32,13 +32,13 @@ function init(self)
 	-- Stone chunks
 	for i = 0, 3 do
 		local chunkToInsert = Chunk:new()
-		chunkToInsert.origin = vmath.vector3(i * constants.CHUNK_UNIT, -12, 0)
+		chunkToInsert.origin = vmath.vector3(i * constants.CHUNK_SIZE, -12, 0)
 		table.insert(stoneChunks, chunkToInsert)
 	end
 	
 	for chunkIndex, chunk in ipairs(stoneChunks) do
-		for y = -1, -constants.CHUNK_UNIT, -1 do
-			for x = 1, constants.CHUNK_UNIT do
+		for y = -1, -constants.CHUNK_SIZE, -1 do
+			for x = 1, constants.CHUNK_SIZE do
 				local blockToInsert = Block:new()
 				blockToInsert.position = vmath.vector3(chunk.origin.x + x, chunk.origin.y + y, 0)
 				blockToInsert.type = "stone"

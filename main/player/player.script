@@ -23,6 +23,7 @@ function init(self)
 	self.isMining = false
 	self.miningStartTime = nil
 	self.toolbar = globals.get_toolbar()
+	defos.set_cursor_visible(true)
 end
 
 function update(self, dt)

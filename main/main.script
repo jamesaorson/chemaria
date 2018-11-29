@@ -1,6 +1,9 @@
+local config = require "modules.config"
+
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	self.game_mode = "play"
+	apply_config()
 end
 
 function on_input(self, actionId, action)
@@ -49,4 +52,10 @@ end
 
 function send_gui_action(actionId, action)
 	msg.post("/ui#ui", actionId, action)
+end
+
+function apply_config()
+	if defos.is_fullscreen() ~= config.IS_FULLSCREEN then
+		defos.set_fullscreen(config.IS_FULLSCREEN)
+	end
 end
