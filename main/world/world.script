@@ -8,6 +8,87 @@ require "modules.models.Block"
 require "modules.models.Chunk"
 require "modules.models.World"
 
+-------------
+-- Helpers --
+-------------
+
+local function mine_block(url, actionId, action)
+	local blockSpriteUrl = urls.url_hash_to_string(url) .. "#sprite"
+	goput.remove(blockSpriteUrl)
+	go.delete(url)
+end
+
+local function create_block(self, block)
+	local truePosition = position_helpers.block_to_screen_position(block)
+	local rotation = nil
+	local properties = {}
+	local scale = 1.0
+
+	local factoryBlock = factory.create(urls.get_factory_url(block.type), truePosition, rotation, properties, scale)
+	local blockSpriteUrl = msg.url(factoryBlock)
+	blockSpriteUrl = urls.url_hash_to_string(blockSpriteUrl) .. "#sprite"
+	goput.add(blockSpriteUrl, nil, mine_block)
+	block.chunk:add_block(block)
+
+	return true
+end
+
+-----------------
+-- End Helpers --
+-----------------
+
+
+----------------------
+-- Message Handlers --
+----------------------
+
+local function handle_mine_block(self, messageId, message, sender)
+	local miningScreenPosition = rendercam.screen_to_world_2d(message.screen_x, message.screen_y)
+	message.x = miningScreenPosition.x
+	message.y = miningScreenPosition.y
+	goput.on_input(messageId, message)
+
+	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
+	local miningBlockPosition = position_helpers.screen_to_block_position(screenPosition)
+	local miningChunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
+	local chunk = self.world:get_chunk_at_position(miningChunkPosition)
+	if chunk then
+		chunk:remove_block_at_position(miningBlockPosition)
+	end
+end
+
+local function handle_place_block(self, messageId, message, sender)
+	local toolbarItem = message.toolbarItem
+	if toolbarItem and toolbarItem.type ~= "empty" then
+		local messagePosition = vmath.vector3(message.x, message.y, 0)
+		local chunkPosition = position_helpers.screen_to_chunk_position(messagePosition)
+		local chunk = self.world:get_chunk_at_position(chunkPosition)
+		if chunk then
+			local blockPosition = position_helpers.screen_to_block_position(messagePosition)
+			if not chunk:get_block_at_position(blockPosition) then
+				local block = {
+					chunk = chunk,
+					position = blockPosition,
+					type = toolbarItem.type
+				}
+				if create_block(self, block) then
+					toolbarItem.count = toolbarItem.count - 1
+					msg.post("/player#player_script", "update_toolbar_item", toolbarItem)
+				end
+			end
+		end
+	end
+end
+
+--------------------------
+-- End Message Handlers --
+--------------------------
+
+
+----------------------
+-- Defold functions --
+----------------------
+
 function init(self)
 	self.world = World:new()
 	local dirtChunks = {}
@@ -77,65 +158,6 @@ function on_message(self, messageId, message, sender)
 	end
 end
 
-function create_block(self, block)
-	local truePosition = position_helpers.block_to_screen_position(block)
-	local rotation = nil
-	local properties = {}
-	local scale = 1.0
-
-	local factoryBlock = factory.create(urls.get_factory_url(block.type), truePosition, rotation, properties, scale)
-	local blockSpriteUrl = msg.url(factoryBlock)
-	blockSpriteUrl = urls.url_hash_to_string(blockSpriteUrl) .. "#sprite"
-	goput.add(blockSpriteUrl, nil, mine_block)
-	block.chunk:add_block(block)
-
-	return true
-end
-
-function mine_block(url, actionId, action)
-	local blockSpriteUrl = urls.url_hash_to_string(url) .. "#sprite"
-	goput.remove(blockSpriteUrl)
-	go.delete(url)
-end
-
-----------------------
--- Message Handlers --
-----------------------
-
-function handle_mine_block(self, messageId, message, sender)
-	local miningScreenPosition = rendercam.screen_to_world_2d(message.screen_x, message.screen_y)
-	message.x = miningScreenPosition.x
-	message.y = miningScreenPosition.y
-	goput.on_input(messageId, message)
-
-	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
-	local miningBlockPosition = position_helpers.screen_to_block_position(screenPosition)
-	local miningChunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
-	local chunk = self.world:get_chunk_at_position(miningChunkPosition)
-	if chunk then
-		chunk:remove_block_at_position(miningBlockPosition)
-	end
-end
-
-function handle_place_block(self, messageId, message, sender)
-	local toolbarItem = message.toolbarItem
-	if toolbarItem and toolbarItem.type ~= "empty" then
-		local messagePosition = vmath.vector3(message.x, message.y, 0)
-		local chunkPosition = position_helpers.screen_to_chunk_position(messagePosition)
-		local chunk = self.world:get_chunk_at_position(chunkPosition)
-		if chunk then
-			local blockPosition = position_helpers.screen_to_block_position(messagePosition)
-			if not chunk:get_block_at_position(blockPosition) then
-				local block = {
-					chunk = chunk,
-					position = blockPosition,
-					type = toolbarItem.type
-				}
-				if create_block(self, block) then
-					toolbarItem.count = toolbarItem.count - 1
-					msg.post("/player#player_script", "update_toolbar_item", toolbarItem)
-				end
-			end
-		end
-	end
-end
+--------------------------
+-- End Defold functions --
+--------------------------

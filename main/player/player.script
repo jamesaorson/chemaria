@@ -17,6 +17,70 @@ local PLATYPUS_CONFIG = {
 	allow_wall_jump = false
 }
 
+----------------------
+-- Message Handlers --
+----------------------
+
+local function handle_left(self, messageId, message, sender)
+	self.platypus.left(constants.PLAYER_VELOCITY.x)
+end
+
+local function handle_right(self, messageId, message, sender)
+	self.platypus.right(constants.PLAYER_VELOCITY.x)
+end
+
+local function handle_jump(self, messageId, message, sender)
+	if message.pressed then
+		self.platypus.jump(constants.PLAYER_JUMP_FORCE)
+	elseif message.released then
+		self.platypus.abort_jump(0.5)
+	end
+end
+
+local function handle_left_click(self, messageId, message, sender)
+	if message.pressed then
+		self.isMining = true
+		self.miningStartTime = os.clock()
+	elseif message.released then
+		self.isMining = false
+		self.mininStartTime = nil
+	else
+		local miningTime = os.clock() - self.miningStartTime
+		if miningTime >= constants.PLAYER_BASE_MINING_INTERVAL then
+			self.miningStartTime = os.clock()
+			msg.post("/world#world_script", "mine_block", message)
+		end
+	end
+end
+
+local function handle_right_click(self, messageId, message, sender)
+	message.toolbarItem = self.toolbar[self.selectedToolbarItem]
+	if message.type ~= "empty" then
+		msg.post("/world#world_script", "place_block", message)
+	end
+end
+
+local function handle_update_toolbar_item(self, messageId, message, sender)
+	if message.count == 0 then
+		message.type = "empty"
+	end
+	self.toolbar[message.index] = message
+	msg.post("/ui#ui", "update_toolbar")
+end
+
+local function handle_switch_selected_toolbar_item(self, messageId, message, sender)
+	self.selectedToolbarItem = message.toolbarIndex
+end
+
+--------------------------
+-- End Message Handlers --
+--------------------------
+
+
+--------------------------
+-- Defold functions --
+--------------------------
+
 function init(self)
 	self.platypus = platypus.create(PLATYPUS_CONFIG)
 	self.selectedToolbarItem = 1
@@ -32,42 +96,24 @@ end
 
 function on_message(self, messageId, message, sender)
 	self.platypus.on_message(messageId, message)
+	
 	if messageId == hash("left") then
-		self.platypus.left(constants.PLAYER_VELOCITY.x)
+		handle_left(self, messageId, message, sender)
 	elseif messageId == hash("right") then
-		self.platypus.right(constants.PLAYER_VELOCITY.x)
+		handle_right(self, messageId, message, sender)
 	elseif messageId == hash("jump") then
-		if message.pressed then
-			self.platypus.jump(constants.PLAYER_JUMP_FORCE)
-		elseif message.released then
-			self.platypus.abort_jump(0.5)
-		end
+		handle_jump(self, messageId, message, sender)
 	elseif messageId == hash("left_click") then
-		if message.pressed then
-			self.isMining = true
-			self.miningStartTime = os.clock()
-		elseif message.released then
-			self.isMining = false
-			self.mininStartTime = nil
-		else
-			local miningTime = os.clock() - self.miningStartTime
-			if miningTime >= constants.PLAYER_BASE_MINING_INTERVAL then
-				self.miningStartTime = os.clock()
-				msg.post("/world#world_script", "mine_block", message)
-			end
-		end
+		handle_left_click(self, messageId, message, sender)
 	elseif messageId == hash("right_click") then
-		message.toolbarItem = self.toolbar[self.selectedToolbarItem]
-		if message.type ~= "empty" then
-			msg.post("/world#world_script", "place_block", message)
-		end
+		handle_right_click(self, messageId, message, sender)
 	elseif messageId == hash("update_toolbar_item") then
-		if message.count == 0 then
-			message.type = "empty"
-		end
-		self.toolbar[message.index] = message
-		msg.post("/ui#ui", "update_toolbar")
+		handle_update_toolbar_item(self, messageId, message, sender)
 	elseif messageId == hash("switch_selected_toolbar_item") then
-		self.selectedToolbarItem = message.toolbarIndex
+		handle_switch_selected_toolbar_item(self, messageId, message, sender)
 	end
 end
+
+--------------------------
+-- End Defold functions --
+--------------------------
