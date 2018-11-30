@@ -1,6 +1,5 @@
 local constants = require "modules.constants"
 local platypus = require "platypus.platypus"
-local rendercam = require "rendercam.rendercam"
 local globals = require "modules.globals"
 
 local PLATYPUS_CONFIG = {

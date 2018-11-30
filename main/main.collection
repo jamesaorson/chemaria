@@ -2,7 +2,6 @@ name: "main"
 instances {
   id: "player"
   prototype: "/main/player/player.go"
-  children: "camera"
   position {
     x: 0.0
     y: 96.0
@@ -81,8 +80,28 @@ instances {
   }
 }
 instances {
+  id: "ui"
+  prototype: "/main/ui/ui.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
   id: "camera"
-  prototype: "/rendercam/camera.go"
+  prototype: "/orthographic/camera.go"
   position {
     x: 0.0
     y: 0.0
@@ -97,30 +116,25 @@ instances {
   component_properties {
     id: "script"
     properties {
-      id: "orthoScale"
-      value: "1.5"
+      id: "zoom"
+      value: "1.0"
       type: PROPERTY_TYPE_NUMBER
     }
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-  }
-}
-instances {
-  id: "ui"
-  prototype: "/main/ui/ui.go"
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
+    properties {
+      id: "follow"
+      value: "true"
+      type: PROPERTY_TYPE_BOOLEAN
+    }
+    properties {
+      id: "follow_target"
+      value: "/player"
+      type: PROPERTY_TYPE_HASH
+    }
+    properties {
+      id: "follow_lerp"
+      value: "0.1"
+      type: PROPERTY_TYPE_NUMBER
+    }
   }
   scale3 {
     x: 1.0

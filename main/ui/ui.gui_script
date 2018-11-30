@@ -1,6 +1,6 @@
 local constants = require "modules.constants"
-local rendercam = require "rendercam.rendercam"
 local globals = require "modules.globals"
+local orthographic = require "orthographic.camera"
 
 function init(self)
 	self.selectedToolbarItem = 1
@@ -43,8 +43,7 @@ function on_message(self, messageId, message, sender)
 	if messageId == hash("left_click") and message.released then
 		for i = 1, 10 do
 			local toolbarItem = gui.get_node("toolbar/text" .. i)
-			local guiPickX, guiPickY = rendercam.screen_to_gui_pick(message.x, message.y)
-			if gui.pick_node(toolbarItem, guiPickX, guiPickY) then
+			if gui.pick_node(toolbarItem, message.x, message.y) then
 				clickedNode = toolbarItem
 				if i ~= self.selectedToolbarItem then
 					switch_selected_toolbar_item(self, i)

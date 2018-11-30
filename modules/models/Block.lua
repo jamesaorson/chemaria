@@ -1,7 +1,8 @@
 Block = {
 	chunk = nil,
 	position = vmath.vector3(),
-	type = nil
+	type = nil,
+	url = nil
 }
 
 function Block:new()
@@ -11,5 +12,6 @@ function Block:new()
 	block.chunk = nil
 	block.position = vmath.vector3()
 	block.type = nil
+	block.url = nil
 	return block
 end

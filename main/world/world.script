@@ -1,7 +1,6 @@
 local constants = require "modules.constants"
 local urls = require "modules.urls"
-local rendercam = require "rendercam.rendercam"
-local goput = require "modules.goput"
+local orthographic = require "orthographic.camera"
 local position_helpers = require "modules.position_helpers"
 
 require "modules.models.Block"
@@ -12,10 +11,8 @@ require "modules.models.World"
 -- Helpers --
 -------------
 
-local function mine_block(url, actionId, action)
-	local blockSpriteUrl = urls.url_hash_to_string(url) .. "#sprite"
-	goput.remove(blockSpriteUrl)
-	go.delete(url)
+local function mine_block(blockUrl)
+	go.delete(blockUrl)
 end
 
 local function create_block(self, block)
@@ -25,9 +22,7 @@ local function create_block(self, block)
 	local scale = 1.0
 
 	local factoryBlock = factory.create(urls.get_factory_url(block.type), truePosition, rotation, properties, scale)
-	local blockSpriteUrl = msg.url(factoryBlock)
-	blockSpriteUrl = urls.url_hash_to_string(blockSpriteUrl) .. "#sprite"
-	goput.add(blockSpriteUrl, nil, mine_block)
+	block.url = factoryBlock
 	block.chunk:add_block(block)
 
 	return true
@@ -43,17 +38,16 @@ end
 ----------------------
 
 local function handle_mine_block(self, messageId, message, sender)
-	local miningScreenPosition = rendercam.screen_to_world_2d(message.screen_x, message.screen_y)
-	message.x = miningScreenPosition.x
-	message.y = miningScreenPosition.y
-	goput.on_input(messageId, message)
-
 	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
 	local miningBlockPosition = position_helpers.screen_to_block_position(screenPosition)
 	local miningChunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
 	local chunk = self.world:get_chunk_at_position(miningChunkPosition)
 	if chunk then
-		chunk:remove_block_at_position(miningBlockPosition)
+		local block = chunk:get_block_at_position(miningBlockPosition)
+		if block then
+			chunk:remove_block_at_position(miningBlockPosition)
+			mine_block(block.url)
+		end
 	end
 end
 
@@ -95,7 +89,7 @@ function init(self)
 	local stoneChunks = {}
 
 	-- Dirt chunks
-	for i = 0, 3 do
+	for i = 0, 6 do
 		local chunkToInsert = Chunk:new()
 		chunkToInsert.position = vmath.vector3(i, 0, 0)
 		table.insert(dirtChunks, chunkToInsert)
@@ -114,7 +108,7 @@ function init(self)
 	end
 	
 	-- Stone chunks
-	for i = 0, 3 do
+	for i = 0, 7 do
 		local chunkToInsert = Chunk:new()
 		chunkToInsert.position = vmath.vector3(i, -1, 0)
 		table.insert(stoneChunks, chunkToInsert)

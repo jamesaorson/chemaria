@@ -27,9 +27,8 @@ local function send_gui_action(actionId, action)
 end
 
 local function apply_config()
-	if defos.is_fullscreen() ~= config.IS_FULLSCREEN then
-		defos.set_fullscreen(config.IS_FULLSCREEN)
-	end
+	defos.set_fullscreen(config.IS_FULLSCREEN)
+	msg.post("/camera", "deadzone", config.CAMERA_DEADZONE)
 end
 
 -----------------

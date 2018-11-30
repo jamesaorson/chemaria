@@ -1,6 +1,6 @@
-local rendercam = require "rendercam.rendercam"
 local constants = require "modules.constants"
 local helpers = require "modules.helpers"
+local orthographic = require "orthographic.camera"
 
 local M = {}
 
@@ -9,7 +9,7 @@ function M.block_to_screen_position(block)
 end
 
 function M.screen_to_block_position(position)
-	position = rendercam.screen_to_world_2d(position.x, position.y)
+	position = orthographic.screen_to_world(hash("/camera"), position)
 	local blockPosition =  vmath.vector3(
 		helpers.round(position.x / constants.BLOCK_SIZE) % constants.CHUNK_SIZE,
 		helpers.round(position.y / constants.BLOCK_SIZE) % constants.CHUNK_SIZE,
@@ -18,7 +18,7 @@ function M.screen_to_block_position(position)
 end
 
 function M.screen_to_chunk_position(position)
-	position = rendercam.screen_to_world_2d(position.x, position.y)
+	position = orthographic.screen_to_world(hash("/camera"), position)
 	
 	local chunkPosition = vmath.vector3(
 		math.floor((position.x + constants.BLOCK_SIZE / 2) / constants.BLOCK_SIZE / constants.CHUNK_SIZE),
