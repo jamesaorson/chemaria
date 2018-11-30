@@ -1,1 +1,4 @@
 .vs/
+/.internal
+/build
+/release

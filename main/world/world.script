@@ -1,0 +1,157 @@
+local constants = require "modules.constants"
+local urls = require "modules.urls"
+local orthographic = require "orthographic.camera"
+local position_helpers = require "modules.position_helpers"
+
+require "modules.models.Block"
+require "modules.models.Chunk"
+require "modules.models.World"
+
+-------------
+-- Helpers --
+-------------
+
+local function mine_block(blockUrl)
+	go.delete(blockUrl)
+end
+
+local function create_block(self, block)
+	local truePosition = position_helpers.block_to_screen_position(block)
+	local rotation = nil
+	local properties = {}
+	local scale = 1.0
+
+	local factoryBlock = factory.create(urls.get_factory_url(block.type), truePosition, rotation, properties, scale)
+	block.url = factoryBlock
+	block.chunk:add_block(block)
+
+	return true
+end
+
+-----------------
+-- End Helpers --
+-----------------
+
+
+----------------------
+-- Message Handlers --
+----------------------
+
+local function handle_mine_block(self, messageId, message, sender)
+	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
+	local miningBlockPosition = position_helpers.screen_to_block_position(screenPosition)
+	local miningChunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
+	local chunk = self.world:get_chunk_at_position(miningChunkPosition)
+	if chunk then
+		local block = chunk:get_block_at_position(miningBlockPosition)
+		if block then
+			chunk:remove_block_at_position(miningBlockPosition)
+			mine_block(block.url)
+		end
+	end
+end
+
+local function handle_place_block(self, messageId, message, sender)
+	local toolbarItem = message.toolbarItem
+	if toolbarItem and toolbarItem.type ~= "empty" then
+		local messagePosition = vmath.vector3(message.x, message.y, 0)
+		local chunkPosition = position_helpers.screen_to_chunk_position(messagePosition)
+		local chunk = self.world:get_chunk_at_position(chunkPosition)
+		if chunk then
+			local blockPosition = position_helpers.screen_to_block_position(messagePosition)
+			if not chunk:get_block_at_position(blockPosition) then
+				local block = {
+					chunk = chunk,
+					position = blockPosition,
+					type = toolbarItem.type
+				}
+				if create_block(self, block) then
+					toolbarItem.count = toolbarItem.count - 1
+					msg.post("/player#player_script", "update_toolbar_item", toolbarItem)
+				end
+			end
+		end
+	end
+end
+
+--------------------------
+-- End Message Handlers --
+--------------------------
+
+
+----------------------
+-- Defold functions --
+----------------------
+
+function init(self)
+	self.world = World:new()
+	local dirtChunks = {}
+	local stoneChunks = {}
+
+	-- Dirt chunks
+	for i = 0, 6 do
+		local chunkToInsert = Chunk:new()
+		chunkToInsert.position = vmath.vector3(i, 0, 0)
+		table.insert(dirtChunks, chunkToInsert)
+	end
+
+	for chunkIndex, chunk in pairs(dirtChunks) do
+		for y = 0, constants.CHUNK_SIZE - 1 do
+			for x = 0, constants.CHUNK_SIZE - 1 do
+				local blockToInsert = Block:new()
+				blockToInsert.chunk = chunk
+				blockToInsert.position = vmath.vector3(x, y, 0)
+				blockToInsert.type = "dirt"
+				chunk:add_block(blockToInsert)
+			end
+		end
+	end
+	
+	-- Stone chunks
+	for i = 0, 7 do
+		local chunkToInsert = Chunk:new()
+		chunkToInsert.position = vmath.vector3(i, -1, 0)
+		table.insert(stoneChunks, chunkToInsert)
+	end
+	
+	for chunkIndex, chunk in pairs(stoneChunks) do
+		for y = 0, constants.CHUNK_SIZE - 1 do
+			for x = 0, constants.CHUNK_SIZE - 1 do
+				local blockToInsert = Block:new()
+				blockToInsert.chunk = chunk
+				blockToInsert.position = vmath.vector3(x, y, 0)
+				blockToInsert.type = "stone"
+				chunk:add_block(blockToInsert)
+			end
+		end
+	end
+
+	for i, dirtChunk in pairs(dirtChunks) do
+		self.world:add_chunk(dirtChunk)
+	end
+	for i, stoneChunk in pairs(stoneChunks) do
+		self.world:add_chunk(stoneChunk)
+	end
+
+	for chunkX, chunkXColumn in pairs(self.world.chunks) do
+		for chunkY, chunk in pairs(chunkXColumn) do
+			for blockX, blockXColumn in pairs(chunk.blocks) do
+				for blockY, block in pairs(blockXColumn) do
+					create_block(self, block)
+				end
+			end
+		end
+	end
+end
+
+function on_message(self, messageId, message, sender)
+	if messageId == hash("mine_block") then
+		handle_mine_block(self, messageId, message, sender)
+	elseif messageId == hash("place_block") and message.pressed then
+		handle_place_block(self, messageId, message, sender)
+	end
+end
+
+--------------------------
+-- End Defold functions --
+--------------------------

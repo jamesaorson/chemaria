@@ -1,0 +1,93 @@
+local constants = require "modules.constants"
+local globals = require "modules.globals"
+local orthographic = require "orthographic.camera"
+
+function init(self)
+	self.selectedToolbarItem = 1
+	self.shouldUpdateToolbar = true
+	self.toolbar = globals.get_toolbar()
+
+	for i = 1, 10 do
+		local newToolbarItem = {
+			index = i,
+			count = 5,
+			type = "dirt"
+		}
+		self.shouldUpdateToolbar = true
+		globals.add_to_toolbar(newToolbarItem)
+	end
+end
+
+function update(self, dt)
+	if self.shouldUpdateToolbar then
+		for i, toolbarItem in pairs(self.toolbar) do
+			local toolbarNode = gui.get_node("toolbar/" ..  i)
+			local toolbarTextNode = gui.get_node("toolbar/text" ..  i)
+			if toolbarItem and toolbarItem.type ~= "empty" then
+				gui.set_text(toolbarTextNode, toolbarItem.count .. " " .. toolbarItem.type)
+			else
+				gui.set_text(toolbarTextNode, "None")
+			end
+			gui.set_color(toolbarNode, constants.TOOLBAR_UNSELECTED_COLOR)
+		end
+
+		local selectedToolbarNode = gui.get_node("toolbar/" ..  self.selectedToolbarItem)
+		gui.set_color(selectedToolbarNode, constants.TOOLBAR_SELECTED_COLOR)
+		
+		self.shouldUpdateToolbar = false
+	end
+end
+
+function on_message(self, messageId, message, sender)
+	local clickedNode = nil
+	if messageId == hash("left_click") and message.released then
+		for i = 1, 10 do
+			local toolbarItem = gui.get_node("toolbar/text" .. i)
+			if gui.pick_node(toolbarItem, message.x, message.y) then
+				clickedNode = toolbarItem
+				if i ~= self.selectedToolbarItem then
+					switch_selected_toolbar_item(self, i)
+				end
+				break
+			end
+		end
+	elseif messageId == hash("mouse_wheel_up") then
+		if self.selectedToolbarItem ~= 1 then
+			local index = (self.selectedToolbarItem - 1 + constants.TOOLBAR_MAX_SLOTS) % constants.TOOLBAR_MAX_SLOTS
+			switch_selected_toolbar_item(self, index)
+		end
+	elseif messageId == hash("mouse_wheel_down") then
+		if self.selectedToolbarItem ~= constants.TOOLBAR_MAX_SLOTS then
+			local index = (self.selectedToolbarItem + 1) % (constants.TOOLBAR_MAX_SLOTS + 1)
+			switch_selected_toolbar_item(self, index)
+		end
+	elseif messageId == hash("update_toolbar") then
+		self.shouldUpdateToolbar = true
+	elseif messageId == hash("inventory_switch_1") then
+		switch_selected_toolbar_item(self, 1)
+	elseif messageId == hash("inventory_switch_2") then
+		switch_selected_toolbar_item(self, 2)
+	elseif messageId == hash("inventory_switch_3") then
+		switch_selected_toolbar_item(self, 3)
+	elseif messageId == hash("inventory_switch_4") then
+		switch_selected_toolbar_item(self, 4)
+	elseif messageId == hash("inventory_switch_5") then
+		switch_selected_toolbar_item(self, 5)
+	elseif messageId == hash("inventory_switch_6") then
+		switch_selected_toolbar_item(self, 6)
+	elseif messageId == hash("inventory_switch_7") then
+		switch_selected_toolbar_item(self, 7)
+	elseif messageId == hash("inventory_switch_8") then
+		switch_selected_toolbar_item(self, 8)
+	elseif messageId == hash("inventory_switch_9") then
+		switch_selected_toolbar_item(self, 9)
+	elseif messageId == hash("inventory_switch_10") then
+		switch_selected_toolbar_item(self, 10)
+	end
+end
+
+function switch_selected_toolbar_item(self, index)
+	self.selectedToolbarItem = index
+	self.shouldUpdateToolbar = true
+	msg.post("/player#player_script", "switch_selected_toolbar_item", { toolbarIndex = index })
+end
