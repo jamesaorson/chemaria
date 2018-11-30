@@ -1,0 +1,118 @@
+local constants = require "modules.constants"
+local platypus = require "platypus.platypus"
+local globals = require "modules.globals"
+
+local PLATYPUS_CONFIG = {
+	collisions = {
+		separation = platypus.SEPARATION_SHAPES,
+		groups = {
+			[hash("block")] = platypus.DIR_ALL
+		},
+		left = constants.PLAYER_WIDTH / 2, right = constants.PLAYER_WIDTH / 2, top = constants.PLAYER_HEIGHT / 2, bottom = constants.PLAYER_HEIGHT / 2
+	},
+	gravity = constants.GRAVITY,
+	max_velocity = constants.PLAYER_MAX_VELOCITY,
+	allow_double_jump = true,
+	allow_wall_jump = false
+}
+
+----------------------
+-- Message Handlers --
+----------------------
+
+local function handle_left(self, messageId, message, sender)
+	self.platypus.left(constants.PLAYER_VELOCITY.x)
+end
+
+local function handle_right(self, messageId, message, sender)
+	self.platypus.right(constants.PLAYER_VELOCITY.x)
+end
+
+local function handle_jump(self, messageId, message, sender)
+	if message.pressed then
+		self.platypus.jump(constants.PLAYER_JUMP_FORCE)
+	elseif message.released then
+		self.platypus.abort_jump(0.5)
+	end
+end
+
+local function handle_left_click(self, messageId, message, sender)
+	if message.pressed then
+		self.isMining = true
+		self.miningStartTime = os.clock()
+	elseif message.released then
+		self.isMining = false
+		self.mininStartTime = nil
+	else
+		local miningTime = os.clock() - self.miningStartTime
+		if miningTime >= constants.PLAYER_BASE_MINING_INTERVAL then
+			self.miningStartTime = os.clock()
+			msg.post("/world#world_script", "mine_block", message)
+		end
+	end
+end
+
+local function handle_right_click(self, messageId, message, sender)
+	message.toolbarItem = self.toolbar[self.selectedToolbarItem]
+	if message.type ~= "empty" then
+		msg.post("/world#world_script", "place_block", message)
+	end
+end
+
+local function handle_update_toolbar_item(self, messageId, message, sender)
+	if message.count == 0 then
+		message.type = "empty"
+	end
+	self.toolbar[message.index] = message
+	msg.post("/ui#ui", "update_toolbar")
+end
+
+local function handle_switch_selected_toolbar_item(self, messageId, message, sender)
+	self.selectedToolbarItem = message.toolbarIndex
+end
+
+--------------------------
+-- End Message Handlers --
+--------------------------
+
+
+--------------------------
+-- Defold functions --
+--------------------------
+
+function init(self)
+	self.platypus = platypus.create(PLATYPUS_CONFIG)
+	self.selectedToolbarItem = 1
+	self.isMining = false
+	self.miningStartTime = nil
+	self.toolbar = globals.get_toolbar()
+	defos.set_cursor_visible(true)
+end
+
+function update(self, dt)
+	self.platypus.update(dt)
+end
+
+function on_message(self, messageId, message, sender)
+	self.platypus.on_message(messageId, message)
+	
+	if messageId == hash("left") then
+		handle_left(self, messageId, message, sender)
+	elseif messageId == hash("right") then
+		handle_right(self, messageId, message, sender)
+	elseif messageId == hash("jump") then
+		handle_jump(self, messageId, message, sender)
+	elseif messageId == hash("left_click") then
+		handle_left_click(self, messageId, message, sender)
+	elseif messageId == hash("right_click") then
+		handle_right_click(self, messageId, message, sender)
+	elseif messageId == hash("update_toolbar_item") then
+		handle_update_toolbar_item(self, messageId, message, sender)
+	elseif messageId == hash("switch_selected_toolbar_item") then
+		handle_switch_selected_toolbar_item(self, messageId, message, sender)
+	end
+end
+
+--------------------------
+-- End Defold functions --
+--------------------------

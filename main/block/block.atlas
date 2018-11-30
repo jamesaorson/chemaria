@@ -1,0 +1,9 @@
+images {
+  image: "/main/block/assets/dirt.png"
+}
+images {
+  image: "/main/block/assets/stone.png"
+}
+margin: 0
+extrude_borders: 0
+inner_padding: 0
