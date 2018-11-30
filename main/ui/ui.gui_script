@@ -16,6 +16,8 @@ function init(self)
 		self.shouldUpdateToolbar = true
 		globals.add_to_toolbar(newToolbarItem)
 	end
+
+	gui.set_enabled(gui.get_node("inventory_node"), false)
 end
 
 function update(self, dt)
