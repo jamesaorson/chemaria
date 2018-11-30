@@ -54,7 +54,7 @@ end
 local function handle_place_block(self, messageId, message, sender)
 	local toolbarItem = message.toolbarItem
 	if toolbarItem and toolbarItem.type ~= "empty" then
-		local messagePosition = vmath.vector3(message.x, message.y, 0)
+		local messagePosition = vmath.vector3(message.screen_x, message.screen_y, 0)
 		local chunkPosition = position_helpers.screen_to_chunk_position(messagePosition)
 		local chunk = self.world:get_chunk_at_position(chunkPosition)
 		if chunk then

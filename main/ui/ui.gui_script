@@ -2,9 +2,105 @@ local constants = require "modules.constants"
 local globals = require "modules.globals"
 local orthographic = require "orthographic.camera"
 
+-------------
+-- Helpers --
+-------------
+
+local function get_inventory_switch_switch_index(messageId)
+	local baseId = "inventory_switch_"
+	for i = 1, constants.TOOLBAR_MAX_SLOTS do
+		if messageId == hash(baseId .. i) then
+			return i
+		end
+	end
+	return -1
+end
+
+local function is_inventory_switch_message(messageId)
+	local baseId = "inventory_switch_"
+	for i = 1, constants.TOOLBAR_MAX_SLOTS do
+		if messageId == hash(baseId .. i) then
+			return true
+		end
+	end
+	return false
+end
+
+local function switch_selected_toolbar_item(self, index)
+	self.selectedToolbarItem = index
+	self.shouldUpdateToolbar = true
+	msg.post("/player#player_script", "switch_selected_toolbar_item", { toolbarIndex = index })
+end
+
+local function update_inventory(self)
+	gui.set_enabled(gui.get_node("inventory_node"), self.isInventoryEnabled)
+end
+
+-----------------
+-- End Helpers --
+-----------------
+
+
+----------------------
+-- Message Handlers --
+----------------------
+
+local function handle_inventory_switch(self, messageId, message, sender, switchIndex)
+	local switchIndex = get_inventory_switch_switch_index(messageId)
+	if switchIndex ~= -1 then
+		switch_selected_toolbar_item(self, switchIndex)
+	end
+end
+
+local function handle_left_click(self, messageId, message, sender)
+	for i = 1, constants.TOOLBAR_MAX_SLOTS do
+		local toolbarItem = gui.get_node("toolbar/text" .. i)
+		if gui.pick_node(toolbarItem, message.x, message.y) then
+			clickedNode = toolbarItem
+			if i ~= self.selectedToolbarItem then
+				switch_selected_toolbar_item(self, i)
+			end
+			break
+		end
+	end
+end
+
+local function handle_mouse_wheel_down(self, messageId, message, sender)
+	if self.selectedToolbarItem ~= constants.TOOLBAR_MAX_SLOTS then
+		local index = (self.selectedToolbarItem + 1) % (constants.TOOLBAR_MAX_SLOTS + 1)
+		switch_selected_toolbar_item(self, index)
+	end
+end
+
+local function handle_mouse_wheel_up(self, messageId, message, sender)
+	if self.selectedToolbarItem ~= 1 then
+		local index = (self.selectedToolbarItem - 1 + constants.TOOLBAR_MAX_SLOTS) % constants.TOOLBAR_MAX_SLOTS
+		switch_selected_toolbar_item(self, index)
+	end
+end
+
+local function handle_toggle_inventory(self, messageId, message, sender)
+	self.isInventoryEnabled = not self.isInventoryEnabled
+end
+
+local function handle_update_toolbar(self, messageId, message, sender)
+	self.shouldUpdateToolbar = true
+end
+
+--------------------------
+-- End Message Handlers --
+--------------------------
+
+
+----------------------
+-- Defold functions --
+----------------------
+
 function init(self)
 	self.selectedToolbarItem = 1
+	self.shouldUpdateInventory = true
 	self.shouldUpdateToolbar = true
+	self.isInventoryEnabled = false
 	self.toolbar = globals.get_toolbar()
 
 	for i = 1, 10 do
@@ -16,8 +112,7 @@ function init(self)
 		self.shouldUpdateToolbar = true
 		globals.add_to_toolbar(newToolbarItem)
 	end
-
-	gui.set_enabled(gui.get_node("inventory_node"), false)
+	update_inventory(self)
 end
 
 function update(self, dt)
@@ -38,58 +133,24 @@ function update(self, dt)
 		
 		self.shouldUpdateToolbar = false
 	end
+	if self.shouldUpdateInventory then
+		update_inventory(self)
+	end
 end
 
 function on_message(self, messageId, message, sender)
 	local clickedNode = nil
-	if messageId == hash("left_click") and message.released then
-		for i = 1, 10 do
-			local toolbarItem = gui.get_node("toolbar/text" .. i)
-			if gui.pick_node(toolbarItem, message.x, message.y) then
-				clickedNode = toolbarItem
-				if i ~= self.selectedToolbarItem then
-					switch_selected_toolbar_item(self, i)
-				end
-				break
-			end
-		end
-	elseif messageId == hash("mouse_wheel_up") then
-		if self.selectedToolbarItem ~= 1 then
-			local index = (self.selectedToolbarItem - 1 + constants.TOOLBAR_MAX_SLOTS) % constants.TOOLBAR_MAX_SLOTS
-			switch_selected_toolbar_item(self, index)
-		end
+	if is_inventory_switch_message(messageId) then
+		handle_inventory_switch(self, messageId, message, sender)
+	elseif messageId == hash("left_click") and message.released then
+		handle_left_click(self, messageId, message, sender)
 	elseif messageId == hash("mouse_wheel_down") then
-		if self.selectedToolbarItem ~= constants.TOOLBAR_MAX_SLOTS then
-			local index = (self.selectedToolbarItem + 1) % (constants.TOOLBAR_MAX_SLOTS + 1)
-			switch_selected_toolbar_item(self, index)
-		end
+		handle_mouse_wheel_down(self, messageId, message, sender)
+	elseif messageId == hash("mouse_wheel_up") then
+		handle_mouse_wheel_up(self, messageId, message, sender)
+	elseif messageId == hash("toggle_inventory") then
+		handle_toggle_inventory(self, messageId, message, sender)
 	elseif messageId == hash("update_toolbar") then
-		self.shouldUpdateToolbar = true
-	elseif messageId == hash("inventory_switch_1") then
-		switch_selected_toolbar_item(self, 1)
-	elseif messageId == hash("inventory_switch_2") then
-		switch_selected_toolbar_item(self, 2)
-	elseif messageId == hash("inventory_switch_3") then
-		switch_selected_toolbar_item(self, 3)
-	elseif messageId == hash("inventory_switch_4") then
-		switch_selected_toolbar_item(self, 4)
-	elseif messageId == hash("inventory_switch_5") then
-		switch_selected_toolbar_item(self, 5)
-	elseif messageId == hash("inventory_switch_6") then
-		switch_selected_toolbar_item(self, 6)
-	elseif messageId == hash("inventory_switch_7") then
-		switch_selected_toolbar_item(self, 7)
-	elseif messageId == hash("inventory_switch_8") then
-		switch_selected_toolbar_item(self, 8)
-	elseif messageId == hash("inventory_switch_9") then
-		switch_selected_toolbar_item(self, 9)
-	elseif messageId == hash("inventory_switch_10") then
-		switch_selected_toolbar_item(self, 10)
+		handle_update_toolbar(self, messageId, message, sender)
 	end
-end
-
-function switch_selected_toolbar_item(self, index)
-	self.selectedToolbarItem = index
-	self.shouldUpdateToolbar = true
-	msg.post("/player#player_script", "switch_selected_toolbar_item", { toolbarIndex = index })
 end

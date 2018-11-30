@@ -86,6 +86,10 @@ key_trigger {
   input: KEY_0
   action: "inventory_switch_10"
 }
+key_trigger {
+  input: KEY_I
+  action: "toggle_inventory"
+}
 mouse_trigger {
   input: MOUSE_BUTTON_LEFT
   action: "left_click"
