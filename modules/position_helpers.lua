@@ -5,7 +5,7 @@ local orthographic = require "orthographic.camera"
 local M = {}
 
 function M.block_to_screen_position(block)
-	return vmath.vector3(block.position.x + (block.chunk.position.x) * constants.CHUNK_SIZE, block.position.y + (block.chunk.position.y) * 12, 0) * constants.BLOCK_SIZE
+	return vmath.vector3(block.position.x + (block.chunk.x) * constants.CHUNK_SIZE, block.position.y + (block.chunk.y) * 12, 0) * constants.BLOCK_SIZE
 end
 
 function M.screen_to_block_position(position)

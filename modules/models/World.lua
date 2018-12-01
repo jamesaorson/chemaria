@@ -18,7 +18,6 @@ function World:add_chunk(chunkToAdd)
 		self.chunks[chunkToAdd.position.x] = {}
 	end
 	self.chunks[chunkToAdd.position.x][chunkToAdd.position.y] = chunkToAdd
-	chunkToAdd.world = self
 end
 
 function World:get_chunk_at_position(position)

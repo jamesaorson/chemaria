@@ -1,6 +1,7 @@
 local M = {}
 
 M.GRAVITY = -800
+M.CHUNK_MAX = vmath.vector3(10, 10, 0)
 M.CHUNK_SIZE = 12
 M.BLOCK_SIZE = 32
 

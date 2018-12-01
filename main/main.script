@@ -1,5 +1,6 @@
 local config = require "modules.config"
 local constants = require "modules.constants"
+local helpers = require "modules.helpers"
 
 -------------
 -- Helpers --
@@ -16,6 +17,16 @@ local function is_inventory_switch_action(actionId)
 end
 
 local function quit_game()
+	local worldFileName = sys.get_save_file("chemaria", "world_save")
+
+	local minimalWorld = {
+		chunks = {}
+	}
+	minimalWorld.chunks[0] = world.chunks[0]
+	if not sys.save(worldFileName, minimalWorld) then
+		print("Something went wrong")
+	end
+	
 	msg.post("@system:", "exit", { code = 0 })
 end
 

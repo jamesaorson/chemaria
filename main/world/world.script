@@ -7,6 +7,8 @@ require "modules.models.Block"
 require "modules.models.Chunk"
 require "modules.models.World"
 
+world = World:new()
+
 -------------
 -- Helpers --
 -------------
@@ -23,7 +25,10 @@ local function create_block(self, block)
 
 	local factoryBlock = factory.create(urls.get_factory_url(block.type), truePosition, rotation, properties, scale)
 	block.url = factoryBlock
-	block.chunk:add_block(block)
+	local blockChunk = world:get_chunk_at_position(block.chunk)
+	if blockChunk then
+		blockChunk:add_block(block)
+	end
 
 	return true
 end
@@ -41,7 +46,7 @@ local function handle_mine_block(self, messageId, message, sender)
 	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
 	local miningBlockPosition = position_helpers.screen_to_block_position(screenPosition)
 	local miningChunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
-	local chunk = self.world:get_chunk_at_position(miningChunkPosition)
+	local chunk = world:get_chunk_at_position(miningChunkPosition)
 	if chunk then
 		local block = chunk:get_block_at_position(miningBlockPosition)
 		if block then
@@ -56,7 +61,7 @@ local function handle_place_block(self, messageId, message, sender)
 	if toolbarItem and toolbarItem.type ~= "empty" then
 		local messagePosition = vmath.vector3(message.screen_x, message.screen_y, 0)
 		local chunkPosition = position_helpers.screen_to_chunk_position(messagePosition)
-		local chunk = self.world:get_chunk_at_position(chunkPosition)
+		local chunk = world:get_chunk_at_position(chunkPosition)
 		if chunk then
 			local blockPosition = position_helpers.screen_to_block_position(messagePosition)
 			if not chunk:get_block_at_position(blockPosition) then
@@ -84,57 +89,49 @@ end
 ----------------------
 
 function init(self)
-	self.world = World:new()
-	local dirtChunks = {}
-	local stoneChunks = {}
+	local worldFileName = sys.get_save_file("chemaria", "world_save")
+	--local savedWorld = sys.load(worldFileName)
+	
+	if savedWorld and savedWorld.chunks then
+		world.chunks = savedWorld.chunks
+	else
+		local chunks = {}
 
-	-- Dirt chunks
-	for i = 0, 6 do
-		local chunkToInsert = Chunk:new()
-		chunkToInsert.position = vmath.vector3(i, 0, 0)
-		table.insert(dirtChunks, chunkToInsert)
-	end
-
-	for chunkIndex, chunk in pairs(dirtChunks) do
-		for y = 0, constants.CHUNK_SIZE - 1 do
-			for x = 0, constants.CHUNK_SIZE - 1 do
-				local blockToInsert = Block:new()
-				blockToInsert.chunk = chunk
-				blockToInsert.position = vmath.vector3(x, y, 0)
-				blockToInsert.type = "dirt"
-				chunk:add_block(blockToInsert)
+		for x = -constants.CHUNK_MAX.x, constants.CHUNK_MAX.x do
+			for y = -constants.CHUNK_MAX.y, constants.CHUNK_MAX.y do
+				local chunkToInsert = Chunk:new()
+				chunkToInsert.position = vmath.vector3(x, y, 0)
+				table.insert(chunks, chunkToInsert)
 			end
 		end
-	end
-	
-	-- Stone chunks
-	for i = 0, 7 do
-		local chunkToInsert = Chunk:new()
-		chunkToInsert.position = vmath.vector3(i, -1, 0)
-		table.insert(stoneChunks, chunkToInsert)
-	end
-	
-	for chunkIndex, chunk in pairs(stoneChunks) do
-		for y = 0, constants.CHUNK_SIZE - 1 do
-			for x = 0, constants.CHUNK_SIZE - 1 do
-				local blockToInsert = Block:new()
-				blockToInsert.chunk = chunk
-				blockToInsert.position = vmath.vector3(x, y, 0)
-				blockToInsert.type = "stone"
-				chunk:add_block(blockToInsert)
+
+		for chunkIndex, chunk in pairs(chunks) do
+			local blockType = nil
+			if chunk.position.y == 0 then
+				blockType = "dirt"
+			elseif chunk.position.y < 0 and chunk.position.y > -constants.CHUNK_MAX.y / 2 then
+				blockType = "stone"
+			end
+			if blockType and chunk.position.x > -5 and chunk.position.x < 5 then
+				for y = 0, constants.CHUNK_SIZE - 1 do
+					for x = 0, constants.CHUNK_SIZE - 1 do
+						local blockToInsert = Block:new()
+						blockToInsert.chunk = chunk
+						blockToInsert.position = vmath.vector3(x, y, 0)
+						blockToInsert.type = blockType
+						chunk:add_block(blockToInsert)
+					end
+				end
 			end
 		end
-	end
 
-	for i, dirtChunk in pairs(dirtChunks) do
-		self.world:add_chunk(dirtChunk)
+		for i, chunk in pairs(chunks) do
+			world:add_chunk(chunk)
+		end
 	end
-	for i, stoneChunk in pairs(stoneChunks) do
-		self.world:add_chunk(stoneChunk)
-	end
-
-	for chunkX, chunkXColumn in pairs(self.world.chunks) do
+	for chunkX, chunkXColumn in pairs(world.chunks) do
 		for chunkY, chunk in pairs(chunkXColumn) do
+			pprint(chunk)
 			for blockX, blockXColumn in pairs(chunk.blocks) do
 				for blockY, block in pairs(blockXColumn) do
 					create_block(self, block)
