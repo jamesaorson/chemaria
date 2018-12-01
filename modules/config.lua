@@ -2,6 +2,11 @@ local M = {}
 
 M.IS_FULLSCREEN = true
 
+M.SAVE_PATH = {
+	folder = "Chemaria",
+	name = "world_save"
+}
+
 -----------------------
 -- Camera Properties --
 -----------------------

@@ -17,12 +17,14 @@ local function is_inventory_switch_action(actionId)
 end
 
 local function quit_game()
-	local worldFileName = sys.get_save_file("chemaria", "world_save")
-
+	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name)
+	print("Wrote save file to " .. worldFileName)
 	local minimalWorld = {
 		chunks = {}
 	}
-	minimalWorld.chunks[0] = world.chunks[0]
+	for i = -3, 3 do
+		minimalWorld.chunks[i] = world.chunks[i]
+	end
 	if not sys.save(worldFileName, minimalWorld) then
 		print("Something went wrong")
 	end
