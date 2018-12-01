@@ -17,4 +17,11 @@ M.TOOLBAR_MAX_SLOTS = 10
 M.TOOLBAR_SELECTED_COLOR = vmath.vector4(120 / 255, 240 / 255, 50 / 255, 1.0)
 M.TOOLBAR_UNSELECTED_COLOR = vmath.vector4(255 / 255, 255 / 255, 255 / 255, 1.0)
 
+M.INVENTORY_SIZE = {
+	rows = 3,
+	rowSize = 10
+}
+M.INVENTORY_SELECTED_COLOR = vmath.vector4(120 / 255, 240 / 255, 50 / 255, 1.0)
+M.INVENTORY_UNSELECTED_COLOR = vmath.vector4(255 / 255, 255 / 255, 255 / 255, 1.0)
+
 return M

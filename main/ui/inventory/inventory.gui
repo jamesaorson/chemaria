@@ -1,7 +1,7 @@
 script: ""
 fonts {
-  name: "ui"
-  font: "/main/ui/ui.font"
+  name: "inventory"
+  font: "/main/ui/inventory/inventory.font"
 }
 background_color {
   x: 0.0
@@ -138,8 +138,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -152,7 +152,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text1"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -256,8 +256,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -270,7 +270,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text2"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -374,8 +374,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -388,7 +388,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text3"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -492,8 +492,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -506,7 +506,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text4"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -610,8 +610,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -624,7 +624,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text5"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -728,8 +728,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -742,7 +742,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text6"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -846,8 +846,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -860,7 +860,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text7"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -964,8 +964,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -978,7 +978,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text8"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1082,8 +1082,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -1096,7 +1096,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text9"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1200,8 +1200,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -1214,7 +1214,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text10"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1372,8 +1372,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -1386,7 +1386,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text11"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1490,8 +1490,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -1504,7 +1504,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text12"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1608,8 +1608,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -1622,7 +1622,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text13"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1726,8 +1726,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -1740,7 +1740,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text14"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1844,8 +1844,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -1858,7 +1858,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text15"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1962,8 +1962,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -1976,7 +1976,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text16"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -2080,8 +2080,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -2094,7 +2094,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text17"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -2198,8 +2198,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -2212,7 +2212,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text18"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -2316,8 +2316,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -2330,7 +2330,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text19"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -2434,8 +2434,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -2448,7 +2448,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text20"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -2606,8 +2606,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 7575.0
     z: 0.0
     w: 1.0
   }
@@ -2620,7 +2620,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text21"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -2724,8 +2724,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -2738,7 +2738,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text22"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -2842,8 +2842,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -2856,7 +2856,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text23"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -2960,8 +2960,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -2974,7 +2974,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text24"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -3078,8 +3078,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -3092,7 +3092,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text25"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -3196,8 +3196,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -3210,7 +3210,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text26"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -3314,8 +3314,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -3328,7 +3328,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text27"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -3432,8 +3432,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -3446,7 +3446,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text28"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -3550,8 +3550,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -3564,7 +3564,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text29"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -3668,8 +3668,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
-    y: 100.0
+    x: 75.0
+    y: 75.0
     z: 0.0
     w: 1.0
   }
@@ -3682,7 +3682,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "inventory"
   id: "text30"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE

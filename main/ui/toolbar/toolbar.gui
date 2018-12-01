@@ -1,7 +1,7 @@
 script: ""
 fonts {
-  name: "ui"
-  font: "/main/ui/ui.font"
+  name: "toolbar"
+  font: "/main/ui/toolbar/toolbar.font"
 }
 background_color {
   x: 0.0
@@ -97,7 +97,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "toolbar"
   id: "text1"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -214,7 +214,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "toolbar"
   id: "text2"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -331,7 +331,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "toolbar"
   id: "text3"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -448,7 +448,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "toolbar"
   id: "text4"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -565,7 +565,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "toolbar"
   id: "text5"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -682,7 +682,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "toolbar"
   id: "text6"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -799,7 +799,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "toolbar"
   id: "text7"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -916,7 +916,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "toolbar"
   id: "text8"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1033,7 +1033,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "toolbar"
   id: "text9"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1150,7 +1150,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "ui"
+  font: "toolbar"
   id: "text10"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1178,9 +1178,6 @@ nodes {
   template_node_child: false
   text_leading: 1.0
   text_tracking: 0.0
-}
-layers {
-  name: "layer"
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

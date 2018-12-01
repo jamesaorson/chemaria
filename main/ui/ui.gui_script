@@ -26,6 +26,12 @@ local function is_inventory_switch_message(messageId)
 	return false
 end
 
+local function switch_selected_inventory_item(self, row, index)
+	self.selectedInventoryItem = {row, index}
+	self.shouldUpdateInventory = true
+	msg.post("/player#player_script", "switch_selected_inventory_item", { inventoryRowAndIndex = {row, index} })
+end
+
 local function switch_selected_toolbar_item(self, index)
 	self.selectedToolbarItem = index
 	self.shouldUpdateToolbar = true
@@ -34,6 +40,47 @@ end
 
 local function update_inventory(self)
 	gui.set_enabled(gui.get_node("inventory_node"), self.isInventoryEnabled)
+
+	for i = 0, constants.INVENTORY_SIZE.rows - 1 do
+		for j = 1, constants.INVENTORY_SIZE.rowSize do
+			local rowIndex = i + 1
+			if self.inventory[rowIndex] then
+				local inventoryItem = self.inventory[rowIndex][j]
+				local inventoryNode = gui.get_node("inventory/" .. (i * constants.INVENTORY_SIZE.rowSize + j))
+				local inventoryTextNode = gui.get_node("inventory/text" .. (i * constants.INVENTORY_SIZE.rowSize + j))
+				if inventoryItem and inventoryItem.type ~= "empty" then
+					gui.set_text(inventoryTextNode, inventoryItem.count .. " " .. inventoryItem.type)
+				else
+					gui.set_text(inventoryTextNode, "None")
+				end
+				gui.set_color(inventoryNode, constants.INVENTORY_UNSELECTED_COLOR)
+			end
+		end
+	end
+
+	local selectedInventoryNode = gui.get_node("inventory/" ..  (self.selectedInventoryItem[1] - 1) * constants.INVENTORY_SIZE.rowSize + self.selectedInventoryItem[2])
+	gui.set_color(selectedInventoryNode, constants.INVENTORY_SELECTED_COLOR)
+	
+	self.shouldUpdateInventory = false
+end
+
+local function update_toolbar(self)
+	for i, toolbarItem in pairs(self.toolbar) do
+		local toolbarNode = gui.get_node("toolbar/" ..  i)
+		local toolbarTextNode = gui.get_node("toolbar/text" ..  i)
+		
+		if toolbarItem and toolbarItem.type ~= "empty" then
+			gui.set_text(toolbarTextNode, toolbarItem.count .. " " .. toolbarItem.type)
+		else
+			gui.set_text(toolbarTextNode, "None")
+		end
+		gui.set_color(toolbarNode, constants.TOOLBAR_UNSELECTED_COLOR)
+	end
+
+	local selectedToolbarNode = gui.get_node("toolbar/" ..  self.selectedToolbarItem)
+	gui.set_color(selectedToolbarNode, constants.TOOLBAR_SELECTED_COLOR)
+
+	self.shouldUpdateToolbar = false
 end
 
 -----------------
@@ -53,14 +100,30 @@ local function handle_inventory_switch(self, messageId, message, sender, switchI
 end
 
 local function handle_left_click(self, messageId, message, sender)
+	local isToolbarClicked = false
 	for i = 1, constants.TOOLBAR_MAX_SLOTS do
 		local toolbarItem = gui.get_node("toolbar/text" .. i)
 		if gui.pick_node(toolbarItem, message.x, message.y) then
-			clickedNode = toolbarItem
+			isToolbarClicked = true
 			if i ~= self.selectedToolbarItem then
 				switch_selected_toolbar_item(self, i)
 			end
 			break
+		end
+	end
+
+	if not isToolbarClicked then
+		for i = 0, constants.INVENTORY_SIZE.rows - 1 do
+			for j = 1, constants.INVENTORY_SIZE.rowSize do
+				local rowIndex = i + 1
+				local inventoryItem = gui.get_node("inventory/" .. (i * constants.INVENTORY_SIZE.rowSize + j))
+				if gui.pick_node(inventoryItem, message.x, message.y) then
+					if i ~= self.selectedInventoryItem[1] or j ~= self.selectedInventoryItem[2] then
+						switch_selected_inventory_item(self, rowIndex, j)
+					end
+					break
+				end
+			end
 		end
 	end
 end
@@ -81,6 +144,7 @@ end
 
 local function handle_toggle_inventory(self, messageId, message, sender)
 	self.isInventoryEnabled = not self.isInventoryEnabled
+	self.shouldUpdateInventory = true
 end
 
 local function handle_update_toolbar(self, messageId, message, sender)
@@ -97,10 +161,13 @@ end
 ----------------------
 
 function init(self)
-	self.selectedToolbarItem = 1
+	self.inventory = globals.get_inventory()
+	self.selectedInventoryItem = {1, 1}
 	self.shouldUpdateInventory = true
-	self.shouldUpdateToolbar = true
 	self.isInventoryEnabled = false
+
+	self.selectedToolbarItem = 1
+	self.shouldUpdateToolbar = true
 	self.toolbar = globals.get_toolbar()
 
 	for i = 1, 10 do
@@ -110,31 +177,19 @@ function init(self)
 			type = "dirt"
 		}
 		self.shouldUpdateToolbar = true
-		globals.add_to_toolbar(newToolbarItem)
+		globals.update_toolbar_item(newToolbarItem)
 	end
+	
 	update_inventory(self)
+	update_toolbar(self)
 end
 
 function update(self, dt)
-	if self.shouldUpdateToolbar then
-		for i, toolbarItem in pairs(self.toolbar) do
-			local toolbarNode = gui.get_node("toolbar/" ..  i)
-			local toolbarTextNode = gui.get_node("toolbar/text" ..  i)
-			if toolbarItem and toolbarItem.type ~= "empty" then
-				gui.set_text(toolbarTextNode, toolbarItem.count .. " " .. toolbarItem.type)
-			else
-				gui.set_text(toolbarTextNode, "None")
-			end
-			gui.set_color(toolbarNode, constants.TOOLBAR_UNSELECTED_COLOR)
-		end
-
-		local selectedToolbarNode = gui.get_node("toolbar/" ..  self.selectedToolbarItem)
-		gui.set_color(selectedToolbarNode, constants.TOOLBAR_SELECTED_COLOR)
-		
-		self.shouldUpdateToolbar = false
-	end
 	if self.shouldUpdateInventory then
 		update_inventory(self)
+	end
+	if self.shouldUpdateToolbar then
+		update_toolbar(self)
 	end
 end
 
@@ -142,7 +197,7 @@ function on_message(self, messageId, message, sender)
 	local clickedNode = nil
 	if is_inventory_switch_message(messageId) then
 		handle_inventory_switch(self, messageId, message, sender)
-	elseif messageId == hash("left_click") and message.released then
+	elseif messageId == hash("left_click") and message.pressed then
 		handle_left_click(self, messageId, message, sender)
 	elseif messageId == hash("mouse_wheel_down") then
 		handle_mouse_wheel_down(self, messageId, message, sender)
