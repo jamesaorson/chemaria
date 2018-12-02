@@ -1,6 +1,7 @@
 local constants = require "modules.constants"
 local globals = require "modules.globals"
 local orthographic = require "orthographic.camera"
+local urls = require "modules.urls"
 
 -------------
 -- Helpers --
@@ -66,8 +67,8 @@ end
 
 local function update_toolbar(self)
 	for i, toolbarItem in pairs(self.toolbar) do
-		local toolbarNode = gui.get_node("toolbar/" ..  i)
-		local toolbarTextNode = gui.get_node("toolbar/text" ..  i)
+		local toolbarNode = gui.get_node(urls.get_toolbar_node_url(i))
+		local toolbarTextNode = gui.get_node(urls.get_toolbar_text_node_url(i))
 		
 		if toolbarItem and toolbarItem.type ~= "empty" then
 			gui.set_text(toolbarTextNode, toolbarItem.count .. " " .. toolbarItem.type)
@@ -77,7 +78,7 @@ local function update_toolbar(self)
 		gui.set_color(toolbarNode, constants.TOOLBAR_UNSELECTED_COLOR)
 	end
 
-	local selectedToolbarNode = gui.get_node("toolbar/" ..  self.selectedToolbarItem)
+	local selectedToolbarNode = gui.get_node(urls.get_toolbar_node_url(self.selectedToolbarItem))
 	gui.set_color(selectedToolbarNode, constants.TOOLBAR_SELECTED_COLOR)
 
 	self.shouldUpdateToolbar = false
@@ -102,7 +103,7 @@ end
 local function handle_left_click(self, messageId, message, sender)
 	local isToolbarClicked = false
 	for i = 1, constants.TOOLBAR_MAX_SLOTS do
-		local toolbarItem = gui.get_node("toolbar/text" .. i)
+		local toolbarItem = gui.get_node(urls.get_toolbar_text_node_url(i))
 		if gui.pick_node(toolbarItem, message.x, message.y) then
 			isToolbarClicked = true
 			if i ~= self.selectedToolbarItem then

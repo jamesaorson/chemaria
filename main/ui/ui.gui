@@ -64,6 +64,46 @@ nodes {
     w: 1.0
   }
   size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEMPLATE
+  id: "toolbar/toolbar_slot_1"
+  parent: "toolbar"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
     x: 100.0
     y: 100.0
     z: 0.0
@@ -78,12 +118,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "toolbar/1"
+  id: "toolbar/toolbar_slot_1/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar"
+  parent: "toolbar/toolbar_slot_1"
   layer: ""
   inherit_alpha: true
   slice9 {
@@ -134,7 +174,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "toolbar"
-  id: "toolbar/text1"
+  id: "toolbar/toolbar_slot_1/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -152,7 +192,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "toolbar/1"
+  parent: "toolbar/toolbar_slot_1/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -164,7 +204,47 @@ nodes {
 }
 nodes {
   position {
-    x: 120.0
+    x: 125.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEMPLATE
+  id: "toolbar/toolbar_slot_2"
+  parent: "toolbar"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 0.0
     y: 0.0
     z: 0.0
     w: 1.0
@@ -196,12 +276,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "toolbar/2"
+  id: "toolbar/toolbar_slot_2/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar"
+  parent: "toolbar/toolbar_slot_2"
   layer: ""
   inherit_alpha: true
   slice9 {
@@ -252,7 +332,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "toolbar"
-  id: "toolbar/text2"
+  id: "toolbar/toolbar_slot_2/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -270,7 +350,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "toolbar/2"
+  parent: "toolbar/toolbar_slot_2/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -282,7 +362,47 @@ nodes {
 }
 nodes {
   position {
-    x: 240.0
+    x: 250.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEMPLATE
+  id: "toolbar/toolbar_slot_3"
+  parent: "toolbar"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 0.0
     y: 0.0
     z: 0.0
     w: 1.0
@@ -314,12 +434,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "toolbar/3"
+  id: "toolbar/toolbar_slot_3/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar"
+  parent: "toolbar/toolbar_slot_3"
   layer: ""
   inherit_alpha: true
   slice9 {
@@ -370,7 +490,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "toolbar"
-  id: "toolbar/text3"
+  id: "toolbar/toolbar_slot_3/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -388,7 +508,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "toolbar/3"
+  parent: "toolbar/toolbar_slot_3/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -400,7 +520,47 @@ nodes {
 }
 nodes {
   position {
-    x: 360.0
+    x: 375.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEMPLATE
+  id: "toolbar/toolbar_slot_4"
+  parent: "toolbar"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 0.0
     y: 0.0
     z: 0.0
     w: 1.0
@@ -432,12 +592,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "toolbar/4"
+  id: "toolbar/toolbar_slot_4/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar"
+  parent: "toolbar/toolbar_slot_4"
   layer: ""
   inherit_alpha: true
   slice9 {
@@ -488,7 +648,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "toolbar"
-  id: "toolbar/text4"
+  id: "toolbar/toolbar_slot_4/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -506,7 +666,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "toolbar/4"
+  parent: "toolbar/toolbar_slot_4/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -518,7 +678,47 @@ nodes {
 }
 nodes {
   position {
-    x: 480.0
+    x: 500.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEMPLATE
+  id: "toolbar/toolbar_slot_5"
+  parent: "toolbar"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 0.0
     y: 0.0
     z: 0.0
     w: 1.0
@@ -550,12 +750,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "toolbar/5"
+  id: "toolbar/toolbar_slot_5/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar"
+  parent: "toolbar/toolbar_slot_5"
   layer: ""
   inherit_alpha: true
   slice9 {
@@ -606,7 +806,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "toolbar"
-  id: "toolbar/text5"
+  id: "toolbar/toolbar_slot_5/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -624,7 +824,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "toolbar/5"
+  parent: "toolbar/toolbar_slot_5/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -636,7 +836,47 @@ nodes {
 }
 nodes {
   position {
-    x: 600.0
+    x: 625.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEMPLATE
+  id: "toolbar/toolbar_slot_6"
+  parent: "toolbar"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 0.0
     y: 0.0
     z: 0.0
     w: 1.0
@@ -668,12 +908,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "toolbar/6"
+  id: "toolbar/toolbar_slot_6/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar"
+  parent: "toolbar/toolbar_slot_6"
   layer: ""
   inherit_alpha: true
   slice9 {
@@ -724,7 +964,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "toolbar"
-  id: "toolbar/text6"
+  id: "toolbar/toolbar_slot_6/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -742,7 +982,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "toolbar/6"
+  parent: "toolbar/toolbar_slot_6/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -754,7 +994,47 @@ nodes {
 }
 nodes {
   position {
-    x: 720.0
+    x: 750.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEMPLATE
+  id: "toolbar/toolbar_slot_7"
+  parent: "toolbar"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 0.0
     y: 0.0
     z: 0.0
     w: 1.0
@@ -786,12 +1066,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "toolbar/7"
+  id: "toolbar/toolbar_slot_7/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar"
+  parent: "toolbar/toolbar_slot_7"
   layer: ""
   inherit_alpha: true
   slice9 {
@@ -842,7 +1122,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "toolbar"
-  id: "toolbar/text7"
+  id: "toolbar/toolbar_slot_7/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -860,7 +1140,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "toolbar/7"
+  parent: "toolbar/toolbar_slot_7/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -872,7 +1152,47 @@ nodes {
 }
 nodes {
   position {
-    x: 840.0
+    x: 875.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEMPLATE
+  id: "toolbar/toolbar_slot_8"
+  parent: "toolbar"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 0.0
     y: 0.0
     z: 0.0
     w: 1.0
@@ -904,12 +1224,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "toolbar/8"
+  id: "toolbar/toolbar_slot_8/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar"
+  parent: "toolbar/toolbar_slot_8"
   layer: ""
   inherit_alpha: true
   slice9 {
@@ -960,7 +1280,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "toolbar"
-  id: "toolbar/text8"
+  id: "toolbar/toolbar_slot_8/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -978,7 +1298,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "toolbar/8"
+  parent: "toolbar/toolbar_slot_8/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -990,7 +1310,47 @@ nodes {
 }
 nodes {
   position {
-    x: 960.0
+    x: 1000.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEMPLATE
+  id: "toolbar/toolbar_slot_9"
+  parent: "toolbar"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 0.0
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1022,12 +1382,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "toolbar/9"
+  id: "toolbar/toolbar_slot_9/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar"
+  parent: "toolbar/toolbar_slot_9"
   layer: ""
   inherit_alpha: true
   slice9 {
@@ -1078,7 +1438,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "toolbar"
-  id: "toolbar/text9"
+  id: "toolbar/toolbar_slot_9/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -1096,7 +1456,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "toolbar/9"
+  parent: "toolbar/toolbar_slot_9/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -1108,7 +1468,47 @@ nodes {
 }
 nodes {
   position {
-    x: 1080.0
+    x: 1125.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEMPLATE
+  id: "toolbar/toolbar_slot_10"
+  parent: "toolbar"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 0.0
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1140,12 +1540,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "toolbar/10"
+  id: "toolbar/toolbar_slot_10/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar"
+  parent: "toolbar/toolbar_slot_10"
   layer: ""
   inherit_alpha: true
   slice9 {
@@ -1196,7 +1596,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "toolbar"
-  id: "toolbar/text10"
+  id: "toolbar/toolbar_slot_10/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -1214,7 +1614,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "toolbar/10"
+  parent: "toolbar/toolbar_slot_10/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -1227,7 +1627,7 @@ nodes {
 nodes {
   position {
     x: 65.0
-    y: 900.0
+    y: 890.0
     z: 0.0
     w: 1.0
   }
