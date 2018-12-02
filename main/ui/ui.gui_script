@@ -7,6 +7,14 @@ local urls = require "modules.urls"
 -- Helpers --
 -------------
 
+local function change_slot_texture(slotNode, texture)
+	if not texture then
+		texture = constants.NONE.type
+	end
+	gui.set_texture(slotNode, "block_textures")
+	gui.play_flipbook(slotNode, texture)
+end
+
 local function get_inventory_switch_switch_index(messageId)
 	local baseId = "inventory_switch_"
 	for i = 1, constants.TOOLBAR_MAX_SLOTS do
@@ -48,10 +56,12 @@ local function update_inventory(self)
 				local inventoryItem = self.inventory[i][j]
 				local inventoryNode = gui.get_node(urls.get_inventory_node_url(i, j))
 				local inventoryTextNode = gui.get_node(urls.get_inventory_text_node_url(i, j))
-				if inventoryItem and inventoryItem.type ~= "empty" then
-					gui.set_text(inventoryTextNode, inventoryItem.count .. " " .. inventoryItem.type)
+				if inventoryItem and inventoryItem.type ~= constants.NONE.type then
+					gui.set_text(inventoryTextNode, inventoryItem.count)
+					change_slot_texture(inventoryNode, inventoryItem.type)
 				else
 					gui.set_text(inventoryTextNode, "None")
+					change_slot_texture(inventoryNode, constants.NONE.type)
 				end
 				gui.set_color(inventoryNode, constants.INVENTORY_UNSELECTED_COLOR)
 			end
@@ -69,11 +79,14 @@ local function update_toolbar(self)
 		local toolbarNode = gui.get_node(urls.get_toolbar_node_url(i))
 		local toolbarTextNode = gui.get_node(urls.get_toolbar_text_node_url(i))
 		
-		if toolbarItem and toolbarItem.type ~= "empty" then
-			gui.set_text(toolbarTextNode, toolbarItem.count .. " " .. toolbarItem.type)
+		if toolbarItem and toolbarItem.type ~= constants.NONE.type then
+			gui.set_text(toolbarTextNode, toolbarItem.count)
+			change_slot_texture(toolbarNode, toolbarItem.type)
 		else
 			gui.set_text(toolbarTextNode, "None")
+			change_slot_texture(toolbarNode, constants.NONE.type)
 		end
+		change_slot_texture(toolbarNode, toolbarItem.type)
 		gui.set_color(toolbarNode, constants.TOOLBAR_UNSELECTED_COLOR)
 	end
 
@@ -173,7 +186,7 @@ function init(self)
 		local newToolbarItem = {
 			index = i,
 			count = 5,
-			type = "dirt"
+			type = constants.DIRT.type
 		}
 		self.shouldUpdateToolbar = true
 		globals.update_toolbar_item(newToolbarItem)

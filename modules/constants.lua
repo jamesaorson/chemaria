@@ -2,17 +2,34 @@ local helpers = require "modules.helpers"
 
 local M = {}
 
------------
--- World --
------------
-
-M.BLOCK_SIZE = 32
-M.CHUNK_MAX = vmath.vector3(10, 10, 0)
-M.CHUNK_SIZE = 12
-
 ---------------
--- End World --
+-- Inventory --
 ---------------
+
+M.INVENTORY_SIZE = {
+	rows = 3,
+	rowSize = 10
+}
+M.INVENTORY_SELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(120, 240, 50, 1.0))
+M.INVENTORY_UNSELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(255, 255, 255, 1.0))
+
+-------------------
+-- End Inventory --
+-------------------
+
+
+----------
+-- Item --
+----------
+
+M.NONE = { type = "none" }
+
+M.DIRT = { type = "dirt" }
+M.STONE = { type = "stone" }
+
+--------------
+-- End Item --
+--------------
 
 
 --------------
@@ -56,19 +73,16 @@ M.TOOLBAR_UNSELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(
 -----------------
 
 
----------------
--- Inventory --
----------------
+-----------
+-- World --
+-----------
 
-M.INVENTORY_SIZE = {
-	rows = 3,
-	rowSize = 10
-}
-M.INVENTORY_SELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(120, 240, 50, 1.0))
-M.INVENTORY_UNSELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(255, 255, 255, 1.0))
+M.BLOCK_SIZE = 32
+M.CHUNK_MAX = vmath.vector3(10, 10, 0)
+M.CHUNK_SIZE = 12
 
--------------------
--- End Inventory --
--------------------
+---------------
+-- End World --
+---------------
 
 return M

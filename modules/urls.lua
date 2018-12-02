@@ -52,4 +52,17 @@ end
 -- End Toolbar --
 -----------------
 
+
+--------
+-- UI --
+--------
+
+function M.get_ui_block_texture_url(blockType)
+	return "block_textures/" .. blockType
+end
+
+------------
+-- End UI --
+------------
+
 return M

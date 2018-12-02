@@ -78,9 +78,9 @@ local function initialize_new_world()
 		for chunkY, chunk in pairs(chunkXColumn) do
 			local blockType = nil
 			if chunk.position.y == 0 then
-				blockType = "dirt"
+				blockType = constants.DIRT.type
 			elseif chunk.position.y < 0 and chunk.position.y > -constants.CHUNK_MAX.y / 2 then
-				blockType = "stone"
+				blockType = constants.STONE.type
 			end
 			if blockType and chunk.position.x > -5 and chunk.position.x < 5 then
 				for y = 0, constants.CHUNK_SIZE - 1 do
@@ -132,7 +132,7 @@ end
 
 local function handle_place_block(self, messageId, message, sender)
 	local toolbarItem = message.toolbarItem
-	if toolbarItem and toolbarItem.type ~= "empty" then
+	if toolbarItem and toolbarItem.type ~= constants.NONE.type then
 		local messagePosition = vmath.vector3(message.screen_x, message.screen_y, 0)
 		local chunkPosition = position_helpers.screen_to_chunk_position(messagePosition)
 		local chunk = world:get_chunk_at_position(chunkPosition)

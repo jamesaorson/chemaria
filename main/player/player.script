@@ -54,7 +54,7 @@ end
 
 local function handle_right_click(self, messageId, message, sender)
 	message.toolbarItem = self.toolbar[self.selectedToolbarItem]
-	if message.toolbarItem.type ~= "empty" then
+	if message.toolbarItem.type ~= constants.NONE.type then
 		msg.post("/world#world_script", "place_block", message)
 	end
 end
@@ -65,7 +65,7 @@ end
 
 local function handle_update_toolbar_item(self, messageId, message, sender)
 	if message.count == 0 then
-		message.type = "empty"
+		message.type = constants.NONE.type
 	end
 	self.toolbar[message.index] = message
 	msg.post("/ui#ui", "update_toolbar")
