@@ -19,16 +19,12 @@ end
 -- Inventory --
 ---------------
 
-local function calculate_inventory_slot_index(i, j)
-	return (i - 1) * constants.INVENTORY_SIZE.rowSize + j
+function M.get_inventory_node_url(index)
+	return "inventory/inventory_slot_" .. index .. "/slot"
 end
 
-function M.get_inventory_node_url(i, j)
-	return "inventory/inventory_slot_" .. calculate_inventory_slot_index(i, j) .. "/slot"
-end
-
-function M.get_inventory_text_node_url(i, j)
-	return "inventory/inventory_slot_" .. calculate_inventory_slot_index(i, j) .. "/text"
+function M.get_inventory_text_node_url(index)
+	return "inventory/inventory_slot_" .. index .. "/text"
 end
 
 -------------------

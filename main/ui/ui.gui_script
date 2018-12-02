@@ -35,8 +35,8 @@ local function is_inventory_switch_message(messageId)
 	return false
 end
 
-local function switch_selected_inventory_item(self, row, index)
-	self.selectedInventoryItem = {row, index}
+local function switch_selected_inventory_item(self, index)
+	self.selectedInventoryItem = index
 	self.shouldUpdateInventory = true
 	msg.post("/player#player_script", "switch_selected_inventory_item", { inventoryRowAndIndex = {row, index} })
 end
@@ -50,25 +50,21 @@ end
 local function update_inventory(self)
 	gui.set_enabled(gui.get_node("inventory_node"), self.isInventoryEnabled)
 
-	for i = 1, constants.INVENTORY_SIZE.rows do
-		for j = 1, constants.INVENTORY_SIZE.rowSize do
-			if self.inventory[i] then
-				local inventoryItem = self.inventory[i][j]
-				local inventoryNode = gui.get_node(urls.get_inventory_node_url(i, j))
-				local inventoryTextNode = gui.get_node(urls.get_inventory_text_node_url(i, j))
-				if inventoryItem and inventoryItem.type ~= constants.NONE.type then
-					gui.set_text(inventoryTextNode, inventoryItem.count)
-					change_slot_texture(inventoryNode, inventoryItem.type)
-				else
-					gui.set_text(inventoryTextNode, "None")
-					change_slot_texture(inventoryNode, constants.NONE.type)
-				end
-				gui.set_color(inventoryNode, constants.INVENTORY_UNSELECTED_COLOR)
+	for i = 1, constants.INVENTORY_MAX_SLOTS do
+			local inventoryItem = self.inventory[i]
+			local inventoryNode = gui.get_node(urls.get_inventory_node_url(i))
+			local inventoryTextNode = gui.get_node(urls.get_inventory_text_node_url(i))
+			if inventoryItem and inventoryItem.type ~= constants.NONE.type then
+				gui.set_text(inventoryTextNode, inventoryItem.count)
+				change_slot_texture(inventoryNode, inventoryItem.type)
+			else
+				gui.set_text(inventoryTextNode, "None")
+				change_slot_texture(inventoryNode, constants.NONE.type)
 			end
-		end
+			gui.set_color(inventoryNode, constants.INVENTORY_UNSELECTED_COLOR)
 	end
 
-	local selectedInventoryNode = gui.get_node(urls.get_inventory_node_url(self.selectedInventoryItem[1], self.selectedInventoryItem[2]))
+	local selectedInventoryNode = gui.get_node(urls.get_inventory_node_url(self.selectedInventoryItem))
 	gui.set_color(selectedInventoryNode, constants.INVENTORY_SELECTED_COLOR)
 	
 	self.shouldUpdateInventory = false
@@ -96,6 +92,103 @@ local function update_toolbar(self)
 	self.shouldUpdateToolbar = false
 end
 
+local function start_drag(self, message)
+	self.isDragging = true
+
+	for i = 1, constants.TOOLBAR_MAX_SLOTS do
+		local toolbarItem = gui.get_node(urls.get_toolbar_text_node_url(i))
+		if gui.pick_node(toolbarItem, message.screen_x, message.screen_y) then
+			self.draggedItem = { startingUiElement = "toolbar", startingIndex = i }
+			break
+		end
+	end
+	if not self.draggedItem then
+		for i = 1, constants.INVENTORY_MAX_SLOTS do
+			local inventoryItem = gui.get_node(urls.get_inventory_node_url(i))
+			if gui.pick_node(inventoryItem, message.screen_x, message.screen_y) then
+				self.draggedItem = { startingUiElement = "inventory", startingIndex = i } 
+				break
+			end
+		end
+	end
+end
+
+local function end_drag(self, message)
+	self.isDragging = false
+
+	local nodeActedUpon = nil
+
+	local isToolbarClicked = false
+	local toolbarIndex = nil
+
+	local isInventoryClicked = false
+	local inventoryIndices = nil
+
+	for i = 1, constants.TOOLBAR_MAX_SLOTS do
+		local toolbarItem = gui.get_node(urls.get_toolbar_text_node_url(i))
+		if gui.pick_node(toolbarItem, message.screen_x, message.screen_y) then
+			isToolbarClicked = true
+			pickedIndex = i
+			nodeActedUpon = toolbarItem
+			break
+		end
+	end
+
+	if not isToolbarClicked then
+		for i = 1, constants.INVENTORY_MAX_SLOTS do
+			local inventoryItem = gui.get_node(urls.get_inventory_node_url(i))
+			if gui.pick_node(inventoryItem, message.screen_x, message.screen_y) then
+				isInventoryClicked = true
+				pickedIndex = i
+				nodeActedUpon = inventoryItem
+				break
+			end
+		end
+	end
+
+	local shouldSetSelectedNode = false
+	if not self.draggedItem then
+		shouldSetSelectedNode = true
+	else
+		if isToolbarClicked or isInventoryClicked then
+			local destinationUiElement = nil
+
+			local isSameUiElement = false
+			if isToolbarClicked then
+				isSameUiElement = self.draggedItem.startingUiElement == "toolbar"
+				destinationUiElement = self.toolbar
+			elseif isInventoryClicked then
+				isSameUiElement = self.draggedItem.startingUiElement == "inventory"
+				destinationUiElement = self.inventory
+			end
+			
+			if isSameUiElement and pickedIndex == self.draggedItem.startingIndex then
+				shouldSetSelectedNode = true
+			else
+				local temp = destinationUiElement[pickedIndex]
+				local sourceUiElement = self[self.draggedItem.startingUiElement]
+				local startingItem = sourceUiElement[self.draggedItem.startingIndex]
+				sourceUiElement[self.draggedItem.startingIndex] = temp
+				sourceUiElement[self.draggedItem.startingIndex].index = self.draggedItem.startingIndex
+
+				destinationUiElement[pickedIndex] = startingItem
+				destinationUiElement[pickedIndex].index = pickedIndex
+				self.shouldUpdateInventory = true
+				self.shouldUpdateToolbar = true
+			end
+		end
+	end
+
+	if shouldSetSelectedNode then
+		if isToolbarClicked then
+			switch_selected_toolbar_item(self, pickedIndex)
+		elseif isInventoryClicked then
+			switch_selected_inventory_item(self, pickedIndex)
+		end
+	end
+	self.draggedItem = nil
+end
+
 -----------------
 -- End Helpers --
 -----------------
@@ -113,30 +206,10 @@ local function handle_inventory_switch(self, messageId, message, sender, switchI
 end
 
 local function handle_left_click(self, messageId, message, sender)
-	local isToolbarClicked = false
-	for i = 1, constants.TOOLBAR_MAX_SLOTS do
-		local toolbarItem = gui.get_node(urls.get_toolbar_text_node_url(i))
-		if gui.pick_node(toolbarItem, message.x, message.y) then
-			isToolbarClicked = true
-			if i ~= self.selectedToolbarItem then
-				switch_selected_toolbar_item(self, i)
-			end
-			break
-		end
-	end
-
-	if not isToolbarClicked then
-		for i = 1, constants.INVENTORY_SIZE.rows do
-			for j = 1, constants.INVENTORY_SIZE.rowSize do
-				local inventoryItem = gui.get_node(urls.get_inventory_node_url(i, j))
-				if gui.pick_node(inventoryItem, message.x, message.y) then
-					if i ~= self.selectedInventoryItem[1] or j ~= self.selectedInventoryItem[2] then
-						switch_selected_inventory_item(self, i, j)
-					end
-					break
-				end
-			end
-		end
+	if message.pressed then
+		start_drag(self, message)
+	elseif message.released then
+		end_drag(self, message)
 	end
 end
 
@@ -174,7 +247,7 @@ end
 
 function init(self)
 	self.inventory = globals.get_inventory()
-	self.selectedInventoryItem = {1, 1}
+	self.selectedInventoryItem = 1
 	self.shouldUpdateInventory = true
 	self.isInventoryEnabled = false
 
@@ -182,10 +255,23 @@ function init(self)
 	self.shouldUpdateToolbar = true
 	self.toolbar = globals.get_toolbar()
 
-	for i = 1, 10 do
+	self.isDragging = false
+	self.draggedItem = nil
+
+	for i = 1, constants.INVENTORY_MAX_SLOTS do
+		local newInventoryItem = {
+			index = i,
+			count = 0,
+			type = constants.NONE.type
+		}
+		self.shouldUpdateInventory = true
+		globals.update_inventory_item(newInventoryItem)
+	end
+
+	for i = 1, constants.TOOLBAR_MAX_SLOTS do
 		local newToolbarItem = {
 			index = i,
-			count = 5,
+			count = 64,
 			type = constants.DIRT.type
 		}
 		self.shouldUpdateToolbar = true
@@ -209,7 +295,7 @@ function on_message(self, messageId, message, sender)
 	local clickedNode = nil
 	if is_inventory_switch_message(messageId) then
 		handle_inventory_switch(self, messageId, message, sender)
-	elseif messageId == hash("left_click") and message.pressed then
+	elseif messageId == hash("left_click") then
 		handle_left_click(self, messageId, message, sender)
 	elseif messageId == hash("mouse_wheel_down") then
 		handle_mouse_wheel_down(self, messageId, message, sender)

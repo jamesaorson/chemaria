@@ -7,12 +7,13 @@ local M = {}
 ---------------
 
 local inventory = {}
-for i = 1, constants.INVENTORY_SIZE.rows do
-	inventory[i] = {}
-end
 
 function M.get_inventory()
 	return inventory
+end
+
+function M.update_inventory_item(item)
+	inventory[item.index] = item
 end
 
 -------------------

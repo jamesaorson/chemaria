@@ -2,6 +2,17 @@ local helpers = require "modules.helpers"
 
 local M = {}
 
+------------
+-- Camera --
+------------
+
+M.CAMERA_ID = hash("/camera")
+
+----------------
+-- End Camera --
+----------------
+
+
 ---------------
 -- Inventory --
 ---------------
@@ -10,6 +21,7 @@ M.INVENTORY_SIZE = {
 	rows = 3,
 	rowSize = 10
 }
+M.INVENTORY_MAX_SLOTS = M.INVENTORY_SIZE.rows * M.INVENTORY_SIZE.rowSize
 M.INVENTORY_SELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(120, 240, 50, 1.0))
 M.INVENTORY_UNSELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(255, 255, 255, 1.0))
 
