@@ -42,13 +42,12 @@ end
 local function update_inventory(self)
 	gui.set_enabled(gui.get_node("inventory_node"), self.isInventoryEnabled)
 
-	for i = 0, constants.INVENTORY_SIZE.rows - 1 do
+	for i = 1, constants.INVENTORY_SIZE.rows do
 		for j = 1, constants.INVENTORY_SIZE.rowSize do
-			local rowIndex = i + 1
-			if self.inventory[rowIndex] then
-				local inventoryItem = self.inventory[rowIndex][j]
-				local inventoryNode = gui.get_node("inventory/" .. (i * constants.INVENTORY_SIZE.rowSize + j))
-				local inventoryTextNode = gui.get_node("inventory/text" .. (i * constants.INVENTORY_SIZE.rowSize + j))
+			if self.inventory[i] then
+				local inventoryItem = self.inventory[i][j]
+				local inventoryNode = gui.get_node(urls.get_inventory_node_url(i, j))
+				local inventoryTextNode = gui.get_node(urls.get_inventory_text_node_url(i, j))
 				if inventoryItem and inventoryItem.type ~= "empty" then
 					gui.set_text(inventoryTextNode, inventoryItem.count .. " " .. inventoryItem.type)
 				else
@@ -59,7 +58,7 @@ local function update_inventory(self)
 		end
 	end
 
-	local selectedInventoryNode = gui.get_node("inventory/" ..  (self.selectedInventoryItem[1] - 1) * constants.INVENTORY_SIZE.rowSize + self.selectedInventoryItem[2])
+	local selectedInventoryNode = gui.get_node(urls.get_inventory_node_url(self.selectedInventoryItem[1], self.selectedInventoryItem[2]))
 	gui.set_color(selectedInventoryNode, constants.INVENTORY_SELECTED_COLOR)
 	
 	self.shouldUpdateInventory = false
@@ -114,13 +113,12 @@ local function handle_left_click(self, messageId, message, sender)
 	end
 
 	if not isToolbarClicked then
-		for i = 0, constants.INVENTORY_SIZE.rows - 1 do
+		for i = 1, constants.INVENTORY_SIZE.rows do
 			for j = 1, constants.INVENTORY_SIZE.rowSize do
-				local rowIndex = i + 1
-				local inventoryItem = gui.get_node("inventory/" .. (i * constants.INVENTORY_SIZE.rowSize + j))
+				local inventoryItem = gui.get_node(urls.get_inventory_node_url(i, j))
 				if gui.pick_node(inventoryItem, message.x, message.y) then
 					if i ~= self.selectedInventoryItem[1] or j ~= self.selectedInventoryItem[2] then
-						switch_selected_inventory_item(self, rowIndex, j)
+						switch_selected_inventory_item(self, i, j)
 					end
 					break
 				end
