@@ -1,3 +1,5 @@
+local helpers = require "modules.helpers"
+
 local M = {}
 
 M.GRAVITY = -800
@@ -14,14 +16,14 @@ M.PLAYER_WIDTH = 48
 M.PLAYER_BASE_MINING_INTERVAL = 0.5
 
 M.TOOLBAR_MAX_SLOTS = 10
-M.TOOLBAR_SELECTED_COLOR = vmath.vector4(120 / 255, 240 / 255, 50 / 255, 1.0)
-M.TOOLBAR_UNSELECTED_COLOR = vmath.vector4(255 / 255, 255 / 255, 255 / 255, 1.0)
+M.TOOLBAR_SELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(120, 240, 50, 1.0))
+M.TOOLBAR_UNSELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(255, 255, 255, 1.0))
 
 M.INVENTORY_SIZE = {
 	rows = 3,
 	rowSize = 10
 }
-M.INVENTORY_SELECTED_COLOR = vmath.vector4(120 / 255, 240 / 255, 50 / 255, 1.0)
-M.INVENTORY_UNSELECTED_COLOR = vmath.vector4(255 / 255, 255 / 255, 255 / 255, 1.0)
+M.INVENTORY_SELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(120, 240, 50, 1.0))
+M.INVENTORY_UNSELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(255, 255, 255, 1.0))
 
 return M
