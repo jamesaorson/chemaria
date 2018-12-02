@@ -45,7 +45,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
   template_node_child: false
 }
 nodes {
@@ -202,7 +202,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
   template_node_child: false
 }
 nodes {
@@ -359,7 +359,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
   template_node_child: false
 }
 nodes {
@@ -516,7 +516,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
   template_node_child: false
 }
 nodes {
@@ -673,7 +673,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
   template_node_child: false
 }
 nodes {
@@ -830,7 +830,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
   template_node_child: false
 }
 nodes {
@@ -987,7 +987,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
   template_node_child: false
 }
 nodes {
@@ -1144,7 +1144,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
   template_node_child: false
 }
 nodes {
@@ -1301,7 +1301,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
   template_node_child: false
 }
 nodes {
@@ -1458,7 +1458,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/ui/toolbar/toolbar_slot.gui"
+  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
   template_node_child: false
 }
 nodes {
