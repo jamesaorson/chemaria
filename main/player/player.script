@@ -20,20 +20,16 @@ local PLATYPUS_CONFIG = {
 -- Message Handlers --
 ----------------------
 
-local function handle_left(self, messageId, message, sender)
-	self.platypus.left(constants.PLAYER_VELOCITY.x)
-end
-
-local function handle_right(self, messageId, message, sender)
-	self.platypus.right(constants.PLAYER_VELOCITY.x)
-end
-
 local function handle_jump(self, messageId, message, sender)
 	if message.pressed then
 		self.platypus.jump(constants.PLAYER_JUMP_FORCE)
 	elseif message.released then
 		self.platypus.abort_jump(0.5)
 	end
+end
+
+local function handle_left(self, messageId, message, sender)
+	self.platypus.left(constants.PLAYER_VELOCITY.x)
 end
 
 local function handle_left_click(self, messageId, message, sender)
@@ -52,23 +48,27 @@ local function handle_left_click(self, messageId, message, sender)
 	end
 end
 
+local function handle_right(self, messageId, message, sender)
+	self.platypus.right(constants.PLAYER_VELOCITY.x)
+end
+
 local function handle_right_click(self, messageId, message, sender)
 	message.toolbarItem = self.toolbar[self.selectedToolbarItem]
-	if message.type ~= "empty" then
+	if message.toolbarItem.type ~= constants.NONE.type then
 		msg.post("/world#world_script", "place_block", message)
 	end
 end
 
+local function handle_switch_selected_toolbar_item(self, messageId, message, sender)
+	self.selectedToolbarItem = message.toolbarIndex
+end
+
 local function handle_update_toolbar_item(self, messageId, message, sender)
 	if message.count == 0 then
-		message.type = "empty"
+		message.type = constants.NONE.type
 	end
 	self.toolbar[message.index] = message
 	msg.post("/ui#ui", "update_toolbar")
-end
-
-local function handle_switch_selected_toolbar_item(self, messageId, message, sender)
-	self.selectedToolbarItem = message.toolbarIndex
 end
 
 --------------------------
@@ -76,9 +76,9 @@ end
 --------------------------
 
 
---------------------------
+----------------------
 -- Defold functions --
---------------------------
+----------------------
 
 function init(self)
 	self.platypus = platypus.create(PLATYPUS_CONFIG)
@@ -95,21 +95,21 @@ end
 
 function on_message(self, messageId, message, sender)
 	self.platypus.on_message(messageId, message)
-	
-	if messageId == hash("left") then
-		handle_left(self, messageId, message, sender)
-	elseif messageId == hash("right") then
-		handle_right(self, messageId, message, sender)
-	elseif messageId == hash("jump") then
+
+	if messageId == hash("jump") then
 		handle_jump(self, messageId, message, sender)
+	elseif messageId == hash("left") then
+		handle_left(self, messageId, message, sender)
 	elseif messageId == hash("left_click") then
 		handle_left_click(self, messageId, message, sender)
+	elseif messageId == hash("right") then
+		handle_right(self, messageId, message, sender)
 	elseif messageId == hash("right_click") then
 		handle_right_click(self, messageId, message, sender)
-	elseif messageId == hash("update_toolbar_item") then
-		handle_update_toolbar_item(self, messageId, message, sender)
 	elseif messageId == hash("switch_selected_toolbar_item") then
 		handle_switch_selected_toolbar_item(self, messageId, message, sender)
+	elseif messageId == hash("update_toolbar_item") then
+		handle_update_toolbar_item(self, messageId, message, sender)
 	end
 end
 

@@ -1,4 +1,7 @@
+local camera = require "orthographic.camera"
 local config = require "modules.config"
+local constants = require "modules.constants"
+local helpers = require "modules.helpers"
 
 -------------
 -- Helpers --
@@ -6,7 +9,7 @@ local config = require "modules.config"
 
 local function is_inventory_switch_action(actionId)
 	local baseId = "inventory_switch_"
-	for i = 1, 10 do
+	for i = 1, constants.TOOLBAR_MAX_SLOTS do
 		if actionId == hash(baseId .. i) then
 			return true
 		end
@@ -15,6 +18,18 @@ local function is_inventory_switch_action(actionId)
 end
 
 local function quit_game()
+	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name)
+	print("Wrote save file to " .. worldFileName)
+	local minimalWorld = {
+		chunks = {}
+	}
+	for i = -3, 3 do
+		minimalWorld.chunks[i] = world.chunks[i]
+	end
+	if not sys.save(worldFileName, minimalWorld) then
+		print("Something went wrong")
+	end
+	
 	msg.post("@system:", "exit", { code = 0 })
 end
 
@@ -28,7 +43,8 @@ end
 
 local function apply_config()
 	defos.set_fullscreen(config.IS_FULLSCREEN)
-	msg.post("/camera", "deadzone", config.CAMERA_DEADZONE)
+	msg.post(hash("/camera"), "deadzone", config.CAMERA_DEADZONE)
+	msg.post(hash("/camera"), "zoom_to", config.CAMERA_ZOOM_LEVEL)
 end
 
 -----------------
@@ -40,20 +56,16 @@ end
 -- Action Handlers --
 ---------------------
 
-local function handle_left(self, actionId, action)
-	send_player_action(actionId, action)
-end
-
-local function handle_right(self, actionId, action)
-	send_player_action(actionId, action)
+local function handle_inventory_switch(self, actionId, action)
+	send_gui_action(actionId, action)
 end
 
 local function handle_jump(self, actionId, action)
 	send_player_action(actionId, action)
 end
 
-local function handle_quit(self, actionId, action)
-	quit_game()
+local function handle_left(self, actionId, action)
+	send_player_action(actionId, action)
 end
 
 local function handle_left_click(self, actionId, action)
@@ -61,11 +73,7 @@ local function handle_left_click(self, actionId, action)
 	send_player_action(actionId, action)
 end
 
-local function handle_right_click(self, actionId, action)
-	send_player_action(actionId, action)
-end
-
-local function handle_inventory_switch(self, actionId, action)
+local function handle_mouse_wheel_down(self, actionId, action)
 	send_gui_action(actionId, action)
 end
 
@@ -73,16 +81,28 @@ local function handle_mouse_wheel_up(self, actionId, action)
 	send_gui_action(actionId, action)
 end
 
-local function handle_mouse_wheel_down(self, actionId, action)
+local function handle_quit(self, actionId, action)
+	quit_game()
+end
+
+local function handle_right(self, actionId, action)
+	send_player_action(actionId, action)
+end
+
+local function handle_right_click(self, actionId, action)
+	send_player_action(actionId, action)
+end
+
+local function handle_toggle_fullscreen(self, actionId, action)
+
+end
+
+local function handle_toggle_inventory(self, actionId, action)
 	send_gui_action(actionId, action)
 end
 
 local function handle_toggle_profile(self, actionId, action)
 	msg.post("@system:", "toggle_profile")
-end
-
-local function handle_toggle_fullscreen(self, actionId, action)
-
 end
 
 -------------------------
@@ -101,28 +121,30 @@ function init(self)
 end
 
 function on_input(self, actionId, action)
-	if actionId == hash("left") then
-		handle_left(self, actionId, action)
-	elseif actionId == hash("right") then
-		handle_right(self, actionId, action)
+	if action.pressed and is_inventory_switch_action(actionId) then
+		handle_inventory_switch(self, actionId, action)
 	elseif actionId == hash("jump") then
 		handle_jump(self, actionId, action)
-	elseif actionId == hash("quit") and action.pressed then
-		handle_quit(self, actionId, action)
+	elseif actionId == hash("left") then
+		handle_left(self, actionId, action)
 	elseif actionId == hash("left_click") then
 		handle_left_click(self, actionId, action)
-	elseif actionId == hash("right_click") then
-		handle_right_click(self, actionId, action)
-	elseif action.pressed and is_inventory_switch_action(actionId) then
-		handle_inventory_switch(self, actionId, action)
 	elseif actionId == hash("mouse_wheel_up") and action.pressed then
 		handle_mouse_wheel_up(self, actionId, action)
 	elseif actionId == hash("mouse_wheel_down") and action.pressed then
 		handle_mouse_wheel_down(self, actionId, action)
-	elseif actionId == hash("toggle_profile") and action.pressed then
-		handle_toggle_profile(self, actionId, action)
+	elseif actionId == hash("quit") and action.pressed then
+		handle_quit(self, actionId, action)
+	elseif actionId == hash("right") then
+		handle_right(self, actionId, action)
+	elseif actionId == hash("right_click") then
+		handle_right_click(self, actionId, action)
 	elseif actionId == hash("toggle_fullscreen") and action.pressed then
 		handle_toggle_fullscreen(self, actionId, action)
+	elseif actionId == hash("toggle_inventory") and action.pressed then
+		handle_toggle_inventory(self, actionId, action)
+	elseif actionId == hash("toggle_profile") and action.pressed then
+		handle_toggle_profile(self, actionId, action)
 	end
 end
 

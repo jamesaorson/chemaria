@@ -1,13 +1,42 @@
+local constants = require "modules.constants"
+
 local M = {}
 
-local toolbar = {}
+---------------
+-- Inventory --
+---------------
 
-function M.add_to_toolbar(toolbarItem)
-	toolbar[toolbarItem.index] = toolbarItem
+local inventory = {}
+
+function M.get_inventory()
+	return inventory
 end
+
+function M.update_inventory_item(item)
+	inventory[item.index] = item
+end
+
+-------------------
+-- End Inventory --
+-------------------
+
+
+-------------
+-- Toolbar --
+-------------
+
+local toolbar = {}
 
 function M.get_toolbar()
 	return toolbar
 end
+
+function M.update_toolbar_item(item)
+	toolbar[item.index] = item
+end
+
+-----------------
+-- End Toolbar --
+-----------------
 
 return M

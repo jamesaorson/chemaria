@@ -1,7 +1,7 @@
-script: "/main/ui/ui.gui_script"
-textures {
-  name: "block_textures"
-  texture: "/main/block/block.atlas"
+script: ""
+fonts {
+  name: "inventory"
+  font: "/main/ui/inventory/inventory.font"
 }
 background_color {
   x: 0.0
@@ -11,1627 +11,8 @@ background_color {
 }
 nodes {
   position {
-    x: 75.0
-    y: 1000.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
     x: 0.0
     y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEMPLATE
-  id: "toolbar"
-  layer: ""
-  inherit_alpha: true
-  alpha: 1.0
-  template: "/main/ui/toolbar/toolbar.gui"
-  template_node_child: false
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEMPLATE
-  id: "toolbar/toolbar_slot_1"
-  parent: "toolbar"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
-  template_node_child: true
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: ""
-  id: "toolbar/toolbar_slot_1/slot"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar/toolbar_slot_1"
-  layer: ""
-  inherit_alpha: true
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 1.0
-  template_node_child: true
-  size_mode: SIZE_MODE_MANUAL
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: ""
-  font: "toolbar"
-  id: "toolbar/toolbar_slot_1/text"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  shadow {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "toolbar/toolbar_slot_1/slot"
-  layer: ""
-  inherit_alpha: true
-  alpha: 1.0
-  outline_alpha: 0.0
-  shadow_alpha: 0.0
-  template_node_child: true
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 125.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEMPLATE
-  id: "toolbar/toolbar_slot_2"
-  parent: "toolbar"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
-  template_node_child: true
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: ""
-  id: "toolbar/toolbar_slot_2/slot"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar/toolbar_slot_2"
-  layer: ""
-  inherit_alpha: true
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 1.0
-  template_node_child: true
-  size_mode: SIZE_MODE_MANUAL
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: ""
-  font: "toolbar"
-  id: "toolbar/toolbar_slot_2/text"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  shadow {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "toolbar/toolbar_slot_2/slot"
-  layer: ""
-  inherit_alpha: true
-  alpha: 1.0
-  outline_alpha: 0.0
-  shadow_alpha: 0.0
-  template_node_child: true
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 250.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEMPLATE
-  id: "toolbar/toolbar_slot_3"
-  parent: "toolbar"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
-  template_node_child: true
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: ""
-  id: "toolbar/toolbar_slot_3/slot"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar/toolbar_slot_3"
-  layer: ""
-  inherit_alpha: true
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 1.0
-  template_node_child: true
-  size_mode: SIZE_MODE_MANUAL
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: ""
-  font: "toolbar"
-  id: "toolbar/toolbar_slot_3/text"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  shadow {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "toolbar/toolbar_slot_3/slot"
-  layer: ""
-  inherit_alpha: true
-  alpha: 1.0
-  outline_alpha: 0.0
-  shadow_alpha: 0.0
-  template_node_child: true
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 375.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEMPLATE
-  id: "toolbar/toolbar_slot_4"
-  parent: "toolbar"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
-  template_node_child: true
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: ""
-  id: "toolbar/toolbar_slot_4/slot"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar/toolbar_slot_4"
-  layer: ""
-  inherit_alpha: true
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 1.0
-  template_node_child: true
-  size_mode: SIZE_MODE_MANUAL
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: ""
-  font: "toolbar"
-  id: "toolbar/toolbar_slot_4/text"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  shadow {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "toolbar/toolbar_slot_4/slot"
-  layer: ""
-  inherit_alpha: true
-  alpha: 1.0
-  outline_alpha: 0.0
-  shadow_alpha: 0.0
-  template_node_child: true
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 500.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEMPLATE
-  id: "toolbar/toolbar_slot_5"
-  parent: "toolbar"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
-  template_node_child: true
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: ""
-  id: "toolbar/toolbar_slot_5/slot"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar/toolbar_slot_5"
-  layer: ""
-  inherit_alpha: true
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 1.0
-  template_node_child: true
-  size_mode: SIZE_MODE_MANUAL
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: ""
-  font: "toolbar"
-  id: "toolbar/toolbar_slot_5/text"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  shadow {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "toolbar/toolbar_slot_5/slot"
-  layer: ""
-  inherit_alpha: true
-  alpha: 1.0
-  outline_alpha: 0.0
-  shadow_alpha: 0.0
-  template_node_child: true
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 625.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEMPLATE
-  id: "toolbar/toolbar_slot_6"
-  parent: "toolbar"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
-  template_node_child: true
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: ""
-  id: "toolbar/toolbar_slot_6/slot"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar/toolbar_slot_6"
-  layer: ""
-  inherit_alpha: true
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 1.0
-  template_node_child: true
-  size_mode: SIZE_MODE_MANUAL
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: ""
-  font: "toolbar"
-  id: "toolbar/toolbar_slot_6/text"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  shadow {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "toolbar/toolbar_slot_6/slot"
-  layer: ""
-  inherit_alpha: true
-  alpha: 1.0
-  outline_alpha: 0.0
-  shadow_alpha: 0.0
-  template_node_child: true
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 750.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEMPLATE
-  id: "toolbar/toolbar_slot_7"
-  parent: "toolbar"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
-  template_node_child: true
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: ""
-  id: "toolbar/toolbar_slot_7/slot"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar/toolbar_slot_7"
-  layer: ""
-  inherit_alpha: true
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 1.0
-  template_node_child: true
-  size_mode: SIZE_MODE_MANUAL
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: ""
-  font: "toolbar"
-  id: "toolbar/toolbar_slot_7/text"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  shadow {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "toolbar/toolbar_slot_7/slot"
-  layer: ""
-  inherit_alpha: true
-  alpha: 1.0
-  outline_alpha: 0.0
-  shadow_alpha: 0.0
-  template_node_child: true
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 875.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEMPLATE
-  id: "toolbar/toolbar_slot_8"
-  parent: "toolbar"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
-  template_node_child: true
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: ""
-  id: "toolbar/toolbar_slot_8/slot"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar/toolbar_slot_8"
-  layer: ""
-  inherit_alpha: true
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 1.0
-  template_node_child: true
-  size_mode: SIZE_MODE_MANUAL
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: ""
-  font: "toolbar"
-  id: "toolbar/toolbar_slot_8/text"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  shadow {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "toolbar/toolbar_slot_8/slot"
-  layer: ""
-  inherit_alpha: true
-  alpha: 1.0
-  outline_alpha: 0.0
-  shadow_alpha: 0.0
-  template_node_child: true
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 1000.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEMPLATE
-  id: "toolbar/toolbar_slot_9"
-  parent: "toolbar"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
-  template_node_child: true
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: ""
-  id: "toolbar/toolbar_slot_9/slot"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar/toolbar_slot_9"
-  layer: ""
-  inherit_alpha: true
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 1.0
-  template_node_child: true
-  size_mode: SIZE_MODE_MANUAL
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: ""
-  font: "toolbar"
-  id: "toolbar/toolbar_slot_9/text"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  shadow {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "toolbar/toolbar_slot_9/slot"
-  layer: ""
-  inherit_alpha: true
-  alpha: 1.0
-  outline_alpha: 0.0
-  shadow_alpha: 0.0
-  template_node_child: true
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 1125.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEMPLATE
-  id: "toolbar/toolbar_slot_10"
-  parent: "toolbar"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  template: "/main/ui/toolbar/slot/toolbar_slot.gui"
-  template_node_child: true
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: ""
-  id: "toolbar/toolbar_slot_10/slot"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "toolbar/toolbar_slot_10"
-  layer: ""
-  inherit_alpha: true
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 1.0
-  template_node_child: true
-  size_mode: SIZE_MODE_MANUAL
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: ""
-  font: "toolbar"
-  id: "toolbar/toolbar_slot_10/text"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  shadow {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "toolbar/toolbar_slot_10/slot"
-  layer: ""
-  inherit_alpha: true
-  alpha: 1.0
-  outline_alpha: 0.0
-  shadow_alpha: 0.0
-  template_node_child: true
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 65.0
-    y: 890.0
     z: 0.0
     w: 1.0
   }
@@ -1662,7 +43,7 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory_node"
+  id: "inventory_row_1"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -1714,108 +95,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory"
-  parent: "inventory_node"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  template: "/main/ui/inventory/inventory.gui"
-  template_node_child: false
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: ""
-  id: "inventory/inventory_row_1"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory"
-  layer: ""
-  inherit_alpha: true
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 0.0
-  template_node_child: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_1"
-  parent: "inventory/inventory_row_1"
+  id: "inventory_slot_1"
+  parent: "inventory_row_1"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -1851,12 +137,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_1/slot"
+  id: "inventory_slot_1/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_1"
+  parent: "inventory_slot_1"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -1907,7 +193,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_1/text"
+  id: "inventory_slot_1/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -1925,7 +211,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_1/slot"
+  parent: "inventory_slot_1/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -1967,13 +253,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_2"
-  parent: "inventory/inventory_row_1"
+  id: "inventory_slot_2"
+  parent: "inventory_row_1"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -2009,12 +295,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_2/slot"
+  id: "inventory_slot_2/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_2"
+  parent: "inventory_slot_2"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -2065,7 +351,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_2/text"
+  id: "inventory_slot_2/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -2083,7 +369,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_2/slot"
+  parent: "inventory_slot_2/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -2125,13 +411,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_3"
-  parent: "inventory/inventory_row_1"
+  id: "inventory_slot_3"
+  parent: "inventory_row_1"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -2167,12 +453,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_3/slot"
+  id: "inventory_slot_3/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_3"
+  parent: "inventory_slot_3"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -2223,7 +509,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_3/text"
+  id: "inventory_slot_3/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -2241,7 +527,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_3/slot"
+  parent: "inventory_slot_3/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -2283,13 +569,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_4"
-  parent: "inventory/inventory_row_1"
+  id: "inventory_slot_4"
+  parent: "inventory_row_1"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -2325,12 +611,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_4/slot"
+  id: "inventory_slot_4/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_4"
+  parent: "inventory_slot_4"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -2381,7 +667,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_4/text"
+  id: "inventory_slot_4/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -2399,7 +685,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_4/slot"
+  parent: "inventory_slot_4/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -2441,13 +727,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_5"
-  parent: "inventory/inventory_row_1"
+  id: "inventory_slot_5"
+  parent: "inventory_row_1"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -2483,12 +769,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_5/slot"
+  id: "inventory_slot_5/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_5"
+  parent: "inventory_slot_5"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -2539,7 +825,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_5/text"
+  id: "inventory_slot_5/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -2557,7 +843,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_5/slot"
+  parent: "inventory_slot_5/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -2599,13 +885,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_6"
-  parent: "inventory/inventory_row_1"
+  id: "inventory_slot_6"
+  parent: "inventory_row_1"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -2641,12 +927,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_6/slot"
+  id: "inventory_slot_6/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_6"
+  parent: "inventory_slot_6"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -2697,7 +983,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_6/text"
+  id: "inventory_slot_6/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -2715,7 +1001,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_6/slot"
+  parent: "inventory_slot_6/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -2757,13 +1043,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_7"
-  parent: "inventory/inventory_row_1"
+  id: "inventory_slot_7"
+  parent: "inventory_row_1"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -2799,12 +1085,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_7/slot"
+  id: "inventory_slot_7/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_7"
+  parent: "inventory_slot_7"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -2855,7 +1141,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_7/text"
+  id: "inventory_slot_7/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -2873,7 +1159,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_7/slot"
+  parent: "inventory_slot_7/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -2915,13 +1201,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_8"
-  parent: "inventory/inventory_row_1"
+  id: "inventory_slot_8"
+  parent: "inventory_row_1"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -2957,12 +1243,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_8/slot"
+  id: "inventory_slot_8/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_8"
+  parent: "inventory_slot_8"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -3013,7 +1299,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_8/text"
+  id: "inventory_slot_8/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -3031,7 +1317,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_8/slot"
+  parent: "inventory_slot_8/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -3073,13 +1359,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_9"
-  parent: "inventory/inventory_row_1"
+  id: "inventory_slot_9"
+  parent: "inventory_row_1"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -3115,12 +1401,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_9/slot"
+  id: "inventory_slot_9/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_9"
+  parent: "inventory_slot_9"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -3171,7 +1457,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_9/text"
+  id: "inventory_slot_9/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -3189,7 +1475,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_9/slot"
+  parent: "inventory_slot_9/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -3231,13 +1517,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_10"
-  parent: "inventory/inventory_row_1"
+  id: "inventory_slot_10"
+  parent: "inventory_row_1"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -3273,12 +1559,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_10/slot"
+  id: "inventory_slot_10/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_10"
+  parent: "inventory_slot_10"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -3329,7 +1615,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_10/text"
+  id: "inventory_slot_10/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -3347,7 +1633,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_10/slot"
+  parent: "inventory_slot_10/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -3391,12 +1677,11 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_row_2"
+  id: "inventory_row_2"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory"
   layer: ""
   inherit_alpha: true
   slice9 {
@@ -3409,7 +1694,7 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 0.0
-  template_node_child: true
+  template_node_child: false
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
@@ -3444,13 +1729,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_11"
-  parent: "inventory/inventory_row_2"
+  id: "inventory_slot_11"
+  parent: "inventory_row_2"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -3486,12 +1771,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_11/slot"
+  id: "inventory_slot_11/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_11"
+  parent: "inventory_slot_11"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -3542,7 +1827,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_11/text"
+  id: "inventory_slot_11/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -3560,7 +1845,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_11/slot"
+  parent: "inventory_slot_11/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -3602,13 +1887,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_12"
-  parent: "inventory/inventory_row_2"
+  id: "inventory_slot_12"
+  parent: "inventory_row_2"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -3644,12 +1929,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_12/slot"
+  id: "inventory_slot_12/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_12"
+  parent: "inventory_slot_12"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -3700,7 +1985,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_12/text"
+  id: "inventory_slot_12/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -3718,7 +2003,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_12/slot"
+  parent: "inventory_slot_12/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -3760,13 +2045,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_13"
-  parent: "inventory/inventory_row_2"
+  id: "inventory_slot_13"
+  parent: "inventory_row_2"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -3802,12 +2087,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_13/slot"
+  id: "inventory_slot_13/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_13"
+  parent: "inventory_slot_13"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -3858,7 +2143,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_13/text"
+  id: "inventory_slot_13/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -3876,7 +2161,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_13/slot"
+  parent: "inventory_slot_13/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -3918,13 +2203,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_14"
-  parent: "inventory/inventory_row_2"
+  id: "inventory_slot_14"
+  parent: "inventory_row_2"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -3960,12 +2245,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_14/slot"
+  id: "inventory_slot_14/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_14"
+  parent: "inventory_slot_14"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -4016,7 +2301,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_14/text"
+  id: "inventory_slot_14/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -4034,7 +2319,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_14/slot"
+  parent: "inventory_slot_14/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -4076,13 +2361,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_15"
-  parent: "inventory/inventory_row_2"
+  id: "inventory_slot_15"
+  parent: "inventory_row_2"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -4118,12 +2403,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_15/slot"
+  id: "inventory_slot_15/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_15"
+  parent: "inventory_slot_15"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -4174,7 +2459,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_15/text"
+  id: "inventory_slot_15/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -4192,7 +2477,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_15/slot"
+  parent: "inventory_slot_15/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -4234,13 +2519,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_16"
-  parent: "inventory/inventory_row_2"
+  id: "inventory_slot_16"
+  parent: "inventory_row_2"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -4276,12 +2561,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_16/slot"
+  id: "inventory_slot_16/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_16"
+  parent: "inventory_slot_16"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -4332,7 +2617,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_16/text"
+  id: "inventory_slot_16/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -4350,7 +2635,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_16/slot"
+  parent: "inventory_slot_16/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -4392,13 +2677,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_17"
-  parent: "inventory/inventory_row_2"
+  id: "inventory_slot_17"
+  parent: "inventory_row_2"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -4434,12 +2719,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_17/slot"
+  id: "inventory_slot_17/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_17"
+  parent: "inventory_slot_17"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -4490,7 +2775,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_17/text"
+  id: "inventory_slot_17/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -4508,7 +2793,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_17/slot"
+  parent: "inventory_slot_17/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -4550,13 +2835,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_18"
-  parent: "inventory/inventory_row_2"
+  id: "inventory_slot_18"
+  parent: "inventory_row_2"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -4592,12 +2877,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_18/slot"
+  id: "inventory_slot_18/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_18"
+  parent: "inventory_slot_18"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -4648,7 +2933,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_18/text"
+  id: "inventory_slot_18/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -4666,7 +2951,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_18/slot"
+  parent: "inventory_slot_18/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -4708,13 +2993,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_19"
-  parent: "inventory/inventory_row_2"
+  id: "inventory_slot_19"
+  parent: "inventory_row_2"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -4750,12 +3035,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_19/slot"
+  id: "inventory_slot_19/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_19"
+  parent: "inventory_slot_19"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -4806,7 +3091,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_19/text"
+  id: "inventory_slot_19/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -4824,7 +3109,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_19/slot"
+  parent: "inventory_slot_19/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -4866,13 +3151,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_20"
-  parent: "inventory/inventory_row_2"
+  id: "inventory_slot_20"
+  parent: "inventory_row_2"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -4908,12 +3193,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_20/slot"
+  id: "inventory_slot_20/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_20"
+  parent: "inventory_slot_20"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -4964,7 +3249,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_20/text"
+  id: "inventory_slot_20/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -4982,7 +3267,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_20/slot"
+  parent: "inventory_slot_20/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -5026,12 +3311,11 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_row_3"
+  id: "inventory_row_3"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory"
   layer: ""
   inherit_alpha: true
   slice9 {
@@ -5044,7 +3328,7 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 0.0
-  template_node_child: true
+  template_node_child: false
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
@@ -5079,13 +3363,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_21"
-  parent: "inventory/inventory_row_3"
+  id: "inventory_slot_21"
+  parent: "inventory_row_3"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -5121,12 +3405,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_21/slot"
+  id: "inventory_slot_21/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_21"
+  parent: "inventory_slot_21"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -5177,7 +3461,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_21/text"
+  id: "inventory_slot_21/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -5195,7 +3479,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_21/slot"
+  parent: "inventory_slot_21/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -5237,13 +3521,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_22"
-  parent: "inventory/inventory_row_3"
+  id: "inventory_slot_22"
+  parent: "inventory_row_3"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -5279,12 +3563,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_22/slot"
+  id: "inventory_slot_22/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_22"
+  parent: "inventory_slot_22"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -5335,7 +3619,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_22/text"
+  id: "inventory_slot_22/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -5353,7 +3637,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_22/slot"
+  parent: "inventory_slot_22/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -5395,13 +3679,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_23"
-  parent: "inventory/inventory_row_3"
+  id: "inventory_slot_23"
+  parent: "inventory_row_3"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -5437,12 +3721,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_23/slot"
+  id: "inventory_slot_23/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_23"
+  parent: "inventory_slot_23"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -5493,7 +3777,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_23/text"
+  id: "inventory_slot_23/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -5511,7 +3795,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_23/slot"
+  parent: "inventory_slot_23/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -5553,13 +3837,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_24"
-  parent: "inventory/inventory_row_3"
+  id: "inventory_slot_24"
+  parent: "inventory_row_3"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -5595,12 +3879,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_24/slot"
+  id: "inventory_slot_24/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_24"
+  parent: "inventory_slot_24"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -5651,7 +3935,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_24/text"
+  id: "inventory_slot_24/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -5669,7 +3953,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_24/slot"
+  parent: "inventory_slot_24/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -5711,13 +3995,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_25"
-  parent: "inventory/inventory_row_3"
+  id: "inventory_slot_25"
+  parent: "inventory_row_3"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -5753,12 +4037,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_25/slot"
+  id: "inventory_slot_25/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_25"
+  parent: "inventory_slot_25"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -5809,7 +4093,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_25/text"
+  id: "inventory_slot_25/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -5827,7 +4111,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_25/slot"
+  parent: "inventory_slot_25/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -5869,13 +4153,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_26"
-  parent: "inventory/inventory_row_3"
+  id: "inventory_slot_26"
+  parent: "inventory_row_3"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -5911,12 +4195,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_26/slot"
+  id: "inventory_slot_26/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_26"
+  parent: "inventory_slot_26"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -5967,7 +4251,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_26/text"
+  id: "inventory_slot_26/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -5985,7 +4269,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_26/slot"
+  parent: "inventory_slot_26/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -6027,13 +4311,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_27"
-  parent: "inventory/inventory_row_3"
+  id: "inventory_slot_27"
+  parent: "inventory_row_3"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -6069,12 +4353,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_27/slot"
+  id: "inventory_slot_27/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_27"
+  parent: "inventory_slot_27"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -6125,7 +4409,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_27/text"
+  id: "inventory_slot_27/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -6143,7 +4427,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_27/slot"
+  parent: "inventory_slot_27/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -6185,13 +4469,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_28"
-  parent: "inventory/inventory_row_3"
+  id: "inventory_slot_28"
+  parent: "inventory_row_3"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -6227,12 +4511,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_28/slot"
+  id: "inventory_slot_28/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_28"
+  parent: "inventory_slot_28"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -6283,7 +4567,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_28/text"
+  id: "inventory_slot_28/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -6301,7 +4585,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_28/slot"
+  parent: "inventory_slot_28/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -6343,13 +4627,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_29"
-  parent: "inventory/inventory_row_3"
+  id: "inventory_slot_29"
+  parent: "inventory_row_3"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -6385,12 +4669,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_29/slot"
+  id: "inventory_slot_29/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_29"
+  parent: "inventory_slot_29"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -6441,7 +4725,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_29/text"
+  id: "inventory_slot_29/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -6459,7 +4743,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_29/slot"
+  parent: "inventory_slot_29/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -6501,13 +4785,13 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "inventory/inventory_slot_30"
-  parent: "inventory/inventory_row_3"
+  id: "inventory_slot_30"
+  parent: "inventory_row_3"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   template: "/main/ui/inventory/slot/inventory_slot.gui"
-  template_node_child: true
+  template_node_child: false
 }
 nodes {
   position {
@@ -6543,12 +4827,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "inventory/inventory_slot_30/slot"
+  id: "inventory_slot_30/slot"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "inventory/inventory_slot_30"
+  parent: "inventory_slot_30"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -6599,7 +4883,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: ""
   font: "inventory"
-  id: "inventory/inventory_slot_30/text"
+  id: "inventory_slot_30/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -6617,7 +4901,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "inventory/inventory_slot_30/slot"
+  parent: "inventory_slot_30/slot"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
