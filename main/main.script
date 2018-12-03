@@ -3,6 +3,8 @@ local config = require "modules.config"
 local constants = require "modules.constants"
 local helpers = require "modules.helpers"
 
+local CAMERA_ID = hash("/camera")
+
 -------------
 -- Helpers --
 -------------
@@ -43,8 +45,8 @@ end
 
 local function apply_config()
 	defos.set_fullscreen(config.IS_FULLSCREEN)
-	msg.post(hash("/camera"), "deadzone", config.CAMERA_DEADZONE)
-	msg.post(hash("/camera"), "zoom_to", config.CAMERA_ZOOM_LEVEL)
+	msg.post(CAMERA_ID, "deadzone", config.CAMERA_DEADZONE)
+	msg.post(CAMERA_ID, "zoom_to", config.CAMERA_ZOOM_LEVEL)
 end
 
 -----------------
