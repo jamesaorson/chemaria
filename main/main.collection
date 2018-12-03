@@ -41,7 +41,7 @@ instances {
 }
 instances {
   id: "dirt_factory"
-  prototype: "/main/block/dirt/dirt_factory.go"
+  prototype: "/main/block/world/dirt/dirt_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -61,7 +61,7 @@ instances {
 }
 instances {
   id: "stone_factory"
-  prototype: "/main/block/stone/stone_factory.go"
+  prototype: "/main/block/world/stone/stone_factory.go"
   position {
     x: 0.0
     y: 0.0

@@ -1,7 +1,7 @@
 embedded_components {
   id: "stone_factory"
   type: "factory"
-  data: "prototype: \"/main/block/stone/stone.go\"\n"
+  data: "prototype: \"/main/block/pickup/stone/stone.go\"\n"
   "load_dynamically: false\n"
   ""
   position {

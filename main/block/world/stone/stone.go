@@ -1,6 +1,6 @@
 components {
   id: "sprite"
-  component: "/main/block/dirt/dirt.sprite"
+  component: "/main/block/sprites/stone.sprite"
   position {
     x: 0.0
     y: 0.0
