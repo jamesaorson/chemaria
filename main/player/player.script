@@ -17,6 +17,20 @@ local PLATYPUS_CONFIG = {
 	allow_wall_jump = false
 }
 
+-------------
+-- Helpers --
+-------------
+
+local function add_loose_pickup_to_player(self, messageId, message, sender)
+	self.toolbar[1].count = self.toolbar[1].count + 1
+	msg.post("/ui#ui", "update_toolbar")
+end
+
+-----------------
+-- End Helpers --
+-----------------
+
+
 ----------------------
 -- Message Handlers --
 ----------------------
@@ -54,14 +68,34 @@ local function handle_right(self, messageId, message, sender)
 end
 
 local function handle_right_click(self, messageId, message, sender)
-	message.toolbarItem = self.toolbar[self.selectedToolbarItem]
-	if message.toolbarItem.type ~= constants.NONE.type then
-		msg.post("/world#world_script", "place_block", message)
+	if message.pressed then
+		self.isPlacing = true
+		self.placingStartTime = os.clock()
+	elseif message.released then
+		self.isPlacing = false
+		self.placingStartTime = nil
+	end
+	if self.placingStartTime then
+		local placingTime = os.clock() - self.placingStartTime
+		if message.pressed or placingTime >= constants.PLAYER_BASE_PLACING_INTERVAL then
+			self.placingStartTime = os.clock()
+			message.toolbarItem = self.toolbar[self.selectedToolbarItem]
+			if message.toolbarItem.type ~= constants.NONE.type then
+				msg.post("/world#world_script", "place_block", message)
+			end
+		end
 	end
 end
 
 local function handle_switch_selected_toolbar_item(self, messageId, message, sender)
 	self.selectedToolbarItem = message.toolbarIndex
+end
+
+local function handle_trigger_response(self, messageId, message, sender)
+	if message.group == hash("pickup") then
+		add_loose_pickup_to_player(self, messageId, message, sender)
+		go.delete(message.other_id)
+	end
 end
 
 local function handle_update_toolbar_item(self, messageId, message, sender)
@@ -86,6 +120,7 @@ function init(self)
 	self.selectedToolbarItem = 1
 	self.isMining = false
 	self.miningStartTime = nil
+	self.placingStartTime = nil
 	self.toolbar = globals.get_toolbar()
 	defos.set_cursor_visible(true)
 end
@@ -105,10 +140,12 @@ function on_message(self, messageId, message, sender)
 		handle_left_click(self, messageId, message, sender)
 	elseif messageId == hash("right") then
 		handle_right(self, messageId, message, sender)
-	elseif messageId == hash("right_click") and message.pressed then
+	elseif messageId == hash("right_click") then
 		handle_right_click(self, messageId, message, sender)
 	elseif messageId == hash("switch_selected_toolbar_item") then
 		handle_switch_selected_toolbar_item(self, messageId, message, sender)
+	elseif messageId == hash("trigger_response") then
+		handle_trigger_response(self, messageId, message, sender)
 	elseif messageId == hash("update_toolbar_item") then
 		handle_update_toolbar_item(self, messageId, message, sender)
 	end

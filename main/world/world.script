@@ -25,11 +25,14 @@ local function mine_block(blockUrl, message)
 	local block = chunk:get_block_at_position(blockPosition)
 
 	local truePosition = position_helpers.block_to_screen_position(block)
+	truePosition.x = truePosition.x + math.random(-8, 8)
 	local rotation = nil
 	local properties = {}
 	local scale = 0.5
 	
-	factory.create(urls.get_pickup_factory_url(block.type), truePosition, rotation, properties, scale)
+	local loosePickupId = factory.create(urls.get_pickup_factory_url(block.type), truePosition, rotation, properties, scale)
+	block.id = loosePickupId
+	world:add_loose_pickup(block)
 end
 
 local function create_block(self, block)
