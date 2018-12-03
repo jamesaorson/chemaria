@@ -176,7 +176,7 @@ end
 function on_message(self, messageId, message, sender)
 	if messageId == hash("mine_block") then
 		handle_mine_block(self, messageId, message, sender)
-	elseif messageId == hash("place_block") and message.pressed then
+	elseif messageId == hash("place_block") then
 		handle_place_block(self, messageId, message, sender)
 	end
 end

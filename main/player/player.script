@@ -1,5 +1,6 @@
 local constants = require "modules.constants"
 local platypus = require "platypus.platypus"
+local position_helpers = require "modules.position_helpers"
 local globals = require "modules.globals"
 
 local PLATYPUS_CONFIG = {
@@ -104,7 +105,7 @@ function on_message(self, messageId, message, sender)
 		handle_left_click(self, messageId, message, sender)
 	elseif messageId == hash("right") then
 		handle_right(self, messageId, message, sender)
-	elseif messageId == hash("right_click") then
+	elseif messageId == hash("right_click") and message.pressed then
 		handle_right_click(self, messageId, message, sender)
 	elseif messageId == hash("switch_selected_toolbar_item") then
 		handle_switch_selected_toolbar_item(self, messageId, message, sender)
