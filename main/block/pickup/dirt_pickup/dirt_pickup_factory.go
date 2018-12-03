@@ -1,7 +1,7 @@
 embedded_components {
   id: "dirt_pickup_factory"
   type: "factory"
-  data: "prototype: \"/main/block/pickup/dirt/dirt_pickup.go\"\n"
+  data: "prototype: \"/main/block/pickup/dirt_pickup/dirt_pickup.go\"\n"
   "load_dynamically: false\n"
   ""
   position {

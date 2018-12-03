@@ -154,7 +154,7 @@ instances {
 }
 instances {
   id: "dirt_pickup_factory"
-  prototype: "/main/block/pickup/dirt/dirt_pickup_factory.go"
+  prototype: "/main/block/pickup/dirt_pickup/dirt_pickup_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -174,7 +174,7 @@ instances {
 }
 instances {
   id: "stone_pickup_factory"
-  prototype: "/main/block/pickup/stone/stone_pickup_factory.go"
+  prototype: "/main/block/pickup/stone_pickup/stone_pickup_factory.go"
   position {
     x: 0.0
     y: 0.0
