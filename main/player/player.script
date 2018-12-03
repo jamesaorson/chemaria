@@ -38,7 +38,7 @@ local function handle_left_click(self, messageId, message, sender)
 		self.miningStartTime = os.clock()
 	elseif message.released then
 		self.isMining = false
-		self.mininStartTime = nil
+		self.miningStartTime = nil
 	else
 		local miningTime = os.clock() - self.miningStartTime
 		if miningTime >= constants.PLAYER_BASE_MINING_INTERVAL then
