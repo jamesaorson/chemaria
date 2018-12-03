@@ -14,8 +14,22 @@ world = World:new()
 -- Helpers --
 -------------
 
-local function mine_block(blockUrl)
+local function mine_block(blockUrl, message)
 	go.delete(blockUrl)
+	
+	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
+	local chunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
+	local blockPosition = position_helpers.screen_to_block_position(screenPosition)
+	
+	local chunk = world:get_chunk_at_position(chunkPosition)
+	local block = chunk:get_block_at_position(blockPosition)
+
+	local truePosition = position_helpers.block_to_screen_position(block)
+	local rotation = nil
+	local properties = {}
+	local scale = 0.5
+	
+	factory.create(urls.get_pickup_factory_url(block.type), truePosition, rotation, properties, scale)
 end
 
 local function create_block(self, block)
@@ -124,8 +138,8 @@ local function handle_mine_block(self, messageId, message, sender)
 	if chunk then
 		local block = chunk:get_block_at_position(miningBlockPosition)
 		if block then
+			mine_block(block.url, message)
 			chunk:remove_block_at_position(miningBlockPosition)
-			mine_block(block.url)
 		end
 	end
 end
