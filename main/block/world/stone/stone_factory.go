@@ -1,7 +1,7 @@
 embedded_components {
-  id: "dirt_factory"
+  id: "stone_factory"
   type: "factory"
-  data: "prototype: \"/main/block/dirt/dirt.go\"\n"
+  data: "prototype: \"/main/block/world/stone/stone.go\"\n"
   "load_dynamically: false\n"
   ""
   position {

@@ -14,11 +14,15 @@ world = World:new()
 -- Helpers --
 -------------
 
-local function mine_block(blockUrl)
-	go.delete(blockUrl)
-end
+local create_block
+local create_blocks_from_world
+local mine_block
+local get_saved_world
+local initialize_from_saved_world
+local initialize_new_world
+local initialize_world_chunks
 
-local function create_block(self, block)
+function create_block(self, block)
 	local truePosition = position_helpers.block_to_screen_position(block)
 	local rotation = nil
 	local properties = {}
@@ -38,7 +42,7 @@ local function create_block(self, block)
 	end
 end
 
-local function create_blocks_from_world(self)
+function create_blocks_from_world(self)
 	for chunkX, chunkXColumn in pairs(world.chunks) do
 		for chunkY, chunk in pairs(chunkXColumn) do
 			for blockX, blockXColumn in pairs(chunk.blocks) do
@@ -50,13 +54,34 @@ local function create_blocks_from_world(self)
 	end
 end
 
-local function get_saved_world()
+function mine_block(blockUrl, message)
+	go.delete(blockUrl)
+	
+	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
+	local chunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
+	local blockPosition = position_helpers.screen_to_block_position(screenPosition)
+	
+	local chunk = world:get_chunk_at_position(chunkPosition)
+	local block = chunk:get_block_at_position(blockPosition)
+
+	local truePosition = position_helpers.block_to_screen_position(block)
+	truePosition.x = truePosition.x + math.random(-8, 8)
+	local rotation = nil
+	local properties = {}
+	local scale = 0.5
+	
+	local loosePickupId = factory.create(urls.get_pickup_factory_url(block.type), truePosition, rotation, properties, scale)
+	block.id = loosePickupId
+	world:add_loose_pickup(block)
+end
+
+function get_saved_world()
 	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name)
 	local savedWorld = sys.load(worldFileName)
 	return savedWorld
 end
 
-local function initialize_from_saved_world(savedWorld)
+function initialize_from_saved_world(savedWorld)
 	for chunkX, chunkXColumn in pairs(savedWorld.chunks) do
 		for chunkY, chunk in pairs(chunkXColumn) do
 			local worldChunk = world:get_chunk_at_position(chunk.position)
@@ -73,7 +98,7 @@ local function initialize_from_saved_world(savedWorld)
 	end
 end
 
-local function initialize_new_world()
+function initialize_new_world()
 	for chunkX, chunkXColumn in pairs(world.chunks) do
 		for chunkY, chunk in pairs(chunkXColumn) do
 			local blockType = nil
@@ -96,7 +121,7 @@ local function initialize_new_world()
 	end
 end
 
-local function initialize_world_chunks()
+function initialize_world_chunks()
 	for x = -constants.CHUNK_MAX.x, constants.CHUNK_MAX.x do
 		for y = -constants.CHUNK_MAX.y, constants.CHUNK_MAX.y do
 			local chunkToAdd = Chunk:new()
@@ -116,7 +141,10 @@ end
 -- Message Handlers --
 ----------------------
 
-local function handle_mine_block(self, messageId, message, sender)
+local handle_mine_block
+local handle_place_block
+
+function handle_mine_block(self, messageId, message, sender)
 	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
 	local miningBlockPosition = position_helpers.screen_to_block_position(screenPosition)
 	local miningChunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
@@ -124,13 +152,13 @@ local function handle_mine_block(self, messageId, message, sender)
 	if chunk then
 		local block = chunk:get_block_at_position(miningBlockPosition)
 		if block then
+			mine_block(block.url, message)
 			chunk:remove_block_at_position(miningBlockPosition)
-			mine_block(block.url)
 		end
 	end
 end
 
-local function handle_place_block(self, messageId, message, sender)
+function handle_place_block(self, messageId, message, sender)
 	local toolbarItem = message.toolbarItem
 	if toolbarItem and toolbarItem.type ~= constants.NONE.type then
 		local messagePosition = vmath.vector3(message.screen_x, message.screen_y, 0)
@@ -176,7 +204,7 @@ end
 function on_message(self, messageId, message, sender)
 	if messageId == hash("mine_block") then
 		handle_mine_block(self, messageId, message, sender)
-	elseif messageId == hash("place_block") and message.pressed then
+	elseif messageId == hash("place_block") then
 		handle_place_block(self, messageId, message, sender)
 	end
 end

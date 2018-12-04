@@ -7,7 +7,17 @@ local urls = require "modules.urls"
 -- Helpers --
 -------------
 
-local function change_slot_texture(slotNode, texture)
+local change_slot_texture
+local end_drag
+local get_inventory_switch_index
+local is_inventory_switch_message
+local start_drag
+local switch_selected_inventory_item
+local switch_selected_toolbar_item
+local update_inventory
+local update_toolbar
+
+function change_slot_texture(slotNode, texture)
 	if not texture then
 		texture = constants.NONE.type
 	end
@@ -15,105 +25,7 @@ local function change_slot_texture(slotNode, texture)
 	gui.play_flipbook(slotNode, texture)
 end
 
-local function get_inventory_switch_switch_index(messageId)
-	local baseId = "inventory_switch_"
-	for i = 1, constants.TOOLBAR_MAX_SLOTS do
-		if messageId == hash(baseId .. i) then
-			return i
-		end
-	end
-	return -1
-end
-
-local function is_inventory_switch_message(messageId)
-	local baseId = "inventory_switch_"
-	for i = 1, constants.TOOLBAR_MAX_SLOTS do
-		if messageId == hash(baseId .. i) then
-			return true
-		end
-	end
-	return false
-end
-
-local function switch_selected_inventory_item(self, index)
-	self.selectedInventoryItem = index
-	self.shouldUpdateInventory = true
-	msg.post("/player#player_script", "switch_selected_inventory_item", { inventoryRowAndIndex = {row, index} })
-end
-
-local function switch_selected_toolbar_item(self, index)
-	self.selectedToolbarItem = index
-	self.shouldUpdateToolbar = true
-	msg.post("/player#player_script", "switch_selected_toolbar_item", { toolbarIndex = index })
-end
-
-local function update_inventory(self)
-	gui.set_enabled(gui.get_node("inventory_node"), self.isInventoryEnabled)
-
-	for i = 1, constants.INVENTORY_MAX_SLOTS do
-			local inventoryItem = self.inventory[i]
-			local inventoryNode = gui.get_node(urls.get_inventory_node_url(i))
-			local inventoryTextNode = gui.get_node(urls.get_inventory_text_node_url(i))
-			if inventoryItem and inventoryItem.type ~= constants.NONE.type then
-				gui.set_text(inventoryTextNode, inventoryItem.count)
-				change_slot_texture(inventoryNode, inventoryItem.type)
-			else
-				gui.set_text(inventoryTextNode, "None")
-				change_slot_texture(inventoryNode, constants.NONE.type)
-			end
-			gui.set_color(inventoryNode, constants.INVENTORY_UNSELECTED_COLOR)
-	end
-
-	local selectedInventoryNode = gui.get_node(urls.get_inventory_node_url(self.selectedInventoryItem))
-	gui.set_color(selectedInventoryNode, constants.INVENTORY_SELECTED_COLOR)
-	
-	self.shouldUpdateInventory = false
-end
-
-local function update_toolbar(self)
-	for i, toolbarItem in pairs(self.toolbar) do
-		local toolbarNode = gui.get_node(urls.get_toolbar_node_url(i))
-		local toolbarTextNode = gui.get_node(urls.get_toolbar_text_node_url(i))
-		
-		if toolbarItem and toolbarItem.type ~= constants.NONE.type then
-			gui.set_text(toolbarTextNode, toolbarItem.count)
-			change_slot_texture(toolbarNode, toolbarItem.type)
-		else
-			gui.set_text(toolbarTextNode, "None")
-			change_slot_texture(toolbarNode, constants.NONE.type)
-		end
-		change_slot_texture(toolbarNode, toolbarItem.type)
-		gui.set_color(toolbarNode, constants.TOOLBAR_UNSELECTED_COLOR)
-	end
-
-	local selectedToolbarNode = gui.get_node(urls.get_toolbar_node_url(self.selectedToolbarItem))
-	gui.set_color(selectedToolbarNode, constants.TOOLBAR_SELECTED_COLOR)
-
-	self.shouldUpdateToolbar = false
-end
-
-local function start_drag(self, message)
-	self.isDragging = true
-
-	for i = 1, constants.TOOLBAR_MAX_SLOTS do
-		local toolbarItem = gui.get_node(urls.get_toolbar_text_node_url(i))
-		if gui.pick_node(toolbarItem, message.screen_x, message.screen_y) then
-			self.draggedItem = { startingUiElement = "toolbar", startingIndex = i }
-			break
-		end
-	end
-	if not self.draggedItem then
-		for i = 1, constants.INVENTORY_MAX_SLOTS do
-			local inventoryItem = gui.get_node(urls.get_inventory_node_url(i))
-			if gui.pick_node(inventoryItem, message.screen_x, message.screen_y) then
-				self.draggedItem = { startingUiElement = "inventory", startingIndex = i } 
-				break
-			end
-		end
-	end
-end
-
-local function end_drag(self, message)
+function end_drag(self, message)
 	self.isDragging = false
 
 	local nodeActedUpon = nil
@@ -161,7 +73,7 @@ local function end_drag(self, message)
 				isSameUiElement = self.draggedItem.startingUiElement == "inventory"
 				destinationUiElement = self.inventory
 			end
-			
+
 			if isSameUiElement and pickedIndex == self.draggedItem.startingIndex then
 				shouldSetSelectedNode = true
 			else
@@ -189,6 +101,104 @@ local function end_drag(self, message)
 	self.draggedItem = nil
 end
 
+function get_inventory_switch_index(messageId)
+	local baseId = "inventory_switch_"
+	for i = 1, constants.TOOLBAR_MAX_SLOTS do
+		if messageId == hash(baseId .. i) then
+			return i
+		end
+	end
+	return -1
+end
+
+function is_inventory_switch_message(messageId)
+	local baseId = "inventory_switch_"
+	for i = 1, constants.TOOLBAR_MAX_SLOTS do
+		if messageId == hash(baseId .. i) then
+			return true
+		end
+	end
+	return false
+end
+
+function start_drag(self, message)
+	self.isDragging = true
+
+	for i = 1, constants.TOOLBAR_MAX_SLOTS do
+		local toolbarItem = gui.get_node(urls.get_toolbar_text_node_url(i))
+		if gui.pick_node(toolbarItem, message.screen_x, message.screen_y) then
+			self.draggedItem = { startingUiElement = "toolbar", startingIndex = i }
+			break
+		end
+	end
+	if not self.draggedItem then
+		for i = 1, constants.INVENTORY_MAX_SLOTS do
+			local inventoryItem = gui.get_node(urls.get_inventory_node_url(i))
+			if gui.pick_node(inventoryItem, message.screen_x, message.screen_y) then
+				self.draggedItem = { startingUiElement = "inventory", startingIndex = i } 
+				break
+			end
+		end
+	end
+end
+
+function switch_selected_inventory_item(self, index)
+	self.selectedInventoryItem = index
+	self.shouldUpdateInventory = true
+	msg.post("/player#player_script", "switch_selected_inventory_item", { inventoryRowAndIndex = {row, index} })
+end
+
+function switch_selected_toolbar_item(self, index)
+	self.selectedToolbarItem = index
+	self.shouldUpdateToolbar = true
+	msg.post("/player#player_script", "switch_selected_toolbar_item", { toolbarIndex = index })
+end
+
+function update_inventory(self)
+	gui.set_enabled(gui.get_node("inventory_node"), self.isInventoryEnabled)
+
+	for i = 1, constants.INVENTORY_MAX_SLOTS do
+			local inventoryItem = self.inventory[i]
+			local inventoryNode = gui.get_node(urls.get_inventory_node_url(i))
+			local inventoryTextNode = gui.get_node(urls.get_inventory_text_node_url(i))
+			if inventoryItem and inventoryItem.type ~= constants.NONE.type then
+				gui.set_text(inventoryTextNode, inventoryItem.count)
+				change_slot_texture(inventoryNode, inventoryItem.type)
+			else
+				gui.set_text(inventoryTextNode, "None")
+				change_slot_texture(inventoryNode, constants.NONE.type)
+			end
+			gui.set_color(inventoryNode, constants.INVENTORY_UNSELECTED_COLOR)
+	end
+
+	local selectedInventoryNode = gui.get_node(urls.get_inventory_node_url(self.selectedInventoryItem))
+	gui.set_color(selectedInventoryNode, constants.INVENTORY_SELECTED_COLOR)
+	
+	self.shouldUpdateInventory = false
+end
+
+function update_toolbar(self)
+	for i, toolbarItem in pairs(self.toolbar) do
+		local toolbarNode = gui.get_node(urls.get_toolbar_node_url(i))
+		local toolbarTextNode = gui.get_node(urls.get_toolbar_text_node_url(i))
+		
+		if toolbarItem and toolbarItem.type ~= constants.NONE.type then
+			gui.set_text(toolbarTextNode, toolbarItem.count)
+			change_slot_texture(toolbarNode, toolbarItem.type)
+		else
+			gui.set_text(toolbarTextNode, "None")
+			change_slot_texture(toolbarNode, constants.NONE.type)
+		end
+		change_slot_texture(toolbarNode, toolbarItem.type)
+		gui.set_color(toolbarNode, constants.TOOLBAR_UNSELECTED_COLOR)
+	end
+
+	local selectedToolbarNode = gui.get_node(urls.get_toolbar_node_url(self.selectedToolbarItem))
+	gui.set_color(selectedToolbarNode, constants.TOOLBAR_SELECTED_COLOR)
+
+	self.shouldUpdateToolbar = false
+end
+
 -----------------
 -- End Helpers --
 -----------------
@@ -198,14 +208,21 @@ end
 -- Message Handlers --
 ----------------------
 
-local function handle_inventory_switch(self, messageId, message, sender, switchIndex)
-	local switchIndex = get_inventory_switch_switch_index(messageId)
+local handle_inventory_switch
+local handle_left_click
+local handle_mouse_wheel_down
+local handle_mouse_wheel_up
+local handle_toggle_inventory
+local handle_update_toolbar
+
+function handle_inventory_switch(self, messageId, message, sender, switchIndex)
+	local switchIndex = get_inventory_switch_index(messageId)
 	if switchIndex ~= -1 then
 		switch_selected_toolbar_item(self, switchIndex)
 	end
 end
 
-local function handle_left_click(self, messageId, message, sender)
+function handle_left_click(self, messageId, message, sender)
 	if message.pressed then
 		start_drag(self, message)
 	elseif message.released then
@@ -213,26 +230,30 @@ local function handle_left_click(self, messageId, message, sender)
 	end
 end
 
-local function handle_mouse_wheel_down(self, messageId, message, sender)
+function handle_mouse_wheel_down(self, messageId, message, sender)
 	if self.selectedToolbarItem ~= constants.TOOLBAR_MAX_SLOTS then
 		local index = (self.selectedToolbarItem + 1) % (constants.TOOLBAR_MAX_SLOTS + 1)
 		switch_selected_toolbar_item(self, index)
 	end
 end
 
-local function handle_mouse_wheel_up(self, messageId, message, sender)
+function handle_mouse_wheel_up(self, messageId, message, sender)
 	if self.selectedToolbarItem ~= 1 then
 		local index = (self.selectedToolbarItem - 1 + constants.TOOLBAR_MAX_SLOTS) % constants.TOOLBAR_MAX_SLOTS
 		switch_selected_toolbar_item(self, index)
 	end
 end
 
-local function handle_toggle_inventory(self, messageId, message, sender)
+function handle_toggle_inventory(self, messageId, message, sender)
 	self.isInventoryEnabled = not self.isInventoryEnabled
 	self.shouldUpdateInventory = true
 end
 
-local function handle_update_toolbar(self, messageId, message, sender)
+function handle_update_inventory(self, messageId, message, sender)
+	self.shouldUpdateInventory = true
+end
+
+function handle_update_toolbar(self, messageId, message, sender)
 	self.shouldUpdateToolbar = true
 end
 
@@ -303,6 +324,8 @@ function on_message(self, messageId, message, sender)
 		handle_mouse_wheel_up(self, messageId, message, sender)
 	elseif messageId == hash("toggle_inventory") then
 		handle_toggle_inventory(self, messageId, message, sender)
+	elseif messageId == hash("update_inventory") then
+		handle_update_inventory(self, messageId, message, sender)
 	elseif messageId == hash("update_toolbar") then
 		handle_update_toolbar(self, messageId, message, sender)
 	end

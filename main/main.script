@@ -3,11 +3,25 @@ local config = require "modules.config"
 local constants = require "modules.constants"
 local helpers = require "modules.helpers"
 
+local CAMERA_ID = hash("/camera")
+
 -------------
 -- Helpers --
 -------------
 
-local function is_inventory_switch_action(actionId)
+local apply_config
+local is_inventory_switch_action
+local quit_game
+local send_gui_action
+local send_player_action
+
+function apply_config()
+	defos.set_fullscreen(config.IS_FULLSCREEN)
+	msg.post(CAMERA_ID, "deadzone", config.CAMERA_DEADZONE)
+	msg.post(CAMERA_ID, "zoom_to", config.CAMERA_ZOOM_LEVEL)
+end
+
+function is_inventory_switch_action(actionId)
 	local baseId = "inventory_switch_"
 	for i = 1, constants.TOOLBAR_MAX_SLOTS do
 		if actionId == hash(baseId .. i) then
@@ -17,7 +31,7 @@ local function is_inventory_switch_action(actionId)
 	return false
 end
 
-local function quit_game()
+function quit_game()
 	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name)
 	print("Wrote save file to " .. worldFileName)
 	local minimalWorld = {
@@ -33,18 +47,12 @@ local function quit_game()
 	msg.post("@system:", "exit", { code = 0 })
 end
 
-local function send_player_action(actionId, action)
-	msg.post("/player#player_script", actionId, action)
-end
-
-local function send_gui_action(actionId, action)
+function send_gui_action(actionId, action)
 	msg.post("/ui#ui", actionId, action)
 end
 
-local function apply_config()
-	defos.set_fullscreen(config.IS_FULLSCREEN)
-	msg.post(hash("/camera"), "deadzone", config.CAMERA_DEADZONE)
-	msg.post(hash("/camera"), "zoom_to", config.CAMERA_ZOOM_LEVEL)
+function send_player_action(actionId, action)
+	msg.post("/player#player_script", actionId, action)
 end
 
 -----------------
@@ -56,52 +64,65 @@ end
 -- Action Handlers --
 ---------------------
 
-local function handle_inventory_switch(self, actionId, action)
+local handle_inventory_switch
+local handle_jump
+local handle_left
+local handle_left_click
+local handle_mouse_wheel_down
+local handle_mouse_wheel_up
+local handle_quit
+local handle_right
+local handle_right_click
+local handle_toggle_inventory
+local handle_toggle_fullscreen
+local handle_toggle_profile
+
+function handle_inventory_switch(self, actionId, action)
 	send_gui_action(actionId, action)
 end
 
-local function handle_jump(self, actionId, action)
+function handle_jump(self, actionId, action)
 	send_player_action(actionId, action)
 end
 
-local function handle_left(self, actionId, action)
+function handle_left(self, actionId, action)
 	send_player_action(actionId, action)
 end
 
-local function handle_left_click(self, actionId, action)
+function handle_left_click(self, actionId, action)
 	send_gui_action(actionId, action)
 	send_player_action(actionId, action)
 end
 
-local function handle_mouse_wheel_down(self, actionId, action)
+function handle_mouse_wheel_down(self, actionId, action)
 	send_gui_action(actionId, action)
 end
 
-local function handle_mouse_wheel_up(self, actionId, action)
+function handle_mouse_wheel_up(self, actionId, action)
 	send_gui_action(actionId, action)
 end
 
-local function handle_quit(self, actionId, action)
+function handle_quit(self, actionId, action)
 	quit_game()
 end
 
-local function handle_right(self, actionId, action)
+function handle_right(self, actionId, action)
 	send_player_action(actionId, action)
 end
 
-local function handle_right_click(self, actionId, action)
+function handle_right_click(self, actionId, action)
 	send_player_action(actionId, action)
 end
 
-local function handle_toggle_fullscreen(self, actionId, action)
-
-end
-
-local function handle_toggle_inventory(self, actionId, action)
+function handle_toggle_inventory(self, actionId, action)
 	send_gui_action(actionId, action)
 end
 
-local function handle_toggle_profile(self, actionId, action)
+function handle_toggle_fullscreen(self, actionId, action)
+	defos.set_fullscreen(not defos.is_fullscreen())
+end
+
+function handle_toggle_profile(self, actionId, action)
 	msg.post("@system:", "toggle_profile")
 end
 
@@ -139,10 +160,10 @@ function on_input(self, actionId, action)
 		handle_right(self, actionId, action)
 	elseif actionId == hash("right_click") then
 		handle_right_click(self, actionId, action)
-	elseif actionId == hash("toggle_fullscreen") and action.pressed then
-		handle_toggle_fullscreen(self, actionId, action)
 	elseif actionId == hash("toggle_inventory") and action.pressed then
 		handle_toggle_inventory(self, actionId, action)
+	elseif actionId == hash("toggle_fullscreen") and action.pressed then
+		handle_toggle_fullscreen(self, actionId, action)
 	elseif actionId == hash("toggle_profile") and action.pressed then
 		handle_toggle_profile(self, actionId, action)
 	end

@@ -1,5 +1,6 @@
 local constants = require "modules.constants"
 local platypus = require "platypus.platypus"
+local position_helpers = require "modules.position_helpers"
 local globals = require "modules.globals"
 
 local PLATYPUS_CONFIG = {
@@ -16,11 +17,73 @@ local PLATYPUS_CONFIG = {
 	allow_wall_jump = false
 }
 
+-------------
+-- Helpers --
+-------------
+
+local add_loose_pickup_to_player
+
+function add_loose_pickup_to_player(self, messageId, message, sender)
+	local loosePickup = world:get_loose_pickup(message.other_id)
+	if loosePickup then
+		for i = 1, constants.TOOLBAR_MAX_SLOTS do
+			local toolbarItem = self.toolbar[i]
+			if toolbarItem.count < constants.ALL_ITEMS[loosePickup.type].stackSize then
+				if toolbarItem.type == loosePickup.type  then
+					toolbarItem.count = toolbarItem.count + 1
+					isPickupAdded = true
+					return true
+				elseif toolbarItem.type == constants.NONE.type then
+					toolbarItem.count = 1
+					toolbarItem.type = loosePickup.type
+					isPickupAdded = true
+					msg.post("/ui#ui", "update_toolbar")
+					return true
+				end
+			end
+		end
+		if not isPickupAdded then
+			for i = 1, constants.INVENTORY_MAX_SLOTS do
+				local inventoryItem = self.inventory[i]
+				if inventoryItem.count < constants.ALL_ITEMS[loosePickup.type].stackSize then
+					if inventoryItem.type == loosePickup.type then
+						inventoryItem.count = inventoryItem.count + 1
+						isPickupAdded = true
+						return true
+					elseif inventoryItem.type == constants.NONE.type then
+						inventoryItem.count = 1
+						inventoryItem.type = loosePickup.type
+						isPickupAdded = true
+						msg.post("/ui#ui", "update_inventory")
+						return true
+					end
+				end
+			end
+		end
+	end
+
+	return false
+end
+
+-----------------
+-- End Helpers --
+-----------------
+
+
 ----------------------
 -- Message Handlers --
 ----------------------
 
-local function handle_jump(self, messageId, message, sender)
+local handle_jump
+local handle_left
+local handle_left_click
+local handle_right
+local handle_right_click
+local handle_switch_selected_toolbar_item
+local handle_trigger_response
+local handle_update_toolbar_item
+
+function handle_jump(self, messageId, message, sender)
 	if message.pressed then
 		self.platypus.jump(constants.PLAYER_JUMP_FORCE)
 	elseif message.released then
@@ -28,17 +91,17 @@ local function handle_jump(self, messageId, message, sender)
 	end
 end
 
-local function handle_left(self, messageId, message, sender)
+function handle_left(self, messageId, message, sender)
 	self.platypus.left(constants.PLAYER_VELOCITY.x)
 end
 
-local function handle_left_click(self, messageId, message, sender)
+function handle_left_click(self, messageId, message, sender)
 	if message.pressed then
 		self.isMining = true
 		self.miningStartTime = os.clock()
 	elseif message.released then
 		self.isMining = false
-		self.mininStartTime = nil
+		self.miningStartTime = nil
 	else
 		local miningTime = os.clock() - self.miningStartTime
 		if miningTime >= constants.PLAYER_BASE_MINING_INTERVAL then
@@ -48,22 +111,43 @@ local function handle_left_click(self, messageId, message, sender)
 	end
 end
 
-local function handle_right(self, messageId, message, sender)
+function handle_right(self, messageId, message, sender)
 	self.platypus.right(constants.PLAYER_VELOCITY.x)
 end
 
-local function handle_right_click(self, messageId, message, sender)
-	message.toolbarItem = self.toolbar[self.selectedToolbarItem]
-	if message.toolbarItem.type ~= constants.NONE.type then
-		msg.post("/world#world_script", "place_block", message)
+function handle_right_click(self, messageId, message, sender)
+	if message.pressed then
+		self.isPlacing = true
+		self.placingStartTime = os.clock()
+	elseif message.released then
+		self.isPlacing = false
+		self.placingStartTime = nil
+	end
+	if self.placingStartTime then
+		local placingTime = os.clock() - self.placingStartTime
+		if message.pressed or placingTime >= constants.PLAYER_BASE_PLACING_INTERVAL then
+			self.placingStartTime = os.clock()
+			message.toolbarItem = self.toolbar[self.selectedToolbarItem]
+			if message.toolbarItem.type ~= constants.NONE.type then
+				msg.post("/world#world_script", "place_block", message)
+			end
+		end
 	end
 end
 
-local function handle_switch_selected_toolbar_item(self, messageId, message, sender)
+function handle_switch_selected_toolbar_item(self, messageId, message, sender)
 	self.selectedToolbarItem = message.toolbarIndex
 end
 
-local function handle_update_toolbar_item(self, messageId, message, sender)
+function handle_trigger_response(self, messageId, message, sender)
+	if message.group == hash("pickup") then
+		if add_loose_pickup_to_player(self, messageId, message, sender) then
+			go.delete(message.other_id)
+		end
+	end
+end
+
+function handle_update_toolbar_item(self, messageId, message, sender)
 	if message.count == 0 then
 		message.type = constants.NONE.type
 	end
@@ -85,6 +169,8 @@ function init(self)
 	self.selectedToolbarItem = 1
 	self.isMining = false
 	self.miningStartTime = nil
+	self.placingStartTime = nil
+	self.inventory = globals.get_inventory()
 	self.toolbar = globals.get_toolbar()
 	defos.set_cursor_visible(true)
 end
@@ -108,6 +194,8 @@ function on_message(self, messageId, message, sender)
 		handle_right_click(self, messageId, message, sender)
 	elseif messageId == hash("switch_selected_toolbar_item") then
 		handle_switch_selected_toolbar_item(self, messageId, message, sender)
+	elseif messageId == hash("trigger_response") then
+		handle_trigger_response(self, messageId, message, sender)
 	elseif messageId == hash("update_toolbar_item") then
 		handle_update_toolbar_item(self, messageId, message, sender)
 	end
