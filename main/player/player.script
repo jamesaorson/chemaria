@@ -21,7 +21,9 @@ local PLATYPUS_CONFIG = {
 -- Helpers --
 -------------
 
-local function add_loose_pickup_to_player(self, messageId, message, sender)
+local add_loose_pickup_to_player
+
+function add_loose_pickup_to_player(self, messageId, message, sender)
 	self.toolbar[1].count = self.toolbar[1].count + 1
 	msg.post("/ui#ui", "update_toolbar")
 end
@@ -35,7 +37,16 @@ end
 -- Message Handlers --
 ----------------------
 
-local function handle_jump(self, messageId, message, sender)
+local handle_jump
+local handle_left
+local handle_left_click
+local handle_right
+local handle_right_click
+local handle_switch_selected_toolbar_item
+local handle_trigger_response
+local handle_update_toolbar_item
+
+function handle_jump(self, messageId, message, sender)
 	if message.pressed then
 		self.platypus.jump(constants.PLAYER_JUMP_FORCE)
 	elseif message.released then
@@ -43,11 +54,11 @@ local function handle_jump(self, messageId, message, sender)
 	end
 end
 
-local function handle_left(self, messageId, message, sender)
+function handle_left(self, messageId, message, sender)
 	self.platypus.left(constants.PLAYER_VELOCITY.x)
 end
 
-local function handle_left_click(self, messageId, message, sender)
+function handle_left_click(self, messageId, message, sender)
 	if message.pressed then
 		self.isMining = true
 		self.miningStartTime = os.clock()
@@ -63,11 +74,11 @@ local function handle_left_click(self, messageId, message, sender)
 	end
 end
 
-local function handle_right(self, messageId, message, sender)
+function handle_right(self, messageId, message, sender)
 	self.platypus.right(constants.PLAYER_VELOCITY.x)
 end
 
-local function handle_right_click(self, messageId, message, sender)
+function handle_right_click(self, messageId, message, sender)
 	if message.pressed then
 		self.isPlacing = true
 		self.placingStartTime = os.clock()
@@ -87,18 +98,18 @@ local function handle_right_click(self, messageId, message, sender)
 	end
 end
 
-local function handle_switch_selected_toolbar_item(self, messageId, message, sender)
+function handle_switch_selected_toolbar_item(self, messageId, message, sender)
 	self.selectedToolbarItem = message.toolbarIndex
 end
 
-local function handle_trigger_response(self, messageId, message, sender)
+function handle_trigger_response(self, messageId, message, sender)
 	if message.group == hash("pickup") then
 		add_loose_pickup_to_player(self, messageId, message, sender)
 		go.delete(message.other_id)
 	end
 end
 
-local function handle_update_toolbar_item(self, messageId, message, sender)
+function handle_update_toolbar_item(self, messageId, message, sender)
 	if message.count == 0 then
 		message.type = constants.NONE.type
 	end

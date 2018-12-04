@@ -14,7 +14,47 @@ world = World:new()
 -- Helpers --
 -------------
 
-local function mine_block(blockUrl, message)
+local create_block
+local create_blocks_from_world
+local mine_block
+local get_saved_world
+local initialize_from_saved_world
+local initialize_new_world
+local initialize_world_chunks
+
+function create_block(self, block)
+	local truePosition = position_helpers.block_to_screen_position(block)
+	local rotation = nil
+	local properties = {}
+	local scale = 1.0
+
+	if truePosition then
+		local factoryBlock = factory.create(urls.get_factory_url(block.type), truePosition, rotation, properties, scale)
+		block.url = factoryBlock
+		local blockChunk = world:get_chunk_at_position(block.chunk)
+		if blockChunk then
+			blockChunk:add_block(block)
+		end
+
+		return true
+	else
+		return false
+	end
+end
+
+function create_blocks_from_world(self)
+	for chunkX, chunkXColumn in pairs(world.chunks) do
+		for chunkY, chunk in pairs(chunkXColumn) do
+			for blockX, blockXColumn in pairs(chunk.blocks) do
+				for blockY, block in pairs(blockXColumn) do
+					create_block(self, block)
+				end
+			end
+		end
+	end
+end
+
+function mine_block(blockUrl, message)
 	go.delete(blockUrl)
 	
 	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
@@ -35,45 +75,13 @@ local function mine_block(blockUrl, message)
 	world:add_loose_pickup(block)
 end
 
-local function create_block(self, block)
-	local truePosition = position_helpers.block_to_screen_position(block)
-	local rotation = nil
-	local properties = {}
-	local scale = 1.0
-
-	if truePosition then
-		local factoryBlock = factory.create(urls.get_factory_url(block.type), truePosition, rotation, properties, scale)
-		block.url = factoryBlock
-		local blockChunk = world:get_chunk_at_position(block.chunk)
-		if blockChunk then
-			blockChunk:add_block(block)
-		end
-
-		return true
-	else
-		return false
-	end
-end
-
-local function create_blocks_from_world(self)
-	for chunkX, chunkXColumn in pairs(world.chunks) do
-		for chunkY, chunk in pairs(chunkXColumn) do
-			for blockX, blockXColumn in pairs(chunk.blocks) do
-				for blockY, block in pairs(blockXColumn) do
-					create_block(self, block)
-				end
-			end
-		end
-	end
-end
-
-local function get_saved_world()
+function get_saved_world()
 	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name)
 	local savedWorld = sys.load(worldFileName)
 	return savedWorld
 end
 
-local function initialize_from_saved_world(savedWorld)
+function initialize_from_saved_world(savedWorld)
 	for chunkX, chunkXColumn in pairs(savedWorld.chunks) do
 		for chunkY, chunk in pairs(chunkXColumn) do
 			local worldChunk = world:get_chunk_at_position(chunk.position)
@@ -90,7 +98,7 @@ local function initialize_from_saved_world(savedWorld)
 	end
 end
 
-local function initialize_new_world()
+function initialize_new_world()
 	for chunkX, chunkXColumn in pairs(world.chunks) do
 		for chunkY, chunk in pairs(chunkXColumn) do
 			local blockType = nil
@@ -113,7 +121,7 @@ local function initialize_new_world()
 	end
 end
 
-local function initialize_world_chunks()
+function initialize_world_chunks()
 	for x = -constants.CHUNK_MAX.x, constants.CHUNK_MAX.x do
 		for y = -constants.CHUNK_MAX.y, constants.CHUNK_MAX.y do
 			local chunkToAdd = Chunk:new()
@@ -133,7 +141,10 @@ end
 -- Message Handlers --
 ----------------------
 
-local function handle_mine_block(self, messageId, message, sender)
+local handle_mine_block
+local handle_place_block
+
+function handle_mine_block(self, messageId, message, sender)
 	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
 	local miningBlockPosition = position_helpers.screen_to_block_position(screenPosition)
 	local miningChunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
@@ -147,7 +158,7 @@ local function handle_mine_block(self, messageId, message, sender)
 	end
 end
 
-local function handle_place_block(self, messageId, message, sender)
+function handle_place_block(self, messageId, message, sender)
 	local toolbarItem = message.toolbarItem
 	if toolbarItem and toolbarItem.type ~= constants.NONE.type then
 		local messagePosition = vmath.vector3(message.screen_x, message.screen_y, 0)
