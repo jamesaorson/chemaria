@@ -34,10 +34,24 @@ M.INVENTORY_UNSELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_rang
 -- Item --
 ----------
 
-M.NONE = { type = "none" }
+M.NONE = {
+	type = "none"
+}
 
-M.DIRT = { type = "dirt" }
-M.STONE = { type = "stone" }
+M.DIRT = {
+	stackSize = 64,
+	type = "dirt"
+}
+M.STONE = {
+	stackSize = 64,
+	type = "stone"
+}
+
+M.ALL_ITEMS = {
+	dirt = M.DIRT,
+	none = M.NONE,
+	stone = M.STONE
+}
 
 --------------
 -- End Item --
