@@ -1,3 +1,4 @@
 .vs/
 /.internal
 /build
+/release
