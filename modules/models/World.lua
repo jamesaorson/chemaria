@@ -1,5 +1,6 @@
 World = {
-	chunks = {}
+	chunks = {},
+	loosePickups = {}
 }
 
 function World:new()
@@ -7,6 +8,7 @@ function World:new()
 	setmetatable(world, self)
 	self.__index = self
 	world.chunks = {}
+	world.loosePickups = {}
 	return world
 end
 
@@ -18,7 +20,13 @@ function World:add_chunk(chunkToAdd)
 		self.chunks[chunkToAdd.position.x] = {}
 	end
 	self.chunks[chunkToAdd.position.x][chunkToAdd.position.y] = chunkToAdd
-	chunkToAdd.world = self
+end
+
+function World:add_loose_pickup(loosePickup)
+	if not self.loosePickups then
+		self.loosePickups = {}
+	end
+	self.loosePickups[loosePickup.id] = loosePickup
 end
 
 function World:get_chunk_at_position(position)
@@ -26,6 +34,10 @@ function World:get_chunk_at_position(position)
 		return self.chunks[position.x][position.y]
 	end
 	return nil
+end
+
+function World:get_loose_pickup(loosePickupId)
+	return self.loosePickups[loosePickupId]
 end
 
 function World:remove_chunk(chunkToRemove)

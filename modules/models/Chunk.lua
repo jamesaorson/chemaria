@@ -2,8 +2,7 @@ local constants = require "modules.constants"
 
 Chunk = {
 	blocks = {},
-	position = vmath.vector3(),
-	world = nil
+	position = vmath.vector3()
 }
 
 function Chunk:new()
@@ -31,7 +30,7 @@ function Chunk:add_block(blockToAdd)
 		self.blocks[blockToAdd.position.x] = {}
 	end
 	self.blocks[blockToAdd.position.x][blockToAdd.position.y] = blockToAdd
-	blockToAdd.chunk = self
+	blockToAdd.chunk = self.position
 end
 function Chunk:get_block_at_position(position)
 	if self.blocks[position.x] then

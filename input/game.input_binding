@@ -35,8 +35,8 @@ key_trigger {
   action: "right"
 }
 key_trigger {
-  input: KEY_TILDE
-  action: "toggle_profiler"
+  input: KEY_BACKQUOTE
+  action: "toggle_profile"
 }
 key_trigger {
   input: KEY_SPACE
@@ -85,6 +85,10 @@ key_trigger {
 key_trigger {
   input: KEY_0
   action: "inventory_switch_10"
+}
+key_trigger {
+  input: KEY_I
+  action: "toggle_inventory"
 }
 mouse_trigger {
   input: MOUSE_BUTTON_LEFT

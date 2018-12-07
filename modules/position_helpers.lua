@@ -4,9 +4,22 @@ local orthographic = require "orthographic.camera"
 
 local M = {}
 
+--------------------------
+-- Block Transformation --
+--------------------------
+
 function M.block_to_screen_position(block)
-	return vmath.vector3(block.position.x + (block.chunk.position.x) * constants.CHUNK_SIZE, block.position.y + (block.chunk.position.y) * 12, 0) * constants.BLOCK_SIZE
+	return vmath.vector3(block.position.x + (block.chunk.x) * constants.CHUNK_SIZE, block.position.y + (block.chunk.y) * constants.CHUNK_SIZE, 0) * constants.BLOCK_SIZE
 end
+
+------------------------------
+-- End Block Transformation --
+------------------------------
+
+
+---------------------------
+-- Screen Transformation --
+---------------------------
 
 function M.screen_to_block_position(position)
 	position = orthographic.screen_to_world(hash("/camera"), position)
@@ -26,5 +39,9 @@ function M.screen_to_chunk_position(position)
 		0)
 	return chunkPosition
 end
+
+-------------------------------
+-- End Screen Transformation --
+-------------------------------
 
 return M
