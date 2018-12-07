@@ -90,6 +90,7 @@ function handle_left(self, actionId, action)
 end
 
 function handle_left_click(self, actionId, action)
+	pprint(action)
 	send_gui_action(actionId, action)
 	send_player_action(actionId, action)
 end

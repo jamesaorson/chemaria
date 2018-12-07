@@ -18,6 +18,17 @@ end
 
 
 ---------------------------
+-- Player Transformation --
+---------------------------
+
+function M.player_to_screen_position(playerPosition)
+	local cameraPosition = go.get_position(hash("/camera"))
+	local screenPosition = cameraPosition + playerPosition
+
+	return screenPosition
+end
+
+---------------------------
 -- Screen Transformation --
 ---------------------------
 

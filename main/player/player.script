@@ -2,6 +2,7 @@ local constants = require "modules.constants"
 local platypus = require "platypus.platypus"
 local position_helpers = require "modules.position_helpers"
 local globals = require "modules.globals"
+local orthographic = require "orthographic.camera"
 
 local PLATYPUS_CONFIG = {
 	collisions = {
@@ -22,6 +23,7 @@ local PLATYPUS_CONFIG = {
 -------------
 
 local add_loose_pickup_to_player
+local set_current_chunk
 
 function add_loose_pickup_to_player(self, messageId, message, sender)
 	local loosePickup = world:get_loose_pickup(message.other_id)
@@ -63,6 +65,13 @@ function add_loose_pickup_to_player(self, messageId, message, sender)
 	end
 
 	return false
+end
+
+function set_current_chunk(self)
+	local screenPosition = position_helpers.player_to_screen_position(go.get_position())
+	local chunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
+
+	self.currentChunk = world:get_chunk_at_position(chunkPosition)
 end
 
 -----------------
@@ -165,6 +174,7 @@ end
 ----------------------
 
 function init(self)
+	self.currentChunk = nil
 	self.platypus = platypus.create(PLATYPUS_CONFIG)
 	self.selectedToolbarItem = 1
 	self.isMining = false
@@ -177,6 +187,8 @@ end
 
 function update(self, dt)
 	self.platypus.update(dt)
+
+	set_current_chunk(self)
 end
 
 function on_message(self, messageId, message, sender)
