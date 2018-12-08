@@ -18,48 +18,41 @@ local PLATYPUS_CONFIG = {
 	allow_wall_jump = false
 }
 
+currentChunk = nil
+previousChunk = nil
+
 -------------
 -- Helpers --
 -------------
 
 local add_loose_pickup_to_player
-local set_current_chunk
+local update_current_chunk
 
 function add_loose_pickup_to_player(self, messageId, message, sender)
 	local loosePickup = world:get_loose_pickup(message.other_id)
 	if loosePickup then
 		for i = 1, constants.TOOLBAR_MAX_SLOTS do
 			local toolbarItem = self.toolbar[i]
-			if toolbarItem.count < constants.ALL_ITEMS[loosePickup.type].stackSize then
-				if toolbarItem.type == loosePickup.type  then
-					toolbarItem.count = toolbarItem.count + 1
-					isPickupAdded = true
-					return true
-				elseif toolbarItem.type == constants.NONE.type then
-					toolbarItem.count = 1
-					toolbarItem.type = loosePickup.type
-					isPickupAdded = true
-					msg.post("/ui#ui", "update_toolbar")
-					return true
-				end
+			if toolbarItem.type == loosePickup.type and toolbarItem.count < constants.ALL_ITEMS[loosePickup.type].stackSize then
+				toolbarItem.count = toolbarItem.count + 1
+				return true
+			elseif toolbarItem.type == constants.NONE.type then
+				toolbarItem.count = 1
+				toolbarItem.type = loosePickup.type
+				msg.post("/ui#ui", "update_toolbar")
+				return true
 			end
 		end
-		if not isPickupAdded then
-			for i = 1, constants.INVENTORY_MAX_SLOTS do
-				local inventoryItem = self.inventory[i]
-				if inventoryItem.count < constants.ALL_ITEMS[loosePickup.type].stackSize then
-					if inventoryItem.type == loosePickup.type then
-						inventoryItem.count = inventoryItem.count + 1
-						isPickupAdded = true
-						return true
-					elseif inventoryItem.type == constants.NONE.type then
-						inventoryItem.count = 1
-						inventoryItem.type = loosePickup.type
-						isPickupAdded = true
-						msg.post("/ui#ui", "update_inventory")
-						return true
-					end
-				end
+		for i = 1, constants.INVENTORY_MAX_SLOTS do
+			local inventoryItem = self.inventory[i]
+			if inventoryItem.type == loosePickup.type and inventoryItem.count < constants.ALL_ITEMS[loosePickup.type].stackSize then
+				inventoryItem.count = inventoryItem.count + 1
+				return true
+			elseif inventoryItem.type == constants.NONE.type then
+				inventoryItem.count = 1
+				inventoryItem.type = loosePickup.type
+				msg.post("/ui#ui", "update_inventory")
+				return true
 			end
 		end
 	end
@@ -67,11 +60,16 @@ function add_loose_pickup_to_player(self, messageId, message, sender)
 	return false
 end
 
-function set_current_chunk(self)
+function update_current_chunk(self)
 	local screenPosition = position_helpers.player_to_screen_position(go.get_position())
 	local chunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
 
-	self.currentChunk = world:get_chunk_at_position(chunkPosition)
+	local chunk = world:get_chunk_at_position(chunkPosition)
+	if currentChunk ~= chunk then
+		previousChunk = currentChunk
+		currentChunk = chunk
+		msg.post("/world#world_script", "update_chunk_render")
+	end
 end
 
 -----------------
@@ -174,7 +172,7 @@ end
 ----------------------
 
 function init(self)
-	self.currentChunk = nil
+	currentChunk = nil
 	self.platypus = platypus.create(PLATYPUS_CONFIG)
 	self.selectedToolbarItem = 1
 	self.isMining = false
@@ -188,7 +186,7 @@ end
 function update(self, dt)
 	self.platypus.update(dt)
 
-	set_current_chunk(self)
+	update_current_chunk(self)
 end
 
 function on_message(self, messageId, message, sender)

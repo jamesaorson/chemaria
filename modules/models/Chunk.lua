@@ -2,6 +2,7 @@ local constants = require "modules.constants"
 
 Chunk = {
 	blocks = {},
+	isRendered = false,
 	position = vmath.vector3()
 }
 
@@ -18,6 +19,7 @@ function Chunk:new()
 			chunk.blocks[x][y] = nil
 		end
 	end
+	Chunk.isRendered = false
 	chunk.position = vmath.vector3()
 	return chunk
 end

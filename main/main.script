@@ -17,6 +17,9 @@ local send_player_action
 
 function apply_config()
 	defos.set_fullscreen(config.IS_FULLSCREEN)
+
+	constants.SCREEN.x, constants.SCREEN.y, constants.SCREEN.w, constants.SCREEN.h = defos.get_window_size()
+
 	msg.post(CAMERA_ID, "deadzone", config.CAMERA_DEADZONE)
 	msg.post(CAMERA_ID, "zoom_to", config.CAMERA_ZOOM_LEVEL)
 end
@@ -90,7 +93,6 @@ function handle_left(self, actionId, action)
 end
 
 function handle_left_click(self, actionId, action)
-	pprint(action)
 	send_gui_action(actionId, action)
 	send_player_action(actionId, action)
 end
@@ -138,7 +140,7 @@ end
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
-	self.game_mode = "play"
+	self.game_mode = "play"	
 	apply_config()
 end
 

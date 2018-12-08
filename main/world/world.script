@@ -43,11 +43,17 @@ function create_block(self, block)
 end
 
 function create_blocks_from_world(self)
-	for chunkX, chunkXColumn in pairs(world.chunks) do
-		for chunkY, chunk in pairs(chunkXColumn) do
-			for blockX, blockXColumn in pairs(chunk.blocks) do
-				for blockY, block in pairs(blockXColumn) do
-					create_block(self, block)
+	if currentChunk then
+		for chunkX = currentChunk.position.x - constants.RENDER_DISTANCE, currentChunk.position.x + constants.RENDER_DISTANCE do
+			for chunkY = currentChunk.position.y - constants.RENDER_DISTANCE, currentChunk.position.y + constants.RENDER_DISTANCE do
+				local chunk = world:get_chunk_at_position(vmath.vector3(chunkX, chunkY, 0))
+				if chunk and not chunk.isRendered then
+					for blockX, blockXColumn in pairs(chunk.blocks) do
+						for blockY, block in pairs(blockXColumn) do
+							create_block(self, block)
+						end
+					end
+					chunk.isRendered = true
 				end
 			end
 		end
@@ -143,6 +149,7 @@ end
 
 local handle_mine_block
 local handle_place_block
+local handle_update_chunk_render
 
 function handle_mine_block(self, messageId, message, sender)
 	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
@@ -181,6 +188,11 @@ function handle_place_block(self, messageId, message, sender)
 	end
 end
 
+function handle_update_chunk_render(self, messageId, message, sender)
+	--pprint(currentChunk)
+	create_blocks_from_world(self)
+end
+
 --------------------------
 -- End Message Handlers --
 --------------------------
@@ -206,6 +218,8 @@ function on_message(self, messageId, message, sender)
 		handle_mine_block(self, messageId, message, sender)
 	elseif messageId == hash("place_block") then
 		handle_place_block(self, messageId, message, sender)
+	elseif messageId == hash("update_chunk_render") then
+		handle_update_chunk_render(self, messageId, message, sender)
 	end
 end
 

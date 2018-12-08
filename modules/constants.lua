@@ -13,6 +13,22 @@ M.CAMERA_ID = hash("/camera")
 ----------------
 
 
+-----------------
+-- Screen Size --
+-----------------
+
+M.SCREEN = {
+	x = 0,
+	y = 0,
+	w = 0,
+	h = 0
+}
+
+---------------------
+-- End Screen Size --
+---------------------
+
+
 ---------------
 -- Inventory --
 ---------------
@@ -107,6 +123,7 @@ M.TOOLBAR_UNSELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(
 M.BLOCK_SIZE = 32
 M.CHUNK_MAX = vmath.vector3(10, 10, 0)
 M.CHUNK_SIZE = 12
+M.RENDER_DISTANCE = 1
 
 ---------------
 -- End World --
