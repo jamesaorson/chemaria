@@ -8,7 +8,7 @@ require "modules.models.Block"
 require "modules.models.Chunk"
 require "modules.models.World"
 
-world = World:new()
+world = {}
 
 -------------
 -- Helpers --
@@ -31,9 +31,9 @@ function create_block(self, block)
 	if truePosition then
 		local factoryBlock = factory.create(urls.get_factory_url(block.type), truePosition, rotation, properties, scale)
 		block.url = factoryBlock
-		local blockChunk = world:get_chunk_at_position(block.chunk)
+		local blockChunk = World.get_chunk_at_position(world, block.chunk)
 		if blockChunk then
-			blockChunk:add_block(block)
+			Chunk.add_block(blockChunk, block)
 		end
 
 		return true
@@ -46,7 +46,7 @@ function create_blocks_from_world(self)
 	if currentChunk then
 		for chunkX = currentChunk.position.x - constants.RENDER_DISTANCE, currentChunk.position.x + constants.RENDER_DISTANCE do
 			for chunkY = currentChunk.position.y - constants.RENDER_DISTANCE, currentChunk.position.y + constants.RENDER_DISTANCE do
-				local chunk = world:get_chunk_at_position(vmath.vector3(chunkX, chunkY, 0))
+				local chunk = World.get_chunk_at_position(world, vmath.vector3(chunkX, chunkY, 0))
 				if chunk and not chunk.isRendered then
 					for blockX, blockXColumn in pairs(chunk.blocks) do
 						for blockY, block in pairs(blockXColumn) do
@@ -67,8 +67,8 @@ function mine_block(blockUrl, message)
 	local chunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
 	local blockPosition = position_helpers.screen_to_block_position(screenPosition)
 	
-	local chunk = world:get_chunk_at_position(chunkPosition)
-	local block = chunk:get_block_at_position(blockPosition)
+	local chunk = World.get_chunk_at_position(world, chunkPosition)
+	local block = Chunk.get_block_at_position(chunk, blockPosition)
 
 	local truePosition = position_helpers.block_to_screen_position(block)
 	truePosition.x = truePosition.x + math.random(-8, 8)
@@ -78,7 +78,7 @@ function mine_block(blockUrl, message)
 	
 	local loosePickupId = factory.create(urls.get_pickup_factory_url(block.type), truePosition, rotation, properties, scale)
 	block.id = loosePickupId
-	world:add_loose_pickup(block)
+	World.add_loose_pickup(world, block)
 end
 
 function get_saved_world()
@@ -90,14 +90,11 @@ end
 function initialize_from_saved_world(savedWorld)
 	for chunkX, chunkXColumn in pairs(savedWorld.chunks) do
 		for chunkY, chunk in pairs(chunkXColumn) do
-			local worldChunk = world:get_chunk_at_position(chunk.position)
+			local worldChunk = World.get_chunk_at_position(world, chunk.position)
 
 			for blockX, blockXColumn in pairs(chunk.blocks) do
 				for blockY, block in pairs(blockXColumn) do
-					local blockToInsert = Block:new()
-					blockToInsert.position = block.position
-					blockToInsert.type = block.type
-					worldChunk:add_block(blockToInsert)
+					Chunk.add_block(worldChunk, block)
 				end
 			end
 		end
@@ -116,10 +113,11 @@ function initialize_new_world()
 			if blockType and chunk.position.x > -5 and chunk.position.x < 5 then
 				for y = 0, constants.CHUNK_SIZE - 1 do
 					for x = 0, constants.CHUNK_SIZE - 1 do
-						local blockToInsert = Block:new()
+						local blockToInsert = {}
 						blockToInsert.position = vmath.vector3(x, y, 0)
 						blockToInsert.type = blockType
-						chunk:add_block(blockToInsert)
+						
+						Chunk.add_block(chunk, blockToInsert)
 					end
 				end
 			end
@@ -130,10 +128,11 @@ end
 function initialize_world_chunks()
 	for x = -constants.CHUNK_MAX.x, constants.CHUNK_MAX.x do
 		for y = -constants.CHUNK_MAX.y, constants.CHUNK_MAX.y do
-			local chunkToAdd = Chunk:new()
-			chunkToAdd.position = vmath.vector3(x, y, 0)
+			local chunkToAdd = {}
 			chunkToAdd.blocks = {}
-			world:add_chunk(chunkToAdd)
+			chunkToAdd.position = vmath.vector3(x, y, 0)
+			
+			World.add_chunk(world, chunkToAdd)
 		end
 	end
 end
@@ -155,12 +154,12 @@ function handle_mine_block(self, messageId, message, sender)
 	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
 	local miningBlockPosition = position_helpers.screen_to_block_position(screenPosition)
 	local miningChunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
-	local chunk = world:get_chunk_at_position(miningChunkPosition)
+	local chunk = World.get_chunk_at_position(world, miningChunkPosition)
 	if chunk then
 		local block = chunk:get_block_at_position(miningBlockPosition)
 		if block then
 			mine_block(block.url, message)
-			chunk:remove_block_at_position(miningBlockPosition)
+			Chunk.remove_block_at_position(chunk, miningBlockPosition)
 		end
 	end
 end
@@ -170,10 +169,10 @@ function handle_place_block(self, messageId, message, sender)
 	if toolbarItem and toolbarItem.type ~= constants.NONE.type then
 		local messagePosition = vmath.vector3(message.screen_x, message.screen_y, 0)
 		local chunkPosition = position_helpers.screen_to_chunk_position(messagePosition)
-		local chunk = world:get_chunk_at_position(chunkPosition)
+		local chunk = World.get_chunk_at_position(world, chunkPosition)
 		if chunk then
 			local blockPosition = position_helpers.screen_to_block_position(messagePosition)
-			if not chunk:get_block_at_position(blockPosition) then
+			if not Chunk.get_block_at_position(chunk, blockPosition) then
 				local block = {
 					chunk = chunk.position,
 					position = blockPosition,
@@ -189,7 +188,6 @@ function handle_place_block(self, messageId, message, sender)
 end
 
 function handle_update_chunk_render(self, messageId, message, sender)
-	--pprint(currentChunk)
 	create_blocks_from_world(self)
 end
 

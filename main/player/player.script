@@ -4,6 +4,10 @@ local position_helpers = require "modules.position_helpers"
 local globals = require "modules.globals"
 local orthographic = require "orthographic.camera"
 
+require "modules.models.Block"
+require "modules.models.Chunk"
+require "modules.models.World"
+
 local PLATYPUS_CONFIG = {
 	collisions = {
 		separation = platypus.SEPARATION_SHAPES,
@@ -29,7 +33,7 @@ local add_loose_pickup_to_player
 local update_current_chunk
 
 function add_loose_pickup_to_player(self, messageId, message, sender)
-	local loosePickup = world:get_loose_pickup(message.other_id)
+	local loosePickup = World.get_loose_pickup(world, message.other_id)
 	if loosePickup then
 		for i = 1, constants.TOOLBAR_MAX_SLOTS do
 			local toolbarItem = self.toolbar[i]
@@ -64,7 +68,7 @@ function update_current_chunk(self)
 	local screenPosition = position_helpers.player_to_screen_position(go.get_position())
 	local chunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
 
-	local chunk = world:get_chunk_at_position(chunkPosition)
+	local chunk = World.get_chunk_at_position(world, chunkPosition)
 	if currentChunk ~= chunk then
 		previousChunk = currentChunk
 		currentChunk = chunk
