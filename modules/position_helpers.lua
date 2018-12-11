@@ -22,8 +22,9 @@ end
 ---------------------------
 
 function M.player_to_screen_position(playerPosition)
-	print(playerPosition)
-	return orthographic.world_to_screen(constants.CAMERA_ID, playerPosition)
+	local cameraPosition = go.get_position(constants.CAMERA_ID)
+	local screenPosition = orthographic.world_to_screen(constants.CAMERA_ID, cameraPosition)
+	return screenPosition
 end
 
 ---------------------------

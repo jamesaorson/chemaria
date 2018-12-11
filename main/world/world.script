@@ -61,15 +61,11 @@ function create_blocks_from_world(self)
 				end
 			end
 			local unrenderLookup = Set.subtraction(chunksToUnrender, chunksToRender, "position")
-			--pprint(chunksToRender)
-			--pprint(unrenderLookup)
 
-			local count = 0
 			for i, chunkPosition in pairs(chunksToUnrender) do
 				if unrenderLookup[tostring(chunkPosition)] then
 					local chunkToUnrender = World.get_chunk_at_position(world, chunkPosition)
 					if chunkToUnrender then
-						count = count + 1
 						for blockX, blockXColumn in pairs(chunkToUnrender.blocks) do
 							for blockY, block in pairs(blockXColumn) do
 								local block = Chunk.get_block_at_position(chunkToUnrender, vmath.vector3(blockX, blockY, 0))
@@ -82,8 +78,6 @@ function create_blocks_from_world(self)
 					end
 				end
 			end
-			--print("Delete " .. count)
-			--print()
 		end
 
 		for i, chunkPosition in pairs(chunksToRender) do
@@ -145,9 +139,9 @@ function initialize_new_world()
 	for chunkX, chunkXColumn in pairs(world.chunks) do
 		for chunkY, chunk in pairs(chunkXColumn) do
 			local blockType = nil
-			if chunk.position.y == 0 then
+			if chunk.position.y <= 0 and chunk.position.y >= -1 then
 				blockType = constants.DIRT.type
-			elseif chunk.position.y < 0 and chunk.position.y > -constants.CHUNK_MAX.y / 2 then
+			elseif chunk.position.y < -1 then
 				blockType = constants.STONE.type
 			end
 			if blockType then
@@ -166,8 +160,8 @@ function initialize_new_world()
 end
 
 function initialize_world_chunks()
-	for x = -constants.CHUNK_MAX.x, constants.CHUNK_MAX.x do
-		for y = -constants.CHUNK_MAX.y, constants.CHUNK_MAX.y do
+	for x = -constants.WORLD_DIMENSIONS.x, constants.WORLD_DIMENSIONS.x do
+		for y = -constants.WORLD_DIMENSIONS.y, constants.WORLD_DIMENSIONS.y do
 			local chunkToAdd = {}
 			chunkToAdd.blocks = {}
 			chunkToAdd.position = vmath.vector3(x, y, 0)

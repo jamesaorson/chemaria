@@ -87,7 +87,7 @@ key_trigger {
   action: "inventory_switch_10"
 }
 key_trigger {
-  input: KEY_I
+  input: KEY_E
   action: "toggle_inventory"
 }
 mouse_trigger {

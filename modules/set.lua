@@ -21,20 +21,14 @@ end
 
 function Set.subtraction(a, b, comparisonKey)
 	local result = {}
-	local count = 0
 	for key, value in pairs(a) do
 		result[key] = value
-		count = count + 1
 	end
-	--print(count)
-	count = 0
 	for key, value in pairs(b) do
 		if result[key] then
 			result[key] = nil
-			count = count + 1
 		end
 	end
-	--print(count)
-	--print()
+	
 	return result
 end

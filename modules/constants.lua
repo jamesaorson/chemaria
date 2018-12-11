@@ -62,7 +62,7 @@ M.ALL_ITEMS = {
 -- Platypus --
 --------------
 
-M.GRAVITY = -0
+M.GRAVITY = -800
 
 ------------------
 -- End Platypus --
@@ -121,9 +121,9 @@ M.TOOLBAR_UNSELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(
 -----------
 
 M.BLOCK_SIZE = 32
-M.CHUNK_MAX = vmath.vector3(100, 100, 0)
+M.WORLD_DIMENSIONS = vmath.vector3(100, 100, 0)
 M.CHUNK_SIZE = 12
-M.RENDER_DISTANCE = 2
+M.RENDER_DISTANCE = 3
 
 ---------------
 -- End World --
