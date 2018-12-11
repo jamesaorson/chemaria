@@ -1,68 +1,63 @@
+local config = require "modules.config"
 local constants = require "modules.constants"
+local globals = require "modules.globals"
+local orthographic = require "orthographic.camera"
 local platypus = require "platypus.platypus"
 local position_helpers = require "modules.position_helpers"
-local globals = require "modules.globals"
 
-local PLATYPUS_CONFIG = {
-	collisions = {
-		separation = platypus.SEPARATION_SHAPES,
-		groups = {
-			[hash("block")] = platypus.DIR_ALL
-		},
-		left = constants.PLAYER_WIDTH / 2, right = constants.PLAYER_WIDTH / 2, top = constants.PLAYER_HEIGHT / 2, bottom = constants.PLAYER_HEIGHT / 2
-	},
-	gravity = constants.GRAVITY,
-	max_velocity = constants.PLAYER_MAX_VELOCITY,
-	allow_double_jump = true,
-	allow_wall_jump = false
-}
+require "modules.models.Block"
+require "modules.models.Chunk"
+require "modules.models.World"
 
 -------------
 -- Helpers --
 -------------
 
 local add_loose_pickup_to_player
+local update_current_chunk
 
 function add_loose_pickup_to_player(self, messageId, message, sender)
-	local loosePickup = world:get_loose_pickup(message.other_id)
+	local loosePickup = World.get_loose_pickup(world, message.other_id)
 	if loosePickup then
 		for i = 1, constants.TOOLBAR_MAX_SLOTS do
 			local toolbarItem = self.toolbar[i]
-			if toolbarItem.count < constants.ALL_ITEMS[loosePickup.type].stackSize then
-				if toolbarItem.type == loosePickup.type  then
-					toolbarItem.count = toolbarItem.count + 1
-					isPickupAdded = true
-					return true
-				elseif toolbarItem.type == constants.NONE.type then
-					toolbarItem.count = 1
-					toolbarItem.type = loosePickup.type
-					isPickupAdded = true
-					msg.post("/ui#ui", "update_toolbar")
-					return true
-				end
+			if toolbarItem.type == loosePickup.type and toolbarItem.count < constants.ALL_ITEMS[loosePickup.type].stackSize then
+				toolbarItem.count = toolbarItem.count + 1
+				return true
+			elseif toolbarItem.type == constants.NONE.type then
+				toolbarItem.count = 1
+				toolbarItem.type = loosePickup.type
+				msg.post("/ui#ui", "update_toolbar")
+				return true
 			end
 		end
-		if not isPickupAdded then
-			for i = 1, constants.INVENTORY_MAX_SLOTS do
-				local inventoryItem = self.inventory[i]
-				if inventoryItem.count < constants.ALL_ITEMS[loosePickup.type].stackSize then
-					if inventoryItem.type == loosePickup.type then
-						inventoryItem.count = inventoryItem.count + 1
-						isPickupAdded = true
-						return true
-					elseif inventoryItem.type == constants.NONE.type then
-						inventoryItem.count = 1
-						inventoryItem.type = loosePickup.type
-						isPickupAdded = true
-						msg.post("/ui#ui", "update_inventory")
-						return true
-					end
-				end
+		for i = 1, constants.INVENTORY_MAX_SLOTS do
+			local inventoryItem = self.inventory[i]
+			if inventoryItem.type == loosePickup.type and inventoryItem.count < constants.ALL_ITEMS[loosePickup.type].stackSize then
+				inventoryItem.count = inventoryItem.count + 1
+				return true
+			elseif inventoryItem.type == constants.NONE.type then
+				inventoryItem.count = 1
+				inventoryItem.type = loosePickup.type
+				msg.post("/ui#ui", "update_inventory")
+				return true
 			end
 		end
 	end
 
 	return false
+end
+
+function update_current_chunk(self)
+	local screenPosition = position_helpers.player_to_screen_position(go.get_position())
+	local chunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
+
+	local chunk = World.get_chunk_at_position(world, chunkPosition)
+	if globals.currentChunk ~= chunk then
+		globals.previousChunk = globals.currentChunk
+		globals.currentChunk = chunk
+		msg.post("/world#world_script", "update_chunk_render")
+	end
 end
 
 -----------------
@@ -165,7 +160,8 @@ end
 ----------------------
 
 function init(self)
-	self.platypus = platypus.create(PLATYPUS_CONFIG)
+	currentChunk = nil
+	self.platypus = platypus.create(config.PLATYPUS_CONFIG)
 	self.selectedToolbarItem = 1
 	self.isMining = false
 	self.miningStartTime = nil
@@ -177,6 +173,8 @@ end
 
 function update(self, dt)
 	self.platypus.update(dt)
+
+	update_current_chunk(self)
 end
 
 function on_message(self, messageId, message, sender)

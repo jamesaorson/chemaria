@@ -28,7 +28,7 @@ app_icon = /assets/app_icons/appicon.icns
 [physics]
 debug = 0
 debug_alpha = 0.4
-gravity_y = -150.0
+gravity_y = -800.0
 
 [android]
 app_icon_36x36 = /assets/app_icons/appicon.png

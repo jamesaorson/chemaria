@@ -18,11 +18,26 @@ end
 
 
 ---------------------------
+-- Player Transformation --
+---------------------------
+
+function M.player_to_screen_position(playerPosition)
+	local cameraPosition = go.get_position(constants.CAMERA_ID)
+	local screenPosition = orthographic.world_to_screen(constants.CAMERA_ID, cameraPosition)
+	return screenPosition
+end
+
+-------------------------------
+-- End Player Transformation --
+-------------------------------
+
+
+---------------------------
 -- Screen Transformation --
 ---------------------------
 
 function M.screen_to_block_position(position)
-	position = orthographic.screen_to_world(hash("/camera"), position)
+	position = orthographic.screen_to_world(constants.CAMERA_ID, position)
 	local blockPosition =  vmath.vector3(
 		helpers.round(position.x / constants.BLOCK_SIZE) % constants.CHUNK_SIZE,
 		helpers.round(position.y / constants.BLOCK_SIZE) % constants.CHUNK_SIZE,
@@ -31,7 +46,7 @@ function M.screen_to_block_position(position)
 end
 
 function M.screen_to_chunk_position(position)
-	position = orthographic.screen_to_world(hash("/camera"), position)
+	position = orthographic.screen_to_world(constants.CAMERA_ID, position)
 	
 	local chunkPosition = vmath.vector3(
 		math.floor((position.x + constants.BLOCK_SIZE / 2) / constants.BLOCK_SIZE / constants.CHUNK_SIZE),
