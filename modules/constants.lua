@@ -121,7 +121,7 @@ M.TOOLBAR_UNSELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(
 -----------
 
 M.BLOCK_SIZE = 32
-M.WORLD_DIMENSIONS = vmath.vector3(100, 100, 0)
+M.WORLD_DIMENSIONS = vmath.vector3(20, 20, 0)
 M.CHUNK_SIZE = 12
 M.RENDER_DISTANCE = 3
 
