@@ -25,7 +25,7 @@ function M.player_to_screen_position(playerPosition)
 	local cameraPosition = go.get_position(hash("/camera"))
 	local screenPosition = cameraPosition + playerPosition
 	--screenPosition.x = screenPosition.x + constants.SCREEN.w / 2
-	screenPosition.x = screenPosition.x + constants.SCREEN.w
+	--screenPosition.x = screenPosition.x + constants.SCREEN.w
 	--screenPosition.x = screenPosition.x + 960
 
 	return screenPosition

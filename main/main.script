@@ -43,9 +43,9 @@ function quit_game()
 	for i = -3, 3 do
 		minimalWorld.chunks[i] = world.chunks[i]
 	end
-	if not sys.save(worldFileName, minimalWorld) then
-		print("Something went wrong")
-	end
+	--if not sys.save(worldFileName, minimalWorld) then
+		--print("Something went wrong")
+	--end
 	
 	msg.post("@system:", "exit", { code = 0 })
 end

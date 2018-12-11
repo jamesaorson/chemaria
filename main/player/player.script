@@ -72,6 +72,8 @@ function update_current_chunk(self)
 	if currentChunk ~= chunk then
 		previousChunk = currentChunk
 		currentChunk = chunk
+		print(currentChunk.position)
+		print()
 		msg.post("/world#world_script", "update_chunk_render")
 	end
 end

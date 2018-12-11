@@ -7,6 +7,7 @@ local position_helpers = require "modules.position_helpers"
 require "modules.models.Block"
 require "modules.models.Chunk"
 require "modules.models.World"
+require "modules.set"
 
 world = {}
 
@@ -44,17 +45,56 @@ end
 
 function create_blocks_from_world(self)
 	if currentChunk then
+		local chunksToRender = {}
+		local chunksToUnrender = {}
 		for chunkX = currentChunk.position.x - constants.RENDER_DISTANCE, currentChunk.position.x + constants.RENDER_DISTANCE do
 			for chunkY = currentChunk.position.y - constants.RENDER_DISTANCE, currentChunk.position.y + constants.RENDER_DISTANCE do
-				local chunk = World.get_chunk_at_position(world, vmath.vector3(chunkX, chunkY, 0))
-				if chunk and not chunk.isRendered then
-					for blockX, blockXColumn in pairs(chunk.blocks) do
-						for blockY, block in pairs(blockXColumn) do
-							create_block(self, block)
-						end
-					end
-					chunk.isRendered = true
+				local chunkPosition = vmath.vector3(chunkX, chunkY, 0)
+				chunksToRender[tostring(chunkPosition)] = chunkPosition
+			end
+		end
+		if previousChunk then
+			for chunkX = previousChunk.position.x - constants.RENDER_DISTANCE, previousChunk.position.x + constants.RENDER_DISTANCE do
+				for chunkY = previousChunk.position.y - constants.RENDER_DISTANCE, previousChunk.position.y + constants.RENDER_DISTANCE do
+					local chunkPosition = vmath.vector3(chunkX, chunkY, 0)
+					chunksToUnrender[tostring(chunkPosition)] = chunkPosition
 				end
+			end
+			local unrenderLookup = Set.subtraction(chunksToUnrender, chunksToRender, "position")
+			pprint(chunksToRender)
+			pprint(unrenderLookup)
+
+			local count = 0
+			for i, chunkPosition in pairs(chunksToUnrender) do
+				if unrenderLookup[tostring(chunkPosition)] then
+					local chunkToUnrender = World.get_chunk_at_position(world, chunkPosition)
+					if chunkToUnrender then
+						count = count + 1
+						for blockX, blockXColumn in pairs(chunkToUnrender.blocks) do
+							for blockY, block in pairs(blockXColumn) do
+								local block = Chunk.get_block_at_position(chunkToUnrender, vmath.vector3(blockX, blockY, 0))
+								if block and block.url then
+									go.delete(block.url)
+								end
+							end
+						end
+						chunkToUnrender.isRendered = false
+					end
+				end
+			end
+			print("Delete " .. count)
+			print()
+		end
+
+		for i, chunkPosition in pairs(chunksToRender) do
+			local chunkToRender = World.get_chunk_at_position(world, chunkPosition)
+			if chunkToRender and not chunkToRender.isRendered then
+				for blockX, blockXColumn in pairs(chunkToRender.blocks) do
+					for blockY, block in pairs(blockXColumn) do
+						create_block(self, block)
+					end
+				end
+				chunkToRender.isRendered = true
 			end
 		end
 	end
@@ -110,7 +150,7 @@ function initialize_new_world()
 			elseif chunk.position.y < 0 and chunk.position.y > -constants.CHUNK_MAX.y / 2 then
 				blockType = constants.STONE.type
 			end
-			if blockType and chunk.position.x > -5 and chunk.position.x < 5 then
+			if blockType then
 				for y = 0, constants.CHUNK_SIZE - 1 do
 					for x = 0, constants.CHUNK_SIZE - 1 do
 						local blockToInsert = {}
@@ -156,7 +196,7 @@ function handle_mine_block(self, messageId, message, sender)
 	local miningChunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
 	local chunk = World.get_chunk_at_position(world, miningChunkPosition)
 	if chunk then
-		local block = chunk:get_block_at_position(miningBlockPosition)
+		local block = Chunk.get_block_at_position(chunk, miningBlockPosition)
 		if block then
 			mine_block(block.url, message)
 			Chunk.remove_block_at_position(chunk, miningBlockPosition)
