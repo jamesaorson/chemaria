@@ -61,8 +61,8 @@ function create_blocks_from_world(self)
 				end
 			end
 			local unrenderLookup = Set.subtraction(chunksToUnrender, chunksToRender, "position")
-			pprint(chunksToRender)
-			pprint(unrenderLookup)
+			--pprint(chunksToRender)
+			--pprint(unrenderLookup)
 
 			local count = 0
 			for i, chunkPosition in pairs(chunksToUnrender) do
@@ -82,8 +82,8 @@ function create_blocks_from_world(self)
 					end
 				end
 			end
-			print("Delete " .. count)
-			print()
+			--print("Delete " .. count)
+			--print()
 		end
 
 		for i, chunkPosition in pairs(chunksToRender) do

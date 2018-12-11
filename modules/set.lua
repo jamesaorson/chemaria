@@ -26,7 +26,7 @@ function Set.subtraction(a, b, comparisonKey)
 		result[key] = value
 		count = count + 1
 	end
-	print(count)
+	--print(count)
 	count = 0
 	for key, value in pairs(b) do
 		if result[key] then
@@ -34,7 +34,7 @@ function Set.subtraction(a, b, comparisonKey)
 			count = count + 1
 		end
 	end
-	print(count)
-	print()
+	--print(count)
+	--print()
 	return result
 end

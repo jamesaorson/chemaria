@@ -1,3 +1,4 @@
+local config = require "modules.config"
 local constants = require "modules.constants"
 local platypus = require "platypus.platypus"
 local position_helpers = require "modules.position_helpers"
@@ -7,20 +8,6 @@ local orthographic = require "orthographic.camera"
 require "modules.models.Block"
 require "modules.models.Chunk"
 require "modules.models.World"
-
-local PLATYPUS_CONFIG = {
-	collisions = {
-		separation = platypus.SEPARATION_SHAPES,
-		groups = {
-			[hash("block")] = platypus.DIR_ALL
-		},
-		left = constants.PLAYER_WIDTH / 2, right = constants.PLAYER_WIDTH / 2, top = constants.PLAYER_HEIGHT / 2, bottom = constants.PLAYER_HEIGHT / 2
-	},
-	gravity = constants.GRAVITY,
-	max_velocity = constants.PLAYER_MAX_VELOCITY,
-	allow_double_jump = true,
-	allow_wall_jump = false
-}
 
 currentChunk = nil
 previousChunk = nil
@@ -72,8 +59,8 @@ function update_current_chunk(self)
 	if currentChunk ~= chunk then
 		previousChunk = currentChunk
 		currentChunk = chunk
-		print(currentChunk.position)
-		print()
+		--print(currentChunk.position)
+		--print()
 		msg.post("/world#world_script", "update_chunk_render")
 	end
 end
@@ -179,7 +166,7 @@ end
 
 function init(self)
 	currentChunk = nil
-	self.platypus = platypus.create(PLATYPUS_CONFIG)
+	self.platypus = platypus.create(config.PLATYPUS_CONFIG)
 	self.selectedToolbarItem = 1
 	self.isMining = false
 	self.miningStartTime = nil
