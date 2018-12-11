@@ -1,5 +1,8 @@
 local constants = require "modules.constants"
 
+currentChunk = nil
+previousChunk = nil
+
 local M = {}
 
 ---------------

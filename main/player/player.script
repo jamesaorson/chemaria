@@ -1,16 +1,13 @@
 local config = require "modules.config"
 local constants = require "modules.constants"
-local platypus = require "platypus.platypus"
-local position_helpers = require "modules.position_helpers"
 local globals = require "modules.globals"
 local orthographic = require "orthographic.camera"
+local platypus = require "platypus.platypus"
+local position_helpers = require "modules.position_helpers"
 
 require "modules.models.Block"
 require "modules.models.Chunk"
 require "modules.models.World"
-
-currentChunk = nil
-previousChunk = nil
 
 -------------
 -- Helpers --
@@ -56,9 +53,9 @@ function update_current_chunk(self)
 	local chunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
 
 	local chunk = World.get_chunk_at_position(world, chunkPosition)
-	if currentChunk ~= chunk then
-		previousChunk = currentChunk
-		currentChunk = chunk
+	if globals.currentChunk ~= chunk then
+		globals.previousChunk = globals.currentChunk
+		globals.currentChunk = chunk
 		msg.post("/world#world_script", "update_chunk_render")
 	end
 end

@@ -1,8 +1,9 @@
 local config = require "modules.config"
 local constants = require "modules.constants"
-local urls = require "modules.urls"
+local globals = require "modules.globals"
 local orthographic = require "orthographic.camera"
 local position_helpers = require "modules.position_helpers"
+local urls = require "modules.urls"
 
 require "modules.models.Block"
 require "modules.models.Chunk"
@@ -44,18 +45,18 @@ function create_block(self, block)
 end
 
 function create_blocks_from_world(self)
-	if currentChunk then
+	if globals.currentChunk then
 		local chunksToRender = {}
 		local chunksToUnrender = {}
-		for chunkX = currentChunk.position.x - constants.RENDER_DISTANCE, currentChunk.position.x + constants.RENDER_DISTANCE do
-			for chunkY = currentChunk.position.y - constants.RENDER_DISTANCE, currentChunk.position.y + constants.RENDER_DISTANCE do
+		for chunkX = globals.currentChunk.position.x - constants.RENDER_DISTANCE, globals.currentChunk.position.x + constants.RENDER_DISTANCE do
+			for chunkY = globals.currentChunk.position.y - constants.RENDER_DISTANCE, globals.currentChunk.position.y + constants.RENDER_DISTANCE do
 				local chunkPosition = vmath.vector3(chunkX, chunkY, 0)
 				chunksToRender[tostring(chunkPosition)] = chunkPosition
 			end
 		end
-		if previousChunk then
-			for chunkX = previousChunk.position.x - constants.RENDER_DISTANCE, previousChunk.position.x + constants.RENDER_DISTANCE do
-				for chunkY = previousChunk.position.y - constants.RENDER_DISTANCE, previousChunk.position.y + constants.RENDER_DISTANCE do
+		if globals.previousChunk then
+			for chunkX = globals.previousChunk.position.x - constants.RENDER_DISTANCE, globals.previousChunk.position.x + constants.RENDER_DISTANCE do
+				for chunkY = globals.previousChunk.position.y - constants.RENDER_DISTANCE, globals.previousChunk.position.y + constants.RENDER_DISTANCE do
 					local chunkPosition = vmath.vector3(chunkX, chunkY, 0)
 					chunksToUnrender[tostring(chunkPosition)] = chunkPosition
 				end

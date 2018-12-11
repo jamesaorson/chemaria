@@ -1,16 +1,5 @@
 Set = {}
 
-function Set.union(a, b)
-	local result = {}
-	for key, value in pairs(a) do
-		result[key] = value
-	end
-	for key, value in pairs(b) do
-		result[key] = value
-	end
-	return result
-end
-
 function Set.intersection(a, b)
 	local result = {}
 	for key in pairs(a) do
@@ -19,7 +8,7 @@ function Set.intersection(a, b)
 	return result
 end
 
-function Set.subtraction(a, b, comparisonKey)
+function Set.subtraction(a, b)
 	local result = {}
 	for key, value in pairs(a) do
 		result[key] = value
@@ -30,5 +19,16 @@ function Set.subtraction(a, b, comparisonKey)
 		end
 	end
 	
+	return result
+end
+
+function Set.union(a, b)
+	local result = {}
+	for key, value in pairs(a) do
+		result[key] = value
+	end
+	for key, value in pairs(b) do
+		result[key] = value
+	end
 	return result
 end

@@ -140,7 +140,7 @@ end
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
-	self.game_mode = "play"	
+	self.game_mode = "play"
 	apply_config()
 end
 

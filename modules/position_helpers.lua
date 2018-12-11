@@ -27,6 +27,11 @@ function M.player_to_screen_position(playerPosition)
 	return screenPosition
 end
 
+-------------------------------
+-- End Player Transformation --
+-------------------------------
+
+
 ---------------------------
 -- Screen Transformation --
 ---------------------------
