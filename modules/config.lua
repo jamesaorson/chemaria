@@ -25,7 +25,10 @@ M.PLATYPUS_CONFIG = {
 		groups = {
 			[hash("block")] = platypus.DIR_ALL
 		},
-		left = constants.PLAYER_WIDTH / 2, right = constants.PLAYER_WIDTH / 2, top = constants.PLAYER_HEIGHT / 2, bottom = constants.PLAYER_HEIGHT / 2
+		left = constants.PLAYER_WIDTH / 2,
+		right = constants.PLAYER_WIDTH / 2,
+		top = constants.PLAYER_HEIGHT / 2,
+		bottom = constants.PLAYER_HEIGHT / 2
 	},
 	gravity = constants.GRAVITY,
 	max_velocity = constants.PLAYER_MAX_VELOCITY,

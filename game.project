@@ -27,7 +27,7 @@ app_icon = /assets/app_icons/appicon.icns
 
 [physics]
 debug = 0
-debug_alpha = 0.4
+debug_alpha = 0.2
 gravity_y = -800.0
 
 [android]
@@ -37,15 +37,16 @@ app_icon_36x36 = /assets/app_icons/appicon.png
 app_icon_57x57 = /assets/app_icons/appicon.png
 
 [sprite]
-max_count = 8192
+max_count = 16384
 
 [graphics]
-max_draw_calls = 8192
+max_draw_calls = 16384
 max_debug_vertices = 100000
+max_characters = 16384
 
 [resource]
-max_resources = 8192
+max_resources = 16384
 
 [collection]
-max_instances = 8192
+max_instances = 16384
 
