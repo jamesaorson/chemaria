@@ -8,5 +8,5 @@ images {
   image: "/main/block/assets/none.png"
 }
 margin: 0
-extrude_borders: 0
+extrude_borders: 1
 inner_padding: 0
