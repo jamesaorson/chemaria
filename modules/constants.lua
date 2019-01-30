@@ -60,7 +60,7 @@ M.ALL_ITEMS = {
 	none = M.NONE,
 	stone = M.STONE,
 	wood_planks = M.WOOD_PLANKS,
-	wood_pickaxe = M.wood_planks = M.WOOD_PLANKS
+	wood_pickaxe = M.WOOD_PICKAXE
 }
 
 --------------
