@@ -46,11 +46,21 @@ M.STONE = {
 	stackSize = 64,
 	type = "stone"
 }
+M.WOOD_PLANKS = {
+	stackSize = 64,
+	type = "wood_planks"
+}
+M.WOOD_PICKAXE = {
+	stackSize = 64,
+	type = "wood_pickaxe"
+}
 
 M.ALL_ITEMS = {
 	dirt = M.DIRT,
 	none = M.NONE,
-	stone = M.STONE
+	stone = M.STONE,
+	wood_planks = M.WOOD_PLANKS,
+	wood_pickaxe = M.wood_planks = M.WOOD_PLANKS
 }
 
 --------------
@@ -73,12 +83,12 @@ M.GRAVITY = -800
 -- Player --
 ------------
 
-M.PLAYER_HEIGHT = 76
+M.PLAYER_HEIGHT = 60
 M.PLAYER_JUMP_FORCE = 800
 M.PLAYER_LINEAR_DAMPING = 0.9
 M.PLAYER_MAX_VELOCITY = 600
 M.PLAYER_VELOCITY = vmath.vector3(300, 0, 0)
-M.PLAYER_WIDTH = 48
+M.PLAYER_WIDTH = 36
 M.PLAYER_BASE_MINING_INTERVAL = 0.5
 M.PLAYER_BASE_PLACING_INTERVAL = 0.05
 
@@ -120,10 +130,10 @@ M.TOOLBAR_UNSELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(
 -- World --
 -----------
 
-M.BLOCK_SIZE = 32
+M.BLOCK_SIZE = 24
 M.WORLD_DIMENSIONS = vmath.vector3(20, 20, 0)
 M.CHUNK_SIZE = 12
-M.RENDER_DISTANCE = 3
+M.RENDER_DISTANCE = 4
 
 ---------------
 -- End World --
