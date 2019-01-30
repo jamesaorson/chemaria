@@ -1,5 +1,3 @@
-local helpers = require "modules.helpers"
-
 local M = {}
 
 ------------
@@ -22,8 +20,8 @@ M.INVENTORY_SIZE = {
 	rowSize = 10
 }
 M.INVENTORY_MAX_SLOTS = M.INVENTORY_SIZE.rows * M.INVENTORY_SIZE.rowSize
-M.INVENTORY_SELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(120, 240, 50, 1.0))
-M.INVENTORY_UNSELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(255, 255, 255, 1.0))
+M.INVENTORY_SELECTED_COLOR = vmath.vector4(0.47, 0.9, 0.2, 1)
+M.INVENTORY_UNSELECTED_COLOR = vmath.vector4(1, 1, 1, 1)
 
 -------------------
 -- End Inventory --
@@ -60,7 +58,23 @@ M.ALL_ITEMS = {
 	none = M.NONE,
 	stone = M.STONE,
 	wood_planks = M.WOOD_PLANKS,
-	wood_pickaxe = M.wood_planks = M.WOOD_PLANKS
+	wood_pickaxe = M.WOOD_PICKAXE
+}
+
+M.CRAFTABLE = {
+	wood_pickaxe = M.WOOD_PICKAXE
+}
+
+M.PLACEABLE = {
+	dirt = M.DIRT,
+	stone = M.STONE
+}
+
+M.SMELTABLE = {
+}
+
+M.TOOL = {
+	wood_pickaxe = M.WOOD_PICKAXE
 }
 
 --------------
@@ -118,8 +132,8 @@ M.SCREEN = {
 -------------
 
 M.TOOLBAR_MAX_SLOTS = 10
-M.TOOLBAR_SELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(120, 240, 50, 1.0))
-M.TOOLBAR_UNSELECTED_COLOR = vmath.vector4(helpers.convert_rgba_to_native_range(255, 255, 255, 1.0))
+M.TOOLBAR_SELECTED_COLOR = vmath.vector4(0.47, 0.9, 0.2, 1)
+M.TOOLBAR_UNSELECTED_COLOR = vmath.vector4(1, 1, 1, 1)
 
 -----------------
 -- End Toolbar --
