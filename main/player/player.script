@@ -151,7 +151,6 @@ function handle_trigger_response(self, messageId, message, sender)
 	if message.group == hash("pickup") then
 		if add_loose_pickup_to_player(self, messageId, message, sender) then
 			go.delete(message.other_id)
-
 		end
 	end
 end
