@@ -7,6 +7,12 @@ images {
 images {
   image: "/main/block/assets/none.png"
 }
+images {
+  image: "/main/block/assets/wood_planks.png"
+}
+images {
+  image: "/main/block/assets/wood_pickaxe.png"
+}
 margin: 0
 extrude_borders: 1
 inner_padding: 0

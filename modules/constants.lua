@@ -46,11 +46,21 @@ M.STONE = {
 	stackSize = 64,
 	type = "stone"
 }
+M.WOOD_PLANKS = {
+	stackSize = 64,
+	type = "wood_planks"
+}
+M.WOOD_PICKAXE = {
+	stackSize = 64,
+	type = "wood_pickaxe"
+}
 
 M.ALL_ITEMS = {
 	dirt = M.DIRT,
 	none = M.NONE,
-	stone = M.STONE
+	stone = M.STONE,
+	wood_planks = M.WOOD_PLANKS,
+	wood_pickaxe = M.wood_planks = M.WOOD_PLANKS
 }
 
 --------------
