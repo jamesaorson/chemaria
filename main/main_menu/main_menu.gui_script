@@ -1,0 +1,33 @@
+local gooey = require "gooey.gooey"
+local theme = require "main.main_menu.main_menu_theme.theme"
+
+local function update_button(button)
+	print("something")
+	if button.pressed_now then
+		gui.play_flipbook(button.node, hash("button_pressed"))
+	elseif button.released_now then
+		gui.play_flipbook(button.node, hash("button_normal"))
+	elseif not button.pressed and button.over_now then
+		gui.play_flipbook(button.node, hash("button_over"))
+	elseif not button.pressed and button.out_now then
+		gui.play_flipbook(button.node, hash("button_normal"))
+	end
+end
+
+local function on_pressed(button)
+	print("pressed")
+end
+
+function init(self)
+	gooey.acquire_input()
+end
+
+function on_input(self, actionId, action)
+	if actionId == hash("quit") and action.released then
+		msg.post("@system:", "exit", { code = 0 })
+	else
+		theme.button("button", actionId, action, function(button)
+			print("pressed")
+		end)
+	end
+end
