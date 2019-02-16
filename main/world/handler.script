@@ -44,9 +44,9 @@ function quit_game()
 		minimalWorld.chunks[i] = world.chunks[i]
 	end
 	--if not sys.save(worldFileName, minimalWorld) then
-		--print("Something went wrong")
+	--print("Something went wrong")
 	--end
-	
+
 	msg.post("@system:", "exit", { code = 0 })
 end
 
@@ -139,12 +139,13 @@ end
 ----------------------
 
 function init(self)
-	msg.post(".", "acquire_input_focus")
+	msg.post("/handler", "acquire_input_focus")
 	self.game_mode = "play"
 	apply_config()
 end
 
 function on_input(self, actionId, action)
+	pprint(action)
 	if action.pressed and is_inventory_switch_action(actionId) then
 		handle_inventory_switch(self, actionId, action)
 	elseif actionId == hash("jump") then
