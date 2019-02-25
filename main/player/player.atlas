@@ -1,5 +1,5 @@
 images {
-  image: "/main/player/assets/player.png"
+  image: "/assets/player/player.png"
 }
 margin: 0
 extrude_borders: 0
