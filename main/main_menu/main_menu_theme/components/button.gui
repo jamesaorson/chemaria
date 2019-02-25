@@ -5,7 +5,7 @@ fonts {
 }
 textures {
   name: "gooey"
-  texture: "/gooey/themes/kenneyblue/images/kenneyblue.atlas"
+  texture: "/main/main_menu/main_menu_theme/images/theme.atlas"
 }
 background_color {
   x: 0.0
@@ -46,7 +46,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "gooey/blue_button04"
+  texture: "gooey/button_idle"
   id: "bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -55,17 +55,17 @@ nodes {
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 6.0
-    y: 6.0
-    z: 6.0
-    w: 10.0
+    x: 30.0
+    y: 30.0
+    z: 30.0
+    w: 30.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
   template_node_child: false
-  size_mode: SIZE_MODE_AUTO
+  size_mode: SIZE_MODE_MANUAL
 }
 nodes {
   position {
