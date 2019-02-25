@@ -145,7 +145,6 @@ function init(self)
 end
 
 function on_input(self, actionId, action)
-	pprint(action)
 	if action.pressed and is_inventory_switch_action(actionId) then
 		handle_inventory_switch(self, actionId, action)
 	elseif actionId == hash("jump") then

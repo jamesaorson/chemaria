@@ -236,6 +236,7 @@ end
 ----------------------
 
 function init(self)
+	msg.post("@render:", "clear_color", { color = vmath.vector4(0, 0, 0, 1.0) })
 	initialize_world_chunks()
 	get_saved_world()
 	if savedWorld and savedWorld.chunks then

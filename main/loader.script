@@ -31,6 +31,9 @@ function on_message(self, messageId, message, sender)
 	if messageId == hash("proxy_loaded") then
 		self.currentProxy = sender
 		msg.post(sender, "enable")
+	elseif messageId == hash("switch_proxy") then
+		msg.post(".", "acquire_input_focus")
+		show(self, message.switchTo)
 	end
 end
 
