@@ -17,7 +17,7 @@ function World.add_loose_pickup(self, loosePickup)
 	if not self.loosePickups then
 		self.loosePickups = {}
 	end
-	self.loosePickups[loosePickup.id] = loosePickup
+	self.loosePickups[loosePickup.pickupId] = loosePickup
 end
 
 function World.get_chunk_at_position(self, position)
