@@ -1,17 +1,17 @@
 images {
-  image: "/main/block/assets/dirt.png"
+  image: "/assets/block/dirt.png"
 }
 images {
-  image: "/main/block/assets/stone.png"
+  image: "/assets/block/stone.png"
 }
 images {
-  image: "/main/block/assets/none.png"
+  image: "/assets/block/none.png"
 }
 images {
-  image: "/main/block/assets/wood_planks.png"
+  image: "/assets/block/wood_planks.png"
 }
 images {
-  image: "/main/block/assets/wood_pickaxe.png"
+  image: "/assets/block/wood_pickaxe.png"
 }
 margin: 0
 extrude_borders: 1

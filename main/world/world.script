@@ -5,6 +5,8 @@ local orthographic = require "orthographic.camera"
 local position_helpers = require "modules.position_helpers"
 local urls = require "modules.urls"
 
+local json_lib = require "modules.json_lib"
+
 require "modules.models.Block"
 require "modules.models.Chunk"
 require "modules.models.World"
@@ -117,9 +119,17 @@ function mine_block(blockUrl, message)
 end
 
 function get_saved_world()
-	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name)
-	local savedWorld = sys.load(worldFileName)
-	return savedWorld
+	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name) .. ".json"
+	local savedWorldFile = io.open(worldFileName, "r")
+	print("Begin reading '" .. worldFileName .. "'")
+	local data = savedWorldFile:read()
+	print("Finished reading '" .. worldFileName .. "'")
+	
+	print("Begin parsing '" .. worldFileName .. "'")
+	data = json_lib.parse(data)
+	print("Finished parsing '" .. worldFileName .. "'")
+	
+	return data
 end
 
 function initialize_from_saved_world(savedWorld)
@@ -236,8 +246,9 @@ end
 ----------------------
 
 function init(self)
+	msg.post("@render:", "clear_color", { color = vmath.vector4(0, 0, 0, 1.0) })
 	initialize_world_chunks()
-	get_saved_world()
+	local savedWorld = get_saved_world()
 	if savedWorld and savedWorld.chunks then
 		initialize_from_saved_world(savedWorld)
 	else
