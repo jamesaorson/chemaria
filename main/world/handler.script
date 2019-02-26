@@ -42,9 +42,9 @@ function is_inventory_switch_action(actionId)
 end
 
 function quit_game(shouldSave)
-	--if shouldSave then
+	if shouldSave then
 		save_game()
-	--end
+	end
 
 	msg.post("@system:", "exit", { code = 0 })
 end
