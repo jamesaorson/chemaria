@@ -5,7 +5,7 @@ local helpers = require "modules.helpers"
 local json_lib = require "modules.json_lib"
 local screen_constants = require "modules.constants.screen"
 local toolbar_constants = require "modules.constants.toolbar"
-local world_generation_constants = require "modules.constants.world_generation"
+local world_constants = require "modules.constants.world"
 
 require "modules.models.Block"
 require "modules.models.Chunk"
@@ -56,14 +56,14 @@ function save_game()
 	local minimalWorld = {
 		chunks = {}
 	}
-	for chunkX = -world_generation_constants.WORLD_DIMENSIONS.x, world_generation_constants.WORLD_DIMENSIONS.x do
-		for chunkY = -world_generation_constants.WORLD_DIMENSIONS.y, world_generation_constants.WORLD_DIMENSIONS.y do
+	for chunkX = -world_constants.WORLD_DIMENSIONS.x, world_constants.WORLD_DIMENSIONS.x do
+		for chunkY = -world_constants.WORLD_DIMENSIONS.y, world_constants.WORLD_DIMENSIONS.y do
 			local chunk = World.get_chunk_at_position(world, { x = chunkX, y = chunkY })
 			chunk.position = { x = chunk.position.x, y = chunk.position.y, z = chunk.position.z }
 			chunk.isRendered = nil
 			local blocks = chunk.blocks
-			for blockY = 0, world_generation_constants.CHUNK_SIZE - 1 do
-				for blockX = 0, world_generation_constants.CHUNK_SIZE - 1 do
+			for blockY = 0, world_constants.CHUNK_SIZE - 1 do
+				for blockX = 0, world_constants.CHUNK_SIZE - 1 do
 					local block = Chunk.get_block_at_position(chunk, { x = blockX, y = blockY })
 					if block then
 						block.position = { x = block.position.x, y = block.position.y, z = block.position.z }
