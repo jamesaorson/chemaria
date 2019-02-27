@@ -24,26 +24,28 @@ function add_loose_pickup_to_player(self, messageId, message, sender)
 	if loosePickup then
 		for i = 1, constants.TOOLBAR_MAX_SLOTS do
 			local toolbarItem = self.toolbar[i]
-			if toolbarItem.type == loosePickup.type and toolbarItem.count < constants.ALL_ITEMS[loosePickup.type].stackSize then
+			if toolbarItem.id == loosePickup.id and toolbarItem.count < constants.ALL_ITEMS[loosePickup.id].stackSize then
 				toolbarItem.count = toolbarItem.count + 1
 				update_toolbar()
 				return true
-			elseif toolbarItem.type == constants.NONE.type then
+			elseif toolbarItem.id == constants.NONE.id then
 				toolbarItem.count = 1
-				toolbarItem.type = loosePickup.type
+				toolbarItem.id = loosePickup.id
+				toolbarItem.type = constants.ALL_ITEMS[loosePickup.id].type
 				update_toolbar()
 				return true
 			end
 		end
 		for i = 1, constants.INVENTORY_MAX_SLOTS do
 			local inventoryItem = self.inventory[i]
-			if inventoryItem.type == loosePickup.type and inventoryItem.count < constants.ALL_ITEMS[loosePickup.type].stackSize then
+			if inventoryItem.id == loosePickup.id and inventoryItem.count < constants.ALL_ITEMS[loosePickup.id].stackSize then
 				inventoryItem.count = inventoryItem.count + 1
 				update_inventory()
 				return true
-			elseif inventoryItem.type == constants.NONE.type then
+			elseif inventoryItem.id == constants.NONE.id then
 				inventoryItem.count = 1
-				inventoryItem.type = loosePickup.type
+				inventoryItem.id = loosePickup.id
+				inventoryItem.type = constants.ALL_ITEMS[loosePickup.id].type
 				update_inventory()
 				return true
 			end
@@ -136,7 +138,7 @@ function handle_right_click(self, messageId, message, sender)
 		if message.pressed or placingTime >= constants.PLAYER_BASE_PLACING_INTERVAL then
 			self.placingStartTime = os.clock()
 			message.toolbarItem = self.toolbar[self.selectedToolbarItem]
-			if helpers.is_placeable(message.toolbarItem) and message.toolbarItem.type ~= constants.NONE.type then
+			if helpers.is_placeable(message.toolbarItem) and message.toolbarItem.id ~= constants.NONE.id then
 				msg.post("/world#world_script", "place_block", message)
 			end
 		end
@@ -157,6 +159,7 @@ end
 
 function handle_update_toolbar_item(self, messageId, message, sender)
 	if message.count == 0 then
+		message.id = constants.NONE.id
 		message.type = constants.NONE.type
 	end
 	self.toolbar[message.index] = message

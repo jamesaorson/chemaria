@@ -70,6 +70,8 @@ function save_game()
 						if block.chunk then
 							block.chunk = { x = block.chunk.x, y = block.chunk.y, z = block.chunk.z }
 						end
+						block.pickupId = nil
+						block.type = nil
 						block.url = nil
 					end
 				end

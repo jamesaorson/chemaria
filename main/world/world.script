@@ -33,7 +33,7 @@ function create_block(self, block)
 	local scale = 1.0
 
 	if truePosition then
-		local factoryBlock = factory.create(urls.get_factory_url(block.type), truePosition, rotation, properties, scale)
+		local factoryBlock = factory.create(urls.get_factory_url(block.id), truePosition, rotation, properties, scale)
 		block.url = factoryBlock
 		local blockChunk = World.get_chunk_at_position(world, block.chunk)
 		if blockChunk then
@@ -113,23 +113,27 @@ function mine_block(blockUrl, message)
 	local properties = {}
 	local scale = 0.5
 	
-	local loosePickupId = factory.create(urls.get_pickup_factory_url(block.type), truePosition, rotation, properties, scale)
-	block.id = loosePickupId
+	local loosePickupId = factory.create(urls.get_pickup_factory_url(block.id), truePosition, rotation, properties, scale)
+	block.pickupId = loosePickupId
 	World.add_loose_pickup(world, block)
 end
 
 function get_saved_world()
 	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name) .. ".json"
 	local savedWorldFile = io.open(worldFileName, "r")
-	print("Begin reading '" .. worldFileName .. "'")
-	local data = savedWorldFile:read()
-	print("Finished reading '" .. worldFileName .. "'")
+	if savedWorldFile then
+		print("Begin reading '" .. worldFileName .. "'")
+		local data = savedWorldFile:read()
+		print("Finished reading '" .. worldFileName .. "'")
+		
+		print("Begin parsing '" .. worldFileName .. "'")
+		data = json_lib.parse(data)
+		print("Finished parsing '" .. worldFileName .. "'")
 	
-	print("Begin parsing '" .. worldFileName .. "'")
-	data = json_lib.parse(data)
-	print("Finished parsing '" .. worldFileName .. "'")
-	
-	return data
+		return data
+	end
+
+	return nil
 end
 
 function initialize_from_saved_world(savedWorld)
@@ -149,18 +153,19 @@ end
 function initialize_new_world()
 	for chunkX, chunkXColumn in pairs(world.chunks) do
 		for chunkY, chunk in pairs(chunkXColumn) do
-			local blockType = nil
+			local blockInfo = nil
 			if chunk.position.y <= 0 and chunk.position.y >= -1 then
-				blockType = constants.DIRT.type
+				blockInfo = constants.DIRT
 			elseif chunk.position.y < -1 then
-				blockType = constants.STONE.type
+				blockInfo = constants.STONE
 			end
-			if blockType then
+			if blockInfo then
 				for y = 0, constants.CHUNK_SIZE - 1 do
 					for x = 0, constants.CHUNK_SIZE - 1 do
 						local blockToInsert = {}
+						blockToInsert.id = blockInfo.id
 						blockToInsert.position = vmath.vector3(x, y, 0)
-						blockToInsert.type = blockType
+						blockToInsert.type = blockInfo.type
 						
 						Chunk.add_block(chunk, blockToInsert)
 					end
@@ -211,7 +216,7 @@ end
 
 function handle_place_block(self, messageId, message, sender)
 	local toolbarItem = message.toolbarItem
-	if toolbarItem and toolbarItem.type ~= constants.NONE.type then
+	if toolbarItem and toolbarItem.id ~= constants.NONE.id then
 		local messagePosition = vmath.vector3(message.screen_x, message.screen_y, 0)
 		local chunkPosition = position_helpers.screen_to_chunk_position(messagePosition)
 		local chunk = World.get_chunk_at_position(world, chunkPosition)
@@ -220,6 +225,7 @@ function handle_place_block(self, messageId, message, sender)
 			if not Chunk.get_block_at_position(chunk, blockPosition) then
 				local block = {
 					chunk = chunk.position,
+					id = toolbarItem.id,
 					position = blockPosition,
 					type = toolbarItem.type
 				}

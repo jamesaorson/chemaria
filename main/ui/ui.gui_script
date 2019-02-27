@@ -158,17 +158,17 @@ function update_inventory(self)
 	gui.set_enabled(gui.get_node("inventory_node"), self.isInventoryEnabled)
 
 	for i = 1, constants.INVENTORY_MAX_SLOTS do
-			local inventoryItem = self.inventory[i]
-			local inventoryNode = gui.get_node(urls.get_inventory_node_url(i))
-			local inventoryTextNode = gui.get_node(urls.get_inventory_text_node_url(i))
-			if inventoryItem and inventoryItem.type ~= constants.NONE.type then
-				gui.set_text(inventoryTextNode, inventoryItem.count)
-				change_slot_texture(inventoryNode, inventoryItem.type)
-			else
-				gui.set_text(inventoryTextNode, "None")
-				change_slot_texture(inventoryNode, constants.NONE.type)
-			end
-			gui.set_color(inventoryNode, constants.INVENTORY_UNSELECTED_COLOR)
+		local inventoryItem = self.inventory[i]
+		local inventoryNode = gui.get_node(urls.get_inventory_node_url(i))
+		local inventoryTextNode = gui.get_node(urls.get_inventory_text_node_url(i))
+		if inventoryItem and inventoryItem.id ~= constants.NONE.id then
+			gui.set_text(inventoryTextNode, inventoryItem.count)
+			change_slot_texture(inventoryNode, inventoryItem.type)
+		elseif inventoryItem.count == 0 then
+			gui.set_text(inventoryTextNode, "None")
+			change_slot_texture(inventoryNode, constants.NONE.type)
+		end
+		gui.set_color(inventoryNode, constants.INVENTORY_UNSELECTED_COLOR)
 	end
 
 	local selectedInventoryNode = gui.get_node(urls.get_inventory_node_url(self.selectedInventoryItem))
@@ -181,15 +181,13 @@ function update_toolbar(self)
 	for i, toolbarItem in pairs(self.toolbar) do
 		local toolbarNode = gui.get_node(urls.get_toolbar_node_url(i))
 		local toolbarTextNode = gui.get_node(urls.get_toolbar_text_node_url(i))
-		
-		if toolbarItem and toolbarItem.type ~= constants.NONE.type then
+		if toolbarItem and toolbarItem.id ~= constants.NONE.id then
 			gui.set_text(toolbarTextNode, toolbarItem.count)
 			change_slot_texture(toolbarNode, toolbarItem.type)
-		else
+		elseif toolbarItem.count == 0 then
 			gui.set_text(toolbarTextNode, "None")
 			change_slot_texture(toolbarNode, constants.NONE.type)
 		end
-		change_slot_texture(toolbarNode, toolbarItem.type)
 		gui.set_color(toolbarNode, constants.TOOLBAR_UNSELECTED_COLOR)
 	end
 
@@ -281,6 +279,7 @@ function init(self)
 
 	for i = 1, constants.INVENTORY_MAX_SLOTS do
 		local newInventoryItem = {
+			id = constants.NONE.id,
 			index = i,
 			count = 0,
 			type = constants.NONE.type
@@ -291,6 +290,7 @@ function init(self)
 
 	for i = 1, constants.TOOLBAR_MAX_SLOTS do
 		local newToolbarItem = {
+			id = constants.DIRT.id,
 			index = i,
 			count = 64,
 			type = constants.DIRT.type
