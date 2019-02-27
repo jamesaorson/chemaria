@@ -192,6 +192,86 @@ instances {
     z: 1.0
   }
 }
+instances {
+  id: "clay_pickup_factory"
+  prototype: "/main/block/pickup/clay_pickup/clay_pickup_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "sand_pickup_factory"
+  prototype: "/main/block/pickup/sand_pickup/sand_pickup_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "sand_factory"
+  prototype: "/main/block/world/sand/sand_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "clay_factory"
+  prototype: "/main/block/world/clay/clay_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
 scale_along_z: 0
 embedded_instances {
   id: "factories"
@@ -217,7 +297,9 @@ embedded_instances {
 }
 embedded_instances {
   id: "pickup_factories"
+  children: "clay_pickup_factory"
   children: "dirt_pickup_factory"
+  children: "sand_pickup_factory"
   children: "stone_pickup_factory"
   data: ""
   position {
@@ -239,7 +321,9 @@ embedded_instances {
 }
 embedded_instances {
   id: "world_factories"
+  children: "clay_factory"
   children: "dirt_factory"
+  children: "sand_factory"
   children: "stone_factory"
   data: ""
   position {

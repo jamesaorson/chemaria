@@ -151,13 +151,27 @@ function initialize_from_saved_world(savedWorld)
 end
 
 function initialize_new_world()
+	math.randomseed(os.time())
 	for chunkX, chunkXColumn in pairs(world.chunks) do
 		for chunkY, chunk in pairs(chunkXColumn) do
 			local blockInfo = nil
-			if chunk.position.y <= 0 and chunk.position.y >= -1 then
-				blockInfo = constants.DIRT
-			elseif chunk.position.y < -1 then
-				blockInfo = constants.STONE
+			local randomNumber = math.random()
+			if chunk.position.y <= 0 and chunk.position.y > -1 then
+				if randomNumber < 0.2 then
+					blockInfo = constants.SAND
+				elseif randomNumber < 0.3 then
+					blockInfo = constants.CLAY
+				else
+					blockInfo = constants.DIRT
+				end
+			elseif chunk.position.y <= -1 then
+				if randomNumber < 0.1 then
+					blockInfo = constants.DIRT
+				elseif randomNumber < 0.2 then
+					blockInfo = constants.SAND
+				else
+					blockInfo = constants.STONE
+				end
 			end
 			if blockInfo then
 				for y = 0, constants.CHUNK_SIZE - 1 do

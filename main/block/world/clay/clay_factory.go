@@ -1,7 +1,7 @@
 embedded_components {
-  id: "clay_pickup_factory"
+  id: "clay_factory"
   type: "factory"
-  data: "prototype: \"/main/block/pickup/clay_pickup/clay_pickup.go\"\n"
+  data: "prototype: \"/main/block/world/clay/clay.go\"\n"
   "load_dynamically: false\n"
   ""
   position {
