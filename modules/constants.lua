@@ -33,43 +33,43 @@ M.INVENTORY_UNSELECTED_COLOR = vmath.vector4(1, 1, 1, 1)
 ----------
 
 M.NONE = {
-	id = 0000,
+	id = 000000,
 	type = "none"
 }
 
 M.DIRT = {
-	id = 0101,
+	id = 010001,
 	stackSize = 64,
 	type = "dirt"
 }
 M.STONE = {
-	id = 0102,
+	id = 010002,
 	stackSize = 64,
 	type = "stone"
 }
 M.WOOD_PLANKS = {
-	id = 0501,
+	id = 050001,
 	stackSize = 64,
 	type = "wood_planks"
 }
 M.WOOD_PICKAXE = {
-	id = 0401,
+	id = 040001,
 	stackSize = 64,
 	type = "wood_pickaxe"
 }
 
 M.ALL_ITEMS = {}
-M.ALL_ITEMS[0000] = M.NONE
-M.ALL_ITEMS[0101] = M.DIRT
-M.ALL_ITEMS[0102] = M.STONE
-M.ALL_ITEMS[0401] = M.WOOD_PICKAXE
-M.ALL_ITEMS[0401] = M.WOOD_PLANKS
+M.ALL_ITEMS[000000] = M.NONE
+M.ALL_ITEMS[010001] = M.DIRT
+M.ALL_ITEMS[010002] = M.STONE
+M.ALL_ITEMS[040001] = M.WOOD_PICKAXE
+M.ALL_ITEMS[040001] = M.WOOD_PLANKS
 
 M.PLACEABLE = {
 	id_prefix = 01
 }
-M.PLACEABLE[0101] = M.DIRT
-M.PLACEABLE[0102] = M.STONE
+M.PLACEABLE[010001] = M.DIRT
+M.PLACEABLE[010002] = M.STONE
 
 M.SMELTABLE = {
 	id_prefix = 02
@@ -78,17 +78,17 @@ M.SMELTABLE = {
 M.CRAFTABLE = {
 	id_prefix = 03
 }
-M.CRAFTABLE[0401] = M.WOOD_PICKAXE
+M.CRAFTABLE[040001] = M.WOOD_PICKAXE
 
 M.TOOL = {
 	id_prefix = 04
 }
-M.TOOL[0401] = M.WOOD_PICKAXE
+M.TOOL[040001] = M.WOOD_PICKAXE
 
 M.PICKUPS = {
 	id_prefix = 05
 }
-M.PICKUPS[0501] = M.WOOD_PLANKS
+M.PICKUPS[050001] = M.WOOD_PLANKS
 
 --------------
 -- End Item --
