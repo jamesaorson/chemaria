@@ -5,7 +5,7 @@ local json_lib = require "modules.json_lib"
 local orthographic = require "orthographic.camera"
 local position_helpers = require "modules.position_helpers"
 local urls = require "modules.urls"
-local world_generation_constants = require "modules.constants.world_generation"
+local world_constants = require "modules.constants.world"
 
 require "modules.models.Block"
 require "modules.models.Chunk"
@@ -50,15 +50,15 @@ function create_blocks_from_world(self)
 	if globals.currentChunk then
 		local chunksToRender = {}
 		local chunksToUnrender = {}
-		for chunkX = globals.currentChunk.position.x - world_generation_constants.RENDER_DISTANCE, globals.currentChunk.position.x + world_generation_constants.RENDER_DISTANCE do
-			for chunkY = globals.currentChunk.position.y - world_generation_constants.RENDER_DISTANCE, globals.currentChunk.position.y + world_generation_constants.RENDER_DISTANCE do
+		for chunkX = globals.currentChunk.position.x - world_constants.RENDER_DISTANCE, globals.currentChunk.position.x + world_constants.RENDER_DISTANCE do
+			for chunkY = globals.currentChunk.position.y - world_constants.RENDER_DISTANCE, globals.currentChunk.position.y + world_constants.RENDER_DISTANCE do
 				local chunkPosition = vmath.vector3(chunkX, chunkY, 0)
 				chunksToRender[tostring(chunkPosition)] = chunkPosition
 			end
 		end
 		if globals.previousChunk then
-			for chunkX = globals.previousChunk.position.x - world_generation_constants.RENDER_DISTANCE, globals.previousChunk.position.x + world_generation_constants.RENDER_DISTANCE do
-				for chunkY = globals.previousChunk.position.y - world_generation_constants.RENDER_DISTANCE, globals.previousChunk.position.y + world_generation_constants.RENDER_DISTANCE do
+			for chunkX = globals.previousChunk.position.x - world_constants.RENDER_DISTANCE, globals.previousChunk.position.x + world_constants.RENDER_DISTANCE do
+				for chunkY = globals.previousChunk.position.y - world_constants.RENDER_DISTANCE, globals.previousChunk.position.y + world_constants.RENDER_DISTANCE do
 					local chunkPosition = vmath.vector3(chunkX, chunkY, 0)
 					chunksToUnrender[tostring(chunkPosition)] = chunkPosition
 				end
@@ -174,8 +174,8 @@ function initialize_new_world()
 				end
 			end
 			if blockInfo then
-				for y = 0, world_generation_constants.CHUNK_SIZE - 1 do
-					for x = 0, world_generation_constants.CHUNK_SIZE - 1 do
+				for y = 0, world_constants.CHUNK_SIZE - 1 do
+					for x = 0, world_constants.CHUNK_SIZE - 1 do
 						local blockToInsert = {}
 						blockToInsert.id = blockInfo.id
 						blockToInsert.position = vmath.vector3(x, y, 0)
@@ -190,8 +190,8 @@ function initialize_new_world()
 end
 
 function initialize_world_chunks()
-	for x = -world_generation_constants.WORLD_DIMENSIONS.x, world_generation_constants.WORLD_DIMENSIONS.x do
-		for y = -world_generation_constants.WORLD_DIMENSIONS.y, world_generation_constants.WORLD_DIMENSIONS.y do
+	for x = -world_constants.WORLD_DIMENSIONS.x, world_constants.WORLD_DIMENSIONS.x do
+		for y = -world_constants.WORLD_DIMENSIONS.y, world_constants.WORLD_DIMENSIONS.y do
 			local chunkToAdd = {}
 			chunkToAdd.blocks = {}
 			chunkToAdd.position = vmath.vector3(x, y, 0)
