@@ -157,18 +157,22 @@ function initialize_new_world()
 			local blockInfo = nil
 			local randomNumber = math.random()
 			if chunk.position.y <= 0 and chunk.position.y > -1 then
-				if randomNumber < 0.2 then
-					blockInfo = item_constants.SAND
-				elseif randomNumber < 0.3 then
+				if randomNumber < 0.1 then
+					blockInfo = item_constants.STONE
+				elseif randomNumber < 0.2 then
 					blockInfo = item_constants.CLAY
+				elseif randomNumber < 0.4 then
+					blockInfo = item_constants.SAND
 				else
 					blockInfo = item_constants.DIRT
 				end
 			elseif chunk.position.y <= -1 then
 				if randomNumber < 0.1 then
-					blockInfo = item_constants.DIRT
-				elseif randomNumber < 0.2 then
 					blockInfo = item_constants.SAND
+				elseif randomNumber < 0.2 then
+					blockInfo = item_constants.DIRT
+				elseif randomNumber < 0.4 then
+					blockInfo = item_constants.CLAY
 				else
 					blockInfo = item_constants.STONE
 				end
