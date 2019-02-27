@@ -13,6 +13,12 @@ images {
 images {
   image: "/assets/block/wood_pickaxe.png"
 }
+images {
+  image: "/assets/block/sand.png"
+}
+images {
+  image: "/assets/block/clay.png"
+}
 margin: 0
 extrude_borders: 1
 inner_padding: 0
