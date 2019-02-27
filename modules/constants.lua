@@ -48,14 +48,14 @@ M.STONE = {
 	type = "stone"
 }
 M.SAND = {
-	id = 010002,
+	id = 010003,
 	stackSize = 64,
-	type = "stone"
+	type = "sand"
 }
 M.CLAY = {
-	id = 010002,
+	id = 010004,
 	stackSize = 64,
-	type = "stone"
+	type = "clay"
 }
 
 M.WOOD_PICKAXE = {
