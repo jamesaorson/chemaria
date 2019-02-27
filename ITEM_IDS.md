@@ -1,0 +1,2 @@
+# Prefix
+Prefix the id with the Category it is part of (Placeable = 01, Smeltable = 02, Craftable = 03, Tool = 04). If it is both placeable and smeltable, then use the lowest number (In this case, placeable) to denote it.
