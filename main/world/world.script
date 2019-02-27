@@ -1,11 +1,11 @@
 local config = require "modules.config"
-local constants = require "modules.constants"
 local globals = require "modules.globals"
+local item_constants = require "modules.constants.items"
+local json_lib = require "modules.json_lib"
 local orthographic = require "orthographic.camera"
 local position_helpers = require "modules.position_helpers"
 local urls = require "modules.urls"
-
-local json_lib = require "modules.json_lib"
+local world_generation_constants = require "modules.constants.world_generation"
 
 require "modules.models.Block"
 require "modules.models.Chunk"
@@ -50,15 +50,15 @@ function create_blocks_from_world(self)
 	if globals.currentChunk then
 		local chunksToRender = {}
 		local chunksToUnrender = {}
-		for chunkX = globals.currentChunk.position.x - constants.RENDER_DISTANCE, globals.currentChunk.position.x + constants.RENDER_DISTANCE do
-			for chunkY = globals.currentChunk.position.y - constants.RENDER_DISTANCE, globals.currentChunk.position.y + constants.RENDER_DISTANCE do
+		for chunkX = globals.currentChunk.position.x - world_generation_constants.RENDER_DISTANCE, globals.currentChunk.position.x + world_generation_constants.RENDER_DISTANCE do
+			for chunkY = globals.currentChunk.position.y - world_generation_constants.RENDER_DISTANCE, globals.currentChunk.position.y + world_generation_constants.RENDER_DISTANCE do
 				local chunkPosition = vmath.vector3(chunkX, chunkY, 0)
 				chunksToRender[tostring(chunkPosition)] = chunkPosition
 			end
 		end
 		if globals.previousChunk then
-			for chunkX = globals.previousChunk.position.x - constants.RENDER_DISTANCE, globals.previousChunk.position.x + constants.RENDER_DISTANCE do
-				for chunkY = globals.previousChunk.position.y - constants.RENDER_DISTANCE, globals.previousChunk.position.y + constants.RENDER_DISTANCE do
+			for chunkX = globals.previousChunk.position.x - world_generation_constants.RENDER_DISTANCE, globals.previousChunk.position.x + world_generation_constants.RENDER_DISTANCE do
+				for chunkY = globals.previousChunk.position.y - world_generation_constants.RENDER_DISTANCE, globals.previousChunk.position.y + world_generation_constants.RENDER_DISTANCE do
 					local chunkPosition = vmath.vector3(chunkX, chunkY, 0)
 					chunksToUnrender[tostring(chunkPosition)] = chunkPosition
 				end
@@ -158,24 +158,24 @@ function initialize_new_world()
 			local randomNumber = math.random()
 			if chunk.position.y <= 0 and chunk.position.y > -1 then
 				if randomNumber < 0.2 then
-					blockInfo = constants.SAND
+					blockInfo = item_constants.SAND
 				elseif randomNumber < 0.3 then
-					blockInfo = constants.CLAY
+					blockInfo = item_constants.CLAY
 				else
-					blockInfo = constants.DIRT
+					blockInfo = item_constants.DIRT
 				end
 			elseif chunk.position.y <= -1 then
 				if randomNumber < 0.1 then
-					blockInfo = constants.DIRT
+					blockInfo = item_constants.DIRT
 				elseif randomNumber < 0.2 then
-					blockInfo = constants.SAND
+					blockInfo = item_constants.SAND
 				else
-					blockInfo = constants.STONE
+					blockInfo = item_constants.STONE
 				end
 			end
 			if blockInfo then
-				for y = 0, constants.CHUNK_SIZE - 1 do
-					for x = 0, constants.CHUNK_SIZE - 1 do
+				for y = 0, world_generation_constants.CHUNK_SIZE - 1 do
+					for x = 0, world_generation_constants.CHUNK_SIZE - 1 do
 						local blockToInsert = {}
 						blockToInsert.id = blockInfo.id
 						blockToInsert.position = vmath.vector3(x, y, 0)
@@ -190,8 +190,8 @@ function initialize_new_world()
 end
 
 function initialize_world_chunks()
-	for x = -constants.WORLD_DIMENSIONS.x, constants.WORLD_DIMENSIONS.x do
-		for y = -constants.WORLD_DIMENSIONS.y, constants.WORLD_DIMENSIONS.y do
+	for x = -world_generation_constants.WORLD_DIMENSIONS.x, world_generation_constants.WORLD_DIMENSIONS.x do
+		for y = -world_generation_constants.WORLD_DIMENSIONS.y, world_generation_constants.WORLD_DIMENSIONS.y do
 			local chunkToAdd = {}
 			chunkToAdd.blocks = {}
 			chunkToAdd.position = vmath.vector3(x, y, 0)
@@ -230,7 +230,7 @@ end
 
 function handle_place_block(self, messageId, message, sender)
 	local toolbarItem = message.toolbarItem
-	if toolbarItem and toolbarItem.id ~= constants.NONE.id then
+	if toolbarItem and toolbarItem.id ~= item_constants.NONE.id then
 		local messagePosition = vmath.vector3(message.screen_x, message.screen_y, 0)
 		local chunkPosition = position_helpers.screen_to_chunk_position(messagePosition)
 		local chunk = World.get_chunk_at_position(world, chunkPosition)

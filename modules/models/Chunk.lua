@@ -1,5 +1,3 @@
-local constants = require "modules.constants"
-
 Chunk = {
 	blocks = {},
 	isRendered = false,
