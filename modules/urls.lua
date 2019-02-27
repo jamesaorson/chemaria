@@ -1,4 +1,4 @@
-local constants = require "modules.constants"
+local item_constants = require "modules.constants.items"
 
 local M = {}
 
@@ -8,14 +8,14 @@ local M = {}
 
 function M.get_factory_url(objectName)
 	if type(objectName) == "number" then
-		objectName = constants.ALL_ITEMS[objectName].type
+		objectName = item_constants.ALL_ITEMS[objectName].type
 	end
 	return "/" .. objectName .. "_factory#" .. objectName .. "_factory"
 end
 
 function M.get_pickup_factory_url(objectName)
 	if type(objectName) == "number" then
-		objectName = constants.ALL_ITEMS[objectName].type
+		objectName = item_constants.ALL_ITEMS[objectName].type
 	end
 	return "/" .. objectName .. "_pickup_factory#" .. objectName .. "_pickup_factory"
 end

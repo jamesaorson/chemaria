@@ -1,10 +1,13 @@
 local config = require "modules.config"
-local constants = require "modules.constants"
 local globals = require "modules.globals"
 local helpers = require "modules.helpers"
+local inventory_constants = require "modules.constants.inventory"
+local item_constants = require "modules.constants.items"
 local orthographic = require "orthographic.camera"
 local platypus = require "platypus.platypus"
+local player_constants = require "modules.constants.player"
 local position_helpers = require "modules.position_helpers"
+local toolbar_constants = require "modules.constants.toolbar"
 
 require "modules.models.Block"
 require "modules.models.Chunk"
@@ -22,30 +25,30 @@ local update_toolbar
 function add_loose_pickup_to_player(self, messageId, message, sender)
 	local loosePickup = World.get_loose_pickup(world, message.other_id)
 	if loosePickup then
-		for i = 1, constants.TOOLBAR_MAX_SLOTS do
+		for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
 			local toolbarItem = self.toolbar[i]
-			if toolbarItem.id == loosePickup.id and toolbarItem.count < constants.ALL_ITEMS[loosePickup.id].stackSize then
+			if toolbarItem.id == loosePickup.id and toolbarItem.count < item_constants.ALL_ITEMS[loosePickup.id].stackSize then
 				toolbarItem.count = toolbarItem.count + 1
 				update_toolbar()
 				return true
-			elseif toolbarItem.id == constants.NONE.id then
+			elseif toolbarItem.id == item_constants.NONE.id then
 				toolbarItem.count = 1
 				toolbarItem.id = loosePickup.id
-				toolbarItem.type = constants.ALL_ITEMS[loosePickup.id].type
+				toolbarItem.type = item_constants.ALL_ITEMS[loosePickup.id].type
 				update_toolbar()
 				return true
 			end
 		end
-		for i = 1, constants.INVENTORY_MAX_SLOTS do
+		for i = 1, inventory_constants.INVENTORY_MAX_SLOTS do
 			local inventoryItem = self.inventory[i]
-			if inventoryItem.id == loosePickup.id and inventoryItem.count < constants.ALL_ITEMS[loosePickup.id].stackSize then
+			if inventoryItem.id == loosePickup.id and inventoryItem.count < item_constants.ALL_ITEMS[loosePickup.id].stackSize then
 				inventoryItem.count = inventoryItem.count + 1
 				update_inventory()
 				return true
-			elseif inventoryItem.id == constants.NONE.id then
+			elseif inventoryItem.id == item_constants.NONE.id then
 				inventoryItem.count = 1
 				inventoryItem.id = loosePickup.id
-				inventoryItem.type = constants.ALL_ITEMS[loosePickup.id].type
+				inventoryItem.type = item_constants.ALL_ITEMS[loosePickup.id].type
 				update_inventory()
 				return true
 			end
@@ -95,14 +98,14 @@ local handle_update_toolbar_item
 
 function handle_jump(self, messageId, message, sender)
 	if message.pressed then
-		self.platypus.jump(constants.PLAYER_JUMP_FORCE)
+		self.platypus.jump(player_constants.PLAYER_JUMP_FORCE)
 	elseif message.released then
 		self.platypus.abort_jump(0.5)
 	end
 end
 
 function handle_left(self, messageId, message, sender)
-	self.platypus.left(constants.PLAYER_VELOCITY.x)
+	self.platypus.left(player_constants.PLAYER_VELOCITY.x)
 end
 
 function handle_left_click(self, messageId, message, sender)
@@ -114,7 +117,7 @@ function handle_left_click(self, messageId, message, sender)
 		self.miningStartTime = nil
 	else
 		local miningTime = os.clock() - self.miningStartTime
-		if miningTime >= constants.PLAYER_BASE_MINING_INTERVAL then
+		if miningTime >= player_constants.PLAYER_BASE_MINING_INTERVAL then
 			self.miningStartTime = os.clock()
 			msg.post("/world#world_script", "mine_block", message)
 		end
@@ -122,7 +125,7 @@ function handle_left_click(self, messageId, message, sender)
 end
 
 function handle_right(self, messageId, message, sender)
-	self.platypus.right(constants.PLAYER_VELOCITY.x)
+	self.platypus.right(player_constants.PLAYER_VELOCITY.x)
 end
 
 function handle_right_click(self, messageId, message, sender)
@@ -135,10 +138,10 @@ function handle_right_click(self, messageId, message, sender)
 	end
 	if self.placingStartTime then
 		local placingTime = os.clock() - self.placingStartTime
-		if message.pressed or placingTime >= constants.PLAYER_BASE_PLACING_INTERVAL then
+		if message.pressed or placingTime >= player_constants.PLAYER_BASE_PLACING_INTERVAL then
 			self.placingStartTime = os.clock()
 			message.toolbarItem = self.toolbar[self.selectedToolbarItem]
-			if helpers.is_placeable(message.toolbarItem) and message.toolbarItem.id ~= constants.NONE.id then
+			if helpers.is_placeable(message.toolbarItem) and message.toolbarItem.id ~= item_constants.NONE.id then
 				msg.post("/world#world_script", "place_block", message)
 			end
 		end
@@ -159,8 +162,8 @@ end
 
 function handle_update_toolbar_item(self, messageId, message, sender)
 	if message.count == 0 then
-		message.id = constants.NONE.id
-		message.type = constants.NONE.type
+		message.id = item_constants.NONE.id
+		message.type = item_constants.NONE.type
 	end
 	self.toolbar[message.index] = message
 	msg.post("/ui#ui", "update_toolbar")

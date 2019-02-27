@@ -1,4 +1,4 @@
-local constants = require "modules.constants"
+local item_constants = require "modules.constants.items"
 
 local M = {}
 
@@ -10,28 +10,28 @@ function M.is_craftable(item)
 	if item == nil then
 		return false
 	end
-	return constants.CRAFTABLE[item.id]
+	return item_constants.CRAFTABLE[item.id]
 end
 
 function M.is_placeable(item)
 	if item == nil then
 		return false
 	end
-	return constants.PLACEABLE[item.id]
+	return item_constants.PLACEABLE[item.id]
 end
 
 function M.is_smeltable(item)
 	if item == nil then
 		return false
 	end
-	return constants.SMELTABLE[item.id]
+	return item_constants.SMELTABLE[item.id]
 end
 
 function M.is_tool(item)
 	if item == nil then
 		return false
 	end
-	return constants.TOOL[item.id]
+	return item_constants.TOOL[item.id]
 end
 
 ------------------------

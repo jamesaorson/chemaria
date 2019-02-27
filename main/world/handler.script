@@ -1,15 +1,15 @@
 local camera = require "orthographic.camera"
+local camera_constants = require "modules.constants.camera"
 local config = require "modules.config"
-local constants = require "modules.constants"
 local helpers = require "modules.helpers"
-
 local json_lib = require "modules.json_lib"
+local screen_constants = require "modules.constants.screen"
+local toolbar_constants = require "modules.constants.toolbar"
+local world_generation_constants = require "modules.constants.world_generation"
 
 require "modules.models.Block"
 require "modules.models.Chunk"
 require "modules.models.World"
-
-local CAMERA_ID = hash("/camera")
 
 -------------
 -- Helpers --
@@ -25,15 +25,15 @@ local send_player_action
 function apply_config()
 	defos.set_fullscreen(config.IS_FULLSCREEN)
 
-	constants.SCREEN.x, constants.SCREEN.y, constants.SCREEN.w, constants.SCREEN.h = defos.get_window_size()
+	screen_constants.SCREEN_SIZE.x, screen_constants.SCREEN_SIZE.y, screen_constants.SCREEN_SIZE.w, screen_constants.SCREEN_SIZE.h = defos.get_window_size()
 
-	msg.post(CAMERA_ID, "deadzone", config.CAMERA_DEADZONE)
-	msg.post(CAMERA_ID, "zoom_to", config.CAMERA_ZOOM_LEVEL)
+	msg.post(camera_constants.CAMERA_ID, "deadzone", config.CAMERA_DEADZONE)
+	msg.post(camera_constants.CAMERA_ID, "zoom_to", config.CAMERA_ZOOM_LEVEL)
 end
 
 function is_inventory_switch_action(actionId)
 	local baseId = "inventory_switch_"
-	for i = 1, constants.TOOLBAR_MAX_SLOTS do
+	for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
 		if actionId == hash(baseId .. i) then
 			return true
 		end
@@ -56,14 +56,14 @@ function save_game()
 	local minimalWorld = {
 		chunks = {}
 	}
-	for chunkX = -constants.WORLD_DIMENSIONS.x, constants.WORLD_DIMENSIONS.x do
-		for chunkY = -constants.WORLD_DIMENSIONS.y, constants.WORLD_DIMENSIONS.y do
+	for chunkX = -world_generation_constants.WORLD_DIMENSIONS.x, world_generation_constants.WORLD_DIMENSIONS.x do
+		for chunkY = -world_generation_constants.WORLD_DIMENSIONS.y, world_generation_constants.WORLD_DIMENSIONS.y do
 			local chunk = World.get_chunk_at_position(world, { x = chunkX, y = chunkY })
 			chunk.position = { x = chunk.position.x, y = chunk.position.y, z = chunk.position.z }
 			chunk.isRendered = nil
 			local blocks = chunk.blocks
-			for blockY = 0, constants.CHUNK_SIZE - 1 do
-				for blockX = 0, constants.CHUNK_SIZE - 1 do
+			for blockY = 0, world_generation_constants.CHUNK_SIZE - 1 do
+				for blockX = 0, world_generation_constants.CHUNK_SIZE - 1 do
 					local block = Chunk.get_block_at_position(chunk, { x = blockX, y = blockY })
 					if block then
 						block.position = { x = block.position.x, y = block.position.y, z = block.position.z }

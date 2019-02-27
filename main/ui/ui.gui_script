@@ -1,6 +1,8 @@
-local constants = require "modules.constants"
 local globals = require "modules.globals"
+local inventory_constants = require "modules.constants.inventory"
+local item_constants = require "modules.constants.items"
 local orthographic = require "orthographic.camera"
+local toolbar_constants = require "modules.constants.toolbar"
 local urls = require "modules.urls"
 
 -------------
@@ -19,7 +21,7 @@ local update_toolbar
 
 function change_slot_texture(slotNode, texture)
 	if not texture then
-		texture = constants.NONE.type
+		texture = item_constants.NONE.type
 	end
 	gui.set_texture(slotNode, "block_textures")
 	gui.play_flipbook(slotNode, texture)
@@ -36,7 +38,7 @@ function end_drag(self, message)
 	local isInventoryClicked = false
 	local inventoryIndices = nil
 
-	for i = 1, constants.TOOLBAR_MAX_SLOTS do
+	for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
 		local toolbarItem = gui.get_node(urls.get_toolbar_text_node_url(i))
 		if gui.pick_node(toolbarItem, message.screen_x, message.screen_y) then
 			isToolbarClicked = true
@@ -47,7 +49,7 @@ function end_drag(self, message)
 	end
 
 	if not isToolbarClicked then
-		for i = 1, constants.INVENTORY_MAX_SLOTS do
+		for i = 1, inventory_constants.INVENTORY_MAX_SLOTS do
 			local inventoryItem = gui.get_node(urls.get_inventory_node_url(i))
 			if gui.pick_node(inventoryItem, message.screen_x, message.screen_y) then
 				isInventoryClicked = true
@@ -103,7 +105,7 @@ end
 
 function get_inventory_switch_index(messageId)
 	local baseId = "inventory_switch_"
-	for i = 1, constants.TOOLBAR_MAX_SLOTS do
+	for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
 		if messageId == hash(baseId .. i) then
 			return i
 		end
@@ -113,7 +115,7 @@ end
 
 function is_inventory_switch_message(messageId)
 	local baseId = "inventory_switch_"
-	for i = 1, constants.TOOLBAR_MAX_SLOTS do
+	for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
 		if messageId == hash(baseId .. i) then
 			return true
 		end
@@ -124,7 +126,7 @@ end
 function start_drag(self, message)
 	self.isDragging = true
 
-	for i = 1, constants.TOOLBAR_MAX_SLOTS do
+	for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
 		local toolbarItem = gui.get_node(urls.get_toolbar_text_node_url(i))
 		if gui.pick_node(toolbarItem, message.screen_x, message.screen_y) then
 			self.draggedItem = { startingUiElement = "toolbar", startingIndex = i }
@@ -132,7 +134,7 @@ function start_drag(self, message)
 		end
 	end
 	if not self.draggedItem then
-		for i = 1, constants.INVENTORY_MAX_SLOTS do
+		for i = 1, inventory_constants.INVENTORY_MAX_SLOTS do
 			local inventoryItem = gui.get_node(urls.get_inventory_node_url(i))
 			if gui.pick_node(inventoryItem, message.screen_x, message.screen_y) then
 				self.draggedItem = { startingUiElement = "inventory", startingIndex = i } 
@@ -157,22 +159,22 @@ end
 function update_inventory(self)
 	gui.set_enabled(gui.get_node("inventory_node"), self.isInventoryEnabled)
 
-	for i = 1, constants.INVENTORY_MAX_SLOTS do
+	for i = 1, inventory_constants.INVENTORY_MAX_SLOTS do
 		local inventoryItem = self.inventory[i]
 		local inventoryNode = gui.get_node(urls.get_inventory_node_url(i))
 		local inventoryTextNode = gui.get_node(urls.get_inventory_text_node_url(i))
-		if inventoryItem and inventoryItem.id ~= constants.NONE.id then
+		if inventoryItem and inventoryItem.id ~= item_constants.NONE.id then
 			gui.set_text(inventoryTextNode, inventoryItem.count)
 			change_slot_texture(inventoryNode, inventoryItem.type)
 		elseif inventoryItem.count == 0 then
 			gui.set_text(inventoryTextNode, "None")
-			change_slot_texture(inventoryNode, constants.NONE.type)
+			change_slot_texture(inventoryNode, item_constants.NONE.type)
 		end
-		gui.set_color(inventoryNode, constants.INVENTORY_UNSELECTED_COLOR)
+		gui.set_color(inventoryNode, inventory_constants.INVENTORY_UNSELECTED_COLOR)
 	end
 
 	local selectedInventoryNode = gui.get_node(urls.get_inventory_node_url(self.selectedInventoryItem))
-	gui.set_color(selectedInventoryNode, constants.INVENTORY_SELECTED_COLOR)
+	gui.set_color(selectedInventoryNode, inventory_constants.INVENTORY_SELECTED_COLOR)
 	
 	self.shouldUpdateInventory = false
 end
@@ -181,18 +183,18 @@ function update_toolbar(self)
 	for i, toolbarItem in pairs(self.toolbar) do
 		local toolbarNode = gui.get_node(urls.get_toolbar_node_url(i))
 		local toolbarTextNode = gui.get_node(urls.get_toolbar_text_node_url(i))
-		if toolbarItem and toolbarItem.id ~= constants.NONE.id then
+		if toolbarItem and toolbarItem.id ~= item_constants.NONE.id then
 			gui.set_text(toolbarTextNode, toolbarItem.count)
 			change_slot_texture(toolbarNode, toolbarItem.type)
 		elseif toolbarItem.count == 0 then
 			gui.set_text(toolbarTextNode, "None")
-			change_slot_texture(toolbarNode, constants.NONE.type)
+			change_slot_texture(toolbarNode, item_constants.NONE.type)
 		end
-		gui.set_color(toolbarNode, constants.TOOLBAR_UNSELECTED_COLOR)
+		gui.set_color(toolbarNode, toolbar_constants.TOOLBAR_UNSELECTED_COLOR)
 	end
 
 	local selectedToolbarNode = gui.get_node(urls.get_toolbar_node_url(self.selectedToolbarItem))
-	gui.set_color(selectedToolbarNode, constants.TOOLBAR_SELECTED_COLOR)
+	gui.set_color(selectedToolbarNode, toolbar_constants.TOOLBAR_SELECTED_COLOR)
 
 	self.shouldUpdateToolbar = false
 end
@@ -229,15 +231,15 @@ function handle_left_click(self, messageId, message, sender)
 end
 
 function handle_mouse_wheel_down(self, messageId, message, sender)
-	if self.selectedToolbarItem ~= constants.TOOLBAR_MAX_SLOTS then
-		local index = (self.selectedToolbarItem + 1) % (constants.TOOLBAR_MAX_SLOTS + 1)
+	if self.selectedToolbarItem ~= toolbar_constants.TOOLBAR_MAX_SLOTS then
+		local index = (self.selectedToolbarItem + 1) % (toolbar_constants.TOOLBAR_MAX_SLOTS + 1)
 		switch_selected_toolbar_item(self, index)
 	end
 end
 
 function handle_mouse_wheel_up(self, messageId, message, sender)
 	if self.selectedToolbarItem ~= 1 then
-		local index = (self.selectedToolbarItem - 1 + constants.TOOLBAR_MAX_SLOTS) % constants.TOOLBAR_MAX_SLOTS
+		local index = (self.selectedToolbarItem - 1 + toolbar_constants.TOOLBAR_MAX_SLOTS) % toolbar_constants.TOOLBAR_MAX_SLOTS
 		switch_selected_toolbar_item(self, index)
 	end
 end
@@ -277,23 +279,23 @@ function init(self)
 	self.isDragging = false
 	self.draggedItem = nil
 
-	for i = 1, constants.INVENTORY_MAX_SLOTS do
+	for i = 1, inventory_constants.INVENTORY_MAX_SLOTS do
 		local newInventoryItem = {
-			id = constants.NONE.id,
+			id = item_constants.NONE.id,
 			index = i,
 			count = 0,
-			type = constants.NONE.type
+			type = item_constants.NONE.type
 		}
 		self.shouldUpdateInventory = true
 		globals.update_inventory_item(newInventoryItem)
 	end
 
-	for i = 1, constants.TOOLBAR_MAX_SLOTS do
+	for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
 		local newToolbarItem = {
-			id = constants.DIRT.id,
+			id = item_constants.DIRT.id,
 			index = i,
 			count = 64,
-			type = constants.DIRT.type
+			type = item_constants.DIRT.type
 		}
 		self.shouldUpdateToolbar = true
 		globals.update_toolbar_item(newToolbarItem)
