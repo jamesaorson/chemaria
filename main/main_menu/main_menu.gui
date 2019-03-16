@@ -643,8 +643,8 @@ nodes {
 }
 nodes {
   position {
-    x: 960.0
-    y: 796.0
+    x: 0.0
+    y: 0.0
     z: 0.0
     w: 1.0
   }
@@ -655,8 +655,47 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 10.0
-    y: 10.0
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEMPLATE
+  id: "title"
+  layer: ""
+  inherit_alpha: true
+  alpha: 1.0
+  template: "/main/main_menu/main_menu_theme/components/title.gui"
+  template_node_child: false
+}
+nodes {
+  position {
+    x: 960.0
+    y: 796.0
+    z: 1.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 5.0
+    y: 5.0
     z: 1.0
     w: 1.0
   }
@@ -676,7 +715,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: "Chemaria"
   font: "theme"
-  id: "Title"
+  id: "title/Title"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -694,12 +733,13 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
+  parent: "title"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
-  template_node_child: false
+  template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
 }
