@@ -279,23 +279,28 @@ function init(self)
 	self.isDragging = false
 	self.draggedItem = nil
 
+	local inventoryBlockInfo = item_constants.STONE_BRICKS
 	for i = 1, inventory_constants.INVENTORY_MAX_SLOTS do
 		local newInventoryItem = {
-			id = item_constants.NONE.id,
+			id = inventoryBlockInfo.id,
 			index = i,
-			count = 0,
-			type = item_constants.NONE.type
+			count = inventoryBlockInfo.stackSize,
+			type = inventoryBlockInfo.type
 		}
 		self.shouldUpdateInventory = true
 		globals.update_inventory_item(newInventoryItem)
 	end
 
+	local inventoryBlockInfo = item_constants.WOOD_WALL
 	for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
+		if i > 3 then 
+			inventoryBlockInfo = item_constants.CLAY_BRICKS
+		end
 		local newToolbarItem = {
-			id = item_constants.DIRT.id,
+			id = inventoryBlockInfo.id,
 			index = i,
-			count = 64,
-			type = item_constants.DIRT.type
+			count = inventoryBlockInfo.stackSize,
+			type = inventoryBlockInfo.type
 		}
 		self.shouldUpdateToolbar = true
 		globals.update_toolbar_item(newToolbarItem)

@@ -114,7 +114,7 @@ instances {
 }
 instances {
   id: "dirt_pickup_factory"
-  prototype: "/main/block/pickup/dirt_pickup/dirt_pickup_factory.go"
+  prototype: "/main/pickup/dirt_pickup/dirt_pickup_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -134,7 +134,7 @@ instances {
 }
 instances {
   id: "stone_pickup_factory"
-  prototype: "/main/block/pickup/stone_pickup/stone_pickup_factory.go"
+  prototype: "/main/pickup/stone_pickup/stone_pickup_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -154,7 +154,7 @@ instances {
 }
 instances {
   id: "dirt_factory"
-  prototype: "/main/block/world/dirt/dirt_factory.go"
+  prototype: "/main/items/dirt/dirt_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -174,7 +174,7 @@ instances {
 }
 instances {
   id: "stone_factory"
-  prototype: "/main/block/world/stone/stone_factory.go"
+  prototype: "/main/items/stone/stone_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -194,7 +194,7 @@ instances {
 }
 instances {
   id: "clay_pickup_factory"
-  prototype: "/main/block/pickup/clay_pickup/clay_pickup_factory.go"
+  prototype: "/main/pickup/clay_pickup/clay_pickup_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -214,7 +214,7 @@ instances {
 }
 instances {
   id: "sand_pickup_factory"
-  prototype: "/main/block/pickup/sand_pickup/sand_pickup_factory.go"
+  prototype: "/main/pickup/sand_pickup/sand_pickup_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -234,7 +234,7 @@ instances {
 }
 instances {
   id: "sand_factory"
-  prototype: "/main/block/world/sand/sand_factory.go"
+  prototype: "/main/items/sand/sand_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -254,7 +254,127 @@ instances {
 }
 instances {
   id: "clay_factory"
-  prototype: "/main/block/world/clay/clay_factory.go"
+  prototype: "/main/items/clay/clay_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "clay_bricks_pickup_factory"
+  prototype: "/main/pickup/clay_bricks_pickup/clay_bricks_pickup_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "stone_bricks_pickup_factory"
+  prototype: "/main/pickup/stone_bricks_pickup/stone_bricks_pickup_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "wood_wall_pickup_factory"
+  prototype: "/main/pickup/wood_wall_pickup/wood_wall_pickup_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "clay_bricks_factory"
+  prototype: "/main/items/clay_bricks/clay_bricks_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "stone_bricks_factory"
+  prototype: "/main/items/stone_bricks/stone_bricks_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "wood_wall_factory"
+  prototype: "/main/items/wood_wall/wood_wall_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -297,10 +417,13 @@ embedded_instances {
 }
 embedded_instances {
   id: "pickup_factories"
+  children: "clay_bricks_pickup_factory"
   children: "clay_pickup_factory"
   children: "dirt_pickup_factory"
   children: "sand_pickup_factory"
+  children: "stone_bricks_pickup_factory"
   children: "stone_pickup_factory"
+  children: "wood_wall_pickup_factory"
   data: ""
   position {
     x: 0.0
@@ -321,10 +444,13 @@ embedded_instances {
 }
 embedded_instances {
   id: "world_factories"
+  children: "clay_bricks_factory"
   children: "clay_factory"
   children: "dirt_factory"
   children: "sand_factory"
+  children: "stone_bricks_factory"
   children: "stone_factory"
+  children: "wood_wall_factory"
   data: ""
   position {
     x: 0.0
