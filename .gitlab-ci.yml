@@ -1,0 +1,14 @@
+image: eroy/defold-bob-resource
+
+build:
+  stage: build
+  script: 
+    - 
+  artifacts:
+    paths:
+      - 
+
+deploy:
+  stage: deploy
+  script:
+    - 
