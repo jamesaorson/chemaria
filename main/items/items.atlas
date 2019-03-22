@@ -1,0 +1,33 @@
+images {
+  image: "/assets/items/dirt.png"
+}
+images {
+  image: "/assets/items/stone.png"
+}
+images {
+  image: "/assets/items/none.png"
+}
+images {
+  image: "/assets/items/wood_planks.png"
+}
+images {
+  image: "/assets/items/wood_pickaxe.png"
+}
+images {
+  image: "/assets/items/sand.png"
+}
+images {
+  image: "/assets/items/clay.png"
+}
+images {
+  image: "/assets/items/clay_bricks.png"
+}
+images {
+  image: "/assets/items/stone_bricks.png"
+}
+images {
+  image: "/assets/items/wood_wall.png"
+}
+margin: 0
+extrude_borders: 1
+inner_padding: 0

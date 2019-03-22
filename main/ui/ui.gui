@@ -1,7 +1,7 @@
 script: "/main/ui/ui.gui_script"
 textures {
   name: "block_textures"
-  texture: "/main/block/block.atlas"
+  texture: "/main/items/items.atlas"
 }
 background_color {
   x: 0.0

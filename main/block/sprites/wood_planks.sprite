@@ -1,4 +1,0 @@
-tile_set: "/main/block/block.atlas"
-default_animation: "wood_planks"
-material: "/builtins/materials/sprite.material"
-blend_mode: BLEND_MODE_ALPHA
