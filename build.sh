@@ -4,14 +4,12 @@ title_no_space=$(echo -e "${title}" | tr -d '[[:space:]]')
 
 echo "Project: ${title}"
 
-if [[ ! -f "./Bob.jar" ]]; then
-    SHA1=$(curl -s http://d.defold.com/stable/info.json | sed 's/.*sha1": "\(.*\)".*/\1/')
+SHA1=$(curl -s http://d.defold.com/stable/info.json | sed 's/.*sha1": "\(.*\)".*/\1/')
 
-    BOB_URL="http://d.defold.com/archive/${SHA1}/bob/bob.jar"
+BOB_URL="http://d.defold.com/archive/${SHA1}/bob/bob.jar"
 
-    echo "Downloading ${BOB_URL}"
-    curl -o Bob.jar ${BOB_URL}
-fi
+echo "Downloading ${BOB_URL}"
+curl -o Bob.jar ${BOB_URL}
 
 Bob() {
 	java -jar Bob.jar $@
