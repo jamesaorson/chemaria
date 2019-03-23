@@ -1,7 +1,7 @@
 image: ubuntu:latest
 
 before_script:
-  - apt install -y curl
+  # - apt install -y curl
   - apt -y install oracle-java8-installer
   - cd /var/lib/dpkg/info
   - sed -i 's|JAVA_VERSION=8u151|JAVA_VERSION=8u162|' oracle-java8-installer.*
