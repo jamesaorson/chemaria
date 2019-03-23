@@ -15,7 +15,7 @@ before_script:
   # - sed -i 's|J_DIR=jdk1.8.0_151|J_DIR=jdk1.8.0_162|' oracle-java8-installer.*
   # - apt-get install -f -y
   # - apt-get install -y oracle-java8-set-default
-  - apt install -y less zip
+  - apt install -y less zip curl
 
 stages:
   - build
