@@ -27,6 +27,6 @@ deploy:
   stage: deploy
   before_script:
     - apt update
-    - apt install zip curl
+    - apt install -y zip curl
   script:
     - ./deploy.sh
