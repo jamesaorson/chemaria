@@ -1,14 +1,23 @@
-image: eroy/defold-bob-resource
+image: java:oracle-java8
+
+before_script:
+  - apt install -y curl
+
+stages:
+  - build
+  # - deploy
 
 build:
   stage: build
   script: 
-    - 
+    - ./build.sh
   artifacts:
     paths:
-      - 
+      - ./build/x86_64-darwin/Chemaria_x86_64-darwin.zip
+      - ./build/x86_64-linux/Chemaria_x86_64-linux.zip
+      - ./build/x86_64-darwin/Chemaria_x86_64-win32.zip
 
-deploy:
-  stage: deploy
-  script:
-    - 
+# deploy:
+#   stage: deploy
+#   script:
+#     - 
