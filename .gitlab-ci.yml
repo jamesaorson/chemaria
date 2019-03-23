@@ -22,7 +22,7 @@ build:
     paths:
       - ./build/x86_64-darwin/Chemaria_x86_64-darwin.zip
       - ./build/x86_64-linux/Chemaria_x86_64-linux.zip
-      - ./build/x86_64-darwin/Chemaria_x86_64-win32.zip
+      - ./build/x86_64-win32/Chemaria_x86_64-win32.zip
 
 deploy:
   stage: deploy
