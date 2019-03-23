@@ -3,7 +3,7 @@ image: ubuntu:latest
 before_script:
   - apt update
   - apt install -y less zip
-  - apt install python-software-properties
+  - apt install software-properties-common
   - add-apt-repository ppa:webupd8team/java
   - apt update
   - apt -y install oracle-java8-installer
