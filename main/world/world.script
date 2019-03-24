@@ -70,10 +70,10 @@ function create_blocks_from_world(self)
 					local chunkToUnrender = World.get_chunk_at_position(world, chunkPosition)
 					if chunkToUnrender then
 						for blockX, blockXColumn in pairs(chunkToUnrender.blocks) do
-							for blockY, block in pairs(blockXColumn) do
-								local block = Chunk.get_block_at_position(chunkToUnrender, vmath.vector3(blockX, blockY, 0))
-								if block and block.url then
-									go.delete(block.url)
+							for blockY, _ in pairs(blockXColumn) do
+								local blockToDelete = Chunk.get_block_at_position(chunkToUnrender, vmath.vector3(blockX, blockY, 0))
+								if blockToDelete and blockToDelete.url then
+									go.delete(blockToDelete.url)
 								end
 							end
 						end
@@ -153,39 +153,42 @@ end
 function initialize_new_world()
 	math.randomseed(os.time())
 	for chunkX, chunkXColumn in pairs(world.chunks) do
-		for chunkY, chunk in pairs(chunkXColumn) do
-			local blockInfo = nil
-			local randomNumber = math.random()
-			if chunk.position.y <= 0 and chunk.position.y > -1 then
-				if randomNumber < 0.1 then
-					blockInfo = item_constants.STONE
-				elseif randomNumber < 0.2 then
-					blockInfo = item_constants.CLAY
-				elseif randomNumber < 0.4 then
-					blockInfo = item_constants.SAND
-				else
-					blockInfo = item_constants.DIRT
+		-- Keep world from not rendering when you go out of the bounds
+		if chunkX > -world_constants.WORLD_DIMENSIONS.x + world_constants.RENDER_DISTANCE and chunkX < world_constants.WORLD_DIMENSIONS.x - world_constants.RENDER_DISTANCE then
+			for chunkY, chunk in pairs(chunkXColumn) do
+				local blockInfo = nil
+				local randomNumber = math.random()
+				if chunk.position.y <= 0 and chunk.position.y > -1 then
+					if randomNumber < 0.1 then
+						blockInfo = item_constants.STONE
+					elseif randomNumber < 0.2 then
+						blockInfo = item_constants.CLAY
+					elseif randomNumber < 0.4 then
+						blockInfo = item_constants.SAND
+					else
+						blockInfo = item_constants.DIRT
+					end
+				elseif chunk.position.y <= -1 then
+					if randomNumber < 0.1 then
+						blockInfo = item_constants.SAND
+					elseif randomNumber < 0.2 then
+						blockInfo = item_constants.DIRT
+					elseif randomNumber < 0.4 then
+						blockInfo = item_constants.CLAY
+					else
+						blockInfo = item_constants.STONE
+					end
 				end
-			elseif chunk.position.y <= -1 then
-				if randomNumber < 0.1 then
-					blockInfo = item_constants.SAND
-				elseif randomNumber < 0.2 then
-					blockInfo = item_constants.DIRT
-				elseif randomNumber < 0.4 then
-					blockInfo = item_constants.CLAY
-				else
-					blockInfo = item_constants.STONE
-				end
-			end
-			if blockInfo then
-				for y = 0, world_constants.CHUNK_SIZE - 1 do
-					for x = 0, world_constants.CHUNK_SIZE - 1 do
-						local blockToInsert = {}
-						blockToInsert.id = blockInfo.id
-						blockToInsert.position = vmath.vector3(x, y, 0)
-						blockToInsert.type = blockInfo.type
-						
-						Chunk.add_block(chunk, blockToInsert)
+				if blockInfo then
+					for y = 0, world_constants.CHUNK_SIZE - 1 do
+						for x = 0, world_constants.CHUNK_SIZE - 1 do
+							local blockToInsert = {}
+							blockToInsert.id = blockInfo.id
+							blockToInsert.position = vmath.vector3(x, y, 0)
+							blockToInsert.type = blockInfo.type
+							
+							Chunk.add_block(chunk, blockToInsert)
+						end
 					end
 				end
 			end
