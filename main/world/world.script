@@ -70,10 +70,10 @@ function create_blocks_from_world(self)
 					local chunkToUnrender = World.get_chunk_at_position(world, chunkPosition)
 					if chunkToUnrender then
 						for blockX, blockXColumn in pairs(chunkToUnrender.blocks) do
-							for blockY, block in pairs(blockXColumn) do
-								local block = Chunk.get_block_at_position(chunkToUnrender, vmath.vector3(blockX, blockY, 0))
-								if block and block.url then
-									go.delete(block.url)
+							for blockY, _ in pairs(blockXColumn) do
+								local blockToDelete = Chunk.get_block_at_position(chunkToUnrender, vmath.vector3(blockX, blockY, 0))
+								if blockToDelete and blockToDelete.url then
+									go.delete(blockToDelete.url)
 								end
 							end
 						end

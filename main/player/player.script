@@ -109,17 +109,14 @@ function handle_left(self, messageId, message, sender)
 end
 
 function handle_left_click(self, messageId, message, sender)
+	self.miningMessage = message
 	if message.pressed then
-		self.isMining = true
-		self.miningStartTime = os.clock()
+		self.miningTimerHandle = timer.delay(player_constants.PLAYER_BASE_MINING_INTERVAL, true, function (self, handle, timeElapsed)
+			msg.post("/world#world_script", "mine_block", self.miningMessage)
+		end)
 	elseif message.released then
-		self.isMining = false
-		self.miningStartTime = nil
-	else
-		local miningTime = os.clock() - self.miningStartTime
-		if miningTime >= player_constants.PLAYER_BASE_MINING_INTERVAL then
-			self.miningStartTime = os.clock()
-			msg.post("/world#world_script", "mine_block", message)
+		if self.miningTimerHandle then
+			timer.cancel(self.miningTimerHandle)
 		end
 	end
 end
