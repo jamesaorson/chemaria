@@ -29,6 +29,8 @@ app_icon = /assets/app_icons/appicon.icns
 debug = 0
 debug_alpha = 0.2
 gravity_y = -800.0
+max_collisions = 2048
+max_contacts = 8192
 
 [android]
 app_icon_36x36 = /assets/app_icons/appicon.png
