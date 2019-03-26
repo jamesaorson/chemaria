@@ -4,16 +4,9 @@ local M = {}
 
 M.WOOD_PICKAXE = {
 	itemId = item_constants.WOOD_PICKAXE.id,
-	components = {
-		{
-			id = item_constants.WOOD_PLANKS.id,
-			requirement = 120
-		},
-		{
-			id = item_constants.STONE_BRICKS.id,
-			requirement = 96
-		}
-	}
+	components = {}
 }
+M.WOOD_PICKAXE.components[item_constants.WOOD_PLANKS.id] = 120
+M.WOOD_PICKAXE.components[item_constants.STONE_BRICKS.id] = 96
 
 return M

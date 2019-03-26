@@ -19,6 +19,7 @@ require "modules.models.World"
 -------------
 
 local add_loose_pickup_to_player
+local check_for_crafting_components
 local update_current_chunk
 local update_inventory
 local update_toolbar
@@ -57,6 +58,27 @@ function add_loose_pickup_to_player(self, messageId, message, sender)
 	end
 
 	return false
+end
+
+function check_for_crafting_components(self, componentsToCheck, materialsToUse, container)
+	for i, item in pairs(container) do
+		local component = componentsToCheck[item.id]
+		if (component and not component.fulfilled) then
+			local amountToTake
+			local requirement = component.requirement
+			if component.actual + item.count > requirement then
+				amountToTake = requirement - component.actual
+			else
+				amountToTake = item.count
+			end
+			component.actual = component.actual + amountToTake
+			if component.actual == component.requirement then
+				component.fulfilled = true
+			end
+
+			table.insert(materialsToUse, { index = item.index, count = amountToTake })
+		end
+	end
 end
 
 function update_current_chunk(self)
@@ -99,56 +121,34 @@ local handle_trigger_response
 local handle_update_toolbar_item
 
 function handle_craft(self, messageId, message, sender, recipeToCraft)
-	local canCraftRecipe = true
+	local componentsToCheck = {}
+	for id, requirement in pairs(recipeToCraft.components) do
+		componentsToCheck[id] = { requirement = requirement, actual = 0, fulfilled = false }
+	end
+
 	local toolbarMaterialsToUse = {}
+	check_for_crafting_components(self, componentsToCheck, toolbarMaterialsToUse, self.toolbar)
+
 	local inventoryMaterialsToUse = {}
-	for i, component in pairs(recipeToCraft.components) do
-		local hasComponent = false
-		local amountOfComponent = 0
-		for j, toolbarItem in pairs(self.toolbar) do
-			if (toolbarItem.id == component.id) then
-				local amountToTake
-				if amountOfComponent + toolbarItem.count > component.requirement then
-					amountToTake = component.requirement - amountOfComponent
-				else
-					amountToTake = toolbarItem.count
-				end
-				amountOfComponent = amountOfComponent + amountToTake
-				table.insert(toolbarMaterialsToUse, { index = toolbarItem.index, count = amountToTake })
-				
-				if (amountOfComponent >= component.requirement) then
-					hasComponent = true
-					break
-				end
-			end
-		end
-		if not hasComponent then
-			for j, inventoryItem in pairs(self.inventory) do
-				if (inventoryItem.id == component.id) then
-					local amountToTake
-					if amountOfComponent + inventoryItem.count > component.requirement then
-						amountToTake = component.requirement - amountOfComponent
-					else
-						amountToTake = inventoryItem.count
-					end
-					amountOfComponent = amountOfComponent + amountToTake
-					table.insert(inventoryMaterialsToUse, { index = inventoryItem.index, count = amountToTake })
-					
-					if (amountOfComponent >= component.requirement) then
-						hasComponent = true
-						break
-					end
-				end
-			end
-		end
-		if not hasComponent then
+	check_for_crafting_components(self, componentsToCheck, inventoryMaterialsToUse, self.inventory)
+	
+	local canCraftRecipe = true
+	for i, component in pairs(componentsToCheck) do
+		if not component.fulfilled then
 			print("Cannot craft "..item_constants.ALL_ITEMS[recipeToCraft.itemId].name)
 			canCraftRecipe = false
+			break
 		end
 	end
 	if canCraftRecipe then
 		print("Can craft "..item_constants.ALL_ITEMS[recipeToCraft.itemId].name)
 	end
+	print("Components:")
+	pprint(componentsToCheck)
+	print("Toolbar:")
+	pprint(toolbarMaterialsToUse)
+	print("Inventory:")
+	pprint(inventoryMaterialsToUse)
 end
 
 function handle_jump(self, messageId, message, sender)
