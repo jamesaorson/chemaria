@@ -126,21 +126,17 @@ function handle_right(self, messageId, message, sender)
 end
 
 function handle_right_click(self, messageId, message, sender)
+	self.placingMessage = message
 	if message.pressed then
-		self.isPlacing = true
-		self.placingStartTime = os.clock()
-	elseif message.released then
-		self.isPlacing = false
-		self.placingStartTime = nil
-	end
-	if self.placingStartTime then
-		local placingTime = os.clock() - self.placingStartTime
-		if message.pressed or placingTime >= player_constants.PLAYER_BASE_PLACING_INTERVAL then
-			self.placingStartTime = os.clock()
-			message.toolbarItem = self.toolbar[self.selectedToolbarItem]
-			if helpers.is_placeable(message.toolbarItem) and message.toolbarItem.id ~= item_constants.NONE.id then
-				msg.post("/world#world_script", "place_block", message)
+		self.placingTimerHandle = timer.delay(player_constants.PLAYER_BASE_PLACING_INTERVAL, true, function (self, handle, timeElapsed)
+			self.placingMessage.toolbarItem = self.toolbar[self.selectedToolbarItem]
+			if helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id then
+				msg.post("/world#world_script", "place_block", self.placingMessage)
 			end
+		end)
+	elseif message.released then
+		if self.placingTimerHandle then
+			timer.cancel(self.placingTimerHandle)
 		end
 	end
 end
