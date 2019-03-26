@@ -7,6 +7,7 @@ local orthographic = require "orthographic.camera"
 local platypus = require "platypus.platypus"
 local player_constants = require "modules.constants.player"
 local position_helpers = require "modules.position_helpers"
+local recipes = require "modules.constants.recipes"
 local toolbar_constants = require "modules.constants.toolbar"
 
 require "modules.models.Block"
@@ -34,7 +35,7 @@ function add_loose_pickup_to_player(self, messageId, message, sender)
 			elseif toolbarItem.id == item_constants.NONE.id then
 				toolbarItem.count = 1
 				toolbarItem.id = loosePickup.id
-				toolbarItem.type = item_constants.ALL_ITEMS[loosePickup.id].type
+				toolbarItem.name = item_constants.ALL_ITEMS[loosePickup.id].name
 				update_toolbar()
 				return true
 			end
@@ -48,7 +49,7 @@ function add_loose_pickup_to_player(self, messageId, message, sender)
 			elseif inventoryItem.id == item_constants.NONE.id then
 				inventoryItem.count = 1
 				inventoryItem.id = loosePickup.id
-				inventoryItem.type = item_constants.ALL_ITEMS[loosePickup.id].type
+				inventoryItem.name = item_constants.ALL_ITEMS[loosePickup.id].name
 				update_inventory()
 				return true
 			end
@@ -87,6 +88,7 @@ end
 -- Message Handlers --
 ----------------------
 
+local handle_craft
 local handle_jump
 local handle_left
 local handle_left_click
@@ -95,6 +97,59 @@ local handle_right_click
 local handle_switch_selected_toolbar_item
 local handle_trigger_response
 local handle_update_toolbar_item
+
+function handle_craft(self, messageId, message, sender, recipeToCraft)
+	local canCraftRecipe = true
+	local toolbarMaterialsToUse = {}
+	local inventoryMaterialsToUse = {}
+	for i, component in pairs(recipeToCraft.components) do
+		local hasComponent = false
+		local amountOfComponent = 0
+		for j, toolbarItem in pairs(self.toolbar) do
+			if (toolbarItem.id == component.id) then
+				local amountToTake
+				if amountOfComponent + toolbarItem.count > component.requirement then
+					amountToTake = component.requirement - amountOfComponent
+				else
+					amountToTake = toolbarItem.count
+				end
+				amountOfComponent = amountOfComponent + amountToTake
+				table.insert(toolbarMaterialsToUse, { index = toolbarItem.index, count = amountToTake })
+				
+				if (amountOfComponent >= component.requirement) then
+					hasComponent = true
+					break
+				end
+			end
+		end
+		if not hasComponent then
+			for j, inventoryItem in pairs(self.inventory) do
+				if (inventoryItem.id == component.id) then
+					local amountToTake
+					if amountOfComponent + inventoryItem.count > component.requirement then
+						amountToTake = component.requirement - amountOfComponent
+					else
+						amountToTake = inventoryItem.count
+					end
+					amountOfComponent = amountOfComponent + amountToTake
+					table.insert(inventoryMaterialsToUse, { index = inventoryItem.index, count = amountToTake })
+					
+					if (amountOfComponent >= component.requirement) then
+						hasComponent = true
+						break
+					end
+				end
+			end
+		end
+		if not hasComponent then
+			print("Cannot craft "..item_constants.ALL_ITEMS[recipeToCraft.itemId].name)
+			canCraftRecipe = false
+		end
+	end
+	if canCraftRecipe then
+		print("Can craft "..item_constants.ALL_ITEMS[recipeToCraft.itemId].name)
+	end
+end
 
 function handle_jump(self, messageId, message, sender)
 	if message.pressed then
@@ -128,6 +183,10 @@ end
 function handle_right_click(self, messageId, message, sender)
 	self.placingMessage = message
 	if message.pressed then
+		self.placingMessage.toolbarItem = self.toolbar[self.selectedToolbarItem]
+		if helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id then
+			msg.post("/world#world_script", "place_block", self.placingMessage)
+		end
 		self.placingTimerHandle = timer.delay(player_constants.PLAYER_BASE_PLACING_INTERVAL, true, function (self, handle, timeElapsed)
 			self.placingMessage.toolbarItem = self.toolbar[self.selectedToolbarItem]
 			if helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id then
@@ -156,7 +215,7 @@ end
 function handle_update_toolbar_item(self, messageId, message, sender)
 	if message.count == 0 then
 		message.id = item_constants.NONE.id
-		message.type = item_constants.NONE.type
+		message.name = item_constants.NONE.name
 	end
 	self.toolbar[message.index] = message
 	msg.post("/ui#ui", "update_toolbar")
@@ -175,9 +234,6 @@ function init(self)
 	currentChunk = nil
 	self.platypus = platypus.create(config.PLATYPUS_CONFIG)
 	self.selectedToolbarItem = 1
-	self.isMining = false
-	self.miningStartTime = nil
-	self.placingStartTime = nil
 	self.inventory = globals.get_inventory()
 	self.toolbar = globals.get_toolbar()
 	defos.set_cursor_visible(true)
@@ -192,7 +248,9 @@ end
 function on_message(self, messageId, message, sender)
 	self.platypus.on_message(messageId, message)
 
-	if messageId == hash("jump") then
+	if messageId == hash("craft") then
+		handle_craft(self, messageId, message, sender, recipes.WOOD_PICKAXE)
+	elseif messageId == hash("jump") then
 		handle_jump(self, messageId, message, sender)
 	elseif messageId == hash("left") then
 		handle_left(self, messageId, message, sender)

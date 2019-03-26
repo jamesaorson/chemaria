@@ -1,6 +1,6 @@
 Block = {
 	chunk = nil,
 	position = vmath.vector3(),
-	type = nil,
+	name = nil,
 	url = nil
 }

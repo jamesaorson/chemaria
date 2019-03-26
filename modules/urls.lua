@@ -8,14 +8,14 @@ local M = {}
 
 function M.get_factory_url(objectName)
 	if type(objectName) == "number" then
-		objectName = item_constants.ALL_ITEMS[objectName].type
+		objectName = item_constants.ALL_ITEMS[objectName].name
 	end
 	return "/" .. objectName .. "_factory#" .. objectName .. "_factory"
 end
 
 function M.get_pickup_factory_url(objectName)
 	if type(objectName) == "number" then
-		objectName = item_constants.ALL_ITEMS[objectName].type
+		objectName = item_constants.ALL_ITEMS[objectName].name
 	end
 	return "/" .. objectName .. "_pickup_factory#" .. objectName .. "_pickup_factory"
 end
@@ -63,8 +63,8 @@ end
 -- UI --
 --------
 
-function M.get_ui_block_texture_url(blockType)
-	return "block_textures/" .. blockType
+function M.get_ui_block_texture_url(blockName)
+	return "block_textures/" .. blockName
 end
 
 ------------

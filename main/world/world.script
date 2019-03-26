@@ -185,7 +185,7 @@ function initialize_new_world()
 							local blockToInsert = {}
 							blockToInsert.id = blockInfo.id
 							blockToInsert.position = vmath.vector3(x, y, 0)
-							blockToInsert.type = blockInfo.type
+							blockToInsert.name = blockInfo.name
 							
 							Chunk.add_block(chunk, blockToInsert)
 						end
@@ -248,7 +248,7 @@ function handle_place_block(self, messageId, message, sender)
 					chunk = chunk.position,
 					id = toolbarItem.id,
 					position = blockPosition,
-					type = toolbarItem.type
+					name = toolbarItem.name
 				}
 				if create_block(self, block) then
 					toolbarItem.count = toolbarItem.count - 1

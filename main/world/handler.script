@@ -71,7 +71,7 @@ function save_game()
 							block.chunk = { x = block.chunk.x, y = block.chunk.y, z = block.chunk.z }
 						end
 						block.pickupId = nil
-						block.type = nil
+						block.name = nil
 						block.url = nil
 					end
 				end
@@ -105,6 +105,7 @@ end
 -- Action Handlers --
 ---------------------
 
+local handle_craft
 local handle_inventory_switch
 local handle_jump
 local handle_left
@@ -117,6 +118,10 @@ local handle_right_click
 local handle_toggle_inventory
 local handle_toggle_fullscreen
 local handle_toggle_profile
+
+function handle_craft(self, actionId, action)
+	send_player_action(actionId, action)
+end
 
 function handle_inventory_switch(self, actionId, action)
 	send_gui_action(actionId, action)
@@ -185,6 +190,8 @@ end
 function on_input(self, actionId, action)
 	if action.pressed and is_inventory_switch_action(actionId) then
 		handle_inventory_switch(self, actionId, action)
+	elseif actionId == hash("craft") and action.released then
+		handle_craft(self, actionId, action)
 	elseif actionId == hash("jump") then
 		handle_jump(self, actionId, action)
 	elseif actionId == hash("left") then

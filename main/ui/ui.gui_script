@@ -21,7 +21,7 @@ local update_toolbar
 
 function change_slot_texture(slotNode, texture)
 	if not texture then
-		texture = item_constants.NONE.type
+		texture = item_constants.NONE.name
 	end
 	gui.set_texture(slotNode, "block_textures")
 	gui.play_flipbook(slotNode, texture)
@@ -165,10 +165,10 @@ function update_inventory(self)
 		local inventoryTextNode = gui.get_node(urls.get_inventory_text_node_url(i))
 		if inventoryItem and inventoryItem.id ~= item_constants.NONE.id then
 			gui.set_text(inventoryTextNode, inventoryItem.count)
-			change_slot_texture(inventoryNode, inventoryItem.type)
+			change_slot_texture(inventoryNode, inventoryItem.name)
 		elseif inventoryItem.count == 0 then
 			gui.set_text(inventoryTextNode, "None")
-			change_slot_texture(inventoryNode, item_constants.NONE.type)
+			change_slot_texture(inventoryNode, item_constants.NONE.name)
 		end
 		gui.set_color(inventoryNode, inventory_constants.INVENTORY_UNSELECTED_COLOR)
 	end
@@ -185,10 +185,10 @@ function update_toolbar(self)
 		local toolbarTextNode = gui.get_node(urls.get_toolbar_text_node_url(i))
 		if toolbarItem and toolbarItem.id ~= item_constants.NONE.id then
 			gui.set_text(toolbarTextNode, toolbarItem.count)
-			change_slot_texture(toolbarNode, toolbarItem.type)
+			change_slot_texture(toolbarNode, toolbarItem.name)
 		elseif toolbarItem.count == 0 then
 			gui.set_text(toolbarTextNode, "None")
-			change_slot_texture(toolbarNode, item_constants.NONE.type)
+			change_slot_texture(toolbarNode, item_constants.NONE.name)
 		end
 		gui.set_color(toolbarNode, toolbar_constants.TOOLBAR_UNSELECTED_COLOR)
 	end
@@ -285,22 +285,19 @@ function init(self)
 			id = inventoryBlockInfo.id,
 			index = i,
 			count = inventoryBlockInfo.stackSize,
-			type = inventoryBlockInfo.type
+			name = inventoryBlockInfo.name
 		}
 		self.shouldUpdateInventory = true
 		globals.update_inventory_item(newInventoryItem)
 	end
 
-	local inventoryBlockInfo = item_constants.WOOD_WALL
+	local inventoryBlockInfo = item_constants.WOOD_PLANKS
 	for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
-		if i > 3 then 
-			inventoryBlockInfo = item_constants.CLAY_BRICKS
-		end
 		local newToolbarItem = {
 			id = inventoryBlockInfo.id,
 			index = i,
 			count = inventoryBlockInfo.stackSize,
-			type = inventoryBlockInfo.type
+			name = inventoryBlockInfo.name
 		}
 		self.shouldUpdateToolbar = true
 		globals.update_toolbar_item(newToolbarItem)
