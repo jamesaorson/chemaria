@@ -279,7 +279,7 @@ function init(self)
 	self.isDragging = false
 	self.draggedItem = nil
 
-	local inventoryBlockInfo = item_constants.STONE_BRICKS
+	local inventoryBlockInfo = item_constants.WOOD_PLANKS
 	for i = 1, inventory_constants.INVENTORY_MAX_SLOTS do
 		local newInventoryItem = {
 			id = inventoryBlockInfo.id,
@@ -291,7 +291,7 @@ function init(self)
 		globals.update_inventory_item(newInventoryItem)
 	end
 
-	local inventoryBlockInfo = item_constants.WOOD_PLANKS
+	local inventoryBlockInfo = item_constants.STONE_BRICKS
 	for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
 		local newToolbarItem = {
 			id = inventoryBlockInfo.id,
