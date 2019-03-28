@@ -1,0 +1,6 @@
+images {
+  image: "/assets/dirt.png"
+}
+margin: 0
+extrude_borders: 1
+inner_padding: 0

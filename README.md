@@ -1,4 +1,13 @@
-# Chemaria
-Feel free to download this source code and build it yourself with [Defold](https://www.defold.com/).
+# Welcome to Defold
 
-If you just want to play the game, go to my [Github repo](https://github.com/JamesOsborne/Chemaria) for these releases.
+This project was created from the "empty" project template.
+
+The settings in ["game.project"](defold://open?path=/game.project) are all the default. A bootstrap empty ["main.collection"](defold://open?path=/main/main.collection) is included.
+
+Check out [the documentation pages](https://defold.com/learn) for examples, tutorials, manuals and API docs.
+
+If you run into trouble, help is available in [our forum](https://forum.defold.com).
+
+Happy Defolding!
+
+---

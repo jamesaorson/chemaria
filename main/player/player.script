@@ -1,87 +1,15 @@
 local config = require "modules.config"
 local globals = require "modules.globals"
 local helpers = require "modules.helpers"
-local inventory_constants = require "modules.constants.inventory"
 local item_constants = require "modules.constants.items"
 local orthographic = require "orthographic.camera"
 local platypus = require "platypus.platypus"
 local player_constants = require "modules.constants.player"
 local position_helpers = require "modules.position_helpers"
-local toolbar_constants = require "modules.constants.toolbar"
 
 require "modules.models.Block"
 require "modules.models.Chunk"
 require "modules.models.World"
-
--------------
--- Helpers --
--------------
-
-local add_loose_pickup_to_player
-local update_current_chunk
-local update_inventory
-local update_toolbar
-
-function add_loose_pickup_to_player(self, messageId, message, sender)
-	local loosePickup = World.get_loose_pickup(world, message.other_id)
-	if loosePickup then
-		for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
-			local toolbarItem = self.toolbar[i]
-			if toolbarItem.id == loosePickup.id and toolbarItem.count < item_constants.ALL_ITEMS[loosePickup.id].stackSize then
-				toolbarItem.count = toolbarItem.count + 1
-				update_toolbar()
-				return true
-			elseif toolbarItem.id == item_constants.NONE.id then
-				toolbarItem.count = 1
-				toolbarItem.id = loosePickup.id
-				toolbarItem.type = item_constants.ALL_ITEMS[loosePickup.id].type
-				update_toolbar()
-				return true
-			end
-		end
-		for i = 1, inventory_constants.INVENTORY_MAX_SLOTS do
-			local inventoryItem = self.inventory[i]
-			if inventoryItem.id == loosePickup.id and inventoryItem.count < item_constants.ALL_ITEMS[loosePickup.id].stackSize then
-				inventoryItem.count = inventoryItem.count + 1
-				update_inventory()
-				return true
-			elseif inventoryItem.id == item_constants.NONE.id then
-				inventoryItem.count = 1
-				inventoryItem.id = loosePickup.id
-				inventoryItem.type = item_constants.ALL_ITEMS[loosePickup.id].type
-				update_inventory()
-				return true
-			end
-		end
-	end
-
-	return false
-end
-
-function update_current_chunk(self)
-	local screenPosition = position_helpers.player_to_screen_position(go.get_position())
-	local chunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
-
-	local chunk = World.get_chunk_at_position(world, chunkPosition)
-	if globals.currentChunk ~= chunk then
-		globals.previousChunk = globals.currentChunk
-		globals.currentChunk = chunk
-		msg.post("/world#world_script", "update_chunk_render")
-	end
-end
-
-function update_inventory()
-	msg.post("/ui#ui", "update_inventory")
-end
-
-function update_toolbar()
-	msg.post("/ui#ui", "update_toolbar")
-end
-
------------------
--- End Helpers --
------------------
-
 
 ----------------------
 -- Message Handlers --
@@ -91,10 +19,6 @@ local handle_jump
 local handle_left
 local handle_left_click
 local handle_right
-local handle_right_click
-local handle_switch_selected_toolbar_item
-local handle_trigger_response
-local handle_update_toolbar_item
 
 function handle_jump(self, messageId, message, sender)
 	if message.pressed then
@@ -125,43 +49,6 @@ function handle_right(self, messageId, message, sender)
 	self.platypus.right(player_constants.PLAYER_VELOCITY.x)
 end
 
-function handle_right_click(self, messageId, message, sender)
-	self.placingMessage = message
-	if message.pressed then
-		self.placingTimerHandle = timer.delay(player_constants.PLAYER_BASE_PLACING_INTERVAL, true, function (self, handle, timeElapsed)
-			self.placingMessage.toolbarItem = self.toolbar[self.selectedToolbarItem]
-			if helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id then
-				msg.post("/world#world_script", "place_block", self.placingMessage)
-			end
-		end)
-	elseif message.released then
-		if self.placingTimerHandle then
-			timer.cancel(self.placingTimerHandle)
-		end
-	end
-end
-
-function handle_switch_selected_toolbar_item(self, messageId, message, sender)
-	self.selectedToolbarItem = message.toolbarIndex
-end
-
-function handle_trigger_response(self, messageId, message, sender)
-	if message.group == hash("pickup") then
-		if add_loose_pickup_to_player(self, messageId, message, sender) then
-			go.delete(message.other_id)
-		end
-	end
-end
-
-function handle_update_toolbar_item(self, messageId, message, sender)
-	if message.count == 0 then
-		message.id = item_constants.NONE.id
-		message.type = item_constants.NONE.type
-	end
-	self.toolbar[message.index] = message
-	msg.post("/ui#ui", "update_toolbar")
-end
-
 --------------------------
 -- End Message Handlers --
 --------------------------
@@ -174,19 +61,11 @@ end
 function init(self)
 	currentChunk = nil
 	self.platypus = platypus.create(config.PLATYPUS_CONFIG)
-	self.selectedToolbarItem = 1
-	self.isMining = false
-	self.miningStartTime = nil
-	self.placingStartTime = nil
-	self.inventory = globals.get_inventory()
-	self.toolbar = globals.get_toolbar()
 	defos.set_cursor_visible(true)
 end
 
 function update(self, dt)
 	self.platypus.update(dt)
-
-	update_current_chunk(self)
 end
 
 function on_message(self, messageId, message, sender)
@@ -200,14 +79,6 @@ function on_message(self, messageId, message, sender)
 		handle_left_click(self, messageId, message, sender)
 	elseif messageId == hash("right") then
 		handle_right(self, messageId, message, sender)
-	elseif messageId == hash("right_click") then
-		handle_right_click(self, messageId, message, sender)
-	elseif messageId == hash("switch_selected_toolbar_item") then
-		handle_switch_selected_toolbar_item(self, messageId, message, sender)
-	elseif messageId == hash("trigger_response") then
-		handle_trigger_response(self, messageId, message, sender)
-	elseif messageId == hash("update_toolbar_item") then
-		handle_update_toolbar_item(self, messageId, message, sender)
 	end
 end
 

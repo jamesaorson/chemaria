@@ -1,132 +1,20 @@
 key_trigger {
-  input: KEY_ESC
-  action: "quit"
-}
-key_trigger {
-  input: KEY_W
-  action: "up"
-}
-key_trigger {
   input: KEY_A
   action: "left"
-}
-key_trigger {
-  input: KEY_S
-  action: "down"
 }
 key_trigger {
   input: KEY_D
   action: "right"
 }
 key_trigger {
-  input: KEY_UP
-  action: "up"
-}
-key_trigger {
-  input: KEY_DOWN
-  action: "down"
-}
-key_trigger {
-  input: KEY_LEFT
-  action: "left"
-}
-key_trigger {
-  input: KEY_RIGHT
-  action: "right"
-}
-key_trigger {
-  input: KEY_BACKQUOTE
-  action: "toggle_profile"
-}
-key_trigger {
   input: KEY_SPACE
   action: "jump"
 }
 key_trigger {
-  input: KEY_F11
-  action: "toggle_fullscreen"
-}
-key_trigger {
-  input: KEY_1
-  action: "inventory_switch_1"
-}
-key_trigger {
-  input: KEY_2
-  action: "inventory_switch_2"
-}
-key_trigger {
-  input: KEY_3
-  action: "inventory_switch_3"
-}
-key_trigger {
-  input: KEY_4
-  action: "inventory_switch_4"
-}
-key_trigger {
-  input: KEY_5
-  action: "inventory_switch_5"
-}
-key_trigger {
-  input: KEY_6
-  action: "inventory_switch_6"
-}
-key_trigger {
-  input: KEY_7
-  action: "inventory_switch_7"
-}
-key_trigger {
-  input: KEY_8
-  action: "inventory_switch_8"
-}
-key_trigger {
-  input: KEY_9
-  action: "inventory_switch_9"
-}
-key_trigger {
-  input: KEY_0
-  action: "inventory_switch_10"
-}
-key_trigger {
-  input: KEY_E
-  action: "toggle_inventory"
-}
-key_trigger {
-  input: KEY_BACKSPACE
-  action: "backspace"
-}
-mouse_trigger {
-  input: MOUSE_BUTTON_LEFT
-  action: "left_click"
-}
-mouse_trigger {
-  input: MOUSE_BUTTON_RIGHT
-  action: "right_click"
-}
-mouse_trigger {
-  input: MOUSE_WHEEL_UP
-  action: "mouse_wheel_up"
-}
-mouse_trigger {
-  input: MOUSE_WHEEL_DOWN
-  action: "mouse_wheel_down"
+  input: KEY_ESC
+  action: "quit"
 }
 mouse_trigger {
   input: MOUSE_BUTTON_1
-  action: "touch"
-}
-mouse_trigger {
-  input: MOUSE_WHEEL_UP
-  action: "scroll_up"
-}
-mouse_trigger {
-  input: MOUSE_WHEEL_UP
-  action: "scroll_down"
-}
-text_trigger {
-  input: TEXT
-  action: "text"
-}
-text_trigger {
-  input: MARKED_TEXT
-  action: "marked_text"
+  action: "left_click"
 }

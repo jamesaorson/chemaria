@@ -1,7 +1,7 @@
 embedded_components {
-  id: "wood_planks_pickup_factory"
+  id: "dirt_factory"
   type: "factory"
-  data: "prototype: \"/main/pickup/wood_planks/wood_planks_pickup.go\"\n"
+  data: "prototype: \"/main/dirt/dirt.go\"\n"
   "load_dynamically: false\n"
   ""
   position {
