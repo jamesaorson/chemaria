@@ -45,6 +45,27 @@ M.WOOD_WALL = {
 	name = "wood_wall"
 }
 
+M.GOLD_ORE = {
+	id = 020001,
+	stackSize = 64,
+	name = "gold_ore"
+}
+M.IRON_ORE = {
+	id = 020002,
+	stackSize = 64,
+	name = "iron_ore"
+}
+M.PLATINUM_ORE = {
+	id = 020003,
+	stackSize = 64,
+	name = "platinum_ore"
+}
+M.SILVER_ORE = {
+	id = 020004,
+	stackSize = 64,
+	name = "silver_ore"
+}
+
 M.WOOD_PICKAXE = {
 	id = 040001,
 	stackSize = 64,
@@ -78,9 +99,17 @@ M.PLACEABLE[M.CLAY.id] = M.CLAY
 M.PLACEABLE[M.CLAY_BRICKS.id] = M.CLAY_BRICKS
 M.PLACEABLE[M.STONE_BRICKS.id] = M.STONE_BRICKS
 M.PLACEABLE[M.WOOD_WALL.id] = M.WOOD_WALL
+M.PLACEABLE[M.GOLD_ORE.id] = M.GOLD_ORE
+M.PLACEABLE[M.IRON_ORE.id] = M.IRON_ORE
+M.PLACEABLE[M.PLATINUM_ORE.id] = M.PLATINUM_ORE
+M.PLACEABLE[M.SILVER_ORE.id] = M.SILVER_ORE
 
 M.SMELTABLE_ID_PREFIX = 02
 M.SMELTABLE = {}
+M.SMELTABLE[M.GOLD_ORE.id] = M.GOLD_ORE
+M.SMELTABLE[M.IRON_ORE.id] = M.IRON_ORE
+M.SMELTABLE[M.PLATINUM_ORE.id] = M.PLATINUM_ORE
+M.SMELTABLE[M.SILVER_ORE.id] = M.SILVER_ORE
 
 M.CRAFTABLE_ID_PREFIX = 03
 M.CRAFTABLE = {}
