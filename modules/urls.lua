@@ -6,9 +6,10 @@ local M = {}
 -- Factory --
 -------------
 
-function M.get_factory_url(objectName)
-	if type(objectName) == "number" then
-		objectName = item_constants.ALL_ITEMS[objectName].name
+function M.get_factory_url(objectId)
+	local objectName = nil
+	if type(objectId) == "number" then
+		objectName = item_constants.ALL_ITEMS[objectId].name
 	end
 	return "/" .. objectName .. "_factory#" .. objectName .. "_factory"
 end

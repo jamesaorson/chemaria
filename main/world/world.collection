@@ -397,6 +397,166 @@ instances {
     z: 1.0
   }
 }
+instances {
+  id: "iron_ore_factory"
+  prototype: "/main/items/iron_ore/iron_ore_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "gold_ore_factory"
+  prototype: "/main/items/gold_ore/gold_ore_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "silver_ore_factory"
+  prototype: "/main/items/silver_ore/silver_ore_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "platinum_ore_factory"
+  prototype: "/main/items/platinum_ore/platinum_ore_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "gold_ore_pickup_factory"
+  prototype: "/main/pickup/gold_ore_pickup/gold_ore_pickup_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "iron_ore_pickup_factory"
+  prototype: "/main/pickup/iron_ore_pickup/iron_ore_pickup_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "silver_ore_pickup_factory"
+  prototype: "/main/pickup/silver_ore_pickup/silver_ore_pickup_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "platinum_ore_pickup_factory"
+  prototype: "/main/pickup/platinum_ore_pickup/platinum_ore_pickup_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
 scale_along_z: 0
 embedded_instances {
   id: "factories"
@@ -425,7 +585,11 @@ embedded_instances {
   children: "clay_bricks_pickup_factory"
   children: "clay_pickup_factory"
   children: "dirt_pickup_factory"
+  children: "gold_ore_pickup_factory"
+  children: "iron_ore_pickup_factory"
+  children: "platinum_ore_pickup_factory"
   children: "sand_pickup_factory"
+  children: "silver_ore_pickup_factory"
   children: "stone_bricks_pickup_factory"
   children: "stone_pickup_factory"
   children: "wood_wall_pickup_factory"
@@ -452,7 +616,11 @@ embedded_instances {
   children: "clay_bricks_factory"
   children: "clay_factory"
   children: "dirt_factory"
+  children: "gold_ore_factory"
+  children: "iron_ore_factory"
+  children: "platinum_ore_factory"
   children: "sand_factory"
+  children: "silver_ore_factory"
   children: "stone_bricks_factory"
   children: "stone_factory"
   children: "wood_wall_factory"
