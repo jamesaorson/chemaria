@@ -243,9 +243,7 @@ end
 function on_message(self, messageId, message, sender)
 	self.platypus.on_message(messageId, message)
 
-	if messageId == hash("craft") then
-		handle_craft(self, messageId, message, sender, recipes.WOOD_PICKAXE)
-	elseif messageId == hash("jump") then
+	if messageId == hash("jump") then
 		handle_jump(self, messageId, message, sender)
 	elseif messageId == hash("left") then
 		handle_left(self, messageId, message, sender)

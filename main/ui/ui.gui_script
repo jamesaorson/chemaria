@@ -307,15 +307,6 @@ function init(self)
 	update_toolbar(self)
 end
 
-function update(self, dt)
-	if self.shouldUpdateInventory then
-		update_inventory(self)
-	end
-	if self.shouldUpdateToolbar then
-		update_toolbar(self)
-	end
-end
-
 function on_message(self, messageId, message, sender)
 	local clickedNode = nil
 	if is_inventory_switch_message(messageId) then
@@ -332,5 +323,14 @@ function on_message(self, messageId, message, sender)
 		handle_update_inventory(self, messageId, message, sender)
 	elseif messageId == hash("update_toolbar") then
 		handle_update_toolbar(self, messageId, message, sender)
+	end
+end
+
+function update(self, dt)
+	if self.shouldUpdateInventory then
+		update_inventory(self)
+	end
+	if self.shouldUpdateToolbar then
+		update_toolbar(self)
 	end
 end

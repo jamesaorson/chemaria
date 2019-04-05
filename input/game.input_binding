@@ -96,7 +96,11 @@ key_trigger {
 }
 key_trigger {
   input: KEY_F
-  action: "craft"
+  action: "toggle_crafting_menu"
+}
+key_trigger {
+  input: KEY_ESC
+  action: "ui_exit"
 }
 mouse_trigger {
   input: MOUSE_BUTTON_LEFT

@@ -1,0 +1,69 @@
+local gooey = require "gooey.gooey"
+local theme = require "main.crafting_ui.crafting_ui_theme.theme"
+
+-------------
+-- Helpers --
+-------------
+
+local button_handler
+local update_crafting_ui
+
+function button_handler(button, handler)
+	if button.released_now then
+		handler()
+	end
+end
+
+function update_crafting_ui(self)
+	if self.isCraftingUiEnabled then
+		gooey.acquire_input()
+	else
+		gooey.release_input()
+	end
+	gui.set_enabled(gui.get_node("crafting_ui"), self.isCraftingUiEnabled)
+	self.shouldUpdateCraftingUi = false
+end
+
+-----------------
+-- End Helpers --
+-----------------
+
+
+----------------------
+-- Defold functions --
+----------------------
+
+function init(self)
+	self.isCraftingUiEnabled = false
+	self.shouldUpdateCraftingUi = false
+	gui.set_enabled(gui.get_node("crafting_ui"), self.isCraftingUiEnabled)
+end
+
+function on_input(self, actionId, action)
+	if actionId == hash("quit") and action.released then
+		--theme.button("new_game", actionId, action, function(button)
+		--button_handler(button, function() 
+		--msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#worldproxy" })
+		--end)
+		--end)
+		self.isCraftingUiEnabled = false
+		self.shouldUpdateCraftingUi = true
+	end
+end
+
+function on_message(self, messageId, message, sender)
+	if messageId == hash("toggle_crafting_menu") then
+		self.isCraftingUiEnabled = not self.isCraftingUiEnabled
+		self.shouldUpdateCraftingUi = true
+	end
+end
+
+function update(self, dt)
+	if self.shouldUpdateCraftingUi then
+		update_crafting_ui(self)
+	end
+end
+
+--------------------------
+-- End Defold functions --
+--------------------------
