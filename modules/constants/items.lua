@@ -6,50 +6,91 @@ local M = {}
 
 M.NONE = {
 	id = 000000,
-	name = "none"
+	name = "none",
+	displayName = "None",
+	stackSize = 64
 }
 
 M.DIRT = {
-	id = 010001
+	id = 010001,
+	name = "dirt",
+	displayName = "Dirt",
+	stackSize = 64
 }
 M.STONE = {
-	id = 010002
+	id = 010002,
+	name = "stone",
+	displayName = "Stone",
+	stackSize = 64
 }
 M.SAND = {
-	id = 010003
+	id = 010003,
+	name = "sand",
+	displayName = "Sand",
+	stackSize = 64
 }
 M.CLAY = {
-	id = 010004
+	id = 010004,
+	name = "clay",
+	displayName = "Clay",
+	stackSize = 64
 }
 M.CLAY_BRICKS = {
-	id = 010005
+	id = 010005,
+	name = "clay_bricks",
+	displayName = "Clay Bricks",
+	stackSize = 64
 }
 M.STONE_BRICKS = {
-	id = 010006
+	id = 010006,
+	name = "stone_bricks",
+	displayName = "Stone Bricks",
+	stackSize = 64
 }
 M.WOOD_WALL = {
-	id = 010007
+	id = 010007,
+	name = "wood_wall",
+	displayName = "Wood Wall",
+	stackSize = 64
 }
 
 M.GOLD_ORE = {
-	id = 020001
+	id = 020001,
+	name = "gold_ore",
+	displayName = "Gold Ore",
+	stackSize = 64
 }
 M.IRON_ORE = {
-	id = 020002
+	id = 020002,
+	name = "iron_ore",
+	displayName = "Iron Ore",
+	stackSize = 64
 }
 M.PLATINUM_ORE = {
-	id = 020003
+	id = 020003,
+	name = "platinum_ore",
+	displayName = "Platinum Ore",
+	stackSize = 64
 }
 M.SILVER_ORE = {
-	id = 020004
+	id = 020004,
+	name = "silver_ore",
+	displayName = "Silver Ore",
+	stackSize = 64
 }
 
 M.WOOD_PICKAXE = {
-	id = 040001
+	id = 040001,
+	name = "wood_pickaxe",
+	displayName = "Wood Pickaxe",
+	stackSize = 64
 }
 
 M.WOOD_PLANKS = {
-	id = 050001
+	id = 050001,
+	name = "wood_planks",
+	displayName = "Wood Planks",
+	stackSize = 64
 }
 
 M.ALL_ITEMS = {}
@@ -107,86 +148,5 @@ M.PICKUPS[M.WOOD_PLANKS.id] = M.WOOD_PLANKS
 ---------------
 -- End Items --
 ---------------
-
-
----------------
--- Item Info --
----------------
-
-M.ITEM_INFO = {}
-M.ITEM_INFO[M.NONE.id] = {
-	name = "none",
-	displayName = "None",
-	stackSize = 64
-}
-M.ITEM_INFO[M.DIRT.id] = {
-	name = "dirt",
-	displayName = "Dirt",
-	stackSize = 64
-}
-M.ITEM_INFO[M.STONE.id] = {
-	name = "stone",
-	displayName = "Stone",
-	stackSize = 64
-}
-M.ITEM_INFO[M.SAND.id] = {
-	name = "sand",
-	displayName = "Sand",
-	stackSize = 64
-}
-M.ITEM_INFO[M.CLAY.id] = {
-	name = "clay",
-	displayName = "Clay",
-	stackSize = 64
-}
-M.ITEM_INFO[M.CLAY_BRICKS.id] = {
-	name = "clay_bricks",
-	displayName = "Clay Bricks",
-	stackSize = 64
-}
-M.ITEM_INFO[M.STONE_BRICKS.id] = {
-	name = "stone_bricks",
-	displayName = "Stone Bricks",
-	stackSize = 64
-}
-M.ITEM_INFO[M.WOOD_WALL.id] = {
-	name = "wood_wall",
-	displayName = "Wood Wall",
-	stackSize = 64
-}
-M.ITEM_INFO[M.WOOD_PICKAXE.id] = {
-	name = "wood_pickaxe",
-	displayName = "Wood Pickaxe",
-	stackSize = 64
-}
-M.ITEM_INFO[M.WOOD_PLANKS.id] = {
-	name = "wood_planks",
-	displayName = "Wood Planks",
-	stackSize = 64
-}
-M.ITEM_INFO[M.GOLD_ORE.id] = {
-	name = "gold_ore",
-	displayName = "Gold Ore",
-	stackSize = 64
-}
-M.ITEM_INFO[M.IRON_ORE.id] = {
-	name = "iron_ore",
-	displayName = "Iron Ore",
-	stackSize = 64
-}
-M.ITEM_INFO[M.PLATINUM_ORE.id] = {
-	name = "platinum_ore",
-	displayName = "Platinum Ore",
-	stackSize = 64
-}
-M.ITEM_INFO[M.SILVER_ORE.id] = {
-	name = "silver_ore",
-	displayName = "Silver Ore",
-	stackSize = 64
-}
-
--------------------
--- End Item Info --
--------------------
 
 return M

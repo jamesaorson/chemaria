@@ -8,7 +8,11 @@ local theme = require "main.crafting_ui.crafting_ui_theme.theme"
 -------------
 
 local button_handler
+local dynamic_list_handler
+local fill_crafting_list
+local on_item_selected
 local update_crafting_ui
+local update_crafting_list
 
 function button_handler(button, handler)
 	if button.released_now then
@@ -20,6 +24,26 @@ function dynamic_list_handler(list)
 	
 end
 
+function fill_crafting_list()
+	local listItems = {}
+	for i, recipe in pairs(recipes) do
+		table.insert(listItems, { itemId = recipe.itemId, components = recipe.components })
+	end
+	gooey.dynamic_list("crafting_list", "crafting_list/stencil", "crafting_list/listitem_bg", listItems, actionId, action, on_item_selected, update_crafting_list)
+end
+
+function on_item_selected(list)
+	print("selected", list.selected_item)
+end
+
+function update_crafting_list(list)
+	for key, item in pairs(list.items) do
+		if item.data ~= nil and item.data.itemId ~= nil then
+			gui.set_text(item.nodes[hash("crafting_list/listitem_text")], item_constants.ALL_ITEMS[item.data.itemId].displayName)
+		end
+	end
+end
+
 function update_crafting_ui(self)
 	if self.isCraftingUiEnabled then
 		gooey.acquire_input()
@@ -28,18 +52,6 @@ function update_crafting_ui(self)
 	end
 	gui.set_enabled(gui.get_node("crafting_ui"), self.isCraftingUiEnabled)
 	self.shouldUpdateCraftingUi = false
-end
-
-local function update_crafting_list(list)
-	for key, item in pairs(list.items) do
-		if item.data ~= nil and item.data.itemId ~= nil then
-			gui.set_text(item.nodes[hash("crafting_list/listitem_text")], item_constants.ITEM_INFO[item.data.itemId].name)
-		end
-	end
-end
-
-local function on_item_selected(list)
-	print("selected", list.selected_item)
 end
 
 -----------------
@@ -55,6 +67,7 @@ function init(self)
 	self.isCraftingUiEnabled = false
 	self.shouldUpdateCraftingUi = false
 	gui.set_enabled(gui.get_node("crafting_ui"), self.isCraftingUiEnabled)
+	fill_crafting_list()
 end
 
 function on_input(self, actionId, action)
@@ -67,11 +80,7 @@ function on_input(self, actionId, action)
 		self.isCraftingUiEnabled = false
 		self.shouldUpdateCraftingUi = true
 	elseif actionId == hash("left_click") and action.released then
-		local listItems = {}
-		for i, recipe in pairs(recipes) do
-			table.insert(listItems, { itemId = recipe.itemId, components = recipe.components })
-		end
-		gooey.dynamic_list("crafting_list", "crafting_list/stencil", "crafting_list/listitem_bg", listItems, actionId, action, on_item_selected, update_crafting_list)
+		fill_crafting_list()
 	end
 end
 
