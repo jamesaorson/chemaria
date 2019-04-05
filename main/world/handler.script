@@ -72,7 +72,7 @@ function save_game()
 							block.chunk = { x = block.chunk.x, y = block.chunk.y, z = block.chunk.z }
 						end
 						block.pickupId = nil
-						block.name = nil
+						block.stackSize = nil
 						block.url = nil
 					end
 				end

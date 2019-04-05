@@ -248,7 +248,7 @@ function handle_place_block(self, messageId, message, sender)
 					chunk = chunk.position,
 					id = toolbarItem.id,
 					position = blockPosition,
-					name = toolbarItem.name
+					name = item_constants.ITEM_INFO[toolbarItem.id].name
 				}
 				if create_block(self, block) then
 					toolbarItem.count = toolbarItem.count - 1

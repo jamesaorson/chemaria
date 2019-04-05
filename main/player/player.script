@@ -7,7 +7,6 @@ local orthographic = require "orthographic.camera"
 local platypus = require "platypus.platypus"
 local player_constants = require "modules.constants.player"
 local position_helpers = require "modules.position_helpers"
-local recipes = require "modules.constants.recipes"
 local toolbar_constants = require "modules.constants.toolbar"
 
 require "modules.models.Block"
@@ -30,14 +29,14 @@ function add_loose_pickup_to_player(self, messageId, message, sender)
 		local function add_loose_pickup(maxSlots, container, updateFunction)
 			for i = 1, maxSlots do
 				local item = container[i]
-				if item.id == loosePickup.id and item.count < item_constants.ALL_ITEMS[loosePickup.id].stackSize then
+				if item.id == loosePickup.id and item.count < item_constants.ITEM_INFO[item.id].stackSize then
 					item.count = item.count + 1
 					updateFunction()
 					return true
 				elseif item.id == item_constants.NONE.id then
 					item.count = 1
 					item.id = loosePickup.id
-					item.name = item_constants.ALL_ITEMS[loosePickup.id].name
+					item.name = item_constants.ITEM_INFO[item.id].name
 					updateFunction()
 					return true
 				end
@@ -129,13 +128,13 @@ function handle_craft(self, messageId, message, sender, recipeToCraft)
 	local canCraftRecipe = true
 	for i, component in pairs(componentsToCheck) do
 		if not component.fulfilled then
-			print("Cannot craft "..item_constants.ALL_ITEMS[recipeToCraft.itemId].name)
+			print("Cannot craft "..item_constants.ITEM_INFO[recipeToCraft.itemId].name)
 			canCraftRecipe = false
 			break
 		end
 	end
 	if canCraftRecipe then
-		print("Can craft "..item_constants.ALL_ITEMS[recipeToCraft.itemId].name)
+		print("Can craft "..item_constants.ITEM_INFO[recipeToCraft.itemId].name)
 	end
 	print("Components:")
 	pprint(componentsToCheck)
@@ -206,7 +205,7 @@ end
 function handle_update_toolbar_item(self, messageId, message, sender)
 	if message.count == 0 then
 		message.id = item_constants.NONE.id
-		message.name = item_constants.NONE.name
+		message.name = item_constants.ITEM_INFO[item_constants.NONE.id].name
 	end
 	self.toolbar[message.index] = message
 	msg.post("/ui#ui", "update_toolbar")

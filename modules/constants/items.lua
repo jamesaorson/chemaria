@@ -10,72 +10,46 @@ M.NONE = {
 }
 
 M.DIRT = {
-	id = 010001,
-	stackSize = 64,
-	name = "dirt"
+	id = 010001
 }
 M.STONE = {
-	id = 010002,
-	stackSize = 64,
-	name = "stone"
+	id = 010002
 }
 M.SAND = {
-	id = 010003,
-	stackSize = 64,
-	name = "sand"
+	id = 010003
 }
 M.CLAY = {
-	id = 010004,
-	stackSize = 64,
-	name = "clay"
+	id = 010004
 }
 M.CLAY_BRICKS = {
-	id = 010005,
-	stackSize = 64,
-	name = "clay_bricks"
+	id = 010005
 }
 M.STONE_BRICKS = {
-	id = 010006,
-	stackSize = 64,
-	name = "stone_bricks"
+	id = 010006
 }
 M.WOOD_WALL = {
-	id = 010007,
-	stackSize = 64,
-	name = "wood_wall"
+	id = 010007
 }
 
 M.GOLD_ORE = {
-	id = 020001,
-	stackSize = 64,
-	name = "gold_ore"
+	id = 020001
 }
 M.IRON_ORE = {
-	id = 020002,
-	stackSize = 64,
-	name = "iron_ore"
+	id = 020002
 }
 M.PLATINUM_ORE = {
-	id = 020003,
-	stackSize = 64,
-	name = "platinum_ore"
+	id = 020003
 }
 M.SILVER_ORE = {
-	id = 020004,
-	stackSize = 64,
-	name = "silver_ore"
+	id = 020004
 }
 
 M.WOOD_PICKAXE = {
-	id = 040001,
-	stackSize = 64,
-	name = "wood_pickaxe"
+	id = 040001
 }
 
 M.WOOD_PLANKS = {
-	id = 050001,
-	stackSize = 64,
-	name = "wood_planks"
+	id = 050001
 }
 
 M.ALL_ITEMS = {}
@@ -133,5 +107,86 @@ M.PICKUPS[M.WOOD_PLANKS.id] = M.WOOD_PLANKS
 ---------------
 -- End Items --
 ---------------
+
+
+---------------
+-- Item Info --
+---------------
+
+M.ITEM_INFO = {}
+M.ITEM_INFO[M.NONE.id] = {
+	name = "none",
+	displayName = "None",
+	stackSize = 64
+}
+M.ITEM_INFO[M.DIRT.id] = {
+	name = "dirt",
+	displayName = "Dirt",
+	stackSize = 64
+}
+M.ITEM_INFO[M.STONE.id] = {
+	name = "stone",
+	displayName = "Stone",
+	stackSize = 64
+}
+M.ITEM_INFO[M.SAND.id] = {
+	name = "sand",
+	displayName = "Sand",
+	stackSize = 64
+}
+M.ITEM_INFO[M.CLAY.id] = {
+	name = "clay",
+	displayName = "Clay",
+	stackSize = 64
+}
+M.ITEM_INFO[M.CLAY_BRICKS.id] = {
+	name = "clay_bricks",
+	displayName = "Clay Bricks",
+	stackSize = 64
+}
+M.ITEM_INFO[M.STONE_BRICKS.id] = {
+	name = "stone_bricks",
+	displayName = "Stone Bricks",
+	stackSize = 64
+}
+M.ITEM_INFO[M.WOOD_WALL.id] = {
+	name = "wood_wall",
+	displayName = "Wood Wall",
+	stackSize = 64
+}
+M.ITEM_INFO[M.WOOD_PICKAXE.id] = {
+	name = "wood_pickaxe",
+	displayName = "Wood Pickaxe",
+	stackSize = 64
+}
+M.ITEM_INFO[M.WOOD_PLANKS.id] = {
+	name = "wood_planks",
+	displayName = "Wood Planks",
+	stackSize = 64
+}
+M.ITEM_INFO[M.GOLD_ORE.id] = {
+	name = "gold_ore",
+	displayName = "Gold Ore",
+	stackSize = 64
+}
+M.ITEM_INFO[M.IRON_ORE.id] = {
+	name = "iron_ore",
+	displayName = "Iron Ore",
+	stackSize = 64
+}
+M.ITEM_INFO[M.PLATINUM_ORE.id] = {
+	name = "platinum_ore",
+	displayName = "Platinum Ore",
+	stackSize = 64
+}
+M.ITEM_INFO[M.SILVER_ORE.id] = {
+	name = "silver_ore",
+	displayName = "Silver Ore",
+	stackSize = 64
+}
+
+-------------------
+-- End Item Info --
+-------------------
 
 return M

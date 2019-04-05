@@ -21,7 +21,7 @@ local update_toolbar
 
 function change_slot_texture(slotNode, texture)
 	if not texture then
-		texture = item_constants.NONE.name
+		texture = item_constants.ITEM_INFO[item_constants.NONE.id].name
 	end
 	gui.set_texture(slotNode, "block_textures")
 	gui.play_flipbook(slotNode, texture)
@@ -165,10 +165,10 @@ function update_inventory(self)
 		local inventoryTextNode = gui.get_node(urls.get_inventory_text_node_url(i))
 		if inventoryItem and inventoryItem.id ~= item_constants.NONE.id then
 			gui.set_text(inventoryTextNode, inventoryItem.count)
-			change_slot_texture(inventoryNode, inventoryItem.name)
+			change_slot_texture(inventoryNode, item_constants.ITEM_INFO[inventoryItem.id].name)
 		elseif inventoryItem.count == 0 then
 			gui.set_text(inventoryTextNode, "None")
-			change_slot_texture(inventoryNode, item_constants.NONE.name)
+			change_slot_texture(inventoryNode, item_constants.ITEM_INFO[item_constants.NONE.id].name)
 		end
 		gui.set_color(inventoryNode, inventory_constants.INVENTORY_UNSELECTED_COLOR)
 	end
@@ -185,10 +185,10 @@ function update_toolbar(self)
 		local toolbarTextNode = gui.get_node(urls.get_toolbar_text_node_url(i))
 		if toolbarItem and toolbarItem.id ~= item_constants.NONE.id then
 			gui.set_text(toolbarTextNode, toolbarItem.count)
-			change_slot_texture(toolbarNode, toolbarItem.name)
+			change_slot_texture(toolbarNode, item_constants.ITEM_INFO[toolbarItem.id].name)
 		elseif toolbarItem.count == 0 then
 			gui.set_text(toolbarTextNode, "None")
-			change_slot_texture(toolbarNode, item_constants.NONE.name)
+			change_slot_texture(toolbarNode, item_constants.ITEM_INFO[item_constants.NONE.id].name)
 		end
 		gui.set_color(toolbarNode, toolbar_constants.TOOLBAR_UNSELECTED_COLOR)
 	end
@@ -284,20 +284,20 @@ function init(self)
 		local newInventoryItem = {
 			id = inventoryBlockInfo.id,
 			index = i,
-			count = inventoryBlockInfo.stackSize,
-			name = inventoryBlockInfo.name
+			count = item_constants.ITEM_INFO[inventoryBlockInfo.id].stackSize,
+			name = item_constants.ITEM_INFO[inventoryBlockInfo.id].name
 		}
 		self.shouldUpdateInventory = true
 		globals.update_inventory_item(newInventoryItem)
 	end
 
-	local inventoryBlockInfo = item_constants.PLATINUM_ORE
+	local toolbarBlockInfo = item_constants.PLATINUM_ORE
 	for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
 		local newToolbarItem = {
-			id = inventoryBlockInfo.id,
+			id = toolbarBlockInfo.id,
 			index = i,
-			count = inventoryBlockInfo.stackSize,
-			name = inventoryBlockInfo.name
+			count = item_constants.ITEM_INFO[toolbarBlockInfo.id].stackSize,
+			name = item_constants.ITEM_INFO[toolbarBlockInfo.id].name
 		}
 		self.shouldUpdateToolbar = true
 		globals.update_toolbar_item(newToolbarItem)
