@@ -3,8 +3,23 @@ local utils = require "gooey.themes.utils"
 
 local M = gooey.create_theme()
 
-local BUTTON_PRESSED = hash("button_pressed")
-local BUTTON = hash("button_idle")
+local INPUT_FOCUS = hash("blue_button05")
+local INPUT = hash("blue_button03")
+
+local BUTTON_PRESSED = hash("blue_button05")
+local BUTTON = hash("blue_button04")
+
+local LISTITEM_SELECTED = hash("blue_button03")
+local LISTITEM_PRESSED = hash("blue_button03")
+local LISTITEM = hash("blue_button04")
+
+local CHECKBOX_PRESSED = hash("grey_boxCross")
+local CHECKBOX_CHECKED = hash("blue_boxCross")
+local CHECKBOX = hash("grey_box")
+
+local RADIO_PRESSED = hash("grey_boxTick")
+local RADIO_SELECTED = hash("blue_boxTick")
+local RADIO = hash("grey_circle")
 
 local function refresh_button(button)
 	if button.pressed then
@@ -85,24 +100,24 @@ end
 
 
 local function update_listitem(list, item)
-	--local pos = gui.get_position(item.root)
-	--if item.index == list.selected_item then
-	--	pos.x = 4
-	--	gui.play_flipbook(item.root, LISTITEM_SELECTED)
-	--elseif item.index == list.pressed_item then
-	--	pos.x = 1
-	--	gui.play_flipbook(item.root, LISTITEM_PRESSED)
-	--elseif item.index == list.over_item_now then
-	--	pos.x = 1
-	--	gui.play_flipbook(item.root, LISTITEM)
-	--elseif item.index == list.out_item_now then
-	--	pos.x = 0
-	--	gui.play_flipbook(item.root, LISTITEM)
-	--elseif item.index ~= list.over_item then
-	--	pos.x = 0
-	--	gui.play_flipbook(item.root, LISTITEM)
-	--end
-	--gui.set_position(item.root, pos)
+	local pos = gui.get_position(item.root)
+	if item.index == list.selected_item then
+		pos.x = 4
+		gui.play_flipbook(item.root, LISTITEM_SELECTED)
+	elseif item.index == list.pressed_item then
+		pos.x = 1
+		gui.play_flipbook(item.root, LISTITEM_PRESSED)
+	elseif item.index == list.over_item_now then
+		pos.x = 1
+		gui.play_flipbook(item.root, LISTITEM)
+	elseif item.index == list.out_item_now then
+		pos.x = 0
+		gui.play_flipbook(item.root, LISTITEM)
+	elseif item.index ~= list.over_item then
+		pos.x = 0
+		gui.play_flipbook(item.root, LISTITEM)
+	end
+	gui.set_position(item.root, pos)
 end
 
 
@@ -117,13 +132,13 @@ end
 
 
 local function update_dynamic_list(list)
-	--for _,item in ipairs(list.items) do
-	--	update_listitem(list, item)
-	--	gui.set_text(item.nodes[hash(list.id .. "/listitem_text")], tostring(item.data or "-"))
-	--end
+	for _,item in ipairs(list.items) do
+		update_listitem(list, item)
+		gui.set_text(item.nodes[hash(list.id .. "/listitem_text")], tostring(item.data or "-"))
+	end
 end
 function M.dynamic_list(list_id, data, action_id, action, fn)
-	--return gooey.dynamic_list(list_id, list_id .. "/stencil", list_id .. "/listitem_bg", data, action_id, action, fn, update_dynamic_list)
+	return gooey.dynamic_list(list_id, list_id .. "/stencil", list_id .. "/listitem_bg", data, action_id, action, fn, update_dynamic_list)
 end
 
 

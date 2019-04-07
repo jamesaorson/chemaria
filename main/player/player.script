@@ -53,7 +53,7 @@ function add_loose_pickup_to_player(self, messageId, message, sender)
 	return false
 end
 
-function check_for_crafting_components(self, componentsToCheck, materialsToUse, container)
+function check_for_crafting_components(self, recipe, componentsToCheck, materialsToUse, container)
 	for i, item in pairs(container) do
 		local component = componentsToCheck[item.id]
 		if (component and not component.fulfilled) then
@@ -113,17 +113,18 @@ local handle_switch_selected_toolbar_item
 local handle_trigger_response
 local handle_update_toolbar_item
 
-function handle_craft(self, messageId, message, sender, recipeToCraft)
+function handle_craft(self, messageId, message, sender)
+	local recipeToCraft = message.recipe
 	local componentsToCheck = {}
 	for id, requirement in pairs(recipeToCraft.components) do
 		componentsToCheck[id] = { requirement = requirement, actual = 0, fulfilled = false }
 	end
 
 	local toolbarMaterialsToUse = {}
-	check_for_crafting_components(self, componentsToCheck, toolbarMaterialsToUse, self.toolbar)
+	check_for_crafting_components(self, recipeToCraft, componentsToCheck, toolbarMaterialsToUse, self.toolbar)
 
 	local inventoryMaterialsToUse = {}
-	check_for_crafting_components(self, componentsToCheck, inventoryMaterialsToUse, self.inventory)
+	check_for_crafting_components(self, recipeToCraft, componentsToCheck, inventoryMaterialsToUse, self.inventory)
 	
 	local canCraftRecipe = true
 	for i, component in pairs(componentsToCheck) do
@@ -229,6 +230,7 @@ function init(self)
 	self.platypus = platypus.create(config.PLATYPUS_CONFIG)
 	self.selectedToolbarItem = 1
 	self.toolbar = globals.get_toolbar()
+	self.craftableItems = {}
 	
 	defos.set_cursor_visible(true)
 end
@@ -242,7 +244,9 @@ end
 function on_message(self, messageId, message, sender)
 	self.platypus.on_message(messageId, message)
 
-	if messageId == hash("jump") then
+	if messageId == hash("craft") then
+		handle_craft(self, messageId, message, sender)
+	elseif messageId == hash("jump") then
 		handle_jump(self, messageId, message, sender)
 	elseif messageId == hash("left") then
 		handle_left(self, messageId, message, sender)
