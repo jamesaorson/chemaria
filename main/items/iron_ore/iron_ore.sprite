@@ -1,0 +1,4 @@
+tile_set: "/main/items/items.atlas"
+default_animation: "iron_ore"
+material: "/builtins/materials/sprite.material"
+blend_mode: BLEND_MODE_ALPHA

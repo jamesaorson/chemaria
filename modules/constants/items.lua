@@ -6,55 +6,91 @@ local M = {}
 
 M.NONE = {
 	id = 000000,
-	type = "none"
+	name = "none",
+	displayName = "None",
+	stackSize = 64
 }
 
 M.DIRT = {
 	id = 010001,
-	stackSize = 64,
-	type = "dirt"
+	name = "dirt",
+	displayName = "Dirt",
+	stackSize = 64
 }
 M.STONE = {
 	id = 010002,
-	stackSize = 64,
-	type = "stone"
+	name = "stone",
+	displayName = "Stone",
+	stackSize = 64
 }
 M.SAND = {
 	id = 010003,
-	stackSize = 64,
-	type = "sand"
+	name = "sand",
+	displayName = "Sand",
+	stackSize = 64
 }
 M.CLAY = {
 	id = 010004,
-	stackSize = 64,
-	type = "clay"
+	name = "clay",
+	displayName = "Clay",
+	stackSize = 64
 }
 M.CLAY_BRICKS = {
 	id = 010005,
-	stackSize = 64,
-	type = "clay_bricks"
+	name = "clay_bricks",
+	displayName = "Clay Bricks",
+	stackSize = 64
 }
 M.STONE_BRICKS = {
 	id = 010006,
-	stackSize = 64,
-	type = "stone_bricks"
+	name = "stone_bricks",
+	displayName = "Stone Bricks",
+	stackSize = 64
 }
 M.WOOD_WALL = {
 	id = 010007,
-	stackSize = 64,
-	type = "wood_wall"
+	name = "wood_wall",
+	displayName = "Wood Wall",
+	stackSize = 64
+}
+
+M.GOLD_ORE = {
+	id = 020001,
+	name = "gold_ore",
+	displayName = "Gold Ore",
+	stackSize = 64
+}
+M.IRON_ORE = {
+	id = 020002,
+	name = "iron_ore",
+	displayName = "Iron Ore",
+	stackSize = 64
+}
+M.PLATINUM_ORE = {
+	id = 020003,
+	name = "platinum_ore",
+	displayName = "Platinum Ore",
+	stackSize = 64
+}
+M.SILVER_ORE = {
+	id = 020004,
+	name = "silver_ore",
+	displayName = "Silver Ore",
+	stackSize = 64
 }
 
 M.WOOD_PICKAXE = {
 	id = 040001,
-	stackSize = 64,
-	type = "wood_pickaxe"
+	name = "wood_pickaxe",
+	displayName = "Wood Pickaxe",
+	stackSize = 64
 }
 
 M.WOOD_PLANKS = {
 	id = 050001,
-	stackSize = 64,
-	type = "wood_planks"
+	name = "wood_planks",
+	displayName = "Wood Planks",
+	stackSize = 64
 }
 
 M.ALL_ITEMS = {}
@@ -68,10 +104,13 @@ M.ALL_ITEMS[M.STONE_BRICKS.id] = M.STONE_BRICKS
 M.ALL_ITEMS[M.WOOD_WALL.id] = M.WOOD_WALL
 M.ALL_ITEMS[M.WOOD_PICKAXE.id] = M.WOOD_PICKAXE
 M.ALL_ITEMS[M.WOOD_PLANKS.id] = M.WOOD_PLANKS
+M.ALL_ITEMS[M.GOLD_ORE.id] = M.GOLD_ORE
+M.ALL_ITEMS[M.IRON_ORE.id] = M.IRON_ORE
+M.ALL_ITEMS[M.PLATINUM_ORE.id] = M.PLATINUM_ORE
+M.ALL_ITEMS[M.SILVER_ORE.id] = M.SILVER_ORE
 
-M.PLACEABLE = {
-	id_prefix = 01
-}
+M.PLACEABLE_ID_PREFIX = 01
+M.PLACEABLE = {}
 M.PLACEABLE[M.DIRT.id] = M.DIRT
 M.PLACEABLE[M.STONE.id] = M.STONE
 M.PLACEABLE[M.SAND.id] = M.SAND
@@ -79,27 +118,31 @@ M.PLACEABLE[M.CLAY.id] = M.CLAY
 M.PLACEABLE[M.CLAY_BRICKS.id] = M.CLAY_BRICKS
 M.PLACEABLE[M.STONE_BRICKS.id] = M.STONE_BRICKS
 M.PLACEABLE[M.WOOD_WALL.id] = M.WOOD_WALL
+M.PLACEABLE[M.GOLD_ORE.id] = M.GOLD_ORE
+M.PLACEABLE[M.IRON_ORE.id] = M.IRON_ORE
+M.PLACEABLE[M.PLATINUM_ORE.id] = M.PLATINUM_ORE
+M.PLACEABLE[M.SILVER_ORE.id] = M.SILVER_ORE
 
-M.SMELTABLE = {
-	id_prefix = 02
-}
+M.SMELTABLE_ID_PREFIX = 02
+M.SMELTABLE = {}
+M.SMELTABLE[M.GOLD_ORE.id] = M.GOLD_ORE
+M.SMELTABLE[M.IRON_ORE.id] = M.IRON_ORE
+M.SMELTABLE[M.PLATINUM_ORE.id] = M.PLATINUM_ORE
+M.SMELTABLE[M.SILVER_ORE.id] = M.SILVER_ORE
 
-M.CRAFTABLE = {
-	id_prefix = 03
-}
+M.CRAFTABLE_ID_PREFIX = 03
+M.CRAFTABLE = {}
 M.CRAFTABLE[M.WOOD_PICKAXE.id] = M.WOOD_PICKAXE
 M.CRAFTABLE[M.CLAY_BRICKS.id] = M.CLAY_BRICKS
 M.CRAFTABLE[M.STONE_BRICKS.id] = M.STONE_BRICKS
 M.CRAFTABLE[M.WOOD_WALL.id] = M.WOOD_WALL
 
-M.TOOL = {
-	id_prefix = 04
-}
+M.TOOL_ID_PREFIX = 04
+M.TOOL = {}
 M.TOOL[M.WOOD_PICKAXE.id] = M.WOOD_PICKAXE
 
-M.PICKUPS = {
-	id_prefix = 05
-}
+M.PICKUPS_ID_PREFIX = 05
+M.PICKUPS = {}
 M.PICKUPS[M.WOOD_PLANKS.id] = M.WOOD_PLANKS
 
 ---------------

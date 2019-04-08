@@ -1,0 +1,128 @@
+local gooey = require "gooey.gooey"
+local item_constants = require "modules.constants.items"
+local recipes = require "modules.constants.recipes"
+local theme = require "main.crafting_ui.crafting_ui_theme.theme"
+
+local INPUT_FOCUS = hash("blue_button05")
+local INPUT = hash("blue_button03")
+
+local BUTTON_PRESSED = hash("button_pressed")
+local BUTTON = hash("button_idle")
+
+local LISTITEM_SELECTED = hash("button_pressed")
+local LISTITEM_PRESSED = hash("button_pressed")
+local LISTITEM = hash("button_idle")
+
+local CHECKBOX_PRESSED = hash("grey_boxCross")
+local CHECKBOX_CHECKED = hash("blue_boxCross")
+local CHECKBOX = hash("grey_box")
+
+local RADIO_PRESSED = hash("grey_boxTick")
+local RADIO_SELECTED = hash("blue_boxTick")
+local RADIO = hash("grey_circle")
+
+-------------
+-- Helpers --
+-------------
+
+local button_handler
+local fill_crafting_list
+local on_item_selected
+local update_crafting_ui
+local update_crafting_list
+local update_list_item
+
+function button_handler(button, handler)
+	if button.released_now then
+		handler()
+	end
+end
+
+function fill_crafting_list(self, actionId, action)
+	gooey.dynamic_list("crafting_list", "crafting_list/stencil", "crafting_list/listitem_bg", self.recipeList, actionId, action, on_item_selected, update_crafting_list)
+end
+
+function on_item_selected(list)
+	local selectedRecipe = list.items[list.selected_item].data
+	msg.post("/player#player_script", "craft", { recipe =  selectedRecipe })
+end
+
+function update_crafting_list(list)
+	for key, item in pairs(list.items) do
+		update_list_item(list, item)
+		if item.data ~= nil and item.data.itemId ~= nil then
+			gui.set_text(item.nodes[hash("crafting_list/listitem_text")], item_constants.ALL_ITEMS[item.data.itemId].displayName)
+		end
+	end
+end
+
+function update_crafting_ui(self)
+	if self.isCraftingUiEnabled then
+		gooey.acquire_input()
+	else
+		gooey.release_input()
+	end
+	gui.set_enabled(gui.get_node("crafting_ui"), self.isCraftingUiEnabled)
+	self.shouldUpdateCraftingUi = false
+end
+
+function update_list_item(list, item)
+	local pos = gui.get_position(item.root)
+	if item.index == list.selected_item then
+		gui.play_flipbook(item.root, LISTITEM_PRESSED)
+	elseif item.index == list.pressed_item then
+		gui.play_flipbook(item.root, LISTITEM_PRESSED)
+	elseif item.index == list.over_item_now then
+		gui.play_flipbook(item.root, LISTITEM)
+	elseif item.index == list.out_item_now then
+		gui.play_flipbook(item.root, LISTITEM)
+	elseif item.index ~= list.over_item then
+		gui.play_flipbook(item.root, LISTITEM)
+	end
+	gui.set_position(item.root, pos)
+end
+
+-----------------
+-- End Helpers --
+-----------------
+
+
+----------------------
+-- Defold functions --
+----------------------
+
+function init(self)
+	self.isCraftingUiEnabled = false
+	self.shouldUpdateCraftingUi = false
+	self.recipeList = {}
+	for i, recipe in pairs(recipes) do
+		table.insert(self.recipeList, { itemId = recipe.itemId, components = recipe.components })
+	end
+	gui.set_enabled(gui.get_node("crafting_ui"), self.isCraftingUiEnabled)
+	fill_crafting_list(self)
+end
+
+function on_input(self, actionId, action)
+	if actionId == hash("quit") and action.released then
+		self.isCraftingUiEnabled = false
+		self.shouldUpdateCraftingUi = true
+	end
+	fill_crafting_list(self, actionId, action)
+end
+
+function on_message(self, messageId, message, sender)
+	if messageId == hash("toggle_crafting_menu") then
+		self.isCraftingUiEnabled = not self.isCraftingUiEnabled
+		self.shouldUpdateCraftingUi = true
+	end
+end
+
+function update(self, dt)
+	if self.shouldUpdateCraftingUi then
+		update_crafting_ui(self)
+	end
+end
+
+--------------------------
+-- End Defold functions --
+--------------------------

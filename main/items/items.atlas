@@ -28,6 +28,18 @@ images {
 images {
   image: "/assets/items/wood_wall.png"
 }
+images {
+  image: "/assets/items/gold_ore.png"
+}
+images {
+  image: "/assets/items/iron_ore.png"
+}
+images {
+  image: "/assets/items/platinum_ore.png"
+}
+images {
+  image: "/assets/items/silver_ore.png"
+}
 margin: 0
 extrude_borders: 1
 inner_padding: 0
