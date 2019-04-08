@@ -1,5 +1,5 @@
 embedded_components {
-  id: "wood_pickaxe_factory"
+  id: "wood_pickaxe_pickup_factory"
   type: "factory"
   data: "prototype: \"/main/pickup/wood_pickaxe/wood_pickaxe_pickup.go\"\n"
   "load_dynamically: false\n"

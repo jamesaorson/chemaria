@@ -4,6 +4,19 @@ images {
 images {
   image: "/main/main_menu/main_menu_theme/images/button_pressed.png"
 }
+animations {
+  id: "button_press"
+  images {
+    image: "/main/crafting_ui/crafting_ui_theme/images/button_idle.png"
+  }
+  images {
+    image: "/main/crafting_ui/crafting_ui_theme/images/button_pressed.png"
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 4
+  flip_horizontal: 0
+  flip_vertical: 0
+}
 margin: 0
 extrude_borders: 1
 inner_padding: 1

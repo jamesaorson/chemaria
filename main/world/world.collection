@@ -577,6 +577,46 @@ instances {
     z: 1.0
   }
 }
+instances {
+  id: "wood_pickaxe_pickup_factory"
+  prototype: "/main/pickup/wood_pickaxe/wood_pickaxe_pickup_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "wood_planks_pickup_factory"
+  prototype: "/main/pickup/wood_planks/wood_planks_pickup_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
 scale_along_z: 0
 embedded_instances {
   id: "factories"
@@ -612,6 +652,8 @@ embedded_instances {
   children: "silver_ore_pickup_factory"
   children: "stone_bricks_pickup_factory"
   children: "stone_pickup_factory"
+  children: "wood_pickaxe_pickup_factory"
+  children: "wood_planks_pickup_factory"
   children: "wood_wall_pickup_factory"
   data: ""
   position {

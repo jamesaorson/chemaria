@@ -1,3 +1,4 @@
+local camera_constants = require "modules.constants.camera"
 local config = require "modules.config"
 local globals = require "modules.globals"
 local helpers = require "modules.helpers"
@@ -26,30 +27,28 @@ local update_toolbar
 function add_loose_pickup_to_player(self, messageId, message, sender)
 	local loosePickup = World.get_loose_pickup(world, message.other_id)
 	if loosePickup then
-		local function add_loose_pickup(maxSlots, container, updateFunction)
-			for i = 1, maxSlots do
-				local item = container[i]
+		local function add_loose_pickup(container, updateFn)
+			for _, item in pairs(container) do
 				if item.id == loosePickup.id and item.count < item_constants.ALL_ITEMS[item.id].stackSize then
 					item.count = item.count + 1
-					updateFunction()
+					updateFn()
 					return true
 				elseif item.id == item_constants.NONE.id then
 					item.count = 1
 					item.id = loosePickup.id
 					item.name = item_constants.ALL_ITEMS[item.id].name
-					updateFunction()
+					updateFn()
 					return true
 				end
 			end
 			return false
 		end
-		if add_loose_pickup(toolbar_constants.TOOLBAR_MAX_SLOTS, self.toolbar, update_toolbar) then
+		if add_loose_pickup(self.toolbar, update_toolbar) then
 			return true
 		else
-			return add_loose_pickup(inventory_constants.INVENTORY_MAX_SLOTS, self.inventory, update_inventory)
+			return add_loose_pickup(self.inventory, update_inventory)
 		end
 	end
-
 	return false
 end
 
@@ -75,7 +74,7 @@ function check_for_crafting_components(self, recipe, componentsToCheck, material
 end
 
 function update_current_chunk(self)
-	local screenPosition = position_helpers.player_to_screen_position(go.get_position())
+	local screenPosition = position_helpers.player_to_screen_position()
 	local chunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
 
 	local chunk = World.get_chunk_at_position(world, chunkPosition)
@@ -120,29 +119,60 @@ function handle_craft(self, messageId, message, sender)
 		componentsToCheck[id] = { requirement = requirement, actual = 0, fulfilled = false }
 	end
 
-	local toolbarMaterialsToUse = {}
-	check_for_crafting_components(self, recipeToCraft, componentsToCheck, toolbarMaterialsToUse, self.toolbar)
-
-	local inventoryMaterialsToUse = {}
-	check_for_crafting_components(self, recipeToCraft, componentsToCheck, inventoryMaterialsToUse, self.inventory)
-	
-	local canCraftRecipe = true
-	for i, component in pairs(componentsToCheck) do
-		if not component.fulfilled then
-			print("Cannot craft "..item_constants.ALL_ITEMS[recipeToCraft.itemId].name)
-			canCraftRecipe = false
-			break
+	local function can_craft_recipe(componentsToCheck)
+		for i, component in pairs(componentsToCheck) do
+			if not component.fulfilled then
+				return false
+			end
 		end
+		return true
 	end
+
+	local canCraftRecipe = true
+	local toolbarMaterialsToUse = {}
+	local inventoryMaterialsToUse = {}
+	check_for_crafting_components(self, recipeToCraft, componentsToCheck, toolbarMaterialsToUse, self.toolbar)
+	canCraftRecipe = can_craft_recipe(componentsToCheck)
+	if not canCraftRecipe then
+		check_for_crafting_components(self, recipeToCraft, componentsToCheck, inventoryMaterialsToUse, self.inventory)
+		canCraftRecipe = can_craft_recipe(componentsToCheck)
+	end
+
+	local itemToCraft = item_constants.ALL_ITEMS[recipeToCraft.itemId]
 	if canCraftRecipe then
-		print("Can craft "..item_constants.ALL_ITEMS[recipeToCraft.itemId].name)
+		local function use_materials(container, materialsToUse)
+			for _, materialToUse in pairs(materialsToUse) do
+				local containerItem = container[materialToUse.index]
+				containerItem.count = containerItem.count - materialToUse.count
+			end
+		end
+		use_materials(self.toolbar, toolbarMaterialsToUse)
+		use_materials(self.inventory, inventoryMaterialsToUse)
+		
+		local function add_to_container(container, itemToAdd)
+			for _, containerItem in pairs(container) do
+				if containerItem.id == item_constants.NONE.id then
+					containerItem.count = 1
+					containerItem.id = itemToAdd.id
+					return true
+				elseif containerItem.id == itemToAdd.id and containerItem.count < item_constants.ALL_ITEMS[itemToAdd.id].stackSize then
+					containerItem.count = containerItem.count + 1
+					return true
+				end
+			end
+			return false
+		end
+		if not add_to_container(self.toolbar, itemToCraft) then
+			if not add_to_container(self.inventory, itemToCraft) then
+				msg.post("/world#world_script", "create_loose_pickup", { item = itemToCraft, position = go.get_position(camera_constants.CAMERA_ID) })
+			end
+		end
+		msg.post("/ui#ui", "update_toolbar")
+		msg.post("/ui#ui", "update_inventory")
+	else 
+		print("Cannot craft "..item_constants.ALL_ITEMS[recipeToCraft.itemId].name)
 	end
-	print("Components:")
-	pprint(componentsToCheck)
-	print("Toolbar:")
-	pprint(toolbarMaterialsToUse)
-	print("Inventory:")
-	pprint(inventoryMaterialsToUse)
+	return canCraftRecipe
 end
 
 function handle_jump(self, messageId, message, sender)
@@ -159,12 +189,13 @@ end
 
 function handle_left_click(self, messageId, message, sender)
 	self.miningMessage = message
-	
-	if message.pressed then
+
+	if message.pressed and self.placingMessage == nil then
 		self.miningTimerHandle = timer.delay(player_constants.PLAYER_BASE_MINING_INTERVAL, true, function (self, handle, timeElapsed)
 			msg.post("/world#world_script", "mine_block", self.miningMessage)
 		end)
 	elseif message.released then
+		self.miningMessage = nil
 		timer.cancel(self.miningTimerHandle)
 	end
 end
@@ -175,7 +206,7 @@ end
 
 function handle_right_click(self, messageId, message, sender)
 	self.placingMessage = message
-	if message.pressed then
+	if message.pressed and self.miningMessage == nil then
 		self.placingMessage.toolbarItem = self.toolbar[self.selectedToolbarItem]
 		if helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id then
 			msg.post("/world#world_script", "place_block", self.placingMessage)
@@ -187,6 +218,7 @@ function handle_right_click(self, messageId, message, sender)
 			end
 		end)
 	elseif message.released then
+		self.placingMessage = nil
 		timer.cancel(self.placingTimerHandle)
 	end
 end
@@ -223,7 +255,7 @@ end
 
 function init(self)
 	currentChunk = nil
-	
+
 	self.inventory = globals.get_inventory()
 	self.miningTimerHandle = nil
 	self.placingTimerHandle = nil
@@ -231,7 +263,7 @@ function init(self)
 	self.selectedToolbarItem = 1
 	self.toolbar = globals.get_toolbar()
 	self.craftableItems = {}
-	
+
 	defos.set_cursor_visible(true)
 end
 

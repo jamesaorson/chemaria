@@ -20,6 +20,7 @@ world = {}
 
 local create_block
 local create_blocks_from_world
+local create_loose_pickup
 local mine_block
 local get_saved_world
 local initialize_from_saved_world
@@ -97,6 +98,16 @@ function create_blocks_from_world(self)
 	end
 end
 
+function create_loose_pickup(item, position)
+	local rotation = nil
+	local properties = {}
+	local scale = 0.5
+
+	local loosePickupId = factory.create(urls.get_pickup_factory_url(item.id), position, rotation, properties, scale)
+	item.pickupId = loosePickupId
+	World.add_loose_pickup(world, item)
+end
+
 function mine_block(blockUrl, message)
 	go.delete(blockUrl)
 	
@@ -109,13 +120,7 @@ function mine_block(blockUrl, message)
 
 	local truePosition = position_helpers.block_to_screen_position(block)
 	truePosition.x = truePosition.x + math.random(-8, 8)
-	local rotation = nil
-	local properties = {}
-	local scale = 0.5
-	
-	local loosePickupId = factory.create(urls.get_pickup_factory_url(block.id), truePosition, rotation, properties, scale)
-	block.pickupId = loosePickupId
-	World.add_loose_pickup(world, block)
+	create_loose_pickup(block, truePosition)
 end
 
 function get_saved_world()
@@ -217,9 +222,14 @@ end
 -- Message Handlers --
 ----------------------
 
+local handle_create_loose_pickup
 local handle_mine_block
 local handle_place_block
 local handle_update_chunk_render
+
+function handle_create_loose_pickup(self, messageId, message, sender)
+	create_loose_pickup(message.item, message.position)
+end
 
 function handle_mine_block(self, messageId, message, sender)
 	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
@@ -273,7 +283,7 @@ end
 ----------------------
 
 function init(self)
-	msg.post("@render:", "clear_color", { color = vmath.vector4(0, 0, 0, 1.0) })
+	msg.post("@render:", "clear_color", { color = vmath.vector4(0.6, 0.5, 0.9, 1.0) })
 	initialize_world_chunks()
 	local savedWorld = get_saved_world()
 	if savedWorld and savedWorld.chunks then
@@ -285,7 +295,9 @@ function init(self)
 end
 
 function on_message(self, messageId, message, sender)
-	if messageId == hash("mine_block") then
+	if messageId == hash("create_loose_pickup") then
+		handle_create_loose_pickup(self, messageId, message, sender)
+	elseif messageId == hash("mine_block") then
 		handle_mine_block(self, messageId, message, sender)
 	elseif messageId == hash("place_block") then
 		handle_place_block(self, messageId, message, sender)

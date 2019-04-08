@@ -7,6 +7,10 @@ textures {
   name: "kenneyblue"
   texture: "/gooey/themes/kenneyblue/images/kenneyblue.atlas"
 }
+textures {
+  name: "theme"
+  texture: "/main/crafting_ui/crafting_ui_theme/images/theme.atlas"
+}
 background_color {
   x: 0.0
   y: 0.0
@@ -46,7 +50,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "kenneyblue/blue_panel"
+  texture: "theme/button_idle"
   id: "bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -55,10 +59,10 @@ nodes {
   layer: ""
   inherit_alpha: true
   slice9 {
-    x: 7.0
-    y: 7.0
-    z: 7.0
-    w: 7.0
+    x: 10.0
+    y: 10.0
+    z: 10.0
+    w: 10.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
@@ -155,7 +159,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "kenneyblue/blue_button04"
+  texture: "theme/button_idle"
   id: "listitem_bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -165,10 +169,10 @@ nodes {
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 10.0
-    y: 10.0
-    z: 10.0
-    w: 11.0
+    x: 50.0
+    y: 50.0
+    z: 50.0
+    w: 30.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true

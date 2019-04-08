@@ -9,10 +9,10 @@ M.WOOD_PICKAXE = {
 M.WOOD_PICKAXE.components[item_constants.WOOD_PLANKS.id] = 2
 M.WOOD_PICKAXE.components[item_constants.STONE.id] = 3
 
-M.WOOD_PLANKS = {
-	itemId = item_constants.WOOD_PLANKS.id,
+M.WOOD_WALL = {
+	itemId = item_constants.WOOD_WALL.id,
 	components = {}
 }
-M.WOOD_PLANKS.components[item_constants.WOOD_PLANKS.id] = 1
+M.WOOD_WALL.components[item_constants.WOOD_PLANKS.id] = 2
 
 return M

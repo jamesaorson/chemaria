@@ -6,12 +6,12 @@ local theme = require "main.crafting_ui.crafting_ui_theme.theme"
 local INPUT_FOCUS = hash("blue_button05")
 local INPUT = hash("blue_button03")
 
-local BUTTON_PRESSED = hash("blue_button05")
-local BUTTON = hash("blue_button04")
+local BUTTON_PRESSED = hash("button_pressed")
+local BUTTON = hash("button_idle")
 
-local LISTITEM_SELECTED = hash("blue_button03")
-local LISTITEM_PRESSED = hash("blue_button03")
-local LISTITEM = hash("blue_button04")
+local LISTITEM_SELECTED = hash("button_pressed")
+local LISTITEM_PRESSED = hash("button_pressed")
+local LISTITEM = hash("button_idle")
 
 local CHECKBOX_PRESSED = hash("grey_boxCross")
 local CHECKBOX_CHECKED = hash("blue_boxCross")
@@ -44,7 +44,6 @@ end
 
 function on_item_selected(list)
 	local selectedRecipe = list.items[list.selected_item].data
-	--pprint(item_constants.ALL_ITEMS[selectedRecipe.itemId].displayName)
 	msg.post("/player#player_script", "craft", { recipe =  selectedRecipe })
 end
 
@@ -70,19 +69,14 @@ end
 function update_list_item(list, item)
 	local pos = gui.get_position(item.root)
 	if item.index == list.selected_item then
-		pos.x = 4
-		gui.play_flipbook(item.root, LISTITEM_SELECTED)
+		gui.play_flipbook(item.root, LISTITEM_PRESSED)
 	elseif item.index == list.pressed_item then
-		pos.x = 1
 		gui.play_flipbook(item.root, LISTITEM_PRESSED)
 	elseif item.index == list.over_item_now then
-		pos.x = 1
 		gui.play_flipbook(item.root, LISTITEM)
 	elseif item.index == list.out_item_now then
-		pos.x = 0
 		gui.play_flipbook(item.root, LISTITEM)
 	elseif item.index ~= list.over_item then
-		pos.x = 0
 		gui.play_flipbook(item.root, LISTITEM)
 	end
 	gui.set_position(item.root, pos)
@@ -105,16 +99,11 @@ function init(self)
 		table.insert(self.recipeList, { itemId = recipe.itemId, components = recipe.components })
 	end
 	gui.set_enabled(gui.get_node("crafting_ui"), self.isCraftingUiEnabled)
-	fill_crafting_list(self, actionId, action)
+	fill_crafting_list(self)
 end
 
 function on_input(self, actionId, action)
 	if actionId == hash("quit") and action.released then
-		--theme.button("new_game", actionId, action, function(button)
-		--button_handler(button, function() 
-		--msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#worldproxy" })
-		--end)
-		--end)
 		self.isCraftingUiEnabled = false
 		self.shouldUpdateCraftingUi = true
 	end

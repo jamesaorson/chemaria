@@ -6,12 +6,12 @@ local M = gooey.create_theme()
 local INPUT_FOCUS = hash("blue_button05")
 local INPUT = hash("blue_button03")
 
-local BUTTON_PRESSED = hash("blue_button05")
-local BUTTON = hash("blue_button04")
+local BUTTON_PRESSED = hash("button_pressed")
+local BUTTON = hash("button_idle")
 
-local LISTITEM_SELECTED = hash("blue_button03")
-local LISTITEM_PRESSED = hash("blue_button03")
-local LISTITEM = hash("blue_button04")
+local LISTITEM_SELECTED = hash("button_pressed")
+local LISTITEM_PRESSED = hash("button_pressed")
+local LISTITEM = hash("button_idle")
 
 local CHECKBOX_PRESSED = hash("grey_boxCross")
 local CHECKBOX_CHECKED = hash("blue_boxCross")
