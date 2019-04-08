@@ -22,7 +22,7 @@ end
 -- Player Transformation --
 ---------------------------
 
-function M.player_to_screen_position(playerPosition)
+function M.player_to_screen_position()
 	local cameraPosition = go.get_position(camera_constants.CAMERA_ID)
 	local screenPosition = orthographic.world_to_screen(camera_constants.CAMERA_ID, cameraPosition)
 	return screenPosition

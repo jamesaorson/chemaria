@@ -16,12 +16,13 @@ local is_inventory_switch_message
 local start_drag
 local switch_selected_inventory_item
 local switch_selected_toolbar_item
+local update_container
 local update_inventory
 local update_toolbar
 
 function change_slot_texture(slotNode, texture)
 	if not texture then
-		texture = item_constants.NONE.type
+		texture = item_constants.ALL_ITEMS[item_constants.NONE.id].name
 	end
 	gui.set_texture(slotNode, "block_textures")
 	gui.play_flipbook(slotNode, texture)
@@ -156,45 +157,59 @@ function switch_selected_toolbar_item(self, index)
 	msg.post("/player#player_script", "switch_selected_toolbar_item", { toolbarIndex = index })
 end
 
-function update_inventory(self)
-	gui.set_enabled(gui.get_node("inventory_node"), self.isInventoryEnabled)
+function update_container(
+	container,
+	selectedContainerItem,
+	selectedColor,
+	unselectedColor,
+	containerNodeUrlFn,
+	containerTextNodeUrlFn,
+	containerNode,
+	isContainerEnabled)
 
-	for i = 1, inventory_constants.INVENTORY_MAX_SLOTS do
-		local inventoryItem = self.inventory[i]
-		local inventoryNode = gui.get_node(urls.get_inventory_node_url(i))
-		local inventoryTextNode = gui.get_node(urls.get_inventory_text_node_url(i))
-		if inventoryItem and inventoryItem.id ~= item_constants.NONE.id then
-			gui.set_text(inventoryTextNode, inventoryItem.count)
-			change_slot_texture(inventoryNode, inventoryItem.type)
-		elseif inventoryItem.count == 0 then
-			gui.set_text(inventoryTextNode, "None")
-			change_slot_texture(inventoryNode, item_constants.NONE.type)
-		end
-		gui.set_color(inventoryNode, inventory_constants.INVENTORY_UNSELECTED_COLOR)
+	if containerNode ~= nil then
+		gui.set_enabled(containerNode, isContainerEnabled)
 	end
 
-	local selectedInventoryNode = gui.get_node(urls.get_inventory_node_url(self.selectedInventoryItem))
-	gui.set_color(selectedInventoryNode, inventory_constants.INVENTORY_SELECTED_COLOR)
-	
+	for i, containerItem in pairs(container) do
+		local containerNode = gui.get_node(containerNodeUrlFn(i))
+		local containerTextNode = gui.get_node(containerTextNodeUrlFn(i))
+		if containerItem.count == 0 then
+			containerItem.id = item_constants.NONE.id
+			gui.set_text(containerTextNode, item_constants.NONE.displayName)
+		elseif containerItem and containerItem.id ~= item_constants.NONE.id then
+			gui.set_text(containerTextNode, containerItem.count)
+		end
+		change_slot_texture(containerNode, item_constants.ALL_ITEMS[containerItem.id].name)
+		gui.set_color(containerNode, unselectedColor)
+	end
+
+	local selectedContainerNode = gui.get_node(containerNodeUrlFn(selectedContainerItem))
+	gui.set_color(selectedContainerNode, selectedColor)
+end
+
+function update_inventory(self)
+	update_container(
+		self.inventory,
+		self.selectedInventoryItem,
+		inventory_constants.INVENTORY_SELECTED_COLOR,
+		inventory_constants.INVENTORY_UNSELECTED_COLOR,
+		urls.get_inventory_node_url,
+		urls.get_inventory_text_node_url,
+		gui.get_node("inventory_node"),
+		self.isInventoryEnabled)
+
 	self.shouldUpdateInventory = false
 end
 
 function update_toolbar(self)
-	for i, toolbarItem in pairs(self.toolbar) do
-		local toolbarNode = gui.get_node(urls.get_toolbar_node_url(i))
-		local toolbarTextNode = gui.get_node(urls.get_toolbar_text_node_url(i))
-		if toolbarItem and toolbarItem.id ~= item_constants.NONE.id then
-			gui.set_text(toolbarTextNode, toolbarItem.count)
-			change_slot_texture(toolbarNode, toolbarItem.type)
-		elseif toolbarItem.count == 0 then
-			gui.set_text(toolbarTextNode, "None")
-			change_slot_texture(toolbarNode, item_constants.NONE.type)
-		end
-		gui.set_color(toolbarNode, toolbar_constants.TOOLBAR_UNSELECTED_COLOR)
-	end
-
-	local selectedToolbarNode = gui.get_node(urls.get_toolbar_node_url(self.selectedToolbarItem))
-	gui.set_color(selectedToolbarNode, toolbar_constants.TOOLBAR_SELECTED_COLOR)
+	update_container(
+		self.toolbar,
+		self.selectedToolbarItem,
+		toolbar_constants.TOOLBAR_SELECTED_COLOR,
+		toolbar_constants.TOOLBAR_UNSELECTED_COLOR,
+		urls.get_toolbar_node_url,
+		urls.get_toolbar_text_node_url)
 
 	self.shouldUpdateToolbar = false
 end
@@ -279,28 +294,25 @@ function init(self)
 	self.isDragging = false
 	self.draggedItem = nil
 
-	local inventoryBlockInfo = item_constants.STONE_BRICKS
+	local inventoryBlockInfo = item_constants.WOOD_PLANKS
 	for i = 1, inventory_constants.INVENTORY_MAX_SLOTS do
 		local newInventoryItem = {
 			id = inventoryBlockInfo.id,
 			index = i,
-			count = inventoryBlockInfo.stackSize,
-			type = inventoryBlockInfo.type
+			count = item_constants.ALL_ITEMS[inventoryBlockInfo.id].stackSize,
+			name = item_constants.ALL_ITEMS[inventoryBlockInfo.id].name
 		}
 		self.shouldUpdateInventory = true
 		globals.update_inventory_item(newInventoryItem)
 	end
 
-	local inventoryBlockInfo = item_constants.WOOD_WALL
+	local toolbarBlockInfo = item_constants.STONE
 	for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
-		if i > 3 then 
-			inventoryBlockInfo = item_constants.CLAY_BRICKS
-		end
 		local newToolbarItem = {
-			id = inventoryBlockInfo.id,
+			id = toolbarBlockInfo.id,
 			index = i,
-			count = inventoryBlockInfo.stackSize,
-			type = inventoryBlockInfo.type
+			count = item_constants.ALL_ITEMS[toolbarBlockInfo.id].stackSize,
+			name = item_constants.ALL_ITEMS[toolbarBlockInfo.id].name
 		}
 		self.shouldUpdateToolbar = true
 		globals.update_toolbar_item(newToolbarItem)
@@ -308,15 +320,6 @@ function init(self)
 	
 	update_inventory(self)
 	update_toolbar(self)
-end
-
-function update(self, dt)
-	if self.shouldUpdateInventory then
-		update_inventory(self)
-	end
-	if self.shouldUpdateToolbar then
-		update_toolbar(self)
-	end
 end
 
 function on_message(self, messageId, message, sender)
@@ -335,5 +338,14 @@ function on_message(self, messageId, message, sender)
 		handle_update_inventory(self, messageId, message, sender)
 	elseif messageId == hash("update_toolbar") then
 		handle_update_toolbar(self, messageId, message, sender)
+	end
+end
+
+function update(self, dt)
+	if self.shouldUpdateInventory then
+		update_inventory(self)
+	end
+	if self.shouldUpdateToolbar then
+		update_toolbar(self)
 	end
 end
