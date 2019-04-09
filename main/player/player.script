@@ -196,7 +196,9 @@ function handle_left_click(self, messageId, message, sender)
 		end)
 	elseif message.released then
 		self.miningMessage = nil
-		timer.cancel(self.miningTimerHandle)
+		if self.miningTimerHandle ~= nil then
+			timer.cancel(self.miningTimerHandle)
+		end
 	end
 end
 
@@ -219,7 +221,9 @@ function handle_right_click(self, messageId, message, sender)
 		end)
 	elseif message.released then
 		self.placingMessage = nil
-		timer.cancel(self.placingTimerHandle)
+		if self.placingTimerHandle ~= nil then
+			timer.cancel(self.placingTimerHandle)
+		end
 	end
 end
 
