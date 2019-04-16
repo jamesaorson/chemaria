@@ -40,6 +40,9 @@ images {
 images {
   image: "/assets/items/silver_ore.png"
 }
+images {
+  image: "/assets/items/stone_pickaxe.png"
+}
 margin: 0
 extrude_borders: 1
 inner_padding: 0
