@@ -43,6 +43,18 @@ images {
 images {
   image: "/assets/items/stone_pickaxe.png"
 }
+images {
+  image: "/assets/items/gold_ingot.png"
+}
+images {
+  image: "/assets/items/iron_ingot.png"
+}
+images {
+  image: "/assets/items/platinum_ingot.png"
+}
+images {
+  image: "/assets/items/silver_ingot.png"
+}
 margin: 0
 extrude_borders: 1
 inner_padding: 0
