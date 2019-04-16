@@ -56,7 +56,7 @@ images {
   image: "/assets/items/silver_ingot.png"
 }
 images {
-  image: "/assets/items/furnace_idle.png"
+  image: "/assets/items/furnace.png"
 }
 animations {
   id: "furnace_lit"

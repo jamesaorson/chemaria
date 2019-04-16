@@ -3,6 +3,12 @@ local item_constants = require "modules.constants.items"
 local M = {}
 
 M.CRAFTABLES = {}
+M.CRAFTABLES.FURNACE = {
+	itemId = item_constants.FURNACE.id,
+	components = {}
+}
+M.CRAFTABLES.FURNACE.components[item_constants.STONE.id] = 9
+
 M.CRAFTABLES.WOOD_PICKAXE = {
 	itemId = item_constants.WOOD_PICKAXE.id,
 	components = {}
@@ -27,13 +33,13 @@ M.SMELTABLES.GOLD_INGOT = {
 	itemId = item_constants.GOLD_INGOT.id,
 	components = {}
 }
-M.SMELTABLES.GOLD_INGOT.components[item_constants.IRON_ORE.id] = 1
+M.SMELTABLES.GOLD_INGOT.components[item_constants.GOLD_ORE.id] = 1
 
 M.SMELTABLES.IRON_INGOT = {
 	itemId = item_constants.IRON_INGOT.id,
 	components = {}
 }
-M.SMELTABLES.IRON_INGOT.components[item_constants.IRON_INGOT.id] = 1
+M.SMELTABLES.IRON_INGOT.components[item_constants.IRON_ORE.id] = 1
 
 M.SMELTABLES.PLATINUM_INGOT = {
 	itemId = item_constants.PLATINUM_INGOT.id,
