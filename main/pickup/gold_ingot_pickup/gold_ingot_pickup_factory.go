@@ -1,7 +1,7 @@
 embedded_components {
-  id: "gold_ingot_factory"
+  id: "gold_ingot_pickup_factory"
   type: "factory"
-  data: "prototype: \"/main/items/gold_ingot/gold_ingot.go\"\n"
+  data: "prototype: \"/main/pickup/gold_ingot_pickup/gold_ingot_pickup.go\"\n"
   "load_dynamically: false\n"
   ""
   position {

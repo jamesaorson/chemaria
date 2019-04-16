@@ -637,6 +637,206 @@ instances {
     z: 1.0
   }
 }
+instances {
+  id: "gold_ingot_factory"
+  prototype: "/main/items/gold_ingot/gold_ingot_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "iron_ingot_factory"
+  prototype: "/main/items/iron_ingot/iron_ingot_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "platinum_ingot_factory"
+  prototype: "/main/items/platinum_ingot/platinum_ingot_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "silver_ingot_factory"
+  prototype: "/main/items/silver_ingot/silver_ingot_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "furnace_factory"
+  prototype: "/main/items/furnace/furnace_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "furnace_pickup_factory"
+  prototype: "/main/pickup/furnace_pickup/furnace_pickup_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "gold_ingot_pickup_factory"
+  prototype: "/main/pickup/gold_ingot_pickup/gold_ingot_pickup_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "iron_ingot_pickup_factory"
+  prototype: "/main/pickup/iron_ingot_pickup/iron_ingot_pickup_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "platinum_ingot_pickup_factory"
+  prototype: "/main/pickup/platinum_ingot_pickup/platinum_ingot_pickup_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "silver_ingot_pickup_factory"
+  prototype: "/main/pickup/silver_ingot_pickup/silver_ingot_pickup_factory.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
 scale_along_z: 0
 embedded_instances {
   id: "factories"
@@ -665,10 +865,15 @@ embedded_instances {
   children: "clay_bricks_pickup_factory"
   children: "clay_pickup_factory"
   children: "dirt_pickup_factory"
+  children: "furnace_pickup_factory"
+  children: "gold_ingot_pickup_factory"
   children: "gold_ore_pickup_factory"
+  children: "iron_ingot_pickup_factory"
   children: "iron_ore_pickup_factory"
+  children: "platinum_ingot_pickup_factory"
   children: "platinum_ore_pickup_factory"
   children: "sand_pickup_factory"
+  children: "silver_ingot_pickup_factory"
   children: "silver_ore_pickup_factory"
   children: "stone_bricks_pickup_factory"
   children: "stone_pickaxe_pickup_factory"
@@ -699,10 +904,15 @@ embedded_instances {
   children: "clay_bricks_factory"
   children: "clay_factory"
   children: "dirt_factory"
+  children: "furnace_factory"
+  children: "gold_ingot_factory"
   children: "gold_ore_factory"
+  children: "iron_ingot_factory"
   children: "iron_ore_factory"
+  children: "platinum_ingot_factory"
   children: "platinum_ore_factory"
   children: "sand_factory"
+  children: "silver_ingot_factory"
   children: "silver_ore_factory"
   children: "stone_bricks_factory"
   children: "stone_factory"
