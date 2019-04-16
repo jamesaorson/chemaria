@@ -95,7 +95,7 @@ function init(self)
 	self.isCraftingUiEnabled = false
 	self.shouldUpdateCraftingUi = false
 	self.recipeList = {}
-	for i, recipe in pairs(recipes) do
+	for i, recipe in pairs(recipes.CRAFTABLES) do
 		table.insert(self.recipeList, { itemId = recipe.itemId, components = recipe.components })
 	end
 	gui.set_enabled(gui.get_node("crafting_ui"), self.isCraftingUiEnabled)
