@@ -31,6 +31,7 @@ local button_handler
 local fill_crafting_list
 local on_item_selected
 local on_scrolled
+local update_button
 local update_crafting_ui
 local update_crafting_list
 local update_list_item
@@ -67,6 +68,7 @@ function update_crafting_ui(self)
 		gooey.release_input()
 	end
 	gui.set_enabled(gui.get_node("crafting_ui"), self.isCraftingUiEnabled)
+	gui.set_enabled(gui.get_node("scrollbar/bounds"), #self.recipeList > 5)
 	self.shouldUpdateCraftingUi = false
 end
 
@@ -100,12 +102,10 @@ function init(self)
 	self.shouldUpdateCraftingUi = false
 	self.recipeList = {}
 	self.scrollbar = nil
+	self.selectedTab = 1
 	SCOPED_SELF = self
 	for i, recipe in pairs(recipes.CRAFTABLES) do
 		table.insert(self.recipeList, { itemId = recipe.itemId, components = recipe.components })
-	end
-	for i, recipe in pairs(recipes.SMELTABLES) do
-		table.insert(self.recipeList, { itemId = recipe.itemId, components = recipe.components, needsFurnace = true })
 	end
 	gui.set_enabled(gui.get_node("crafting_ui"), self.isCraftingUiEnabled)
 	fill_crafting_list(self)
@@ -116,6 +116,35 @@ function on_input(self, actionId, action)
 		self.isCraftingUiEnabled = false
 		self.shouldUpdateCraftingUi = true
 	end
+	
+	theme.button("tools_menu_button", actionId, action, function(button)
+		button_handler(button, function() 
+			print("Tools...")
+			self.selectedTab = 1
+			self.recipeList = {}
+			for i, recipe in pairs(recipes.CRAFTABLES) do
+				table.insert(self.recipeList, { itemId = recipe.itemId, components = recipe.components })
+			end
+		end)
+	end)
+
+	theme.button("smelt_menu_button", actionId, action, function(button)
+		button_handler(button, function() 
+			print("Smelt...")
+			self.selectedTab = 2
+			self.recipeList = {}
+			for i, recipe in pairs(recipes.SMELTABLES) do
+				table.insert(self.recipeList, { itemId = recipe.itemId, components = recipe.components })
+			end
+		end)
+	end)
+
+	theme.button("materials_menu_button", actionId, action, function(button)
+		button_handler(button, function() 
+			print("Materials...")
+		end)
+	end)
+
 	fill_crafting_list(self, actionId, action)
 end
 

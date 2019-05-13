@@ -180,6 +180,16 @@ function initialize_new_world()
 						blockInfo = item_constants.DIRT
 					elseif randomNumber < 0.4 then
 						blockInfo = item_constants.CLAY
+					elseif randomNumber < 0.45 then
+						if randomNumber < 0.41 then
+							blockInfo = item_constants.GOLD_ORE
+						elseif randomNumber < 0.42 then
+							blockInfo = item_constants.SILVER_ORE
+						elseif randomNumber < 0.43 then
+							blockInfo = item_constants.PLATINUM_ORE
+						else
+							blockInfo = item_constants.IRON_ORE
+						end
 					else
 						blockInfo = item_constants.STONE
 					end
