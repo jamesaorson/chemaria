@@ -8,7 +8,7 @@ M.NONE = {
 	id = 000000,
 	name = "none",
 	displayName = "None",
-	stackSize = 64
+	stackSize = 0
 }
 
 M.DIRT = {
@@ -53,30 +53,7 @@ M.WOOD_WALL = {
 	displayName = "Wood Wall",
 	stackSize = 64
 }
-M.GOLD_ORE = {
-	id = 010008,
-	name = "gold_ore",
-	displayName = "Gold Ore",
-	stackSize = 64
-}
-M.IRON_ORE = {
-	id = 010009,
-	name = "iron_ore",
-	displayName = "Iron Ore",
-	stackSize = 64
-}
-M.PLATINUM_ORE = {
-	id = 010010,
-	name = "platinum_ore",
-	displayName = "Platinum Ore",
-	stackSize = 64
-}
-M.SILVER_ORE = {
-	id = 010011,
-	name = "silver_ore",
-	displayName = "Silver Ore",
-	stackSize = 64
-}
+
 M.WOOD_PLANKS = {
 	id = 010012,
 	name = "wood_planks",
@@ -129,6 +106,31 @@ M.STONE_PICKAXE = {
 	stackSize = 64
 }
 
+M.GOLD_ORE = {
+	id = 040008,
+	name = "gold_ore",
+	displayName = "Gold Ore",
+	stackSize = 64
+}
+M.IRON_ORE = {
+	id = 040009,
+	name = "iron_ore",
+	displayName = "Iron Ore",
+	stackSize = 64
+}
+M.PLATINUM_ORE = {
+	id = 040010,
+	name = "platinum_ore",
+	displayName = "Platinum Ore",
+	stackSize = 64
+}
+M.SILVER_ORE = {
+	id = 040011,
+	name = "silver_ore",
+	displayName = "Silver Ore",
+	stackSize = 64
+}
+
 M.ALL_ITEMS = {}
 M.ALL_ITEMS[M.NONE.id] = M.NONE
 M.ALL_ITEMS[M.DIRT.id] = M.DIRT
@@ -177,6 +179,13 @@ M.TOOL_ID_PREFIX = 03
 M.TOOL = {}
 M.TOOL[M.WOOD_PICKAXE.id] = M.WOOD_PICKAXE
 M.TOOL[M.STONE_PICKAXE.id] = M.STONE_PICKAXE
+
+M.ORE_ID_PREFIX = 04
+M.ORE = {}
+M.ORE[M.GOLD_ORE.id] = M.GOLD_ORE
+M.ORE[M.IRON_ORE.id] = M.IRON_ORE
+M.ORE[M.PLATINUM_ORE.id] = M.PLATINUM_ORE
+M.ORE[M.SILVER_ORE.id] = M.SILVER_ORE
 
 M.CRAFTABLE = {}
 M.CRAFTABLE[M.WOOD_PICKAXE.id] = M.WOOD_PICKAXE
