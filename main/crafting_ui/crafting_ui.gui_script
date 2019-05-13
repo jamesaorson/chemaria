@@ -21,6 +21,8 @@ local RADIO_PRESSED = hash("grey_boxTick")
 local RADIO_SELECTED = hash("blue_boxTick")
 local RADIO = hash("grey_circle")
 
+local SCOPED_SELF
+
 -------------
 -- Helpers --
 -------------
@@ -28,6 +30,8 @@ local RADIO = hash("grey_circle")
 local button_handler
 local fill_crafting_list
 local on_item_selected
+local on_scrolled
+local update_button
 local update_crafting_ui
 local update_crafting_list
 local update_list_item
@@ -39,11 +43,12 @@ function button_handler(button, handler)
 end
 
 function fill_crafting_list(self, actionId, action)
-	gooey.dynamic_list("crafting_list", "crafting_list/stencil", "crafting_list/listitem_bg", self.recipeList, actionId, action, on_item_selected, update_crafting_list)
+	self.scrollbar = gooey.vertical_scrollbar("scrollbar/handle", "scrollbar/bounds", actionId, action, function () end)
+	gooey.dynamic_list("crafting_list", "crafting_list/stencil", "crafting_list/listitem_bg", self.recipeList, actionId, action, on_item_selected, update_crafting_list).scroll_to(0, self.scrollbar.scroll.y)
 end
 
 function on_item_selected(list)
-	local selectedRecipe = list.items[list.selected_item].data
+	local selectedRecipe = SCOPED_SELF.recipeList[list.selected_item]
 	msg.post("/player#player_script", "craft", { recipe =  selectedRecipe })
 end
 
@@ -63,6 +68,7 @@ function update_crafting_ui(self)
 		gooey.release_input()
 	end
 	gui.set_enabled(gui.get_node("crafting_ui"), self.isCraftingUiEnabled)
+	gui.set_enabled(gui.get_node("scrollbar/bounds"), #self.recipeList > 5)
 	self.shouldUpdateCraftingUi = false
 end
 
@@ -95,7 +101,10 @@ function init(self)
 	self.isCraftingUiEnabled = false
 	self.shouldUpdateCraftingUi = false
 	self.recipeList = {}
-	for i, recipe in pairs(recipes) do
+	self.scrollbar = nil
+	self.selectedTab = 1
+	SCOPED_SELF = self
+	for i, recipe in pairs(recipes.CRAFTABLES) do
 		table.insert(self.recipeList, { itemId = recipe.itemId, components = recipe.components })
 	end
 	gui.set_enabled(gui.get_node("crafting_ui"), self.isCraftingUiEnabled)
@@ -107,6 +116,35 @@ function on_input(self, actionId, action)
 		self.isCraftingUiEnabled = false
 		self.shouldUpdateCraftingUi = true
 	end
+	
+	theme.button("tools_menu_button", actionId, action, function(button)
+		button_handler(button, function() 
+			print("Tools...")
+			self.selectedTab = 1
+			self.recipeList = {}
+			for i, recipe in pairs(recipes.CRAFTABLES) do
+				table.insert(self.recipeList, { itemId = recipe.itemId, components = recipe.components })
+			end
+		end)
+	end)
+
+	theme.button("smelt_menu_button", actionId, action, function(button)
+		button_handler(button, function() 
+			print("Smelt...")
+			self.selectedTab = 2
+			self.recipeList = {}
+			for i, recipe in pairs(recipes.SMELTABLES) do
+				table.insert(self.recipeList, { itemId = recipe.itemId, components = recipe.components })
+			end
+		end)
+	end)
+
+	theme.button("materials_menu_button", actionId, action, function(button)
+		button_handler(button, function() 
+			print("Materials...")
+		end)
+	end)
+
 	fill_crafting_list(self, actionId, action)
 end
 

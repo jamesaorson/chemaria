@@ -1,6 +1,6 @@
 components {
   id: "sprite"
-  component: "/main/items/stone_bricks/stone_bricks.sprite"
+  component: "/main/items/platinum_ingot/platinum_ingot.sprite"
   position {
     x: 0.0
     y: 0.0
@@ -66,8 +66,8 @@ embedded_components {
   data: "collision_shape: \"\"\n"
   "type: COLLISION_OBJECT_TYPE_TRIGGER\n"
   "mass: 0.0\n"
-  "friction: 0.0\n"
-  "restitution: 0.0\n"
+  "friction: 0.1\n"
+  "restitution: 0.5\n"
   "group: \"pickup\"\n"
   "mask: \"player\"\n"
   "embedded_collision_shape {\n"

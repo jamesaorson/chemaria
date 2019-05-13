@@ -1,6 +1,6 @@
 components {
   id: "sprite"
-  component: "/main/items/stone_bricks/stone_bricks.sprite"
+  component: "/main/items/furnace/furnace.sprite"
   position {
     x: 0.0
     y: 0.0
@@ -17,12 +17,13 @@ embedded_components {
   id: "collisionobject"
   type: "collisionobject"
   data: "collision_shape: \"\"\n"
-  "type: COLLISION_OBJECT_TYPE_DYNAMIC\n"
-  "mass: 1.0\n"
-  "friction: 0.1\n"
+  "type: COLLISION_OBJECT_TYPE_STATIC\n"
+  "mass: 0.0\n"
+  "friction: 0.0\n"
   "restitution: 0.0\n"
-  "group: \"pickup\"\n"
-  "mask: \"block\"\n"
+  "group: \"block\"\n"
+  "mask: \"player\"\n"
+  "mask: \"pickup\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
   "    shape_type: TYPE_BOX\n"
@@ -61,14 +62,14 @@ embedded_components {
   }
 }
 embedded_components {
-  id: "collectioncollisionobject"
+  id: "smeltingcollisionobject"
   type: "collisionobject"
   data: "collision_shape: \"\"\n"
   "type: COLLISION_OBJECT_TYPE_TRIGGER\n"
   "mass: 0.0\n"
   "friction: 0.0\n"
   "restitution: 0.0\n"
-  "group: \"pickup\"\n"
+  "group: \"furnace\"\n"
   "mask: \"player\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
@@ -87,7 +88,7 @@ embedded_components {
   "    index: 0\n"
   "    count: 1\n"
   "  }\n"
-  "  data: 36.0\n"
+  "  data: 50.0\n"
   "}\n"
   "linear_damping: 0.0\n"
   "angular_damping: 0.0\n"

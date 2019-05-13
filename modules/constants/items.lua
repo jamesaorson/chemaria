@@ -8,7 +8,7 @@ M.NONE = {
 	id = 000000,
 	name = "none",
 	displayName = "None",
-	stackSize = 64
+	stackSize = 0
 }
 
 M.DIRT = {
@@ -54,42 +54,80 @@ M.WOOD_WALL = {
 	stackSize = 64
 }
 
-M.GOLD_ORE = {
-	id = 020001,
-	name = "gold_ore",
-	displayName = "Gold Ore",
+M.WOOD_PLANKS = {
+	id = 010012,
+	name = "wood_planks",
+	displayName = "Wood Planks",
 	stackSize = 64
 }
-M.IRON_ORE = {
-	id = 020002,
-	name = "iron_ore",
-	displayName = "Iron Ore",
+M.FURNACE = {
+	id = 010013,
+	name = "furnace",
+	displayName = "Furnace",
+	stackSize = 1
+}
+
+M.GOLD_INGOT = {
+	id = 020008,
+	name = "gold_ingot",
+	displayName = "Gold Ingot",
 	stackSize = 64
 }
-M.PLATINUM_ORE = {
-	id = 020003,
-	name = "platinum_ore",
-	displayName = "Platinum Ore",
+M.IRON_INGOT = {
+	id = 020009,
+	name = "iron_ingot",
+	displayName = "Iron Ingot",
 	stackSize = 64
 }
-M.SILVER_ORE = {
-	id = 020004,
-	name = "silver_ore",
-	displayName = "Silver Ore",
+M.PLATINUM_INGOT = {
+	id = 020010,
+	name = "platinum_ingot",
+	displayName = "Platinum Ingot",
+	stackSize = 64
+}
+M.SILVER_INGOT = {
+	id = 020011,
+	name = "silver_ingot",
+	displayName = "Silver Ingot",
 	stackSize = 64
 }
 
 M.WOOD_PICKAXE = {
-	id = 040001,
+	id = 030001,
 	name = "wood_pickaxe",
 	displayName = "Wood Pickaxe",
 	stackSize = 64
 }
 
-M.WOOD_PLANKS = {
-	id = 050001,
-	name = "wood_planks",
-	displayName = "Wood Planks",
+M.STONE_PICKAXE = {
+	id = 030002,
+	name = "stone_pickaxe",
+	displayName = "Stone Pickaxe",
+	stackSize = 64
+}
+
+M.GOLD_ORE = {
+	id = 040008,
+	name = "gold_ore",
+	displayName = "Gold Ore",
+	stackSize = 64
+}
+M.IRON_ORE = {
+	id = 040009,
+	name = "iron_ore",
+	displayName = "Iron Ore",
+	stackSize = 64
+}
+M.PLATINUM_ORE = {
+	id = 040010,
+	name = "platinum_ore",
+	displayName = "Platinum Ore",
+	stackSize = 64
+}
+M.SILVER_ORE = {
+	id = 040011,
+	name = "silver_ore",
+	displayName = "Silver Ore",
 	stackSize = 64
 }
 
@@ -103,11 +141,17 @@ M.ALL_ITEMS[M.CLAY_BRICKS.id] = M.CLAY_BRICKS
 M.ALL_ITEMS[M.STONE_BRICKS.id] = M.STONE_BRICKS
 M.ALL_ITEMS[M.WOOD_WALL.id] = M.WOOD_WALL
 M.ALL_ITEMS[M.WOOD_PICKAXE.id] = M.WOOD_PICKAXE
+M.ALL_ITEMS[M.STONE_PICKAXE.id] = M.STONE_PICKAXE
 M.ALL_ITEMS[M.WOOD_PLANKS.id] = M.WOOD_PLANKS
 M.ALL_ITEMS[M.GOLD_ORE.id] = M.GOLD_ORE
 M.ALL_ITEMS[M.IRON_ORE.id] = M.IRON_ORE
 M.ALL_ITEMS[M.PLATINUM_ORE.id] = M.PLATINUM_ORE
 M.ALL_ITEMS[M.SILVER_ORE.id] = M.SILVER_ORE
+M.ALL_ITEMS[M.GOLD_INGOT.id] = M.GOLD_INGOT
+M.ALL_ITEMS[M.IRON_INGOT.id] = M.IRON_INGOT
+M.ALL_ITEMS[M.PLATINUM_INGOT.id] = M.PLATINUM_INGOT
+M.ALL_ITEMS[M.SILVER_INGOT.id] = M.SILVER_INGOT
+M.ALL_ITEMS[M.FURNACE.id] = M.FURNACE
 
 M.PLACEABLE_ID_PREFIX = 01
 M.PLACEABLE = {}
@@ -122,28 +166,34 @@ M.PLACEABLE[M.GOLD_ORE.id] = M.GOLD_ORE
 M.PLACEABLE[M.IRON_ORE.id] = M.IRON_ORE
 M.PLACEABLE[M.PLATINUM_ORE.id] = M.PLATINUM_ORE
 M.PLACEABLE[M.SILVER_ORE.id] = M.SILVER_ORE
+M.PLACEABLE[M.FURNACE.id] = M.FURNACE
 
 M.SMELTABLE_ID_PREFIX = 02
 M.SMELTABLE = {}
-M.SMELTABLE[M.GOLD_ORE.id] = M.GOLD_ORE
-M.SMELTABLE[M.IRON_ORE.id] = M.IRON_ORE
-M.SMELTABLE[M.PLATINUM_ORE.id] = M.PLATINUM_ORE
-M.SMELTABLE[M.SILVER_ORE.id] = M.SILVER_ORE
+M.SMELTABLE[M.GOLD_INGOT.id] = M.GOLD_INGOT
+M.SMELTABLE[M.IRON_INGOT.id] = M.IRON_INGOT
+M.SMELTABLE[M.PLATINUM_INGOT.id] = M.PLATINUM_INGOT
+M.SMELTABLE[M.SILVER_INGOT.id] = M.SILVER_INGOT
 
-M.CRAFTABLE_ID_PREFIX = 03
+M.TOOL_ID_PREFIX = 03
+M.TOOL = {}
+M.TOOL[M.WOOD_PICKAXE.id] = M.WOOD_PICKAXE
+M.TOOL[M.STONE_PICKAXE.id] = M.STONE_PICKAXE
+
+M.ORE_ID_PREFIX = 04
+M.ORE = {}
+M.ORE[M.GOLD_ORE.id] = M.GOLD_ORE
+M.ORE[M.IRON_ORE.id] = M.IRON_ORE
+M.ORE[M.PLATINUM_ORE.id] = M.PLATINUM_ORE
+M.ORE[M.SILVER_ORE.id] = M.SILVER_ORE
+
 M.CRAFTABLE = {}
 M.CRAFTABLE[M.WOOD_PICKAXE.id] = M.WOOD_PICKAXE
+M.CRAFTABLE[M.STONE_PICKAXE.id] = M.STONE_PICKAXE
 M.CRAFTABLE[M.CLAY_BRICKS.id] = M.CLAY_BRICKS
 M.CRAFTABLE[M.STONE_BRICKS.id] = M.STONE_BRICKS
 M.CRAFTABLE[M.WOOD_WALL.id] = M.WOOD_WALL
-
-M.TOOL_ID_PREFIX = 04
-M.TOOL = {}
-M.TOOL[M.WOOD_PICKAXE.id] = M.WOOD_PICKAXE
-
-M.PICKUPS_ID_PREFIX = 05
-M.PICKUPS = {}
-M.PICKUPS[M.WOOD_PLANKS.id] = M.WOOD_PLANKS
+M.CRAFTABLE[M.FURNACE.id] = M.FURNACE
 
 ---------------
 -- End Items --

@@ -128,14 +128,16 @@ function handle_craft(self, messageId, message, sender)
 		return true
 	end
 
-	local canCraftRecipe = true
+	local canCraftRecipe = false
 	local toolbarMaterialsToUse = {}
 	local inventoryMaterialsToUse = {}
-	check_for_crafting_components(self, recipeToCraft, componentsToCheck, toolbarMaterialsToUse, self.toolbar)
-	canCraftRecipe = can_craft_recipe(componentsToCheck)
-	if not canCraftRecipe then
-		check_for_crafting_components(self, recipeToCraft, componentsToCheck, inventoryMaterialsToUse, self.inventory)
+	if not recipeToCraft.needsFurnace or (recipeToCraft.needsFurnace and self.isInRangeOfFurnace) then
+		check_for_crafting_components(self, recipeToCraft, componentsToCheck, toolbarMaterialsToUse, self.toolbar)
 		canCraftRecipe = can_craft_recipe(componentsToCheck)
+		if not canCraftRecipe then
+			check_for_crafting_components(self, recipeToCraft, componentsToCheck, inventoryMaterialsToUse, self.inventory)
+			canCraftRecipe = can_craft_recipe(componentsToCheck)
+		end
 	end
 
 	local itemToCraft = item_constants.ALL_ITEMS[recipeToCraft.itemId]
@@ -236,6 +238,8 @@ function handle_trigger_response(self, messageId, message, sender)
 		if add_loose_pickup_to_player(self, messageId, message, sender) then
 			go.delete(message.other_id)
 		end
+	elseif message.group == hash("furnace") then
+		self.isInRangeOfFurnace = message.enter
 	end
 end
 
@@ -267,6 +271,7 @@ function init(self)
 	self.selectedToolbarItem = 1
 	self.toolbar = globals.get_toolbar()
 	self.craftableItems = {}
+	self.inRangeOfFurnace = false
 
 	defos.set_cursor_visible(true)
 end

@@ -1,21 +1,6 @@
 components {
-  id: "player_sprite"
-  component: "/main/player/player.sprite"
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-}
-components {
-  id: "player_script"
-  component: "/main/player/player.script"
+  id: "sprite"
+  component: "/main/items/silver_ingot/silver_ingot.sprite"
   position {
     x: 0.0
     y: 0.0
@@ -32,14 +17,13 @@ embedded_components {
   id: "collisionobject"
   type: "collisionobject"
   data: "collision_shape: \"\"\n"
-  "type: COLLISION_OBJECT_TYPE_KINEMATIC\n"
+  "type: COLLISION_OBJECT_TYPE_STATIC\n"
   "mass: 0.0\n"
   "friction: 0.0\n"
   "restitution: 0.0\n"
-  "group: \"player\"\n"
-  "mask: \"block\"\n"
+  "group: \"block\"\n"
+  "mask: \"player\"\n"
   "mask: \"pickup\"\n"
-  "mask: \"furnace\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
   "    shape_type: TYPE_BOX\n"
@@ -57,9 +41,9 @@ embedded_components {
   "    index: 0\n"
   "    count: 3\n"
   "  }\n"
-  "  data: 18.0\n"
-  "  data: 30.0\n"
-  "  data: 0.5\n"
+  "  data: 12.0\n"
+  "  data: 12.0\n"
+  "  data: 10.0\n"
   "}\n"
   "linear_damping: 0.0\n"
   "angular_damping: 0.0\n"
