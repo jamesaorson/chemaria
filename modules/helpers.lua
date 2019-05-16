@@ -42,10 +42,11 @@ end
 -- Crafting --
 --------------
 
-function M.check_for_crafting_components(self, recipe, materialsToUse, container)
-	local componentsToCheck = {}
+function M.check_for_crafting_components(self, recipe, componentsToCheck, materialsToUse, container)
 	for id, requirement in pairs(recipe.components) do
-		componentsToCheck[id] = { requirement = requirement, actual = 0, fulfilled = false }
+		if componentsToCheck[id] == nil then
+			componentsToCheck[id] = { requirement = requirement, actual = 0, fulfilled = false }
+		end
 	end
 	
 	for i, item in pairs(container) do

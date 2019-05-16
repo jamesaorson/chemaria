@@ -1,4 +1,6 @@
+local globals = require "modules.globals"
 local gooey = require "gooey.gooey"
+local helpers = require "modules.helpers"
 local item_constants = require "modules.constants.items"
 local recipes = require "modules.constants.recipes"
 local theme = require "main.crafting_ui.crafting_ui_theme.theme"
@@ -11,6 +13,7 @@ local BUTTON = hash("button_idle")
 
 local LISTITEM_SELECTED = hash("button_pressed")
 local LISTITEM_PRESSED = hash("button_pressed")
+local LISTITEM_DISABLED = hash("button_disabled")
 local LISTITEM = hash("button_idle")
 
 local CHECKBOX_PRESSED = hash("grey_boxCross")
@@ -28,9 +31,11 @@ local SCOPED_SELF
 -------------
 
 local button_handler
-local fill_crafting_list
+local fill_crafting_list_ui
+local fill_recipe_list
 local on_item_selected
 local on_scrolled
+local get_recipes_for_selected_tab
 local update_button
 local update_crafting_ui
 local update_crafting_list
@@ -42,9 +47,35 @@ function button_handler(button, handler)
 	end
 end
 
-function fill_crafting_list(self, actionId, action)
+function fill_crafting_list_ui(self, actionId, action)
 	self.scrollbar = gooey.vertical_scrollbar("scrollbar/handle", "scrollbar/bounds", actionId, action, function () end)
 	gooey.dynamic_list("crafting_list", "crafting_list/stencil", "crafting_list/listitem_bg", self.recipeList, actionId, action, on_item_selected, update_crafting_list).scroll_to(0, self.scrollbar.scroll.y)
+end
+
+function fill_recipe_list(self)
+	self.recipeList = {}
+	local recipeListToCheck = get_recipes_for_selected_tab(self)
+	if recipeListToCheck ~= nil then
+		for i, recipe in pairs(recipeListToCheck) do
+			local componentsToCheck = {}
+			local canCraft = helpers.check_for_crafting_components(self, recipe, componentsToCheck, {}, globals.get_toolbar())
+			if not canCraft then
+				canCraft = helpers.check_for_crafting_components(self, recipe, componentsToCheck, {}, globals.get_inventory())
+			end
+			table.insert(self.recipeList, { itemId = recipe.itemId, components = recipe.components, canCraft = canCraft })
+		end
+	end
+	self.shouldUpdateCraftingUi = true
+end
+
+function get_recipes_for_selected_tab(self)
+	if self.selectedTab == 1 then
+		return recipes.CRAFTABLES
+	elseif self.selectedTab == 2 then
+		return recipes.SMELTABLES
+	else
+		return nil
+	end
 end
 
 function on_item_selected(list)
@@ -74,7 +105,10 @@ end
 
 function update_list_item(list, item)
 	local pos = gui.get_position(item.root)
-	if item.index == list.selected_item then
+	local selectedRecipe = SCOPED_SELF.recipeList[item.index]
+	if selectedRecipe ~= nil and not selectedRecipe.canCraft then
+		gui.play_flipbook(item.root, LISTITEM_DISABLED)
+	elseif item.index == list.selected_item then
 		gui.play_flipbook(item.root, LISTITEM_PRESSED)
 	elseif item.index == list.pressed_item then
 		gui.play_flipbook(item.root, LISTITEM_PRESSED)
@@ -98,17 +132,14 @@ end
 ----------------------
 
 function init(self)
+	SCOPED_SELF = self
 	self.isCraftingUiEnabled = false
 	self.shouldUpdateCraftingUi = false
-	self.recipeList = {}
 	self.scrollbar = nil
 	self.selectedTab = 1
-	SCOPED_SELF = self
-	for i, recipe in pairs(recipes.CRAFTABLES) do
-		table.insert(self.recipeList, { itemId = recipe.itemId, components = recipe.components })
-	end
+	fill_recipe_list(self)
 	gui.set_enabled(gui.get_node("crafting_ui"), self.isCraftingUiEnabled)
-	fill_crafting_list(self)
+	fill_crafting_list_ui(self)
 end
 
 function on_input(self, actionId, action)
@@ -121,36 +152,35 @@ function on_input(self, actionId, action)
 		button_handler(button, function() 
 			print("Tools...")
 			self.selectedTab = 1
-			self.recipeList = {}
-			for i, recipe in pairs(recipes.CRAFTABLES) do
-				table.insert(self.recipeList, { itemId = recipe.itemId, components = recipe.components })
-			end
+			fill_recipe_list(self)
 		end)
-	end)
+	end, self.selectedTab == 1)
 
 	theme.button("smelt_menu_button", actionId, action, function(button)
 		button_handler(button, function() 
 			print("Smelt...")
 			self.selectedTab = 2
-			self.recipeList = {}
-			for i, recipe in pairs(recipes.SMELTABLES) do
-				table.insert(self.recipeList, { itemId = recipe.itemId, components = recipe.components })
-			end
+			fill_recipe_list(self)
 		end)
-	end)
+	end, self.selectedTab == 2)
 
 	theme.button("materials_menu_button", actionId, action, function(button)
-		button_handler(button, function() 
+		button_handler(button, function()
 			print("Materials...")
+			self.selectedTab = 3
+			self.shouldUpdateCraftingUi = true
 		end)
-	end)
+	end, self.selectedTab == 3)
 
-	fill_crafting_list(self, actionId, action)
+	fill_crafting_list_ui(self, actionId, action)
 end
 
 function on_message(self, messageId, message, sender)
 	if messageId == hash("toggle_crafting_menu") then
 		self.isCraftingUiEnabled = not self.isCraftingUiEnabled
+		self.shouldUpdateCraftingUi = true
+	elseif messageId == hash("update_recipe_list") then
+		fill_recipe_list(self)
 		self.shouldUpdateCraftingUi = true
 	end
 end
@@ -158,6 +188,16 @@ end
 function update(self, dt)
 	if self.shouldUpdateCraftingUi then
 		update_crafting_ui(self)
+		gui.play_flipbook(gui.get_node("tools_menu_button/bg"), BUTTON)
+		gui.play_flipbook(gui.get_node("smelt_menu_button/bg"), BUTTON)
+		gui.play_flipbook(gui.get_node("materials_menu_button/bg"), BUTTON)
+		if self.selectedTab == 1 then
+			gui.play_flipbook(gui.get_node("tools_menu_button/bg"), BUTTON_PRESSED)
+		elseif self.selectedTab == 2 then
+			gui.play_flipbook(gui.get_node("smelt_menu_button/bg"), BUTTON_PRESSED)
+		elseif self.selectedTab == 3 then
+			gui.play_flipbook(gui.get_node("materials_menu_button/bg"), BUTTON_PRESSED)
+		end
 	end
 end
 

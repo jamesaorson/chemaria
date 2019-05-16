@@ -29,8 +29,12 @@ local function refresh_button(button)
 	end
 end
 
-function M.button(node_id, action_id, action, fn)
-	return gooey.button(node_id .. "/bg", action_id, action, fn, refresh_button)
+function M.button(node_id, action_id, action, fn, is_selected)
+	local result = gooey.button(node_id .. "/bg", action_id, action, fn, refresh_button)
+	if is_selected then
+		gui.play_flipbook(gui.get_node(node_id .. "/bg"), BUTTON_PRESSED)
+	end
+	return result
 end
 
 local function refresh_checkbox(checkbox)

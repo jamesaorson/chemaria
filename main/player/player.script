@@ -19,9 +19,10 @@ require "modules.models.World"
 -------------
 
 local add_loose_pickup_to_player
+local update_crafting_ui
 local update_current_chunk
-local update_inventory
-local update_toolbar
+local update_inventory_ui
+local update_toolbar_ui
 
 function add_loose_pickup_to_player(self, messageId, message, sender)
 	local loosePickup = World.get_loose_pickup(world, message.other_id)
@@ -31,24 +32,30 @@ function add_loose_pickup_to_player(self, messageId, message, sender)
 				if item.id == loosePickup.id and item.count < item_constants.ALL_ITEMS[item.id].stackSize then
 					item.count = item.count + 1
 					updateFn()
+					update_crafting_ui()
 					return true
 				elseif item.id == item_constants.NONE.id then
 					item.count = 1
 					item.id = loosePickup.id
 					item.name = item_constants.ALL_ITEMS[item.id].name
 					updateFn()
+					update_crafting_ui()
 					return true
 				end
 			end
 			return false
 		end
-		if add_loose_pickup(self.toolbar, update_toolbar) then
+		if add_loose_pickup(self.toolbar, update_toolbar_ui) then
 			return true
 		else
-			return add_loose_pickup(self.inventory, update_inventory)
+			return add_loose_pickup(self.inventory, update_inventory_ui)
 		end
 	end
 	return false
+end
+
+function update_crafting_ui()
+	msg.post("/crafting_ui#crafting_ui", "update_recipe_list")
 end
 
 function update_current_chunk(self)
@@ -63,11 +70,11 @@ function update_current_chunk(self)
 	end
 end
 
-function update_inventory()
+function update_inventory_ui()
 	msg.post("/ui#ui", "update_inventory")
 end
 
-function update_toolbar()
+function update_toolbar_ui()
 	msg.post("/ui#ui", "update_toolbar")
 end
 
@@ -98,12 +105,13 @@ function handle_craft(self, messageId, message, sender)
 	end
 
 	local canCraftRecipe = false
+	local componentsToCheck = {}
 	local toolbarMaterialsToUse = {}
 	local inventoryMaterialsToUse = {}
 	if not recipeToCraft.needsFurnace or (recipeToCraft.needsFurnace and self.isInRangeOfFurnace) then
-		canCraftRecipe = helpers.check_for_crafting_components(self, recipeToCraft, toolbarMaterialsToUse, self.toolbar)
+		canCraftRecipe = helpers.check_for_crafting_components(self, recipeToCraft, componentsToCheck, toolbarMaterialsToUse, self.toolbar)
 		if not canCraftRecipe then
-			canCraftRecipe = helpers.check_for_crafting_components(self, recipeToCraft, inventoryMaterialsToUse, self.inventory)
+			canCraftRecipe = helpers.check_for_crafting_components(self, recipeToCraft, componentsToCheck, inventoryMaterialsToUse, self.inventory)
 		end
 	end
 
@@ -136,8 +144,9 @@ function handle_craft(self, messageId, message, sender)
 				msg.post("/world#world_script", "create_loose_pickup", { item = itemToCraft, position = go.get_position(camera_constants.CAMERA_ID) })
 			end
 		end
-		msg.post("/ui#ui", "update_toolbar")
-		msg.post("/ui#ui", "update_inventory")
+		update_crafting_ui()
+		update_inventory_ui()
+		update_toolbar_ui()
 	else 
 		print("Cannot craft " .. item_constants.ALL_ITEMS[recipeToCraft.itemId].name)
 	end
