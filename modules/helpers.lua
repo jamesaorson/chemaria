@@ -38,6 +38,46 @@ end
 -- End Category Check --
 ------------------------
 
+--------------
+-- Crafting --
+--------------
+
+function M.check_for_crafting_components(self, recipe, materialsToUse, container)
+	local componentsToCheck = {}
+	for id, requirement in pairs(recipe.components) do
+		componentsToCheck[id] = { requirement = requirement, actual = 0, fulfilled = false }
+	end
+	
+	for i, item in pairs(container) do
+		local component = componentsToCheck[item.id]
+		if (component and not component.fulfilled) then
+			local amountToTake
+			local requirement = component.requirement
+			if component.actual + item.count > requirement then
+				amountToTake = requirement - component.actual
+			else
+				amountToTake = item.count
+			end
+			component.actual = component.actual + amountToTake
+			if component.actual == component.requirement then
+				component.fulfilled = true
+			end
+
+			table.insert(materialsToUse, { index = item.index, count = amountToTake })
+		end
+	end
+
+	for i, component in pairs(componentsToCheck) do
+		if not component.fulfilled then
+			return false
+		end
+	end
+	return true
+end
+
+------------------
+-- End Crafting --
+------------------
 
 -----------
 -- Color --

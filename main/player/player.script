@@ -19,7 +19,6 @@ require "modules.models.World"
 -------------
 
 local add_loose_pickup_to_player
-local check_for_crafting_components
 local update_current_chunk
 local update_inventory
 local update_toolbar
@@ -50,27 +49,6 @@ function add_loose_pickup_to_player(self, messageId, message, sender)
 		end
 	end
 	return false
-end
-
-function check_for_crafting_components(self, recipe, componentsToCheck, materialsToUse, container)
-	for i, item in pairs(container) do
-		local component = componentsToCheck[item.id]
-		if (component and not component.fulfilled) then
-			local amountToTake
-			local requirement = component.requirement
-			if component.actual + item.count > requirement then
-				amountToTake = requirement - component.actual
-			else
-				amountToTake = item.count
-			end
-			component.actual = component.actual + amountToTake
-			if component.actual == component.requirement then
-				component.fulfilled = true
-			end
-
-			table.insert(materialsToUse, { index = item.index, count = amountToTake })
-		end
-	end
 end
 
 function update_current_chunk(self)
@@ -114,29 +92,18 @@ local handle_update_toolbar_item
 
 function handle_craft(self, messageId, message, sender)
 	local recipeToCraft = message.recipe
-	local componentsToCheck = {}
-	for id, requirement in pairs(recipeToCraft.components) do
-		componentsToCheck[id] = { requirement = requirement, actual = 0, fulfilled = false }
-	end
-
-	local function can_craft_recipe(componentsToCheck)
-		for i, component in pairs(componentsToCheck) do
-			if not component.fulfilled then
-				return false
-			end
-		end
-		return true
+	if recipeToCraft == nil then
+		print("Recipe to craft was nil")
+		return
 	end
 
 	local canCraftRecipe = false
 	local toolbarMaterialsToUse = {}
 	local inventoryMaterialsToUse = {}
 	if not recipeToCraft.needsFurnace or (recipeToCraft.needsFurnace and self.isInRangeOfFurnace) then
-		check_for_crafting_components(self, recipeToCraft, componentsToCheck, toolbarMaterialsToUse, self.toolbar)
-		canCraftRecipe = can_craft_recipe(componentsToCheck)
+		canCraftRecipe = helpers.check_for_crafting_components(self, recipeToCraft, toolbarMaterialsToUse, self.toolbar)
 		if not canCraftRecipe then
-			check_for_crafting_components(self, recipeToCraft, componentsToCheck, inventoryMaterialsToUse, self.inventory)
-			canCraftRecipe = can_craft_recipe(componentsToCheck)
+			canCraftRecipe = helpers.check_for_crafting_components(self, recipeToCraft, inventoryMaterialsToUse, self.inventory)
 		end
 	end
 
@@ -172,7 +139,7 @@ function handle_craft(self, messageId, message, sender)
 		msg.post("/ui#ui", "update_toolbar")
 		msg.post("/ui#ui", "update_inventory")
 	else 
-		print("Cannot craft "..item_constants.ALL_ITEMS[recipeToCraft.itemId].name)
+		print("Cannot craft " .. item_constants.ALL_ITEMS[recipeToCraft.itemId].name)
 	end
 	return canCraftRecipe
 end
