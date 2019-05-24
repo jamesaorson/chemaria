@@ -1,5 +1,6 @@
 local config = require "modules.config"
 local globals = require "modules.globals"
+local helpers = require "modules.helpers"
 local item_constants = require "modules.constants.items"
 local json_lib = require "modules.json_lib"
 local orthographic = require "orthographic.camera"
@@ -22,7 +23,6 @@ local create_block
 local create_blocks_from_world
 local create_loose_pickup
 local mine_block
-local get_saved_world
 local initialize_from_saved_world
 local initialize_new_world
 local initialize_world_chunks
@@ -121,24 +121,6 @@ function mine_block(blockUrl, message)
 	local truePosition = position_helpers.block_to_screen_position(block)
 	truePosition.x = truePosition.x + math.random(-8, 8)
 	create_loose_pickup(block, truePosition)
-end
-
-function get_saved_world()
-	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name) .. ".json"
-	local savedWorldFile = io.open(worldFileName, "r")
-	if savedWorldFile then
-		print("Begin reading '" .. worldFileName .. "'")
-		local data = savedWorldFile:read()
-		print("Finished reading '" .. worldFileName .. "'")
-		
-		print("Begin parsing '" .. worldFileName .. "'")
-		data = json_lib.parse(data)
-		print("Finished parsing '" .. worldFileName .. "'")
-	
-		return data
-	end
-
-	return nil
 end
 
 function initialize_from_saved_world(savedWorld)
@@ -295,7 +277,7 @@ end
 function init(self)
 	msg.post("@render:", "clear_color", { color = vmath.vector4(0.6, 0.5, 0.9, 1.0) })
 	initialize_world_chunks()
-	local savedWorld = get_saved_world()
+	local savedWorld = helpers.load_game()
 	if savedWorld and savedWorld.chunks then
 		initialize_from_saved_world(savedWorld)
 	else

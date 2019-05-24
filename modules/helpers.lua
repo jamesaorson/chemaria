@@ -1,4 +1,11 @@
+local config = require "modules.config"
 local item_constants = require "modules.constants.items"
+local json_lib = require "modules.json_lib"
+local world_constants = require "modules.constants.world"
+
+require "modules.models.Block"
+require "modules.models.Chunk"
+require "modules.models.World"
 
 local M = {}
 
@@ -112,5 +119,71 @@ end
 --------------
 -- End Math --
 --------------
+
+
+---------------
+-- Save/Load --
+---------------
+
+function M.load_game()
+	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name) .. ".json"
+	local savedWorldFile = io.open(worldFileName, "r")
+	if savedWorldFile then
+		print("Begin reading '" .. worldFileName .. "'")
+		local data = savedWorldFile:read()
+		print("Finished reading '" .. worldFileName .. "'")
+
+		print("Begin parsing '" .. worldFileName .. "'")
+		data = json_lib.parse(data)
+		print("Finished parsing '" .. worldFileName .. "'")
+
+		return data
+	end
+
+	return nil
+end
+
+function M.save_game(world)
+	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name) .. ".json"
+	local worldFile = io.open(worldFileName, "w+")
+	print("Writing save file to " .. worldFileName)
+	local minimalWorld = {
+		chunks = {}
+	}
+	for chunkX = -world_constants.WORLD_DIMENSIONS.x, world_constants.WORLD_DIMENSIONS.x do
+		for chunkY = -world_constants.WORLD_DIMENSIONS.y, world_constants.WORLD_DIMENSIONS.y do
+			local chunk = World.get_chunk_at_position(world, { x = chunkX, y = chunkY })
+			chunk.position = { x = chunk.position.x, y = chunk.position.y, z = chunk.position.z }
+			chunk.isRendered = nil
+			local blocks = chunk.blocks
+			for blockY = 0, world_constants.CHUNK_SIZE - 1 do
+				for blockX = 0, world_constants.CHUNK_SIZE - 1 do
+					local block = Chunk.get_block_at_position(chunk, { x = blockX, y = blockY })
+					if block then
+						block.position = { x = block.position.x, y = block.position.y, z = block.position.z }
+						if block.chunk then
+							block.chunk = { x = block.chunk.x, y = block.chunk.y, z = block.chunk.z }
+						end
+						block.pickupId = nil
+						block.stackSize = nil
+						block.url = nil
+					end
+				end
+			end
+			if not minimalWorld.chunks[chunkX] then
+				minimalWorld.chunks[chunkX] = {}
+			end
+			minimalWorld.chunks[chunkX][chunkY] = chunk
+		end
+	end
+
+	local saveData = json_lib.stringify(minimalWorld)
+	worldFile:write(saveData)
+	print("Wrote save file to " .. worldFileName)
+end
+
+-------------------
+-- End Save/Load --
+-------------------
 
 return M
