@@ -1,6 +1,6 @@
 local config = require "modules.config"
 local item_constants = require "modules.constants.items"
-local json_lib = require "modules.json_lib"
+local luatexts = require "modules.luatexts"
 local world_constants = require "modules.constants.world"
 
 require "modules.models.Block"
@@ -126,16 +126,16 @@ end
 ---------------
 
 function M.load_game()
-	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name) .. ".json"
+	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name)
 	local savedWorldFile = io.open(worldFileName, "r")
 	if savedWorldFile then
-		print("Begin reading '" .. worldFileName .. "'")
-		local data = savedWorldFile:read()
-		print("Finished reading '" .. worldFileName .. "'")
+		print("Begin reading '" .. worldFileName .. "' " .. os.clock())
+		local data = savedWorldFile:read("*all")
+		print("Finished reading '" .. worldFileName .. "' " .. os.clock())
 
-		print("Begin parsing '" .. worldFileName .. "'")
-		data = json_lib.parse(data)
-		print("Finished parsing '" .. worldFileName .. "'")
+		print("Begin parsing '" .. worldFileName .. "' " .. os.clock())
+		_, data = luatexts.load(data)
+		print("Finished parsing '" .. worldFileName .. "' " .. os.clock())
 
 		return data
 	end
@@ -144,12 +144,13 @@ function M.load_game()
 end
 
 function M.save_game(world)
-	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name) .. ".json"
+	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name)
 	local worldFile = io.open(worldFileName, "w+")
-	print("Writing save file to " .. worldFileName)
 	local minimalWorld = {
 		chunks = {}
 	}
+
+	print("Begin world save minimization " .. os.clock())
 	for chunkX = -world_constants.WORLD_DIMENSIONS.x, world_constants.WORLD_DIMENSIONS.x do
 		for chunkY = -world_constants.WORLD_DIMENSIONS.y, world_constants.WORLD_DIMENSIONS.y do
 			local chunk = World.get_chunk_at_position(world, { x = chunkX, y = chunkY })
@@ -176,10 +177,15 @@ function M.save_game(world)
 			minimalWorld.chunks[chunkX][chunkY] = chunk
 		end
 	end
+	print("End world save minimization " .. os.clock())
 
-	local saveData = json_lib.stringify(minimalWorld)
+	print("Begin world save stringification " .. os.clock())
+	local saveData = luatexts.save(minimalWorld)
+	print("End world save stringification " .. os.clock())
+
+	print("Begin world save file write " .. os.clock())
 	worldFile:write(saveData)
-	print("Wrote save file to " .. worldFileName)
+	print("Begin world save file write " .. os.clock())
 end
 
 -------------------
