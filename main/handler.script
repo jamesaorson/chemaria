@@ -102,7 +102,7 @@ function handle_mouse_wheel_up(self, actionId, action)
 end
 
 function handle_quit(self, actionId, action)
-	helpers.save_game(world)
+	helpers.save_game(worldMutation)
 
 	msg.post("@system:", "exit", { code = 0 })
 end

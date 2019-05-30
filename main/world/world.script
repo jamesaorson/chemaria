@@ -13,20 +13,23 @@ require "modules.models.World"
 require "modules.set"
 
 world = {}
+worldMutation = {
+	chunks = {}
+}
 
 -------------
 -- Helpers --
 -------------
 
 local create_block
-local create_blocks_from_world
 local create_loose_pickup
-local mine_block
-local initialize_from_saved_world
+local fill_world
 local initialize_new_world
 local initialize_world_chunks
+local mine_block
+local mutate_world
 
-function create_block(self, block)
+function create_block(self, block, addToMutation)
 	local truePosition = position_helpers.block_to_screen_position(block)
 	local rotation = nil
 	local properties = {}
@@ -40,13 +43,48 @@ function create_block(self, block)
 			Chunk.add_block(blockChunk, block)
 		end
 
+		if addToMutation then
+			local mutatedChunk = nil
+			if worldMutation.chunks[blockChunk.position.x] == nil then
+				worldMutation.chunks[blockChunk.position.x] = {}
+			end
+			if worldMutation.chunks[blockChunk.position.x][blockChunk.position.y] == nil then
+				mutatedChunk = {
+					position = { x = blockChunk.position.x, y = blockChunk.position.y, z = blockChunk.position.z },
+					blocks = {}
+				}
+				worldMutation.chunks[blockChunk.position.x][blockChunk.position.y] = mutatedChunk
+			else
+				mutatedChunk = worldMutation.chunks[blockChunk.position.x][blockChunk.position.y]
+			end
+			if mutatedChunk.blocks[block.position.x] == nil then
+				mutatedChunk.blocks[block.position.x] = {}
+			end
+			local mutatedBlock = {
+				position = { x = block.position.x, y = block.position.y, z = block.position.z },
+				name = block.name,
+				id = block.id
+			}
+			mutatedChunk.blocks[block.position.x][block.position.y] = mutatedBlock
+		end
+
 		return true
 	else
 		return false
 	end
 end
 
-function create_blocks_from_world(self)
+function create_loose_pickup(item, position)
+	local rotation = nil
+	local properties = {}
+	local scale = 0.5
+
+	local loosePickupId = factory.create(urls.get_pickup_factory_url(item.id), position, rotation, properties, scale)
+	item.pickupId = loosePickupId
+	World.add_loose_pickup(world, item)
+end
+
+function fill_world(self)
 	if globals.currentChunk then
 		local chunksToRender = {}
 		local chunksToUnrender = {}
@@ -97,47 +135,7 @@ function create_blocks_from_world(self)
 	end
 end
 
-function create_loose_pickup(item, position)
-	local rotation = nil
-	local properties = {}
-	local scale = 0.5
-
-	local loosePickupId = factory.create(urls.get_pickup_factory_url(item.id), position, rotation, properties, scale)
-	item.pickupId = loosePickupId
-	World.add_loose_pickup(world, item)
-end
-
-function mine_block(blockUrl, message)
-	go.delete(blockUrl)
-	
-	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
-	local chunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
-	local blockPosition = position_helpers.screen_to_block_position(screenPosition)
-	
-	local chunk = World.get_chunk_at_position(world, chunkPosition)
-	local block = Chunk.get_block_at_position(chunk, blockPosition)
-
-	local truePosition = position_helpers.block_to_screen_position(block)
-	truePosition.x = truePosition.x + math.random(-8, 8)
-	create_loose_pickup(block, truePosition)
-end
-
-function initialize_from_saved_world(savedWorld)
-	for chunkX, chunkXColumn in pairs(savedWorld.chunks) do
-		for chunkY, chunk in pairs(chunkXColumn) do
-			local worldChunk = World.get_chunk_at_position(world, chunk.position)
-
-			for blockX, blockXColumn in pairs(chunk.blocks) do
-				for blockY, block in pairs(blockXColumn) do
-					Chunk.add_block(worldChunk, block)
-				end
-			end
-		end
-	end
-end
-
-function initialize_new_world()
-	math.randomseed(os.time())
+function initialize_world()
 	for chunkX, chunkXColumn in pairs(world.chunks) do
 		-- Keep world from not rendering when you go out of the bounds
 		if chunkX > -world_constants.WORLD_DIMENSIONS.x + world_constants.RENDER_DISTANCE and chunkX < world_constants.WORLD_DIMENSIONS.x - world_constants.RENDER_DISTANCE then
@@ -204,6 +202,57 @@ function initialize_world_chunks()
 	end
 end
 
+function mine_block(blockUrl, message)
+	go.delete(blockUrl)
+
+	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
+	local chunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
+	local blockPosition = position_helpers.screen_to_block_position(screenPosition)
+
+	local chunk = World.get_chunk_at_position(world, chunkPosition)
+	local block = Chunk.get_block_at_position(chunk, blockPosition)
+
+	local truePosition = position_helpers.block_to_screen_position(block)
+	truePosition.x = truePosition.x + math.random(-8, 8)
+	create_loose_pickup(block, truePosition)
+
+	local mutatedChunk = nil
+	if worldMutation.chunks[chunk.position.x] == nil then
+		worldMutation.chunks[chunk.position.x] = {}
+	end
+	if worldMutation.chunks[chunk.position.x][chunk.position.y] == nil then
+		mutatedChunk = {
+			position = { x = chunk.position.x, y = chunk.position.y, z = chunk.position.z },
+			blocks = {}
+		}
+		worldMutation.chunks[chunk.position.x][chunk.position.y] = mutatedChunk
+	else
+		mutatedChunk = worldMutation.chunks[chunk.position.x][chunk.position.y]
+	end
+	if mutatedChunk.blocks[block.position.x] == nil then
+		mutatedChunk.blocks[block.position.x] = {}
+	end
+	mutatedChunk.blocks[block.position.x][block.position.y] = {}
+end
+
+function mutate_world(worldMutation)
+	for chunkX, chunkXColumn in pairs(worldMutation.chunks) do
+		for chunkY, chunk in pairs(chunkXColumn) do
+			local worldChunk = World.get_chunk_at_position(world, chunk.position)
+
+			for blockX, blockXColumn in pairs(chunk.blocks) do
+				for blockY, block in pairs(blockXColumn) do
+					if block.position == nil then
+						Chunk.remove_block_at_position(worldChunk, { x = blockX, y = blockY })
+					else
+						Chunk.add_block(worldChunk, block)
+					end
+				end
+			end
+		end
+	end
+end
+
 -----------------
 -- End Helpers --
 -----------------
@@ -251,7 +300,7 @@ function handle_place_block(self, messageId, message, sender)
 					position = blockPosition,
 					name = item_constants.ALL_ITEMS[toolbarItem.id].name
 				}
-				if create_block(self, block) then
+				if create_block(self, block, true) then
 					toolbarItem.count = toolbarItem.count - 1
 					msg.post("/player#player_script", "update_toolbar_item", toolbarItem)
 				end
@@ -261,7 +310,7 @@ function handle_place_block(self, messageId, message, sender)
 end
 
 function handle_update_chunk_render(self, messageId, message, sender)
-	create_blocks_from_world(self)
+	fill_world(self)
 end
 
 --------------------------
@@ -275,14 +324,25 @@ end
 
 function init(self)
 	msg.post("@render:", "clear_color", { color = vmath.vector4(0.6, 0.5, 0.9, 1.0) })
-	initialize_world_chunks()
 	local savedWorld = helpers.load_game()
-	if savedWorld and savedWorld.chunks then
-		initialize_from_saved_world(savedWorld)
-	else
-		initialize_new_world()
+	if world_constants.SEED == nil then
+		if savedWorld and savedWorld.seed then
+			world_constants.SEED = savedWorld.seed
+		else
+			world_constants.SEED = os.time()
+		end
 	end
-	create_blocks_from_world(self)
+	math.randomseed(world_constants.SEED)
+	worldMutation.seed = world_constants.SEED
+
+	initialize_world_chunks()
+	initialize_world()
+
+	if savedWorld and savedWorld.chunks then
+		worldMutation = savedWorld
+		mutate_world(worldMutation)
+	end
+	fill_world(self)
 end
 
 function on_message(self, messageId, message, sender)
