@@ -1,6 +1,3 @@
-currentChunk = nil
-previousChunk = nil
-
 local M = {}
 
 ---------------
@@ -39,5 +36,17 @@ end
 -----------------
 -- End Toolbar --
 -----------------
+
+
+-----------
+-- World --
+-----------
+
+M.currentChunk = nil
+M.previousChunk = nil
+
+---------------
+-- End World --
+---------------
 
 return M

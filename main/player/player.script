@@ -238,7 +238,7 @@ end
 ----------------------
 
 function init(self)
-	currentChunk = nil
+	globals.currentChunk = nil
 
 	self.inventory = globals.get_inventory()
 	self.miningTimerHandle = nil

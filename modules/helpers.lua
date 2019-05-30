@@ -1,6 +1,5 @@
 local config = require "modules.config"
 local item_constants = require "modules.constants.items"
-local luatexts = require "modules.luatexts"
 local world_constants = require "modules.constants.world"
 
 require "modules.models.Block"
@@ -126,7 +125,7 @@ end
 ---------------
 
 function M.load_game()
-	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name)
+	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name) .. ".json"
 	local savedWorldFile = io.open(worldFileName, "r")
 	if savedWorldFile then
 		print("Begin reading '" .. worldFileName .. "' " .. os.clock())
@@ -134,7 +133,7 @@ function M.load_game()
 		print("Finished reading '" .. worldFileName .. "' " .. os.clock())
 
 		print("Begin parsing '" .. worldFileName .. "' " .. os.clock())
-		_, data = luatexts.load(data)
+		data = cjson.decode(data)
 		print("Finished parsing '" .. worldFileName .. "' " .. os.clock())
 
 		return data
@@ -144,8 +143,6 @@ function M.load_game()
 end
 
 function M.save_game(world)
-	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name)
-	local worldFile = io.open(worldFileName, "w+")
 	local minimalWorld = {
 		chunks = {}
 	}
@@ -180,11 +177,14 @@ function M.save_game(world)
 	print("End world save minimization " .. os.clock())
 
 	print("Begin world save stringification " .. os.clock())
-	local saveData = luatexts.save(minimalWorld)
+	local saveData = cjson.encode(minimalWorld)
 	print("End world save stringification " .. os.clock())
 
 	print("Begin world save file write " .. os.clock())
+	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name) .. ".json"
+	local worldFile = io.open(worldFileName, "w+")
 	worldFile:write(saveData)
+	worldFile:close()
 	print("Begin world save file write " .. os.clock())
 end
 

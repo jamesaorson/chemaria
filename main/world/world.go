@@ -15,7 +15,7 @@ components {
 }
 components {
   id: "main"
-  component: "/main/world/handler.script"
+  component: "/main/handler.script"
   position {
     x: 0.0
     y: 0.0

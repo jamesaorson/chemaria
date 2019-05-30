@@ -939,7 +939,7 @@ embedded_instances {
   id: "handler"
   data: "components {\n"
   "  id: \"handler_script\"\n"
-  "  component: \"/main/world/handler.script\"\n"
+  "  component: \"/main/handler.script\"\n"
   "  position {\n"
   "    x: 0.0\n"
   "    y: 0.0\n"
