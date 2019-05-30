@@ -104,7 +104,7 @@ end
 function handle_quit(self, actionId, action)
 	helpers.save_game(worldMutation)
 
-	msg.post("@system:", "exit", { code = 0 })
+	msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#main_menu_proxy" })
 end
 
 function handle_right(self, actionId, action)

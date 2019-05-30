@@ -1,0 +1,12 @@
+images {
+  image: "/main/menus/main_menu/main_menu_theme/images/button_idle.png"
+}
+images {
+  image: "/main/menus/main_menu/main_menu_theme/images/button_pressed.png"
+}
+images {
+  image: "/main/menus/main_menu/main_menu_theme/images/button_disabled.png"
+}
+margin: 0
+extrude_borders: 1
+inner_padding: 1

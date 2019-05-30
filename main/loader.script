@@ -23,8 +23,7 @@ end
 function init(self)
 	defos.set_fullscreen(true)
 	msg.post(".", "acquire_input_focus")
-	show(self, "#mainmenuproxy")
-	msg.post("@render:", "clear_color", { color = vmath.vector4(0.15, 0.15, 0.15, 1.0) })
+	show(self, "#main_menu_proxy")
 end
 
 function on_message(self, messageId, message, sender)

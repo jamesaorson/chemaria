@@ -79,7 +79,7 @@ instances {
 }
 instances {
   id: "ui"
-  prototype: "/main/ui/ui.go"
+  prototype: "/main/player/ui/ui.go"
   position {
     x: 0.0
     y: 0.0
@@ -559,7 +559,7 @@ instances {
 }
 instances {
   id: "crafting_ui"
-  prototype: "/main/crafting_ui/crafting_ui.go"
+  prototype: "/main/player/ui/crafting_ui/crafting_ui.go"
   position {
     x: 0.0
     y: 0.0
