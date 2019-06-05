@@ -1,5 +1,22 @@
 local message_constants = require "modules.constants.messages"
 
+-------------
+-- Helpers --
+-------------
+
+local show_proxy
+
+function show_proxy(self, proxy)
+	if self.currentProxy then
+		msg.post(self.currentProxy, "unload")
+	end
+	msg.post(proxy, "async_load")
+end
+
+-----------------
+-- End Helpers --
+-----------------
+
 ----------------------
 -- Defold functions --
 ----------------------
@@ -22,20 +39,3 @@ end
 --------------------------
 -- End Defold functions --
 --------------------------
-
--------------
--- Helpers --
--------------
-
-local show
-
-function show_proxy(self, proxy)
-	if self.currentProxy then
-		msg.post(self.currentProxy, "unload")
-	end
-	msg.post(proxy, "async_load")
-end
-
------------------
--- End Helpers --
------------------
