@@ -1,10 +1,35 @@
+local message_constants = require "modules.constants.messages"
+
+----------------------
+-- Defold functions --
+----------------------
+
+function init(self)
+	defos.set_fullscreen(true)
+	msg.post(".", "acquire_input_focus")
+	show_proxy(self, "#main_menu_proxy")
+end
+
+function on_message(self, messageId, message, sender)
+	if messageId == message_constants.PROXY_LOADED then
+		self.currentProxy = sender
+		msg.post(sender, "enable")
+	elseif messageId == message_constants.SWITCH_PROXY then
+		show_proxy(self, message.switchTo)
+	end
+end
+
+--------------------------
+-- End Defold functions --
+--------------------------
+
 -------------
 -- Helpers --
 -------------
 
 local show
 
-function show(self, proxy)
+function show_proxy(self, proxy)
 	if self.currentProxy then
 		msg.post(self.currentProxy, "unload")
 	end
@@ -14,27 +39,3 @@ end
 -----------------
 -- End Helpers --
 -----------------
-
-
-----------------------
--- Defold functions --
-----------------------
-
-function init(self)
-	defos.set_fullscreen(true)
-	msg.post(".", "acquire_input_focus")
-	show(self, "#main_menu_proxy")
-end
-
-function on_message(self, messageId, message, sender)
-	if messageId == hash("proxy_loaded") then
-		self.currentProxy = sender
-		msg.post(sender, "enable")
-	elseif messageId == hash("switch_proxy") then
-		show(self, message.switchTo)
-	end
-end
-
---------------------------
--- End Defold functions --
---------------------------

@@ -212,11 +212,11 @@ function handle_switch_selected_toolbar_item(self, messageId, message, sender)
 end
 
 function handle_trigger_response(self, messageId, message, sender)
-	if message.group == hash("pickup") then
+	if message.group == message_constants.PICKUP then
 		if add_loose_pickup_to_player(self, messageId, message, sender) then
 			go.delete(message.other_id)
 		end
-	elseif message.group == hash("furnace") then
+	elseif message.group == message_constants.FURNACE then
 		self.isInRangeOfFurnace = message.enter
 	end
 end
@@ -274,11 +274,11 @@ function on_message(self, messageId, message, sender)
 		handle_right(self, messageId, message, sender)
 	elseif messageId == input_constants.RIGHT_CLICK then
 		handle_right_click(self, messageId, message, sender)
-	elseif messageId == hash("switch_selected_toolbar_item") then
+	elseif messageId == message_constants.SWITCH_SELECTED_TOOLBAR_ITEM then
 		handle_switch_selected_toolbar_item(self, messageId, message, sender)
-	elseif messageId == hash("trigger_response") then
+	elseif messageId == message_constants.TRIGGER_RESPONSE then
 		handle_trigger_response(self, messageId, message, sender)
-	elseif messageId == hash("update_toolbar_item") then
+	elseif messageId == message_constants.UPDATE_TOOLBAR_ITEM then
 		handle_update_toolbar_item(self, messageId, message, sender)
 	end
 end

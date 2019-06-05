@@ -2,6 +2,7 @@ local config = require "modules.config"
 local globals = require "modules.globals"
 local helpers = require "modules.helpers"
 local item_constants = require "modules.constants.items"
+local message_constants = require "modules.constants.messages"
 local orthographic = require "orthographic.camera"
 local position_helpers = require "modules.position_helpers"
 local urls = require "modules.urls"
@@ -344,13 +345,13 @@ function init(self)
 end
 
 function on_message(self, messageId, message, sender)
-	if messageId == hash("create_loose_pickup") then
+	if messageId == message_constants.CREATE_LOOSE_PICKUP then
 		handle_create_loose_pickup(self, messageId, message, sender)
-	elseif messageId == hash("mine_block") then
+	elseif messageId == message_constants.MINE_BLOCK then
 		handle_mine_block(self, messageId, message, sender)
-	elseif messageId == hash("place_block") then
+	elseif messageId == message_constants.PLACE_BLOCK then
 		handle_place_block(self, messageId, message, sender)
-	elseif messageId == hash("update_chunk_render") then
+	elseif messageId == message_constants.UPDATE_CHUNK_RENDER then
 		handle_update_chunk_render(self, messageId, message, sender)
 	end
 end
