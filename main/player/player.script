@@ -6,6 +6,7 @@ local inventory_constants = require "modules.constants.inventory"
 local item_constants = require "modules.constants.items"
 local orthographic = require "orthographic.camera"
 local platypus = require "platypus.platypus"
+local platypus_constants = require "modules.constants.platypus"
 local player_constants = require "modules.constants.player"
 local position_helpers = require "modules.position_helpers"
 local toolbar_constants = require "modules.constants.toolbar"
@@ -243,7 +244,7 @@ function init(self)
 	self.inventory = globals.get_inventory()
 	self.miningTimerHandle = nil
 	self.placingTimerHandle = nil
-	self.platypus = platypus.create(config.PLATYPUS_CONFIG)
+	self.platypus = platypus.create(platypus_constants.CONFIG)
 	self.selectedToolbarItem = 1
 	self.toolbar = globals.get_toolbar()
 	self.craftableItems = {}

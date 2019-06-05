@@ -21,7 +21,7 @@ local send_player_action
 local send_ui_action
 
 function apply_config()
-	defos.set_fullscreen(config.IS_FULLSCREEN)
+	defos.set_fullscreen(config.FULLSCREEN)
 
 	screen_constants.SCREEN_SIZE.x, screen_constants.SCREEN_SIZE.y, screen_constants.SCREEN_SIZE.w, screen_constants.SCREEN_SIZE.h = defos.get_window_size()
 
@@ -148,6 +148,7 @@ end
 function init(self)
 	msg.post("/world#main", "acquire_input_focus")
 	self.game_mode = "play"
+	helpers.init_config_data()
 	apply_config()
 end
 
@@ -181,6 +182,10 @@ function on_input(self, actionId, action)
 	elseif actionId == hash("ui_exit") and action.released then
 		handle_ui_exit(self, actionId, action)
 	end
+end
+
+function final(self)
+	helpers.save_config_data()
 end
 
 --------------------------

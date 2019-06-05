@@ -1,4 +1,5 @@
 local config = require "modules.config"
+local defsave = require "defsave.defsave"
 local item_constants = require "modules.constants.items"
 local world_constants = require "modules.constants.world"
 local luatexts = require "modules.luatexts"
@@ -44,6 +45,58 @@ end
 ------------------------
 -- End Category Check --
 ------------------------
+
+
+------------
+-- Config --
+------------
+
+local settingsFileName = "settings"
+
+function M.init_config_data()
+	defsave.default_data = require("modules.config")
+	defsave.set_appname(config.APPNAME)
+	defsave.load(settingsFileName)
+
+	for key, value in pairs(config) do
+		local configValue = M.get_config_data(key)
+		if configValue ~= nil then
+			config[key] = configValue
+		end
+	end
+end
+
+function M.get_config_data(key)
+	key = string.upper(key)
+	if key ~= nil and type(key) == "string" and defsave.is_loaded(settingsFileName) and defsave.key_exists(settingsFileName, key) and defsave.isset(settingsFileName, key) then
+		return defsave.get(settingsFileName, key)
+	end
+	return nil
+end
+
+function M.set_config_data(key, value)
+	if key ~= nil and type(key) == "string" and defsave.is_loaded(settingsFileName) then
+		defsave.set(settingsFileName, string.upper(key), value)
+	end
+end
+
+function M.save_config_data(filename)
+	if filename ~= nil and type(filename) == "string" then
+		defsave.save(filename)
+	else
+		for key, value in pairs(config) do
+			if M.get_config_data(key) == nil then
+				M.set_config_data(key, value)
+			end
+		end
+		defsave.save_all()
+	end
+end
+
+----------------
+-- End Config --
+----------------
+
 
 --------------
 -- Crafting --
@@ -126,7 +179,7 @@ end
 ---------------
 
 function M.load_game()
-	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name) .. ".json"
+	local worldFileName = sys.get_save_file(config.APPNAME, config.SAVE_NAME) .. ".json"
 	local savedWorldFile = io.open(worldFileName, "r")
 	if savedWorldFile then
 		print("Begin reading '" .. worldFileName .. "' " .. os.clock())
@@ -149,7 +202,7 @@ function M.save_game(worldMutation)
 	print("End world save stringification " .. os.clock())
 
 	print("Begin world save file write " .. os.clock())
-	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name) .. ".json"
+	local worldFileName = sys.get_save_file(config.APPNAME, config.SAVE_NAME) .. ".json"
 	local worldFile = io.open(worldFileName, "w+")
 	worldFile:write(saveData)
 	worldFile:close()
