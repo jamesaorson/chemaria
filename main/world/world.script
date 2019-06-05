@@ -245,7 +245,8 @@ function mutate_world(worldMutation)
 					if block.position == nil then
 						Chunk.remove_block_at_position(worldChunk, { x = blockX, y = blockY })
 					else
-						Chunk.add_block(worldChunk, block)
+						local blockToAdd = { position = vmath.vector3(blockX, blockY, 0), id = block.id, name = block.name, chunk = vmath.vector3(chunkX, chunkY, 0) }
+						Chunk.add_block(worldChunk, blockToAdd)
 					end
 				end
 			end

@@ -2,6 +2,7 @@ local camera = require "orthographic.camera"
 local camera_constants = require "modules.constants.camera"
 local config = require "modules.config"
 local helpers = require "modules.helpers"
+local input_constants = require "modules.constants.input"
 local screen_constants = require "modules.constants.screen"
 local toolbar_constants = require "modules.constants.toolbar"
 local world_constants = require "modules.constants.world"
@@ -30,9 +31,8 @@ function apply_config()
 end
 
 function is_inventory_switch_action(actionId)
-	local baseId = "inventory_switch_"
 	for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
-		if actionId == hash(baseId .. i) then
+		if actionId == input_constants.INVENTORY_SWITCH[i] then
 			return true
 		end
 	end
@@ -155,31 +155,31 @@ end
 function on_input(self, actionId, action)
 	if action.pressed and is_inventory_switch_action(actionId) then
 		handle_inventory_switch(self, actionId, action)
-	elseif actionId == hash("jump") then
+	elseif actionId == input_constants.JUMP then
 		handle_jump(self, actionId, action)
-	elseif actionId == hash("left") then
+	elseif actionId == input_constants.LEFT then
 		handle_left(self, actionId, action)
-	elseif actionId == hash("left_click") then
+	elseif actionId == input_constants.LEFT_CLICK then
 		handle_left_click(self, actionId, action)
-	elseif actionId == hash("mouse_wheel_up") and action.pressed then
+	elseif actionId == input_constants.MOUSE_WHEEL_UP and action.pressed then
 		handle_mouse_wheel_up(self, actionId, action)
-	elseif actionId == hash("mouse_wheel_down") and action.pressed then
+	elseif actionId == input_constants.MOUSE_WHEEL_DOWN and action.pressed then
 		handle_mouse_wheel_down(self, actionId, action)
-	elseif actionId == hash("quit") and action.released then
+	elseif actionId == input_constants.QUIT and action.released then
 		handle_quit(self, actionId, action)
-	elseif actionId == hash("right") then
+	elseif actionId == input_constants.RIGHT then
 		handle_right(self, actionId, action)
-	elseif actionId == hash("right_click") then
+	elseif actionId == input_constants.RIGHT_CLICK then
 		handle_right_click(self, actionId, action)
-	elseif actionId == hash("toggle_crafting_menu") and action.released then
+	elseif actionId == input_constants.TOGGLE_CRAFTING_MENU and action.released then
 		handle_toggle_crafting_menu(self, actionId, action)
-	elseif actionId == hash("toggle_fullscreen") and action.released then
+	elseif actionId == input_constants.TOGGLE_FULLSCREEN and action.released then
 		handle_toggle_fullscreen(self, actionId, action)
-	elseif actionId == hash("toggle_inventory") and action.released then
+	elseif actionId == input_constants.TOGGLE_INVENTORY and action.released then
 		handle_toggle_inventory(self, actionId, action)
-	elseif actionId == hash("toggle_profile") and action.released then
+	elseif actionId == input_constants.TOGGLE_PROFILE and action.released then
 		handle_toggle_profile(self, actionId, action)
-	elseif actionId == hash("ui_exit") and action.released then
+	elseif actionId == input_constants.UI_EXIT and action.released then
 		handle_ui_exit(self, actionId, action)
 	end
 end

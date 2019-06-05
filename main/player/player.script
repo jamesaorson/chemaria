@@ -2,8 +2,10 @@ local camera_constants = require "modules.constants.camera"
 local config = require "modules.config"
 local globals = require "modules.globals"
 local helpers = require "modules.helpers"
+local input_constants = require "modules.constants.input"
 local inventory_constants = require "modules.constants.inventory"
 local item_constants = require "modules.constants.items"
+local message_constants = require "modules.constants.messages"
 local orthographic = require "orthographic.camera"
 local platypus = require "platypus.platypus"
 local platypus_constants = require "modules.constants.platypus"
@@ -262,17 +264,17 @@ end
 function on_message(self, messageId, message, sender)
 	self.platypus.on_message(messageId, message)
 
-	if messageId == hash("craft") then
+	if messageId == message_constants.CRAFT then
 		handle_craft(self, messageId, message, sender)
-	elseif messageId == hash("jump") then
+	elseif messageId == input_constants.JUMP then
 		handle_jump(self, messageId, message, sender)
-	elseif messageId == hash("left") then
+	elseif messageId == input_constants.LEFT then
 		handle_left(self, messageId, message, sender)
-	elseif messageId == hash("left_click") then
+	elseif messageId == input_constants.LEFT_CLICK then
 		handle_left_click(self, messageId, message, sender)
-	elseif messageId == hash("right") then
+	elseif messageId == input_constants.RIGHT then
 		handle_right(self, messageId, message, sender)
-	elseif messageId == hash("right_click") then
+	elseif messageId == input_constants.RIGHT_CLICK then
 		handle_right_click(self, messageId, message, sender)
 	elseif messageId == hash("switch_selected_toolbar_item") then
 		handle_switch_selected_toolbar_item(self, messageId, message, sender)

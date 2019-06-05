@@ -1,6 +1,8 @@
 local globals = require "modules.globals"
+local input_constants = require "modules.constants.input"
 local inventory_constants = require "modules.constants.inventory"
 local item_constants = require "modules.constants.items"
+local message_constants = require "modules.constants.messages"
 local orthographic = require "orthographic.camera"
 local toolbar_constants = require "modules.constants.toolbar"
 local urls = require "modules.urls"
@@ -105,9 +107,8 @@ function end_drag(self, message)
 end
 
 function get_inventory_switch_index(messageId)
-	local baseId = "inventory_switch_"
 	for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
-		if messageId == hash(baseId .. i) then
+		if messageId == input_constants.INVENTORY_SWITCH[i] then
 			return i
 		end
 	end
@@ -115,9 +116,8 @@ function get_inventory_switch_index(messageId)
 end
 
 function is_inventory_switch_message(messageId)
-	local baseId = "inventory_switch_"
 	for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
-		if messageId == hash(baseId .. i) then
+		if messageId == input_constants.INVENTORY_SWITCH[i] then
 			return true
 		end
 	end
@@ -326,17 +326,17 @@ function on_message(self, messageId, message, sender)
 	local clickedNode = nil
 	if is_inventory_switch_message(messageId) then
 		handle_inventory_switch(self, messageId, message, sender)
-	elseif messageId == hash("left_click") then
+	elseif messageId == input_constants.LEFT_CLICK then
 		handle_left_click(self, messageId, message, sender)
-	elseif messageId == hash("mouse_wheel_down") then
+	elseif messageId == input_constants.MOUSE_WHEEL_DOWN then
 		handle_mouse_wheel_down(self, messageId, message, sender)
-	elseif messageId == hash("mouse_wheel_up") then
+	elseif messageId == input_constants.MOUSE_WHEEL_UP then
 		handle_mouse_wheel_up(self, messageId, message, sender)
-	elseif messageId == hash("toggle_inventory") then
+	elseif messageId == input_constants.TOGGLE_INVENTORY then
 		handle_toggle_inventory(self, messageId, message, sender)
-	elseif messageId == hash("update_inventory") then
+	elseif messageId == message_constants.UPDATE_INVENTORY then
 		handle_update_inventory(self, messageId, message, sender)
-	elseif messageId == hash("update_toolbar") then
+	elseif messageId == message_constants.UPDATE_TOOLBAR then
 		handle_update_toolbar(self, messageId, message, sender)
 	end
 end

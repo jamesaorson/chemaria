@@ -1,7 +1,9 @@
 local globals = require "modules.globals"
 local gooey = require "gooey.gooey"
 local helpers = require "modules.helpers"
+local input_constants = require "modules.constants.input"
 local item_constants = require "modules.constants.items"
+local message_constants = require "modules.constants.messages"
 local recipes = require "modules.constants.recipes"
 local theme = require "main.player.ui.crafting_ui.crafting_ui_theme.theme"
 
@@ -143,7 +145,7 @@ function init(self)
 end
 
 function on_input(self, actionId, action)
-	if actionId == hash("quit") and action.released then
+	if actionId == input_constants.QUIT and action.released then
 		self.isCraftingUiEnabled = false
 		self.shouldUpdateCraftingUi = true
 	end
@@ -176,10 +178,10 @@ function on_input(self, actionId, action)
 end
 
 function on_message(self, messageId, message, sender)
-	if messageId == hash("toggle_crafting_menu") then
+	if messageId == input_constants.TOGGLE_CRAFTING_MENU then
 		self.isCraftingUiEnabled = not self.isCraftingUiEnabled
 		self.shouldUpdateCraftingUi = true
-	elseif messageId == hash("update_recipe_list") then
+	elseif messageId == message_constants.UPDATE_RECIPE_LIST then
 		fill_recipe_list(self)
 		self.shouldUpdateCraftingUi = true
 	end
