@@ -299,8 +299,7 @@ function init(self)
 		local newInventoryItem = {
 			id = inventoryBlockInfo.id,
 			index = i,
-			count = item_constants.ALL_ITEMS[inventoryBlockInfo.id].stackSize,
-			name = item_constants.ALL_ITEMS[inventoryBlockInfo.id].name
+			count = item_constants.ALL_ITEMS[inventoryBlockInfo.id].stackSize
 		}
 		self.shouldUpdateInventory = true
 		globals.update_inventory_item(newInventoryItem)
@@ -311,8 +310,7 @@ function init(self)
 		local newToolbarItem = {
 			id = toolbarBlockInfo.id,
 			index = i,
-			count = item_constants.ALL_ITEMS[toolbarBlockInfo.id].stackSize,
-			name = item_constants.ALL_ITEMS[toolbarBlockInfo.id].name
+			count = item_constants.ALL_ITEMS[toolbarBlockInfo.id].stackSize
 		}
 		self.shouldUpdateToolbar = true
 		globals.update_toolbar_item(newToolbarItem)

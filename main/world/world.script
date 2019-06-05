@@ -62,7 +62,6 @@ function create_block(self, block, addToMutation)
 			end
 			local mutatedBlock = {
 				position = { x = block.position.x, y = block.position.y, z = block.position.z },
-				name = block.name,
 				id = block.id
 			}
 			mutatedChunk.blocks[block.position.x][block.position.y] = mutatedBlock
@@ -179,7 +178,6 @@ function initialize_world()
 							local blockToInsert = {}
 							blockToInsert.id = blockInfo.id
 							blockToInsert.position = vmath.vector3(x, y, 0)
-							blockToInsert.name = blockInfo.name
 							
 							Chunk.add_block(chunk, blockToInsert)
 						end
@@ -245,7 +243,7 @@ function mutate_world(worldMutation)
 					if block.position == nil then
 						Chunk.remove_block_at_position(worldChunk, { x = blockX, y = blockY })
 					else
-						local blockToAdd = { position = vmath.vector3(blockX, blockY, 0), id = block.id, name = block.name, chunk = vmath.vector3(chunkX, chunkY, 0) }
+						local blockToAdd = { position = vmath.vector3(blockX, blockY, 0), id = block.id, chunk = vmath.vector3(chunkX, chunkY, 0) }
 						Chunk.add_block(worldChunk, blockToAdd)
 					end
 				end
@@ -298,8 +296,7 @@ function handle_place_block(self, messageId, message, sender)
 				local block = {
 					chunk = chunk.position,
 					id = toolbarItem.id,
-					position = blockPosition,
-					name = item_constants.ALL_ITEMS[toolbarItem.id].name
+					position = blockPosition
 				}
 				if create_block(self, block, true) then
 					toolbarItem.count = toolbarItem.count - 1

@@ -40,7 +40,6 @@ function add_loose_pickup_to_player(self, messageId, message, sender)
 				elseif item.id == item_constants.NONE.id then
 					item.count = 1
 					item.id = loosePickup.id
-					item.name = item_constants.ALL_ITEMS[item.id].name
 					updateFn()
 					update_crafting_ui()
 					return true
@@ -225,7 +224,6 @@ end
 function handle_update_toolbar_item(self, messageId, message, sender)
 	if message.count == 0 then
 		message.id = item_constants.NONE.id
-		message.name = item_constants.ALL_ITEMS[item_constants.NONE.id].name
 	end
 	self.toolbar[message.index] = message
 	msg.post("/ui#ui", "update_toolbar")
