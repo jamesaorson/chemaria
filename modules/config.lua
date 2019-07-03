@@ -17,7 +17,6 @@ M.CAMERA_ZOOM_LEVEL = { zoom = 1.25 }
 ----------
 
 M.APPNAME = "Chemaria"
-M.SAVE_NAME = "world_save"
 
 --------------
 -- End Save --

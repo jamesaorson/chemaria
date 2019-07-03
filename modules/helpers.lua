@@ -1,5 +1,6 @@
 local config = require "modules.config"
 local defsave = require "defsave.defsave"
+local globals = require "modules.globals"
 local item_constants = require "modules.constants.items"
 local world_constants = require "modules.constants.world"
 local luatexts = require "modules.luatexts"
@@ -51,10 +52,10 @@ end
 -- Config --
 ------------
 
-local settingsFileName = "settings"
+local settingsFileName = "settings.bin"
 
 function M.init_config_data()
-	defsave.default_data = require("modules.config")
+	defsave.default_data = config
 	defsave.set_appname(config.APPNAME)
 	defsave.load(settingsFileName)
 
@@ -178,8 +179,12 @@ end
 -- Save/Load --
 ---------------
 
-function M.load_game()
-	local worldFileName = sys.get_save_file(config.APPNAME, config.SAVE_NAME) .. ".json"
+function M.load_game(saveFileName)
+	if saveFileName == nil then
+		return nil
+	end
+	local worldFileName = sys.get_save_file(config.APPNAME, saveFileName)
+
 	local savedWorldFile = io.open(worldFileName, "r")
 	if savedWorldFile then
 		print("Begin reading '" .. worldFileName .. "' " .. os.clock())
@@ -196,13 +201,16 @@ function M.load_game()
 	return nil
 end
 
-function M.save_game(worldMutation)
+function M.save_game(worldMutation, saveFileName)
+	if saveFileName == nil then
+		return
+	end
 	print("Begin world save stringification " .. os.clock())
 	local saveData = luatexts.save(worldMutation)
 	print("End world save stringification " .. os.clock())
 
 	print("Begin world save file write " .. os.clock())
-	local worldFileName = sys.get_save_file(config.APPNAME, config.SAVE_NAME) .. ".json"
+	local worldFileName = sys.get_save_file(config.APPNAME, saveFileName)
 	local worldFile = io.open(worldFileName, "w+")
 	worldFile:write(saveData)
 	worldFile:close()

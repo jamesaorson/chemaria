@@ -1,6 +1,7 @@
 local camera = require "orthographic.camera"
 local camera_constants = require "modules.constants.camera"
 local config = require "modules.config"
+local globals = require "modules.globals"
 local helpers = require "modules.helpers"
 local input_constants = require "modules.constants.input"
 local screen_constants = require "modules.constants.screen"
@@ -102,8 +103,12 @@ function handle_mouse_wheel_up(self, actionId, action)
 end
 
 function handle_quit(self, actionId, action)
-	helpers.save_game(worldMutation)
+	if globals.saveFileName == nil then
+		globals.saveFileName = os.date("Chemaria %m-%d-%Y %H-%M-%S.json")
+	end
+	helpers.save_game(worldMutation, globals.saveFileName)
 
+	globals.saveFileName = nil
 	msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#main_menu_proxy" })
 end
 

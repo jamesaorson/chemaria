@@ -44,6 +44,7 @@ end
 
 M.currentChunk = nil
 M.previousChunk = nil
+M.saveFileName = nil
 M.worldSeed = nil
 
 ---------------

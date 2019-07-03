@@ -323,7 +323,7 @@ end
 
 function init(self)
 	msg.post("@render:", "clear_color", { color = vmath.vector4(0.6, 0.5, 0.9, 1.0) })
-	local savedWorld = helpers.load_game()
+	local savedWorld = helpers.load_game(globals.saveFileName)
 	if world_constants.SEED == nil then
 		if savedWorld and savedWorld.seed then
 			world_constants.SEED = savedWorld.seed

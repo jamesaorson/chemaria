@@ -437,7 +437,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: -29.0
+    y: -30.0
     z: 0.0
     w: 1.0
   }
@@ -486,6 +486,7 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
+  overridden_fields: 1
   overridden_fields: 4
   overridden_fields: 21
   template_node_child: true

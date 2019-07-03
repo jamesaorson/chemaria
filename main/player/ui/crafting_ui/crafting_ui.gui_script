@@ -86,10 +86,11 @@ function on_item_selected(list)
 end
 
 function update_crafting_list(list)
+	local itemTextId = hash("crafting_list/listitem_text")
 	for key, item in pairs(list.items) do
 		update_list_item(list, item)
 		if item.data ~= nil and item.data.itemId ~= nil then
-			gui.set_text(item.nodes[hash("crafting_list/listitem_text")], item_constants.ALL_ITEMS[item.data.itemId].displayName)
+			gui.set_text(item.nodes[itemTextId], item_constants.ALL_ITEMS[item.data.itemId].displayName)
 		end
 	end
 end
