@@ -5,7 +5,7 @@ fonts {
 }
 textures {
   name: "gooey"
-  texture: "/main/menus/main_menu/main_menu_theme/images/theme.atlas"
+  texture: "/main/menus/theme/images/theme.atlas"
 }
 background_color {
   x: 0.0

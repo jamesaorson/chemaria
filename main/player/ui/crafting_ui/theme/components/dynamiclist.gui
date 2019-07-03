@@ -9,7 +9,7 @@ textures {
 }
 textures {
   name: "theme"
-  texture: "/main/player/ui/crafting_ui/crafting_ui_theme/images/theme.atlas"
+  texture: "/main/player/ui/crafting_ui/theme/images/theme.atlas"
 }
 background_color {
   x: 0.0

@@ -1,7 +1,7 @@
 local config = require "modules.config"
 local globals = require "modules.globals"
 local gooey = require "gooey.gooey"
-local theme = require "main.menus.main_menu.main_menu_theme.theme"
+local theme = require "main.menus.theme.theme"
 
 local SCOPED_SELF
 

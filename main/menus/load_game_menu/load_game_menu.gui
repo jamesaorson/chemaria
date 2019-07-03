@@ -1,7 +1,7 @@
 script: "/main/menus/load_game_menu/load_game_menu.gui_script"
 fonts {
   name: "theme"
-  font: "/main/menus/main_menu/main_menu_theme/fonts/theme.font"
+  font: "/main/menus/theme/fonts/theme.font"
 }
 background_color {
   x: 0.0
@@ -100,7 +100,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/main_menu/main_menu_theme/components/title.gui"
+  template: "/main/menus/theme/components/title.gui"
   template_node_child: false
 }
 nodes {
@@ -158,13 +158,12 @@ nodes {
   line_break: false
   parent: "title"
   layer: ""
-  inherit_alpha: false
+  inherit_alpha: true
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
   overridden_fields: 1
   overridden_fields: 8
-  overridden_fields: 21
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
@@ -261,7 +260,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/main_menu/main_menu_theme/components/dynamiclist.gui"
+  template: "/main/menus/theme/components/dynamiclist.gui"
   template_node_child: false
 }
 nodes {
@@ -305,7 +304,7 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   parent: "save_list"
   layer: ""
-  inherit_alpha: false
+  inherit_alpha: true
   slice9 {
     x: 10.0
     y: 10.0
@@ -317,14 +316,13 @@ nodes {
   clipping_inverted: false
   alpha: 1.0
   overridden_fields: 4
-  overridden_fields: 21
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
 }
 nodes {
   position {
     x: 0.0
-    y: -40.0
+    y: -20.0
     z: 0.0
     w: 1.0
   }
@@ -341,8 +339,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 430.0
-    y: 420.0
+    x: 420.0
+    y: 430.0
     z: 0.0
     w: 1.0
   }
@@ -362,7 +360,7 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   parent: "save_list/bg"
   layer: "below"
-  inherit_alpha: false
+  inherit_alpha: true
   slice9 {
     x: 0.0
     y: 0.0
@@ -375,7 +373,6 @@ nodes {
   alpha: 1.0
   overridden_fields: 1
   overridden_fields: 4
-  overridden_fields: 21
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
 }
@@ -399,7 +396,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 410.0
+    x: 400.0
     y: 60.0
     z: 0.0
     w: 1.0
@@ -420,7 +417,7 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   parent: "save_list/stencil"
   layer: "below"
-  inherit_alpha: false
+  inherit_alpha: true
   slice9 {
     x: 50.0
     y: 50.0
@@ -431,8 +428,6 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
-  overridden_fields: 4
-  overridden_fields: 21
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
 }
@@ -456,7 +451,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 310.0
+    x: 400.0
     y: 60.0
     z: 0.0
     w: 1.0
@@ -491,12 +486,10 @@ nodes {
   line_break: false
   parent: "save_list/listitem_bg"
   layer: "text"
-  inherit_alpha: false
+  inherit_alpha: true
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
-  overridden_fields: 4
-  overridden_fields: 21
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
@@ -538,7 +531,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/main_menu/main_menu_theme/components/scrollbar.gui"
+  template: "/main/menus/theme/components/scrollbar.gui"
   template_node_child: false
 }
 nodes {
@@ -582,7 +575,7 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   parent: "scrollbar"
   layer: ""
-  inherit_alpha: false
+  inherit_alpha: true
   slice9 {
     x: 0.0
     y: 0.0
@@ -593,8 +586,6 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
-  overridden_fields: 4
-  overridden_fields: 21
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
 }
@@ -690,7 +681,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/main_menu/main_menu_theme/components/button.gui"
+  template: "/main/menus/theme/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -734,7 +725,7 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   parent: "load_game"
   layer: "below"
-  inherit_alpha: false
+  inherit_alpha: true
   slice9 {
     x: 30.0
     y: 30.0
@@ -745,7 +736,6 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
-  overridden_fields: 21
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
 }
@@ -804,12 +794,11 @@ nodes {
   line_break: false
   parent: "load_game/bg"
   layer: "text"
-  inherit_alpha: false
+  inherit_alpha: true
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
   overridden_fields: 8
-  overridden_fields: 21
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
@@ -851,7 +840,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/main_menu/main_menu_theme/components/button.gui"
+  template: "/main/menus/theme/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -895,7 +884,7 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   parent: "return_to_main_menu"
   layer: "below"
-  inherit_alpha: false
+  inherit_alpha: true
   slice9 {
     x: 30.0
     y: 30.0
@@ -906,7 +895,6 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
-  overridden_fields: 21
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
 }
@@ -965,12 +953,11 @@ nodes {
   line_break: false
   parent: "return_to_main_menu/bg"
   layer: "text"
-  inherit_alpha: false
+  inherit_alpha: true
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
   overridden_fields: 8
-  overridden_fields: 21
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0

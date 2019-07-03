@@ -1,7 +1,7 @@
 script: "/main/player/ui/crafting_ui/crafting_ui.gui_script"
 fonts {
   name: "theme"
-  font: "/main/player/ui/crafting_ui/crafting_ui_theme/fonts/theme.font"
+  font: "/main/player/ui/crafting_ui/theme/fonts/theme.font"
 }
 background_color {
   x: 0.0
@@ -100,7 +100,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/player/ui/crafting_ui/crafting_ui_theme/components/title.gui"
+  template: "/main/player/ui/crafting_ui/theme/components/title.gui"
   template_node_child: false
 }
 nodes {
@@ -315,7 +315,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/player/ui/crafting_ui/crafting_ui_theme/components/dynamiclist.gui"
+  template: "/main/player/ui/crafting_ui/theme/components/dynamiclist.gui"
   template_node_child: false
 }
 nodes {
@@ -595,7 +595,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/player/ui/crafting_ui/crafting_ui_theme/components/scrollbar.gui"
+  template: "/main/player/ui/crafting_ui/theme/components/scrollbar.gui"
   template_node_child: false
 }
 nodes {
@@ -805,7 +805,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/player/ui/crafting_ui/crafting_ui_theme/components/button.gui"
+  template: "/main/player/ui/crafting_ui/theme/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -967,7 +967,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/player/ui/crafting_ui/crafting_ui_theme/components/button.gui"
+  template: "/main/player/ui/crafting_ui/theme/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -1129,7 +1129,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/player/ui/crafting_ui/crafting_ui_theme/components/button.gui"
+  template: "/main/player/ui/crafting_ui/theme/components/button.gui"
   template_node_child: false
 }
 nodes {
