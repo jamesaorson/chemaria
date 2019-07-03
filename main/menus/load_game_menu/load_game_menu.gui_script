@@ -5,6 +5,9 @@ local theme = require "main.menus.theme.theme"
 
 local SCOPED_SELF
 
+local BUTTON_IDLE = hash("gooey/button_idle")
+local BUTTON_PRESSED = hash("gooey/button_pressed")
+local BUTTON_DISABLED = hash("gooey/button_disabled")
 
 local LISTITEM_SELECTED = hash("button_pressed")
 local LISTITEM_PRESSED = hash("button_pressed")
@@ -19,6 +22,7 @@ local SAVE_FILE_EXTENSION = ".json"
 
 local button_handler
 local fill_save_list
+local get_save_files
 local on_item_selected
 local update_list_item
 local update_save_list
@@ -32,6 +36,21 @@ end
 function fill_save_list(self, actionId, action)
 	self.scrollbar = gooey.vertical_scrollbar("scrollbar/handle", "scrollbar/bounds", actionId, action, function () end)
 	gooey.dynamic_list("save_list", "save_list/stencil", "save_list/listitem_bg", self.saveFiles, actionId, action, on_item_selected, update_save_list).scroll_to(0, self.scrollbar.scroll.y)
+end
+
+function get_save_files(self)
+	self.saveFiles = {}
+	iter, directory = lfs.dir(sys.get_save_file(config.APPNAME, ""))
+	currentFileName = iter(directory)
+	while currentFileName ~= nil do
+		i, j = string.find(currentFileName, SAVE_FILE_EXTENSION)
+		if i ~= nil then
+			if j == string.len(currentFileName) then
+				table.insert(self.saveFiles, currentFileName)
+			end
+		end
+		currentFileName = iter(directory)
+	end
 end
 
 function on_item_selected(list)
@@ -61,7 +80,9 @@ function update_save_list(list)
 		update_list_item(list, item)
 		if item.data ~= nil then
 			i, _ = string.find(item.data, SAVE_FILE_EXTENSION)
-			gui.set_text(item.nodes[itemTextId], string.sub(item.data, 1, i - 1))
+			if i then
+				gui.set_text(item.nodes[itemTextId], string.sub(item.data, 1, i - 1))
+			end
 		end
 	end
 end
@@ -81,27 +102,25 @@ function init(self)
 	self.scrollbar = nil
 	self.selectedSave = nil
 
-	iter, directory = lfs.dir(sys.get_save_file(config.APPNAME, ""))
-	currentFileName = iter(directory)
-	while currentFileName ~= nil do
-		i, j = string.find(currentFileName, SAVE_FILE_EXTENSION)
-		if i ~= nil then
-			if j == string.len(currentFileName) then
-				table.insert(self.saveFiles, currentFileName)
-			end
-		end
-		currentFileName = iter(directory)
-	end
-
+	get_save_files(self)
 	fill_save_list(self)
 end
 
 function on_input(self, actionId, action)
 	theme.button("load_game", actionId, action, function(button)
-		if SCOPED_SELF.selectedSave ~= nil then
+		if SCOPED_SELF.selectedSave then
 			button_handler(button, function()
 				globals.saveFileName = SCOPED_SELF.selectedSave
 				msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#world_proxy" })
+			end)
+		end
+	end)
+	theme.button("delete", actionId, action, function(button)
+		if SCOPED_SELF.selectedSave then
+			button_handler(button, function()
+				os.remove(sys.get_save_file(config.APPNAME, SCOPED_SELF.selectedSave))
+				SCOPED_SELF.selectedSave = nil
+				get_save_files(SCOPED_SELF)
 			end)
 		end
 	end)
