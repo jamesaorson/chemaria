@@ -148,13 +148,13 @@ end
 function switch_selected_inventory_item(self, index)
 	self.selectedInventoryItem = index
 	self.shouldUpdateInventory = true
-	msg.post("/player#player_script", "switch_selected_inventory_item", { inventoryRowAndIndex = {row, index} })
+	msg.post("/player#player_script", message_constants.SWITCH_SELECTED_INVENTORY_ITEM, { inventoryRowAndIndex = {row, index} })
 end
 
 function switch_selected_toolbar_item(self, index)
 	self.selectedToolbarItem = index
 	self.shouldUpdateToolbar = true
-	msg.post("/player#player_script", "switch_selected_toolbar_item", { toolbarIndex = index })
+	msg.post("/player#player_script", message_constants.SWITCH_SELECTED_TOOLBAR_ITEM, { toolbarIndex = index })
 end
 
 function update_container(

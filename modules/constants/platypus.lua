@@ -1,9 +1,9 @@
 local platypus = require "platypus.platypus"
 local player_constants = require "modules.constants.player"
 
-local M = {}
+local PLATYPUS = {}
 
-M.CONFIG = {
+PLATYPUS.CONFIG = {
 	collisions = {
 		separation = platypus.SEPARATION_SHAPES,
 		groups = {
@@ -20,4 +20,4 @@ M.CONFIG = {
 	allow_wall_jump = false
 }
 
-return M
+return PLATYPUS

@@ -301,7 +301,7 @@ function handle_place_block(self, messageId, message, sender)
 				}
 				if create_block(self, block, true) then
 					toolbarItem.count = toolbarItem.count - 1
-					msg.post("/player#player_script", "update_toolbar_item", toolbarItem)
+					msg.post("/player#player_script", message_constants.UPDATE_TOOLBAR_ITEM, toolbarItem)
 				end
 			end
 		end

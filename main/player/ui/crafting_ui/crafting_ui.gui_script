@@ -82,7 +82,7 @@ end
 
 function on_item_selected(list)
 	local selectedRecipe = SCOPED_SELF.recipeList[list.selected_item]
-	msg.post("/player#player_script", "craft", { recipe =  selectedRecipe })
+	msg.post("/player#player_script", message_constants.CRAFT, { recipe =  selectedRecipe })
 end
 
 function update_crafting_list(list)

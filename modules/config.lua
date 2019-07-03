@@ -1,11 +1,11 @@
-local M = {}
+local CONFIG = {}
 
 ------------
 -- Camera --
 ------------
 
-M.CAMERA_DEADZONE = { left = 25, right = 25, bottom = 0, top = 0 }
-M.CAMERA_ZOOM_LEVEL = { zoom = 1.25 }
+CONFIG.CAMERA_DEADZONE = { left = 25, right = 25, bottom = 0, top = 0 }
+CONFIG.CAMERA_ZOOM_LEVEL = { zoom = 1.25 }
 
 ----------------
 -- End Camera --
@@ -16,7 +16,7 @@ M.CAMERA_ZOOM_LEVEL = { zoom = 1.25 }
 -- Save --
 ----------
 
-M.APPNAME = "Chemaria"
+CONFIG.APPNAME = "Chemaria"
 
 --------------
 -- End Save --
@@ -27,10 +27,10 @@ M.APPNAME = "Chemaria"
 -- Video --
 -----------
 
-M.FULLSCREEN = true
+CONFIG.FULLSCREEN = true
 
 ---------------
 -- End Video --
 ---------------
 
-return M
+return CONFIG

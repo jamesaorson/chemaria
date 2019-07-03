@@ -11,6 +11,60 @@ background_color {
 }
 nodes {
   position {
+    x: 960.0
+    y: 800.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: ""
+  id: "load_game_menu"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  layer: ""
+  inherit_alpha: true
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 0.0
+  template_node_child: false
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
     x: 0.0
     y: 0.0
     z: 0.0
@@ -42,16 +96,17 @@ nodes {
   }
   type: TYPE_TEMPLATE
   id: "title"
+  parent: "load_game_menu"
   layer: ""
-  inherit_alpha: true
+  inherit_alpha: false
   alpha: 1.0
   template: "/main/menus/main_menu/main_menu_theme/components/title.gui"
   template_node_child: false
 }
 nodes {
   position {
-    x: 960.0
-    y: 796.0
+    x: 0.0
+    y: 0.0
     z: 1.0
     w: 1.0
   }
@@ -103,19 +158,21 @@ nodes {
   line_break: false
   parent: "title"
   layer: ""
-  inherit_alpha: true
+  inherit_alpha: false
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  overridden_fields: 1
   overridden_fields: 8
+  overridden_fields: 21
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
 }
 nodes {
   position {
-    x: 960.0
-    y: 700.0
+    x: 0.0
+    y: -100.0
     z: 0.0
     w: 1.0
   }
@@ -151,8 +208,9 @@ nodes {
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
+  parent: "load_game_menu"
   layer: ""
-  inherit_alpha: true
+  inherit_alpha: false
   slice9 {
     x: 0.0
     y: 0.0
@@ -284,7 +342,7 @@ nodes {
   }
   size {
     x: 430.0
-    y: 480.0
+    y: 420.0
     z: 0.0
     w: 1.0
   }
@@ -597,8 +655,8 @@ nodes {
 }
 nodes {
   position {
-    x: 806.0
-    y: 100.0
+    x: -154.0
+    y: -700.0
     z: 0.0
     w: 1.0
   }
@@ -628,8 +686,9 @@ nodes {
   }
   type: TYPE_TEMPLATE
   id: "load_game"
+  parent: "load_game_menu"
   layer: ""
-  inherit_alpha: true
+  inherit_alpha: false
   alpha: 1.0
   template: "/main/menus/main_menu/main_menu_theme/components/button.gui"
   template_node_child: false
@@ -675,7 +734,7 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   parent: "load_game"
   layer: "below"
-  inherit_alpha: true
+  inherit_alpha: false
   slice9 {
     x: 30.0
     y: 30.0
@@ -686,6 +745,7 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
+  overridden_fields: 21
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
 }
@@ -744,19 +804,20 @@ nodes {
   line_break: false
   parent: "load_game/bg"
   layer: "text"
-  inherit_alpha: true
+  inherit_alpha: false
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
   overridden_fields: 8
+  overridden_fields: 21
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
 }
 nodes {
   position {
-    x: 1114.0
-    y: 100.0
+    x: 154.0
+    y: -700.0
     z: 0.0
     w: 1.0
   }
@@ -786,8 +847,9 @@ nodes {
   }
   type: TYPE_TEMPLATE
   id: "return_to_main_menu"
+  parent: "load_game_menu"
   layer: ""
-  inherit_alpha: true
+  inherit_alpha: false
   alpha: 1.0
   template: "/main/menus/main_menu/main_menu_theme/components/button.gui"
   template_node_child: false
@@ -833,7 +895,7 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   parent: "return_to_main_menu"
   layer: "below"
-  inherit_alpha: true
+  inherit_alpha: false
   slice9 {
     x: 30.0
     y: 30.0
@@ -844,6 +906,7 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
+  overridden_fields: 21
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
 }
@@ -902,11 +965,12 @@ nodes {
   line_break: false
   parent: "return_to_main_menu/bg"
   layer: "text"
-  inherit_alpha: true
+  inherit_alpha: false
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
   overridden_fields: 8
+  overridden_fields: 21
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0

@@ -1,9 +1,9 @@
-local M = {}
+local WORLD = {}
 
-M.BLOCK_SIZE = 24
-M.WORLD_DIMENSIONS = vmath.vector3(10, 10, 0)
-M.CHUNK_SIZE = 12
-M.RENDER_DISTANCE = 6
-M.SEED = nil
+WORLD.BLOCK_SIZE = 24
+WORLD.WORLD_DIMENSIONS = vmath.vector3(10, 10, 0)
+WORLD.CHUNK_SIZE = 12
+WORLD.RENDER_DISTANCE = 6
+WORLD.SEED = nil
 
-return M
+return WORLD

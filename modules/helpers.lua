@@ -9,34 +9,34 @@ require "modules.models.Block"
 require "modules.models.Chunk"
 require "modules.models.World"
 
-local M = {}
+local HELPERS = {}
 
 --------------------
 -- Category Check --
 --------------------
 
-function M.is_craftable(item)
+function HELPERS.is_craftable(item)
 	if item == nil then
 		return false
 	end
 	return item_constants.CRAFTABLE[item.id]
 end
 
-function M.is_placeable(item)
+function HELPERS.is_placeable(item)
 	if item == nil then
 		return false
 	end
 	return item_constants.PLACEABLE[item.id]
 end
 
-function M.is_smeltable(item)
+function HELPERS.is_smeltable(item)
 	if item == nil then
 		return false
 	end
 	return item_constants.SMELTABLE[item.id]
 end
 
-function M.is_tool(item)
+function HELPERS.is_tool(item)
 	if item == nil then
 		return false
 	end
@@ -54,20 +54,20 @@ end
 
 local settingsFileName = "settings.bin"
 
-function M.init_config_data()
+function HELPERS.init_config_data()
 	defsave.default_data = config
 	defsave.set_appname(config.APPNAME)
 	defsave.load(settingsFileName)
 
 	for key, value in pairs(config) do
-		local configValue = M.get_config_data(key)
+		local configValue = HELPERS.get_config_data(key)
 		if configValue ~= nil then
 			config[key] = configValue
 		end
 	end
 end
 
-function M.get_config_data(key)
+function HELPERS.get_config_data(key)
 	key = string.upper(key)
 	if key ~= nil and type(key) == "string" and defsave.is_loaded(settingsFileName) and defsave.key_exists(settingsFileName, key) and defsave.isset(settingsFileName, key) then
 		return defsave.get(settingsFileName, key)
@@ -75,19 +75,19 @@ function M.get_config_data(key)
 	return nil
 end
 
-function M.set_config_data(key, value)
+function HELPERS.set_config_data(key, value)
 	if key ~= nil and type(key) == "string" and defsave.is_loaded(settingsFileName) then
 		defsave.set(settingsFileName, string.upper(key), value)
 	end
 end
 
-function M.save_config_data(filename)
+function HELPERS.save_config_data(filename)
 	if filename ~= nil and type(filename) == "string" then
 		defsave.save(filename)
 	else
 		for key, value in pairs(config) do
-			if M.get_config_data(key) == nil then
-				M.set_config_data(key, value)
+			if HELPERS.get_config_data(key) == nil then
+				HELPERS.set_config_data(key, value)
 			end
 		end
 		defsave.save_all()
@@ -103,7 +103,7 @@ end
 -- Crafting --
 --------------
 
-function M.check_for_crafting_components(self, recipe, componentsToCheck, materialsToUse, container)
+function HELPERS.check_for_crafting_components(self, recipe, componentsToCheck, materialsToUse, container)
 	for id, requirement in pairs(recipe.components) do
 		if componentsToCheck[id] == nil then
 			componentsToCheck[id] = { requirement = requirement, actual = 0, fulfilled = false }
@@ -145,11 +145,11 @@ end
 -- Color --
 -----------
 
-function M.convert_rgba_to_native_range(r, g, b, a)
-	return M.convert_rgba_vector_to_native_range(vmath.vector4(r, g, b, a))
+function HELPERS.convert_rgba_to_native_range(r, g, b, a)
+	return HELPERS.convert_rgba_vector_to_native_range(vmath.vector4(r, g, b, a))
 end
 
-function M.convert_rgba_vector_to_native_range(rgba)
+function HELPERS.convert_rgba_vector_to_native_range(rgba)
 	return vmath.vector4(rgba.x / 255, rgba.y / 255, rgba.z / 255, rgba.w)
 end
 
@@ -162,7 +162,7 @@ end
 -- Math --
 ----------
 
-function M.round(num)
+function HELPERS.round(num)
 	if num > 0 then
 		return math.floor(num + 0.5)
 	else
@@ -179,7 +179,7 @@ end
 -- Save/Load --
 ---------------
 
-function M.load_game(saveFileName)
+function HELPERS.load_game(saveFileName)
 	if saveFileName == nil then
 		return nil
 	end
@@ -201,7 +201,7 @@ function M.load_game(saveFileName)
 	return nil
 end
 
-function M.save_game(worldMutation, saveFileName)
+function HELPERS.save_game(worldMutation, saveFileName)
 	if saveFileName == nil then
 		return
 	end
@@ -221,4 +221,4 @@ end
 -- End Save/Load --
 -------------------
 
-return M
+return HELPERS

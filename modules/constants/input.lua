@@ -1,37 +1,37 @@
-local M = {}
+local INPUT = {}
 
-M.QUIT = hash("quit")
+INPUT.QUIT = hash("quit")
 
-M.UP = hash("up")
-M.DOWN = hash("down")
-M.LEFT = hash("left")
-M.RIGHT = hash("right")
-M.JUMP = hash("jump")
+INPUT.UP = hash("up")
+INPUT.DOWN = hash("down")
+INPUT.LEFT = hash("left")
+INPUT.RIGHT = hash("right")
+INPUT.JUMP = hash("jump")
 
-M.TOGGLE_PROFILE = hash("toggle_profile")
-M.TOGGLE_FULLSCREEN = hash("toggle_fullscreen")
+INPUT.TOGGLE_PROFILE = hash("toggle_profile")
+INPUT.TOGGLE_FULLSCREEN = hash("toggle_fullscreen")
 
-M.TOGGLE_INVENTORY = hash("toggle_inventory")
+INPUT.TOGGLE_INVENTORY = hash("toggle_inventory")
 
-M.INVENTORY_SWITCH = {}
+INPUT.INVENTORY_SWITCH = {}
 for i = 1, 10 do 
-	M.INVENTORY_SWITCH[i] = hash("inventory_switch_" .. i)
+	INPUT.INVENTORY_SWITCH[i] = hash("inventory_switch_" .. i)
 end
 
-M.TOGGLE_CRAFTING_MENU = hash("toggle_crafting_menu")
+INPUT.TOGGLE_CRAFTING_MENU = hash("toggle_crafting_menu")
 
-M.BACKSPACE = hash("backspace")
-M.UI_EXIT = hash("ui_exit")
+INPUT.BACKSPACE = hash("backspace")
+INPUT.UI_EXIT = hash("ui_exit")
 
-M.LEFT_CLICK = hash("left_click")
-M.RIGHT_CLICK = hash("right_click")
+INPUT.LEFT_CLICK = hash("left_click")
+INPUT.RIGHT_CLICK = hash("right_click")
 
-M.MOUSE_WHEEL_UP = hash("mouse_wheel_up")
-M.MOUSE_WHEEL_DOWN = hash("mouse_wheel_down")
+INPUT.MOUSE_WHEEL_UP = hash("mouse_wheel_up")
+INPUT.MOUSE_WHEEL_DOWN = hash("mouse_wheel_down")
 
-M.SCROLL_UP = hash("scroll_up")
-M.SCROLL_DOWN = hash("scroll_down")
+INPUT.SCROLL_UP = hash("scroll_up")
+INPUT.SCROLL_DOWN = hash("scroll_down")
 
-M.TOUCH = hash("touch")
+INPUT.TOUCH = hash("touch")
 
-return M
+return INPUT

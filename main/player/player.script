@@ -57,7 +57,7 @@ function add_loose_pickup_to_player(self, messageId, message, sender)
 end
 
 function update_crafting_ui()
-	msg.post("/crafting_ui#crafting_ui", "update_recipe_list")
+	msg.post("/crafting_ui#crafting_ui", message_constants.UPDATE_RECIPE_LIST)
 end
 
 function update_current_chunk(self)
@@ -68,16 +68,16 @@ function update_current_chunk(self)
 	if globals.currentChunk ~= chunk then
 		globals.previousChunk = globals.currentChunk
 		globals.currentChunk = chunk
-		msg.post("/world#world_script", "update_chunk_render")
+		msg.post("/world#world_script", message_constants.UPDATE_CHUNK_RENDER)
 	end
 end
 
 function update_inventory_ui()
-	msg.post("/ui#ui", "update_inventory")
+	msg.post("/ui#ui", message_constants.UPDATE_INVENTORY)
 end
 
 function update_toolbar_ui()
-	msg.post("/ui#ui", "update_toolbar")
+	msg.post("/ui#ui", message_constants.UPDATE_TOOLBAR)
 end
 
 -----------------
@@ -143,7 +143,7 @@ function handle_craft(self, messageId, message, sender)
 		end
 		if not add_to_container(self.toolbar, itemToCraft) then
 			if not add_to_container(self.inventory, itemToCraft) then
-				msg.post("/world#world_script", "create_loose_pickup", { item = itemToCraft, position = go.get_position(camera_constants.CAMERA_ID) })
+				msg.post("/world#world_script", message_constants.CREATE_LOOSE_PICKUP, { item = itemToCraft, position = go.get_position(camera_constants.CAMERA_ID) })
 			end
 		end
 		update_crafting_ui()
@@ -172,7 +172,7 @@ function handle_left_click(self, messageId, message, sender)
 
 	if message.pressed and self.placingMessage == nil then
 		self.miningTimerHandle = timer.delay(player_constants.PLAYER_BASE_MINING_INTERVAL, true, function (self, handle, timeElapsed)
-			msg.post("/world#world_script", "mine_block", self.miningMessage)
+			msg.post("/world#world_script", message_constants.MINE_BLOCK, self.miningMessage)
 		end)
 	elseif message.released then
 		self.miningMessage = nil
@@ -191,12 +191,12 @@ function handle_right_click(self, messageId, message, sender)
 	if message.pressed and self.miningMessage == nil then
 		self.placingMessage.toolbarItem = self.toolbar[self.selectedToolbarItem]
 		if helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id then
-			msg.post("/world#world_script", "place_block", self.placingMessage)
+			msg.post("/world#world_script", message_constants.PLACE_BLOCK, self.placingMessage)
 		end
 		self.placingTimerHandle = timer.delay(player_constants.PLAYER_BASE_PLACING_INTERVAL, true, function (self, handle, timeElapsed)
 			self.placingMessage.toolbarItem = self.toolbar[self.selectedToolbarItem]
 			if helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id then
-				msg.post("/world#world_script", "place_block", self.placingMessage)
+				msg.post("/world#world_script", message_constants.PLACE_BLOCK, self.placingMessage)
 			end
 		end)
 	elseif message.released then
@@ -226,7 +226,7 @@ function handle_update_toolbar_item(self, messageId, message, sender)
 		message.id = item_constants.NONE.id
 	end
 	self.toolbar[message.index] = message
-	msg.post("/ui#ui", "update_toolbar")
+	msg.post("/ui#ui", message_constants.UPDATE_TOOLBAR)
 end
 
 --------------------------
