@@ -111,7 +111,7 @@ function on_input(self, actionId, action)
 		if SCOPED_SELF.selectedSave then
 			button_handler(button, function()
 				globals.saveFileName = SCOPED_SELF.selectedSave
-				msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#world_proxy" })
+				--msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#world_proxy" })
 			end)
 		end
 	end)

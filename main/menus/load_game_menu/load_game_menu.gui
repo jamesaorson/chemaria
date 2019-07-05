@@ -428,6 +428,7 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
+  overridden_fields: 4
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
 }
@@ -451,7 +452,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 400.0
+    x: 370.0
     y: 60.0
     z: 0.0
     w: 1.0
@@ -464,7 +465,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: ""
+  text: "You should not see this"
   font: "kenneyblue"
   id: "save_list/listitem_text"
   xanchor: XANCHOR_NONE
@@ -490,6 +491,7 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  overridden_fields: 4
   overridden_fields: 8
   template_node_child: true
   text_leading: 1.0

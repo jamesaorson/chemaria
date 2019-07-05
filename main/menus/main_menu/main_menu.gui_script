@@ -28,21 +28,10 @@ function on_input(self, actionId, action)
 	if actionId == hash("quit") and action.released then
 		msg.post("@system:", "exit", { code = 0 })
 	else
-		theme.button("new_game", actionId, action, function(button)
-			button_handler(button, function()
-				msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#world_proxy" })
-			end)
-		end)
 
 		theme.button("load_game", actionId, action, function(button)
 			button_handler(button, function()
 				msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#load_game_menu_proxy" })
-			end)
-		end)
-
-		theme.button("settings", actionId, action, function(button)
-			button_handler(button, function()
-				msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#settings_menu_proxy" })
 			end)
 		end)
 
