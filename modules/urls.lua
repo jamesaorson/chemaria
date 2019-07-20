@@ -31,11 +31,11 @@ end
 ---------------
 
 function URLS.get_inventory_node_url(index)
-	return "inventory/inventory_slot_" .. index .. "/slot"
+	return "inventory_ui/inventory_slot_" .. index .. "/slot"
 end
 
 function URLS.get_inventory_text_node_url(index)
-	return "inventory/inventory_slot_" .. index .. "/text"
+	return "inventory_ui/inventory_slot_" .. index .. "/text"
 end
 
 -------------------
@@ -48,11 +48,11 @@ end
 -------------
 
 function URLS.get_toolbar_node_url(index)
-	return "toolbar/toolbar_slot_" ..  index .. "/slot"
+	return "toolbar_ui/toolbar_slot_" ..  index .. "/slot"
 end
 
 function URLS.get_toolbar_text_node_url(index)
-	return "toolbar/toolbar_slot_" ..  index .. "/text"
+	return "toolbar_ui/toolbar_slot_" ..  index .. "/text"
 end
 
 -----------------
