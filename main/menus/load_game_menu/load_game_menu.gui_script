@@ -55,7 +55,6 @@ end
 
 function on_item_selected(list)
 	SCOPED_SELF.selectedSave = list.data[list.selected_item]
-	print(SCOPED_SELF.selectedSave)
 end
 
 function update_list_item(list, item)
