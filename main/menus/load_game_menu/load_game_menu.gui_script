@@ -54,7 +54,7 @@ function get_save_files(self)
 end
 
 function on_item_selected(list)
-	SCOPED_SELF.selectedSave = list.items[list.selected_item].data
+	SCOPED_SELF.selectedSave = list.data[list.selected_item]
 	print(SCOPED_SELF.selectedSave)
 end
 
