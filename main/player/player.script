@@ -93,6 +93,7 @@ local handle_craft
 local handle_jump
 local handle_left
 local handle_left_click
+local handle_quit
 local handle_right
 local handle_right_click
 local handle_switch_selected_toolbar_item
@@ -180,6 +181,16 @@ function handle_left_click(self, messageId, message, sender)
 			timer.cancel(self.miningTimerHandle)
 		end
 	end
+end
+
+function handle_quit(self, messageId, message, sender)
+	if globals.saveFileName == nil then
+		globals.saveFileName = os.date("Chemaria %m-%d-%Y %H-%M-%S.json")
+	end
+	helpers.save_game(worldMutation, globals.saveFileName)
+
+	globals.saveFileName = nil
+	msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#main_menu_proxy" })
 end
 
 function handle_right(self, messageId, message, sender)
@@ -270,6 +281,8 @@ function on_message(self, messageId, message, sender)
 		handle_left(self, messageId, message, sender)
 	elseif messageId == input_constants.LEFT_CLICK then
 		handle_left_click(self, messageId, message, sender)
+	elseif messageId == input_constants.QUIT then
+		handle_quit(self, messageId, message, sender)
 	elseif messageId == input_constants.RIGHT then
 		handle_right(self, messageId, message, sender)
 	elseif messageId == input_constants.RIGHT_CLICK then

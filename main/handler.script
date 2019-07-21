@@ -103,13 +103,7 @@ function handle_mouse_wheel_up(self, actionId, action)
 end
 
 function handle_quit(self, actionId, action)
-	if globals.saveFileName == nil then
-		globals.saveFileName = os.date("Chemaria %m-%d-%Y %H-%M-%S.json")
-	end
-	helpers.save_game(worldMutation, globals.saveFileName)
-
-	globals.saveFileName = nil
-	msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#main_menu_proxy" })
+	send_player_action(actionId, action)
 end
 
 function handle_right(self, actionId, action)
