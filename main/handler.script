@@ -68,14 +68,13 @@ local handle_left
 local handle_left_click
 local handle_mouse_wheel_down
 local handle_mouse_wheel_up
-local handle_quit
 local handle_right
 local handle_right_click
 local handle_toggle_crafting_menu
 local handle_toggle_fullscreen
 local handle_toggle_inventory
+local handle_toggle_pause_menu
 local handle_toggle_profile
-local handle_ui_exit
 
 function handle_inventory_switch(self, actionId, action)
 	send_ui_action(actionId, action)
@@ -103,7 +102,6 @@ function handle_mouse_wheel_up(self, actionId, action)
 end
 
 function handle_quit(self, actionId, action)
-	send_player_action(actionId, action)
 end
 
 function handle_right(self, actionId, action)
@@ -126,13 +124,12 @@ function handle_toggle_inventory(self, actionId, action)
 	send_ui_action(actionId, action)
 end
 
-function handle_toggle_profile(self, actionId, action)
-	msg.post("@system:", "toggle_profile")
+function handle_toggle_pause_menu(self, actionId, action)
+	send_player_action(actionId, action)
 end
 
-function handle_ui_exit(self, actionId, action)
-	send_crafting_ui_action(actionId, action)
-	send_ui_action(actionId, action)
+function handle_toggle_profile(self, actionId, action)
+	msg.post("@system:", "toggle_profile")
 end
 
 -------------------------
@@ -164,8 +161,6 @@ function on_input(self, actionId, action)
 		handle_mouse_wheel_up(self, actionId, action)
 	elseif actionId == input_constants.MOUSE_WHEEL_DOWN and action.pressed then
 		handle_mouse_wheel_down(self, actionId, action)
-	elseif actionId == input_constants.QUIT and action.released then
-		handle_quit(self, actionId, action)
 	elseif actionId == input_constants.RIGHT then
 		handle_right(self, actionId, action)
 	elseif actionId == input_constants.RIGHT_CLICK then
@@ -176,10 +171,10 @@ function on_input(self, actionId, action)
 		handle_toggle_fullscreen(self, actionId, action)
 	elseif actionId == input_constants.TOGGLE_INVENTORY and action.released then
 		handle_toggle_inventory(self, actionId, action)
+	elseif actionId == input_constants.TOGGLE_PAUSE_MENU and action.released then
+		handle_toggle_pause_menu(self, actionId, action)
 	elseif actionId == input_constants.TOGGLE_PROFILE and action.released then
 		handle_toggle_profile(self, actionId, action)
-	elseif actionId == input_constants.UI_EXIT and action.released then
-		handle_ui_exit(self, actionId, action)
 	end
 end
 

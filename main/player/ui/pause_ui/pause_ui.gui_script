@@ -57,13 +57,15 @@ end
 function on_input(self, actionId, action)
 	theme.button("save_button", actionId, action, function(button)
 		button_handler(button, function()
-			print("save")
+			msg.post("/player#player_script", message_constants.SAVE_GAME, {})
+			self.isPauseUiEnabled = false
+			self.shouldUpdatePauseUi = true
 		end)
 	end)
 
 	theme.button("exit_button", actionId, action, function(button)
 		button_handler(button, function()
-			print("exit")
+			msg.post("/player#player_script", message_constants.QUIT_GAME, {})
 		end)
 	end)
 end

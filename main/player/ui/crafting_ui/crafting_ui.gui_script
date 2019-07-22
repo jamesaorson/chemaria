@@ -146,11 +146,6 @@ function init(self)
 end
 
 function on_input(self, actionId, action)
-	if actionId == input_constants.QUIT and action.released then
-		self.isCraftingUiEnabled = false
-		self.shouldUpdateCraftingUi = true
-	end
-	
 	theme.button("tools_menu_button", actionId, action, function(button)
 		button_handler(button, function()
 			self.selectedTab = 1

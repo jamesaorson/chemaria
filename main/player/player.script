@@ -22,6 +22,8 @@ require "modules.models.World"
 -------------
 
 local add_loose_pickup_to_player
+local quit_game
+local save_game
 local update_crafting_ui
 local update_current_chunk
 local update_inventory_ui
@@ -54,6 +56,18 @@ function add_loose_pickup_to_player(self, messageId, message, sender)
 		end
 	end
 	return false
+end
+
+function quit_game()
+	globals.saveFileName = nil
+	msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#main_menu_proxy" })
+end
+
+function save_game()
+	if globals.saveFileName == nil then
+		globals.saveFileName = os.date("Chemaria %m-%d-%Y %H-%M-%S.json")
+	end
+	helpers.save_game(worldMutation, globals.saveFileName)
 end
 
 function update_crafting_ui()
@@ -93,10 +107,12 @@ local handle_craft
 local handle_jump
 local handle_left
 local handle_left_click
-local handle_quit
+local handle_quit_game
 local handle_right
 local handle_right_click
+local handle_save_game
 local handle_switch_selected_toolbar_item
+local handle_toggle_pause_menu
 local handle_trigger_response
 local handle_update_toolbar_item
 
@@ -183,14 +199,8 @@ function handle_left_click(self, messageId, message, sender)
 	end
 end
 
-function handle_quit(self, messageId, message, sender)
-	if globals.saveFileName == nil then
-		globals.saveFileName = os.date("Chemaria %m-%d-%Y %H-%M-%S.json")
-	end
-	helpers.save_game(worldMutation, globals.saveFileName)
-
-	globals.saveFileName = nil
-	msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#main_menu_proxy" })
+function handle_quit_game(self, messageId, message, sender)
+	quit_game()
 end
 
 function handle_right(self, messageId, message, sender)
@@ -218,8 +228,16 @@ function handle_right_click(self, messageId, message, sender)
 	end
 end
 
+function handle_save_game(self, messageId, message, sender)
+	save_game()
+end
+
 function handle_switch_selected_toolbar_item(self, messageId, message, sender)
 	self.selectedToolbarItem = message.toolbarIndex
+end
+
+function handle_toggle_pause_menu(self, messageId, message, sender)
+	msg.post("/pause_ui#pause_ui", messageId, message)
 end
 
 function handle_trigger_response(self, messageId, message, sender)
@@ -281,14 +299,18 @@ function on_message(self, messageId, message, sender)
 		handle_left(self, messageId, message, sender)
 	elseif messageId == input_constants.LEFT_CLICK then
 		handle_left_click(self, messageId, message, sender)
-	elseif messageId == input_constants.QUIT then
-		handle_quit(self, messageId, message, sender)
+elseif messageId == message_constants.QUIT_GAME then
+		handle_quit_game(self, messageId, message, sender)
 	elseif messageId == input_constants.RIGHT then
 		handle_right(self, messageId, message, sender)
 	elseif messageId == input_constants.RIGHT_CLICK then
 		handle_right_click(self, messageId, message, sender)
+	elseif messageId == message_constants.SAVE_GAME then
+		handle_save_game(self, messageId, message, sender)
 	elseif messageId == message_constants.SWITCH_SELECTED_TOOLBAR_ITEM then
 		handle_switch_selected_toolbar_item(self, messageId, message, sender)
+	elseif messageId == input_constants.TOGGLE_PAUSE_MENU then
+		handle_toggle_pause_menu(self, messageId, message, sender)
 	elseif messageId == message_constants.TRIGGER_RESPONSE then
 		handle_trigger_response(self, messageId, message, sender)
 	elseif messageId == message_constants.UPDATE_TOOLBAR_ITEM then

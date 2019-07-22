@@ -1,5 +1,5 @@
 components {
-  id: "crafting_ui"
+  id: "pause_ui"
   component: "/main/player/ui/pause_ui/pause_ui.gui"
   position {
     x: 0.0

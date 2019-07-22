@@ -1,5 +1,6 @@
 local INPUT = {}
 
+INPUT.PAUSE = hash("pause")
 INPUT.QUIT = hash("quit")
 
 INPUT.UP = hash("up")
@@ -8,6 +9,7 @@ INPUT.LEFT = hash("left")
 INPUT.RIGHT = hash("right")
 INPUT.JUMP = hash("jump")
 
+INPUT.TOGGLE_PAUSE_MENU = hash("toggle_pause_menu")
 INPUT.TOGGLE_PROFILE = hash("toggle_profile")
 INPUT.TOGGLE_FULLSCREEN = hash("toggle_fullscreen")
 
@@ -21,7 +23,6 @@ end
 INPUT.TOGGLE_CRAFTING_MENU = hash("toggle_crafting_menu")
 
 INPUT.BACKSPACE = hash("backspace")
-INPUT.UI_EXIT = hash("ui_exit")
 
 INPUT.LEFT_CLICK = hash("left_click")
 INPUT.RIGHT_CLICK = hash("right_click")
