@@ -299,7 +299,7 @@ function on_message(self, messageId, message, sender)
 		handle_left(self, messageId, message, sender)
 	elseif messageId == input_constants.LEFT_CLICK then
 		handle_left_click(self, messageId, message, sender)
-elseif messageId == message_constants.QUIT_GAME then
+	elseif messageId == message_constants.QUIT_GAME then
 		handle_quit_game(self, messageId, message, sender)
 	elseif messageId == input_constants.RIGHT then
 		handle_right(self, messageId, message, sender)

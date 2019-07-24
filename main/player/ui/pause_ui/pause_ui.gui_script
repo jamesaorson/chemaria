@@ -38,6 +38,11 @@ function update_pause_ui(self)
 	self.shouldUpdatePauseUi = false
 end
 
+function update_save_input(self)
+	gui.set_enabled(gui.get_node("save_input"), self.isSaveInputEnabled)
+	self.shouldUpdateSaveInput = false
+end
+
 -----------------
 -- End Helpers --
 -----------------
@@ -50,16 +55,22 @@ end
 function init(self)
 	SCOPED_SELF = self
 	self.isPauseUiEnabled = false
-	self.shouldUpdatePauseUi = false
-	gui.set_enabled(gui.get_node("pause_ui"), self.isPauseUiEnabled)
+	self.shouldUpdatePauseUi = true
+	self.isSaveInputEnabled = false
+	self.shouldUpdateSaveInput = true
 end
 
 function on_input(self, actionId, action)
 	theme.button("save_button", actionId, action, function(button)
 		button_handler(button, function()
-			msg.post("/player#player_script", message_constants.SAVE_GAME, {})
-			self.isPauseUiEnabled = false
-			self.shouldUpdatePauseUi = true
+			if globals.saveFileName then
+				msg.post("/player#player_script", message_constants.SAVE_GAME, {})
+				self.isPauseUiEnabled = false
+				self.shouldUpdatePauseUi = true
+			else
+				self.isSaveInputEnabled = true
+				
+			end
 		end)
 	end)
 
@@ -80,6 +91,8 @@ end
 function update(self, dt)
 	if self.shouldUpdatePauseUi then
 		update_pause_ui(self)
+	elseif self.shouldUpdateSaveInput then
+		update_save_input(self)
 	end
 end
 
