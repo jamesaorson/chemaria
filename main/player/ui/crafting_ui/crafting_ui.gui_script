@@ -1,0 +1,204 @@
+local globals = require "modules.globals"
+local gooey = require "gooey.gooey"
+local helpers = require "modules.helpers"
+local input_constants = require "modules.constants.input"
+local item_constants = require "modules.constants.items"
+local message_constants = require "modules.constants.messages"
+local recipes = require "modules.constants.recipes"
+local theme = require "main.player.ui.crafting_ui.theme.theme"
+
+local INPUT_FOCUS = hash("blue_button05")
+local INPUT = hash("blue_button03")
+
+local BUTTON_PRESSED = hash("button_pressed")
+local BUTTON = hash("button_idle")
+
+local LISTITEM_SELECTED = hash("button_pressed")
+local LISTITEM_PRESSED = hash("button_pressed")
+local LISTITEM_DISABLED = hash("button_disabled")
+local LISTITEM = hash("button_idle")
+
+local CHECKBOX_PRESSED = hash("grey_boxCross")
+local CHECKBOX_CHECKED = hash("blue_boxCross")
+local CHECKBOX = hash("grey_box")
+
+local RADIO_PRESSED = hash("grey_boxTick")
+local RADIO_SELECTED = hash("blue_boxTick")
+local RADIO = hash("grey_circle")
+
+local SCOPED_SELF
+
+-------------
+-- Helpers --
+-------------
+
+local button_handler
+local fill_crafting_list_ui
+local fill_recipe_list
+local on_item_selected
+local on_scrolled
+local get_recipes_for_selected_tab
+local update_button
+local update_crafting_ui
+local update_crafting_list
+local update_list_item
+
+function button_handler(button, handler)
+	if button.released_now then
+		handler()
+	end
+end
+
+function fill_crafting_list_ui(self, actionId, action)
+	self.scrollbar = gooey.vertical_scrollbar("scrollbar/handle", "scrollbar/bounds", actionId, action, function () end)
+	gooey.dynamic_list("crafting_list", "crafting_list/stencil", "crafting_list/listitem_bg", self.recipeList, actionId, action, on_item_selected, update_crafting_list).scroll_to(0, self.scrollbar.scroll.y)
+end
+
+function fill_recipe_list(self)
+	self.recipeList = {}
+	local recipeListToCheck = get_recipes_for_selected_tab(self)
+	if recipeListToCheck ~= nil then
+		for i, recipe in pairs(recipeListToCheck) do
+			local componentsToCheck = {}
+			local canCraft = helpers.check_for_crafting_components(self, recipe, componentsToCheck, {}, globals.get_toolbar())
+			if not canCraft then
+				canCraft = helpers.check_for_crafting_components(self, recipe, componentsToCheck, {}, globals.get_inventory())
+			end
+			table.insert(self.recipeList, { itemId = recipe.itemId, components = recipe.components, canCraft = canCraft })
+		end
+	end
+	self.shouldUpdateCraftingUi = true
+end
+
+function get_recipes_for_selected_tab(self)
+	if self.selectedTab == 1 then
+		return recipes.CRAFTABLES
+	elseif self.selectedTab == 2 then
+		return recipes.SMELTABLES
+	else
+		return nil
+	end
+end
+
+function on_item_selected(list)
+	local selectedRecipe = list.data[list.selected_item]
+	msg.post("/player#player_script", message_constants.CRAFT, { recipe =  selectedRecipe })
+end
+
+function update_crafting_list(list)
+	local itemTextId = hash("crafting_list/listitem_text")
+	for key, item in pairs(list.items) do
+		update_list_item(list, item)
+		if item.data ~= nil and item.data.itemId ~= nil then
+			gui.set_text(item.nodes[itemTextId], item_constants.ALL_ITEMS[item.data.itemId].displayName)
+		end
+	end
+end
+
+function update_crafting_ui(self)
+	if self.isCraftingUiEnabled then
+		gooey.acquire_input()
+	else
+		gooey.release_input()
+	end
+	gui.set_enabled(gui.get_node("crafting_ui"), self.isCraftingUiEnabled)
+	gui.set_enabled(gui.get_node("scrollbar/bounds"), #self.recipeList > 5)
+	self.shouldUpdateCraftingUi = false
+end
+
+function update_list_item(list, item)
+	local pos = gui.get_position(item.root)
+	local selectedRecipe = SCOPED_SELF.recipeList[item.index]
+	if selectedRecipe ~= nil and not selectedRecipe.canCraft then
+		gui.play_flipbook(item.root, LISTITEM_DISABLED)
+	elseif item.index == list.selected_item then
+		gui.play_flipbook(item.root, LISTITEM_PRESSED)
+	elseif item.index == list.pressed_item then
+		gui.play_flipbook(item.root, LISTITEM_PRESSED)
+	elseif item.index == list.over_item_now then
+		gui.play_flipbook(item.root, LISTITEM)
+	elseif item.index == list.out_item_now then
+		gui.play_flipbook(item.root, LISTITEM)
+	elseif item.index ~= list.over_item then
+		gui.play_flipbook(item.root, LISTITEM)
+	end
+	gui.set_position(item.root, pos)
+end
+
+-----------------
+-- End Helpers --
+-----------------
+
+
+----------------------
+-- Defold functions --
+----------------------
+
+function init(self)
+	SCOPED_SELF = self
+	self.isCraftingUiEnabled = false
+	self.shouldUpdateCraftingUi = false
+	self.scrollbar = nil
+	self.selectedTab = 1
+	fill_recipe_list(self)
+	gui.set_enabled(gui.get_node("crafting_ui"), self.isCraftingUiEnabled)
+	fill_crafting_list_ui(self)
+end
+
+function on_input(self, actionId, action)
+	theme.button("tools_menu_button", actionId, action, function(button)
+		button_handler(button, function()
+			self.selectedTab = 1
+			fill_recipe_list(self)
+		end)
+	end, self.selectedTab == 1)
+
+	theme.button("smelt_menu_button", actionId, action, function(button)
+		button_handler(button, function()
+			self.selectedTab = 2
+			fill_recipe_list(self)
+		end)
+	end, self.selectedTab == 2)
+
+	theme.button("materials_menu_button", actionId, action, function(button)
+		button_handler(button, function()
+			self.selectedTab = 3
+			fill_recipe_list(self)
+		end)
+	end, self.selectedTab == 3)
+
+	fill_crafting_list_ui(self, actionId, action)
+end
+
+function on_message(self, messageId, message, sender)
+	if not globals.isPaused then
+		if messageId == input_constants.TOGGLE_CRAFTING_MENU then
+			self.isCraftingUiEnabled = not self.isCraftingUiEnabled
+			self.shouldUpdateCraftingUi = true
+		end
+	end
+	if messageId == message_constants.UPDATE_RECIPE_LIST then
+		fill_recipe_list(self)
+		self.shouldUpdateCraftingUi = true
+	end
+end
+
+function update(self, dt)
+	if self.shouldUpdateCraftingUi then
+		update_crafting_ui(self)
+		gui.play_flipbook(gui.get_node("tools_menu_button/bg"), BUTTON)
+		gui.play_flipbook(gui.get_node("smelt_menu_button/bg"), BUTTON)
+		gui.play_flipbook(gui.get_node("materials_menu_button/bg"), BUTTON)
+		if self.selectedTab == 1 then
+			gui.play_flipbook(gui.get_node("tools_menu_button/bg"), BUTTON_PRESSED)
+		elseif self.selectedTab == 2 then
+			gui.play_flipbook(gui.get_node("smelt_menu_button/bg"), BUTTON_PRESSED)
+		elseif self.selectedTab == 3 then
+			gui.play_flipbook(gui.get_node("materials_menu_button/bg"), BUTTON_PRESSED)
+		end
+	end
+end
+
+--------------------------
+-- End Defold functions --
+--------------------------

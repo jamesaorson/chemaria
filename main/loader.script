@@ -1,10 +1,12 @@
+local message_constants = require "modules.constants.messages"
+
 -------------
 -- Helpers --
 -------------
 
-local show
+local show_proxy
 
-function show(self, proxy)
+function show_proxy(self, proxy)
 	if self.currentProxy then
 		msg.post(self.currentProxy, "unload")
 	end
@@ -15,7 +17,6 @@ end
 -- End Helpers --
 -----------------
 
-
 ----------------------
 -- Defold functions --
 ----------------------
@@ -23,16 +24,15 @@ end
 function init(self)
 	defos.set_fullscreen(true)
 	msg.post(".", "acquire_input_focus")
-	show(self, "#mainmenuproxy")
-	msg.post("@render:", "clear_color", { color = vmath.vector4(0.15, 0.15, 0.15, 1.0) })
+	show_proxy(self, "#main_menu_proxy")
 end
 
 function on_message(self, messageId, message, sender)
-	if messageId == hash("proxy_loaded") then
+	if messageId == message_constants.PROXY_LOADED then
 		self.currentProxy = sender
 		msg.post(sender, "enable")
-	elseif messageId == hash("switch_proxy") then
-		show(self, message.switchTo)
+	elseif messageId == message_constants.SWITCH_PROXY then
+		show_proxy(self, message.switchTo)
 	end
 end
 

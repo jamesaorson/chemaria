@@ -1,40 +1,42 @@
 local config = require "modules.config"
+local defsave = require "defsave.defsave"
+local globals = require "modules.globals"
 local item_constants = require "modules.constants.items"
-local luatexts = require "modules.luatexts"
 local world_constants = require "modules.constants.world"
+local luatexts = require "modules.luatexts"
 
 require "modules.models.Block"
 require "modules.models.Chunk"
 require "modules.models.World"
 
-local M = {}
+local HELPERS = {}
 
 --------------------
 -- Category Check --
 --------------------
 
-function M.is_craftable(item)
+function HELPERS.is_craftable(item)
 	if item == nil then
 		return false
 	end
 	return item_constants.CRAFTABLE[item.id]
 end
 
-function M.is_placeable(item)
+function HELPERS.is_placeable(item)
 	if item == nil then
 		return false
 	end
 	return item_constants.PLACEABLE[item.id]
 end
 
-function M.is_smeltable(item)
+function HELPERS.is_smeltable(item)
 	if item == nil then
 		return false
 	end
 	return item_constants.SMELTABLE[item.id]
 end
 
-function M.is_tool(item)
+function HELPERS.is_tool(item)
 	if item == nil then
 		return false
 	end
@@ -45,11 +47,63 @@ end
 -- End Category Check --
 ------------------------
 
+
+------------
+-- Config --
+------------
+
+local settingsFileName = "settings.bin"
+
+function HELPERS.init_config_data()
+	defsave.default_data = config
+	defsave.set_appname(config.APPNAME)
+	defsave.load(settingsFileName)
+
+	for key, value in pairs(config) do
+		local configValue = HELPERS.get_config_data(key)
+		if configValue ~= nil then
+			config[key] = configValue
+		end
+	end
+end
+
+function HELPERS.get_config_data(key)
+	key = string.upper(key)
+	if key ~= nil and type(key) == "string" and defsave.is_loaded(settingsFileName) and defsave.key_exists(settingsFileName, key) and defsave.isset(settingsFileName, key) then
+		return defsave.get(settingsFileName, key)
+	end
+	return nil
+end
+
+function HELPERS.set_config_data(key, value)
+	if key ~= nil and type(key) == "string" and defsave.is_loaded(settingsFileName) then
+		defsave.set(settingsFileName, string.upper(key), value)
+	end
+end
+
+function HELPERS.save_config_data(filename)
+	if filename ~= nil and type(filename) == "string" then
+		defsave.save(filename)
+	else
+		for key, value in pairs(config) do
+			if HELPERS.get_config_data(key) == nil then
+				HELPERS.set_config_data(key, value)
+			end
+		end
+		defsave.save_all()
+	end
+end
+
+----------------
+-- End Config --
+----------------
+
+
 --------------
 -- Crafting --
 --------------
 
-function M.check_for_crafting_components(self, recipe, componentsToCheck, materialsToUse, container)
+function HELPERS.check_for_crafting_components(self, recipe, componentsToCheck, materialsToUse, container)
 	for id, requirement in pairs(recipe.components) do
 		if componentsToCheck[id] == nil then
 			componentsToCheck[id] = { requirement = requirement, actual = 0, fulfilled = false }
@@ -91,11 +145,11 @@ end
 -- Color --
 -----------
 
-function M.convert_rgba_to_native_range(r, g, b, a)
-	return M.convert_rgba_vector_to_native_range(vmath.vector4(r, g, b, a))
+function HELPERS.convert_rgba_to_native_range(r, g, b, a)
+	return HELPERS.convert_rgba_vector_to_native_range(vmath.vector4(r, g, b, a))
 end
 
-function M.convert_rgba_vector_to_native_range(rgba)
+function HELPERS.convert_rgba_vector_to_native_range(rgba)
 	return vmath.vector4(rgba.x / 255, rgba.y / 255, rgba.z / 255, rgba.w)
 end
 
@@ -108,7 +162,7 @@ end
 -- Math --
 ----------
 
-function M.round(num)
+function HELPERS.round(num)
 	if num > 0 then
 		return math.floor(num + 0.5)
 	else
@@ -125,8 +179,12 @@ end
 -- Save/Load --
 ---------------
 
-function M.load_game()
-	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name)
+function HELPERS.load_game(saveFileName)
+	if saveFileName == nil then
+		return nil
+	end
+	local worldFileName = sys.get_save_file(config.APPNAME, saveFileName .. ".json")
+
 	local savedWorldFile = io.open(worldFileName, "r")
 	if savedWorldFile then
 		print("Begin reading '" .. worldFileName .. "' " .. os.clock())
@@ -143,48 +201,19 @@ function M.load_game()
 	return nil
 end
 
-function M.save_game(world)
-	local worldFileName = sys.get_save_file(config.SAVE_PATH.folder, config.SAVE_PATH.name)
-	local worldFile = io.open(worldFileName, "w+")
-	local minimalWorld = {
-		chunks = {}
-	}
-
-	print("Begin world save minimization " .. os.clock())
-	for chunkX = -world_constants.WORLD_DIMENSIONS.x, world_constants.WORLD_DIMENSIONS.x do
-		for chunkY = -world_constants.WORLD_DIMENSIONS.y, world_constants.WORLD_DIMENSIONS.y do
-			local chunk = World.get_chunk_at_position(world, { x = chunkX, y = chunkY })
-			chunk.position = { x = chunk.position.x, y = chunk.position.y, z = chunk.position.z }
-			chunk.isRendered = nil
-			local blocks = chunk.blocks
-			for blockY = 0, world_constants.CHUNK_SIZE - 1 do
-				for blockX = 0, world_constants.CHUNK_SIZE - 1 do
-					local block = Chunk.get_block_at_position(chunk, { x = blockX, y = blockY })
-					if block then
-						block.position = { x = block.position.x, y = block.position.y, z = block.position.z }
-						if block.chunk then
-							block.chunk = { x = block.chunk.x, y = block.chunk.y, z = block.chunk.z }
-						end
-						block.pickupId = nil
-						block.stackSize = nil
-						block.url = nil
-					end
-				end
-			end
-			if not minimalWorld.chunks[chunkX] then
-				minimalWorld.chunks[chunkX] = {}
-			end
-			minimalWorld.chunks[chunkX][chunkY] = chunk
-		end
+function HELPERS.save_game(worldMutation, saveFileName)
+	if saveFileName == nil then
+		return
 	end
-	print("End world save minimization " .. os.clock())
-
 	print("Begin world save stringification " .. os.clock())
-	local saveData = luatexts.save(minimalWorld)
+	local saveData = luatexts.save(worldMutation)
 	print("End world save stringification " .. os.clock())
 
 	print("Begin world save file write " .. os.clock())
+	local worldFileName = sys.get_save_file(config.APPNAME, saveFileName .. ".json")
+	local worldFile = io.open(worldFileName, "w+")
 	worldFile:write(saveData)
+	worldFile:close()
 	print("Begin world save file write " .. os.clock())
 end
 
@@ -192,4 +221,4 @@ end
 -- End Save/Load --
 -------------------
 
-return M
+return HELPERS

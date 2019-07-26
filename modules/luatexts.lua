@@ -13,7 +13,7 @@ local table_concat
 
 --------------------------------------------------------------------------------
 
-local bit = require 'bit'
+--local bit = require 'bit'
 
 local bit_band, bit_bor, bit_lshift, bit_rshift
 = bit.band, bit.bor, bit.lshift, bit.rshift

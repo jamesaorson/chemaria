@@ -79,7 +79,7 @@ instances {
 }
 instances {
   id: "ui"
-  prototype: "/main/ui/ui.go"
+  prototype: "/main/player/ui/ui.go"
   position {
     x: 0.0
     y: 0.0
@@ -559,7 +559,7 @@ instances {
 }
 instances {
   id: "crafting_ui"
-  prototype: "/main/crafting_ui/crafting_ui.go"
+  prototype: "/main/player/ui/crafting_ui/crafting_ui.go"
   position {
     x: 0.0
     y: 0.0
@@ -837,6 +837,26 @@ instances {
     z: 1.0
   }
 }
+instances {
+  id: "pause_ui"
+  prototype: "/main/player/ui/pause_ui/pause_ui.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
 scale_along_z: 0
 embedded_instances {
   id: "factories"
@@ -939,7 +959,7 @@ embedded_instances {
   id: "handler"
   data: "components {\n"
   "  id: \"handler_script\"\n"
-  "  component: \"/main/world/handler.script\"\n"
+  "  component: \"/main/handler.script\"\n"
   "  position {\n"
   "    x: 0.0\n"
   "    y: 0.0\n"

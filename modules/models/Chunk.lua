@@ -28,7 +28,7 @@ end
 
 function Chunk.remove_block_at_position(self, position)
 	removed  = false
-	if self.blocks[position.x][position.y] then
+	if self.blocks[position.x] and self.blocks[position.x][position.y] then
 		self.blocks[position.x][position.y] = nil
 		removed = true
 	end

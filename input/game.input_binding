@@ -100,7 +100,7 @@ key_trigger {
 }
 key_trigger {
   input: KEY_ESC
-  action: "ui_exit"
+  action: "toggle_pause_menu"
 }
 mouse_trigger {
   input: MOUSE_BUTTON_LEFT
