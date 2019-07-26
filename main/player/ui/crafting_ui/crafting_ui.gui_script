@@ -171,10 +171,13 @@ function on_input(self, actionId, action)
 end
 
 function on_message(self, messageId, message, sender)
-	if messageId == input_constants.TOGGLE_CRAFTING_MENU then
-		self.isCraftingUiEnabled = not self.isCraftingUiEnabled
-		self.shouldUpdateCraftingUi = true
-	elseif messageId == message_constants.UPDATE_RECIPE_LIST then
+	if not globals.isPaused then
+		if messageId == input_constants.TOGGLE_CRAFTING_MENU then
+			self.isCraftingUiEnabled = not self.isCraftingUiEnabled
+			self.shouldUpdateCraftingUi = true
+		end
+	end
+	if messageId == message_constants.UPDATE_RECIPE_LIST then
 		fill_recipe_list(self)
 		self.shouldUpdateCraftingUi = true
 	end

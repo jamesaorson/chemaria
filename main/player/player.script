@@ -64,10 +64,9 @@ function quit_game()
 end
 
 function save_game()
-	if globals.saveFileName == nil then
-		globals.saveFileName = os.date("Chemaria %m-%d-%Y %H-%M-%S.json")
+	if globals.saveFileName ~= nil then
+		helpers.save_game(worldMutation, globals.saveFileName)
 	end
-	helpers.save_game(worldMutation, globals.saveFileName)
 end
 
 function update_crafting_ui()
@@ -238,6 +237,7 @@ end
 
 function handle_toggle_pause_menu(self, messageId, message, sender)
 	msg.post("/pause_ui#pause_ui", messageId, message)
+	globals.isPaused = not globals.isPaused
 end
 
 function handle_trigger_response(self, messageId, message, sender)
@@ -271,6 +271,7 @@ function init(self)
 	globals.currentChunk = nil
 
 	self.inventory = globals.get_inventory()
+	globals.isPaused = false
 	self.miningTimerHandle = nil
 	self.placingTimerHandle = nil
 	self.platypus = platypus.create(platypus_constants.CONFIG)
@@ -291,24 +292,27 @@ end
 function on_message(self, messageId, message, sender)
 	self.platypus.on_message(messageId, message)
 
-	if messageId == message_constants.CRAFT then
-		handle_craft(self, messageId, message, sender)
-	elseif messageId == input_constants.JUMP then
-		handle_jump(self, messageId, message, sender)
-	elseif messageId == input_constants.LEFT then
-		handle_left(self, messageId, message, sender)
-	elseif messageId == input_constants.LEFT_CLICK then
-		handle_left_click(self, messageId, message, sender)
-	elseif messageId == message_constants.QUIT_GAME then
+	if not globals.isPaused then
+		if messageId == message_constants.CRAFT then
+			handle_craft(self, messageId, message, sender)
+		elseif messageId == input_constants.JUMP then
+			handle_jump(self, messageId, message, sender)
+		elseif messageId == input_constants.LEFT then
+			handle_left(self, messageId, message, sender)
+		elseif messageId == input_constants.LEFT_CLICK then
+			handle_left_click(self, messageId, message, sender)
+		elseif messageId == input_constants.RIGHT then
+			handle_right(self, messageId, message, sender)
+		elseif messageId == input_constants.RIGHT_CLICK then
+			handle_right_click(self, messageId, message, sender)
+		elseif messageId == message_constants.SWITCH_SELECTED_TOOLBAR_ITEM then
+			handle_switch_selected_toolbar_item(self, messageId, message, sender)
+		end
+	end
+	if messageId == message_constants.QUIT_GAME then
 		handle_quit_game(self, messageId, message, sender)
-	elseif messageId == input_constants.RIGHT then
-		handle_right(self, messageId, message, sender)
-	elseif messageId == input_constants.RIGHT_CLICK then
-		handle_right_click(self, messageId, message, sender)
 	elseif messageId == message_constants.SAVE_GAME then
 		handle_save_game(self, messageId, message, sender)
-	elseif messageId == message_constants.SWITCH_SELECTED_TOOLBAR_ITEM then
-		handle_switch_selected_toolbar_item(self, messageId, message, sender)
 	elseif messageId == input_constants.TOGGLE_PAUSE_MENU then
 		handle_toggle_pause_menu(self, messageId, message, sender)
 	elseif messageId == message_constants.TRIGGER_RESPONSE then

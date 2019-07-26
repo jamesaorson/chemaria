@@ -43,6 +43,7 @@ end
 -----------
 
 GLOBALS.currentChunk = nil
+GLOBALS.isPaused = false
 GLOBALS.previousChunk = nil
 GLOBALS.saveFileName = nil
 GLOBALS.worldSeed = nil

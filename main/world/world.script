@@ -26,6 +26,7 @@ local create_block
 local create_loose_pickup
 local fill_world
 local initialize_new_world
+local initialize_world
 local initialize_world_chunks
 local mine_block
 local mutate_world

@@ -1,11 +1,11 @@
 images {
-  image: "/main/player/ui/crafting/theme/images/button_idle.png"
+  image: "/main/player/ui/pause_ui/theme/images/button_idle.png"
 }
 images {
-  image: "/main/player/ui/crafting/theme/images/button_pressed.png"
+  image: "/main/player/ui/pause_ui/theme/images/button_pressed.png"
 }
 images {
-  image: "/main/player/ui/crafting/theme/images/button_disabled.png"
+  image: "/main/player/ui/pause_ui/theme/images/button_disabled.png"
 }
 margin: 0
 extrude_borders: 1

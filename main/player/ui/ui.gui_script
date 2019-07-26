@@ -321,17 +321,19 @@ function init(self)
 end
 
 function on_message(self, messageId, message, sender)
-	local clickedNode = nil
-	if is_inventory_switch_message(messageId) then
-		handle_inventory_switch(self, messageId, message, sender)
-	elseif messageId == input_constants.LEFT_CLICK then
+	if not globals.isPaused then
+		if is_inventory_switch_message(messageId) then
+			handle_inventory_switch(self, messageId, message, sender)
+		elseif messageId == input_constants.TOGGLE_INVENTORY then
+			handle_toggle_inventory(self, messageId, message, sender)
+		end
+	end
+	if messageId == input_constants.LEFT_CLICK then
 		handle_left_click(self, messageId, message, sender)
 	elseif messageId == input_constants.MOUSE_WHEEL_DOWN then
 		handle_mouse_wheel_down(self, messageId, message, sender)
 	elseif messageId == input_constants.MOUSE_WHEEL_UP then
 		handle_mouse_wheel_up(self, messageId, message, sender)
-	elseif messageId == input_constants.TOGGLE_INVENTORY then
-		handle_toggle_inventory(self, messageId, message, sender)
 	elseif messageId == message_constants.UPDATE_INVENTORY then
 		handle_update_inventory(self, messageId, message, sender)
 	elseif messageId == message_constants.UPDATE_TOOLBAR then

@@ -183,7 +183,7 @@ function HELPERS.load_game(saveFileName)
 	if saveFileName == nil then
 		return nil
 	end
-	local worldFileName = sys.get_save_file(config.APPNAME, saveFileName)
+	local worldFileName = sys.get_save_file(config.APPNAME, saveFileName .. ".json")
 
 	local savedWorldFile = io.open(worldFileName, "r")
 	if savedWorldFile then
@@ -210,7 +210,7 @@ function HELPERS.save_game(worldMutation, saveFileName)
 	print("End world save stringification " .. os.clock())
 
 	print("Begin world save file write " .. os.clock())
-	local worldFileName = sys.get_save_file(config.APPNAME, saveFileName)
+	local worldFileName = sys.get_save_file(config.APPNAME, saveFileName .. ".json")
 	local worldFile = io.open(worldFileName, "w+")
 	worldFile:write(saveData)
 	worldFile:close()

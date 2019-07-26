@@ -4,8 +4,8 @@ fonts {
   font: "/gooey/themes/kenneyblue/fonts/kenneyblue.font"
 }
 textures {
-  name: "gooey"
-  texture: "/main/menus/theme/images/theme.atlas"
+  name: "pause_ui_theme"
+  texture: "/main/player/ui/pause_ui/theme/images/theme.atlas"
 }
 background_color {
   x: 0.0
@@ -46,7 +46,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "gooey/button_idle"
+  texture: "pause_ui_theme/button_idle"
   id: "bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
