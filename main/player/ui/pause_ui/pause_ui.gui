@@ -350,7 +350,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "Exit\n"
+  text: "Exit World\n"
   ""
   font: "example"
   id: "exit_button/label"

@@ -668,7 +668,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "Exit Game"
+  text: "Exit"
   font: "example"
   id: "exit_game/label"
   xanchor: XANCHOR_NONE

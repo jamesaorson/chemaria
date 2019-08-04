@@ -1,6 +1,7 @@
 local config = require "modules.config"
 local globals = require "modules.globals"
 local helpers = require "modules.helpers"
+local camera_constants = require "modules.constants.camera"
 local item_constants = require "modules.constants.items"
 local message_constants = require "modules.constants.messages"
 local orthographic = require "orthographic.camera"

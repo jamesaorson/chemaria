@@ -58,6 +58,8 @@ function init(self)
 	self.shouldUpdatePauseUi = true
 	self.isSaveInputEnabled = false
 	self.shouldUpdateSaveInput = true
+	update_pause_ui(self)
+	update_save_input(self)
 end
 
 function on_input(self, actionId, action)
