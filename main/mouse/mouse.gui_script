@@ -1,0 +1,20 @@
+local camera_constants = require "modules.constants.camera"
+local globals = require "modules.globals"
+local orthographic = require "orthographic.camera"
+
+function init(self)
+	self.mouse_position = vmath.vector3()
+	msg.post(".", "acquire_input_focus")
+end
+
+function update(self, dt)
+	if globals.mouse_position then
+		gui.set_position(gui.get_node('mouse_wrapper'), globals.mouse_position)
+	end
+end
+
+function on_input(self, actionId, action)
+	if action.screen_x and action.screen_y then
+		globals.mouse_position = vmath.vector3(action.screen_x, action.screen_y, 1)
+	end
+end
