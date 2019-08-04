@@ -185,10 +185,19 @@ end
 
 function handle_left_click(self, messageId, message, sender)
 	self.miningMessage = message
+	local click_position = vmath.vector3(message.screen_x, message.screen_y, 0)
+	local player_position = position_helpers.player_to_screen_position(go.get_position())
+	self.click_distance_from_player = math.sqrt(
+		math.pow(click_position.x - player_position.x, 2)
+		+ math.pow(click_position.y - player_position.y, 2)
+		+ math.pow(click_position.z - player_position.z, 2)
+	)
 
-	if message.pressed and self.placingMessage == nil then
+	if message.pressed and self.placingMessage == nil and self.click_distance_from_player <= 200 then
 		self.miningTimerHandle = timer.delay(player_constants.PLAYER_BASE_MINING_INTERVAL, true, function (self, handle, timeElapsed)
-			msg.post("/world#world_script", message_constants.MINE_BLOCK, self.miningMessage)
+			if self.click_distance_from_player <= 200 then
+				msg.post("/world#world_script", message_constants.MINE_BLOCK, self.miningMessage)
+			end
 		end)
 	elseif message.released then
 		self.miningMessage = nil
@@ -270,6 +279,7 @@ end
 function init(self)
 	globals.currentChunk = nil
 
+	self.click_distance_from_player = 0
 	self.inventory = globals.get_inventory()
 	globals.isPaused = false
 	self.miningTimerHandle = nil
@@ -279,8 +289,6 @@ function init(self)
 	self.toolbar = globals.get_toolbar()
 	self.craftableItems = {}
 	self.inRangeOfFurnace = false
-
-	defos.set_cursor_visible(true)
 end
 
 function update(self, dt)
