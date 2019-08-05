@@ -718,7 +718,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "gooey/button_idle"
+  texture: "menu_theme/button_idle"
   id: "load_game/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -877,7 +877,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "gooey/button_idle"
+  texture: "menu_theme/button_idle"
   id: "delete/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1036,7 +1036,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "gooey/button_idle"
+  texture: "menu_theme/button_idle"
   id: "return_to_main_menu/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE

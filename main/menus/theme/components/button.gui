@@ -4,7 +4,7 @@ fonts {
   font: "/gooey/themes/kenneyblue/fonts/kenneyblue.font"
 }
 textures {
-  name: "gooey"
+  name: "menu_theme"
   texture: "/main/menus/theme/images/theme.atlas"
 }
 background_color {
@@ -46,7 +46,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "gooey/button_idle"
+  texture: "menu_theme/button_idle"
   id: "bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE

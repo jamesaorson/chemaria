@@ -96,6 +96,7 @@ local function update_input(input, config, node_id)
 		gui.cancel_animation(cursor, gui.PROP_COLOR)
 	end
 end
+
 function M.input(node_id, keyboard_type, action_id, action, config, refresh_input)
 	return gooey.input(node_id .. "/text", keyboard_type, action_id, action, config, function(input)
 		update_input(input, config, node_id)
@@ -104,7 +105,6 @@ function M.input(node_id, keyboard_type, action_id, action, config, refresh_inpu
 		end
 	end)
 end
-
 
 local function update_listitem(list, item)
 	local pos = gui.get_position(item.root)

@@ -9,13 +9,13 @@ PLATYPUS.CONFIG = {
 		groups = {
 			[hash("block")] = platypus.DIR_ALL
 		},
-		left = player_constants.PLAYER_WIDTH / 2,
-		right = player_constants.PLAYER_WIDTH / 2,
-		top = player_constants.PLAYER_HEIGHT / 2,
-		bottom = player_constants.PLAYER_HEIGHT / 2
+		left = player_constants.WIDTH / 2,
+		right = player_constants.WIDTH / 2,
+		top = player_constants.HEIGHT / 2,
+		bottom = player_constants.HEIGHT / 2
 	},
 	gravity = -800,
-	max_velocity = player_constants.PLAYER_MAX_VELOCITY,
+	max_velocity = player_constants.MAX_VELOCITY,
 	allow_double_jump = true,
 	allow_wall_jump = false
 }

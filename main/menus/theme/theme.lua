@@ -55,34 +55,37 @@ function M.radio(node_id, group_id, action_id, action, fn)
 end
 
 local function update_input(input, config, node_id)
-	--if input.selected_now then
-	--	gui.play_flipbook(gui.get_node(node_id .. "/bg"), INPUT_FOCUS)
-	--elseif input.deselected_now then
-	--	gui.play_flipbook(gui.get_node(node_id .. "/bg"), INPUT)
-	--end
+	if input.selected_now then
+		gui.play_flipbook(gui.get_node(node_id .. "/bg"), INPUT_FOCUS)
+	elseif input.deselected_now then
+		gui.play_flipbook(gui.get_node(node_id .. "/bg"), INPUT)
+	end
 
-	--if input.empty and not input.selected then
-	--	gui.set_text(input.node, config and config.empty_text or "")
-	--end
+	if input.empty and not input.selected then
+		gui.set_text(input.node, config and config.empty_text or "")
+	end
 
-	--local cursor = gui.get_node(node_id .. "/cursor")
-	--if input.selected then
-	--	gui.set_enabled(cursor, true)
-	--	gui.set_position(cursor, vmath.vector3(4 + input.total_width, 0, 0))
-	--	gui.cancel_animation(cursor, gui.PROP_COLOR)
-	--	gui.set_color(cursor, vmath.vector4(1))
-	--	gui.animate(cursor, gui.PROP_COLOR, vmath.vector4(1,1,1,0), gui.EASING_INSINE, 0.8, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
-	--else
-	--	gui.set_enabled(cursor, false)
-	--	gui.cancel_animation(cursor, gui.PROP_COLOR)
-	--end
-end
-function M.input(node_id, keyboard_type, action_id, action, config)
-	--return gooey.input(node_id .. "/text", keyboard_type, action_id, action, config, function(input)
-	--	update_input(input, config, node_id)
-	--end)
+	local cursor = gui.get_node(node_id .. "/cursor")
+	if input.selected then
+		gui.set_enabled(cursor, true)
+		gui.set_position(cursor, vmath.vector3(4 + input.total_width, 0, 0))
+		gui.cancel_animation(cursor, gui.PROP_COLOR)
+		gui.set_color(cursor, vmath.vector4(1))
+		gui.animate(cursor, gui.PROP_COLOR, vmath.vector4(1,1,1,0), gui.EASING_INSINE, 0.8, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+	else
+		gui.set_enabled(cursor, false)
+		gui.cancel_animation(cursor, gui.PROP_COLOR)
+	end
 end
 
+function M.input(node_id, keyboard_type, action_id, action, config, refresh_input)
+	return gooey.input(node_id .. "/text", keyboard_type, action_id, action, config, function(input)
+		update_input(input, config, node_id)
+		if refresh_input then
+			refresh_input(input)
+		end
+	end)
+end
 
 local function update_listitem(list, item)
 	--local pos = gui.get_position(item.root)

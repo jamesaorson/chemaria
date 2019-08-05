@@ -510,7 +510,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "kenneyblue_theme/blue_button10"
+  texture: "menu_theme/blue_button10"
   id: "save_input/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE

@@ -162,6 +162,14 @@ end
 -- Math --
 ----------
 
+function HELPERS.distance(v1, v2)
+	return math.sqrt(
+		math.pow(v1.x - v2.x, 2)
+		+ math.pow(v1.y - v2.y, 2)
+		+ math.pow(v1.z - v2.z, 2)
+	)
+end
+
 function HELPERS.round(num)
 	if num > 0 then
 		return math.floor(num + 0.5)
