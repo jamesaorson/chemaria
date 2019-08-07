@@ -1,7 +1,7 @@
 script: ""
 fonts {
-  name: "inventory"
-  font: "/main/player/ui/inventory_ui/inventory.font"
+  name: "theme_small"
+  font: "/main/player/ui/fonts/theme_small.font"
 }
 background_color {
   x: 0.0
@@ -97,7 +97,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE

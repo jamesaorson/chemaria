@@ -1,7 +1,7 @@
 script: ""
 fonts {
-  name: "example"
-  font: "/gooey/themes/kenneyblue/fonts/kenneyblue.font"
+  name: "theme_small"
+  font: "/main/player/ui/fonts/theme_small.font"
 }
 textures {
   name: "gooey"
@@ -55,10 +55,10 @@ nodes {
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-    w: 30.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
+    w: 40.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
@@ -70,7 +70,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -101,7 +101,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "BUTTON"
-  font: "example"
+  font: "theme_small"
   id: "label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE

@@ -1,8 +1,4 @@
 script: "/main/player/ui/pause_ui/pause_ui.gui_script"
-fonts {
-  name: "theme"
-  font: "/main/player/ui/pause_ui/theme/fonts/theme.font"
-}
 background_color {
   x: 0.0
   y: 0.0
@@ -146,10 +142,10 @@ nodes {
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-    w: 30.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
+    w: 40.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
@@ -161,7 +157,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -192,7 +188,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "Save"
-  font: "example"
+  font: "theme_small"
   id: "save_button/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -305,10 +301,10 @@ nodes {
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-    w: 30.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
+    w: 40.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
@@ -320,7 +316,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -352,7 +348,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: "Exit World\n"
   ""
-  font: "example"
+  font: "theme_small"
   id: "exit_button/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -566,7 +562,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "example"
+  font: "theme_small"
   id: "save_input/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -593,6 +589,7 @@ nodes {
   shadow_alpha: 1.0
   overridden_fields: 1
   overridden_fields: 8
+  overridden_fields: 10
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0

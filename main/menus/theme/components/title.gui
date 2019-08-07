@@ -1,7 +1,7 @@
 script: ""
 fonts {
   name: "theme"
-  font: "/main/menus/theme/fonts/theme.font"
+  font: "/main/menus/theme/fonts/theme_small.font"
 }
 background_color {
   x: 0.0

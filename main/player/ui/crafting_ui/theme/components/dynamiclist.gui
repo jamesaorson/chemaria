@@ -1,7 +1,7 @@
 script: ""
 fonts {
-  name: "kenneyblue"
-  font: "/gooey/themes/kenneyblue/fonts/kenneyblue.font"
+  name: "theme_small"
+  font: "/main/menus/theme/fonts/theme_small.font"
 }
 textures {
   name: "kenneyblue"
@@ -215,7 +215,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "LIST ITEM"
-  font: "kenneyblue"
+  font: "theme_small"
   id: "listitem_text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE

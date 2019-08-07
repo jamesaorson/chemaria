@@ -1,11 +1,11 @@
 script: ""
 fonts {
-  name: "example"
-  font: "/gooey/themes/kenneyblue/fonts/kenneyblue.font"
+  name: "theme_small"
+  font: "/main/menus/theme/fonts/theme_small.font"
 }
 textures {
-  name: "gooey"
-  texture: "/gooey/themes/kenneyblue/images/kenneyblue.atlas"
+  name: "theme"
+  texture: "/main/menus/theme/images/theme.atlas"
 }
 background_color {
   x: 0.0
@@ -46,7 +46,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "gooey/blue_button10"
+  texture: "theme/button_disabled"
   id: "bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -69,8 +69,8 @@ nodes {
 }
 nodes {
   position {
-    x: -188.839
-    y: 0.0
+    x: -180.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -101,7 +101,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "<text>"
-  font: "example"
+  font: "theme_small"
   id: "text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -133,7 +133,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: 2.0
     z: 0.0
     w: 1.0
   }

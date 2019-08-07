@@ -1,7 +1,11 @@
 script: "/main/player/ui/crafting_ui/crafting_ui.gui_script"
 fonts {
-  name: "theme"
-  font: "/main/player/ui/crafting_ui/theme/fonts/theme.font"
+  name: "theme_small"
+  font: "/main/menus/theme/fonts/theme_small.font"
+}
+fonts {
+  name: "theme_large"
+  font: "/main/menus/theme/fonts/theme_large.font"
 }
 background_color {
   x: 0.0
@@ -117,8 +121,8 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 2.0
-    y: 2.0
+    x: 0.5
+    y: 0.5
     z: 1.0
     w: 1.0
   }
@@ -137,7 +141,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "Crafting"
-  font: "theme"
+  font: "theme_large"
   id: "title/Title"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -163,6 +167,7 @@ nodes {
   outline_alpha: 1.0
   shadow_alpha: 1.0
   overridden_fields: 3
+  overridden_fields: 10
   overridden_fields: 21
   template_node_child: true
   text_leading: 1.0
@@ -526,7 +531,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "LIST ITEM"
-  font: "kenneyblue"
+  font: "theme_small"
   id: "crafting_list/listitem_text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -851,10 +856,10 @@ nodes {
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-    w: 30.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
+    w: 40.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
@@ -869,7 +874,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -900,7 +905,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "Tools"
-  font: "example"
+  font: "theme_small"
   id: "tools_menu_button/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1013,10 +1018,10 @@ nodes {
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-    w: 30.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
+    w: 40.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
@@ -1030,7 +1035,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -1062,7 +1067,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: "Smelt\n"
   ""
-  font: "example"
+  font: "theme_small"
   id: "smelt_menu_button/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1175,10 +1180,10 @@ nodes {
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-    w: 30.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
+    w: 40.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
@@ -1192,7 +1197,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -1223,7 +1228,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "Materials"
-  font: "example"
+  font: "theme_small"
   id: "materials_menu_button/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE

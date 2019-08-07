@@ -1,6 +1,5 @@
 local camera = require "orthographic.camera"
 local camera_constants = require "modules.constants.camera"
-local config = require "modules.config"
 local globals = require "modules.globals"
 local helpers = require "modules.helpers"
 local input_constants = require "modules.constants.input"
@@ -23,12 +22,12 @@ local send_player_action
 local send_ui_action
 
 function apply_config()
-	defos.set_fullscreen(config.FULLSCREEN)
+	defos.set_fullscreen(helpers.get_config_data("FULLSCREEN"))
 
 	screen_constants.SCREEN_SIZE.x, screen_constants.SCREEN_SIZE.y, screen_constants.SCREEN_SIZE.w, screen_constants.SCREEN_SIZE.h = defos.get_window_size()
 
-	msg.post(camera_constants.CAMERA_ID, "deadzone", config.CAMERA_DEADZONE)
-	msg.post(camera_constants.CAMERA_ID, "zoom_to", config.CAMERA_ZOOM_LEVEL)
+	msg.post(camera_constants.CAMERA_ID, "deadzone", helpers.get_config_data("CAMERA_DEADZONE"))
+	msg.post(camera_constants.CAMERA_ID, "zoom_to", helpers.get_config_data("CAMERA_ZOOM_LEVEL"))
 end
 
 function is_inventory_switch_action(actionId)
