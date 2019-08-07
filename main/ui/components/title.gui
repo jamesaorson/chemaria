@@ -1,7 +1,7 @@
 script: ""
 fonts {
-  name: "theme"
-  font: "/main/menus/theme/fonts/theme_small.font"
+  name: "theme_large"
+  font: "/main/ui/fonts/theme_large.font"
 }
 background_color {
   x: 0.0
@@ -23,8 +23,8 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 5.0
-    y: 5.0
+    x: 1.0
+    y: 1.0
     z: 1.0
     w: 1.0
   }
@@ -42,8 +42,8 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "Crafting"
-  font: "theme"
+  text: "Chemaria"
+  font: "theme_large"
   id: "Title"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE

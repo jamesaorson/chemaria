@@ -1,7 +1,7 @@
 local helpers = require "modules.helpers"
 local gooey = require "gooey.gooey"
 local input_constants = require "modules.constants.input"
-local theme = require "main.menus.theme.theme"
+local theme = require "main.ui.theme"
 
 -------------
 -- Helpers --

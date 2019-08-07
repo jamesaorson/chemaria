@@ -1,11 +1,7 @@
 script: "/main/menus/load_game_menu/load_game_menu.gui_script"
 fonts {
-  name: "theme_small"
-  font: "/main/menus/theme/fonts/theme_small.font"
-}
-fonts {
   name: "theme_large"
-  font: "/main/menus/theme/fonts/theme_large.font"
+  font: "/main/ui/fonts/theme_large.font"
 }
 background_color {
   x: 0.0
@@ -104,7 +100,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/theme/components/title.gui"
+  template: "/main/ui/components/title.gui"
   template_node_child: false
 }
 nodes {
@@ -169,7 +165,6 @@ nodes {
   overridden_fields: 1
   overridden_fields: 3
   overridden_fields: 8
-  overridden_fields: 10
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
@@ -266,7 +261,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/theme/components/dynamiclist.gui"
+  template: "/main/ui/components/dynamiclist.gui"
   template_node_child: false
 }
 nodes {
@@ -302,7 +297,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "theme/button_idle"
+  texture: "ui_theme/button_idle"
   id: "save_list/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -328,7 +323,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: -20.0
+    y: -10.0
     z: 0.0
     w: 1.0
   }
@@ -346,7 +341,7 @@ nodes {
   }
   size {
     x: 420.0
-    y: 350.0
+    y: 380.0
     z: 0.0
     w: 1.0
   }
@@ -377,7 +372,6 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
-  overridden_fields: 1
   overridden_fields: 4
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
@@ -415,7 +409,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "theme/button_idle"
+  texture: "ui_theme/button_idle"
   id: "save_list/listitem_bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -471,7 +465,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "kenneyblue"
+  font: "theme_small"
   id: "save_list/listitem_text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -503,8 +497,8 @@ nodes {
 }
 nodes {
   position {
-    x: 222.0
-    y: -355.0
+    x: 220.0
+    y: -340.0
     z: 0.0
     w: 1.0
   }
@@ -538,7 +532,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/theme/components/scrollbar.gui"
+  template: "/main/ui/components/scrollbar.gui"
   template_node_child: false
 }
 nodes {
@@ -688,7 +682,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/theme/components/button.gui"
+  template: "/main/ui/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -724,7 +718,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "menu_theme/button_idle"
+  texture: "ui_theme/button_idle"
   id: "load_game/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -847,7 +841,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/theme/components/button.gui"
+  template: "/main/ui/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -883,7 +877,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "menu_theme/button_idle"
+  texture: "ui_theme/button_idle"
   id: "delete/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1006,7 +1000,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/theme/components/button.gui"
+  template: "/main/ui/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -1042,7 +1036,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "menu_theme/button_idle"
+  texture: "ui_theme/button_idle"
   id: "return_to_main_menu/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE

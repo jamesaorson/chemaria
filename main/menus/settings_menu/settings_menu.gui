@@ -1,11 +1,11 @@
 script: "/main/menus/settings_menu/settings_menu.gui_script"
 fonts {
   name: "theme_small"
-  font: "/main/menus/theme/fonts/theme_small.font"
+  font: "/main/ui/fonts/theme_small.font"
 }
 fonts {
   name: "theme_large"
-  font: "/main/menus/theme/fonts/theme_large.font"
+  font: "/main/ui/fonts/theme_large.font"
 }
 background_color {
   x: 0.0
@@ -104,7 +104,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/theme/components/button.gui"
+  template: "/main/ui/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -140,7 +140,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "menu_theme/button_idle"
+  texture: "ui_theme/button_idle"
   id: "return_to_main_menu/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -214,7 +214,7 @@ nodes {
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
-  line_break: true
+  line_break: false
   parent: "return_to_main_menu/bg"
   layer: "text"
   inherit_alpha: true
@@ -222,7 +222,6 @@ nodes {
   outline_alpha: 1.0
   shadow_alpha: 1.0
   overridden_fields: 8
-  overridden_fields: 18
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
@@ -264,7 +263,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/theme/components/title.gui"
+  template: "/main/ui/components/title.gui"
   template_node_child: false
 }
 nodes {
@@ -326,10 +325,7 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
-  overridden_fields: 1
-  overridden_fields: 3
   overridden_fields: 8
-  overridden_fields: 10
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
@@ -426,7 +422,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/theme/components/input.gui"
+  template: "/main/ui/components/input.gui"
   template_node_child: false
 }
 nodes {
@@ -449,7 +445,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 200.0
+    x: 300.0
     y: 60.0
     z: 0.0
     w: 1.0
@@ -462,7 +458,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "theme/button_disabled"
+  texture: "ui_theme/button_disabled"
   id: "zoom_input/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -482,14 +478,12 @@ nodes {
   clipping_inverted: false
   alpha: 1.0
   overridden_fields: 4
-  overridden_fields: 12
-  overridden_fields: 14
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
 }
 nodes {
   position {
-    x: -80.0
+    x: -130.0
     y: -2.0
     z: 0.0
     w: 1.0
@@ -507,8 +501,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 160.0
-    y: 40.0
+    x: 200.0
+    y: 100.0
     z: 0.0
     w: 1.0
   }
@@ -520,7 +514,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "1 to 3"
+  text: "<text>"
   font: "theme_small"
   id: "zoom_input/text"
   xanchor: XANCHOR_NONE
@@ -547,9 +541,6 @@ nodes {
   outline_alpha: 1.0
   shadow_alpha: 1.0
   overridden_fields: 1
-  overridden_fields: 4
-  overridden_fields: 8
-  overridden_fields: 14
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
@@ -611,7 +602,7 @@ nodes {
 }
 nodes {
   position {
-    x: -140.0
+    x: -160.0
     y: -2.0
     z: 0.0
     w: 1.0
@@ -647,7 +638,7 @@ nodes {
   id: "zoom_label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
+  pivot: PIVOT_E
   outline {
     x: 1.0
     y: 1.0
@@ -674,7 +665,7 @@ nodes {
 }
 nodes {
   position {
-    x: 110.0
+    x: 160.0
     y: -2.0
     z: 0.0
     w: 1.0
