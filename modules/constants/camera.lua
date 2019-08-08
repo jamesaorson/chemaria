@@ -1,5 +1,5 @@
-local M = {}
+local CAMERA = {}
 
-M.CAMERA_ID = hash("/camera")
+CAMERA.CAMERA_ID = hash("/camera")
 
-return M
+return CAMERA

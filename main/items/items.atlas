@@ -40,6 +40,37 @@ images {
 images {
   image: "/assets/items/silver_ore.png"
 }
+images {
+  image: "/assets/items/stone_pickaxe.png"
+}
+images {
+  image: "/assets/items/gold_ingot.png"
+}
+images {
+  image: "/assets/items/iron_ingot.png"
+}
+images {
+  image: "/assets/items/platinum_ingot.png"
+}
+images {
+  image: "/assets/items/silver_ingot.png"
+}
+images {
+  image: "/assets/items/furnace.png"
+}
+animations {
+  id: "furnace_lit"
+  images {
+    image: "/assets/items/furnace_lit_1.png"
+  }
+  images {
+    image: "/assets/items/furnace_lit_2.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 2
+  flip_horizontal: 0
+  flip_vertical: 0
+}
 margin: 0
 extrude_borders: 1
 inner_padding: 0

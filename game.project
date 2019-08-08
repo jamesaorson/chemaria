@@ -1,7 +1,7 @@
 [project]
 title = Chemaria
 write_log = 0
-dependencies = https://github.com/britzl/platypus/archive/3.2.0.zip,https://github.com/subsoap/defos/archive/master.zip,https://github.com/britzl/defold-orthographic/archive/master.zip,https://github.com/britzl/gooey/archive/master.zip
+dependencies = https://github.com/britzl/platypus/archive/3.2.0.zip,https://github.com/subsoap/defos/archive/master.zip,https://github.com/britzl/defold-orthographic/archive/master.zip,https://github.com/britzl/gooey/archive/master.zip,https://github.com/subsoap/defsave/archive/master.zip,https://github.com/britzl/defold-lfs/archive/master.zip
 
 [bootstrap]
 main_collection = /main/main.collectionc
@@ -15,6 +15,7 @@ use_accelerometer = 0
 width = 1920
 height = 1080
 fullscreen = 0
+high_dpi = 1
 
 [script]
 shared_state = 1

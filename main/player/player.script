@@ -2,10 +2,13 @@ local camera_constants = require "modules.constants.camera"
 local config = require "modules.config"
 local globals = require "modules.globals"
 local helpers = require "modules.helpers"
+local input_constants = require "modules.constants.input"
 local inventory_constants = require "modules.constants.inventory"
 local item_constants = require "modules.constants.items"
+local message_constants = require "modules.constants.messages"
 local orthographic = require "orthographic.camera"
 local platypus = require "platypus.platypus"
+local platypus_constants = require "modules.constants.platypus"
 local player_constants = require "modules.constants.player"
 local position_helpers = require "modules.position_helpers"
 local toolbar_constants = require "modules.constants.toolbar"
@@ -19,10 +22,12 @@ require "modules.models.World"
 -------------
 
 local add_loose_pickup_to_player
-local check_for_crafting_components
+local quit_game
+local save_game
+local update_crafting_ui
 local update_current_chunk
-local update_inventory
-local update_toolbar
+local update_inventory_ui
+local update_toolbar_ui
 
 function add_loose_pickup_to_player(self, messageId, message, sender)
 	local loosePickup = World.get_loose_pickup(world, message.other_id)
@@ -32,45 +37,40 @@ function add_loose_pickup_to_player(self, messageId, message, sender)
 				if item.id == loosePickup.id and item.count < item_constants.ALL_ITEMS[item.id].stackSize then
 					item.count = item.count + 1
 					updateFn()
+					update_crafting_ui()
 					return true
 				elseif item.id == item_constants.NONE.id then
 					item.count = 1
 					item.id = loosePickup.id
-					item.name = item_constants.ALL_ITEMS[item.id].name
 					updateFn()
+					update_crafting_ui()
 					return true
 				end
 			end
 			return false
 		end
-		if add_loose_pickup(self.toolbar, update_toolbar) then
+		if add_loose_pickup(self.toolbar, update_toolbar_ui) then
 			return true
 		else
-			return add_loose_pickup(self.inventory, update_inventory)
+			return add_loose_pickup(self.inventory, update_inventory_ui)
 		end
 	end
 	return false
 end
 
-function check_for_crafting_components(self, recipe, componentsToCheck, materialsToUse, container)
-	for i, item in pairs(container) do
-		local component = componentsToCheck[item.id]
-		if (component and not component.fulfilled) then
-			local amountToTake
-			local requirement = component.requirement
-			if component.actual + item.count > requirement then
-				amountToTake = requirement - component.actual
-			else
-				amountToTake = item.count
-			end
-			component.actual = component.actual + amountToTake
-			if component.actual == component.requirement then
-				component.fulfilled = true
-			end
+function quit_game()
+	globals.saveFileName = nil
+	msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#main_menu_proxy" })
+end
 
-			table.insert(materialsToUse, { index = item.index, count = amountToTake })
-		end
+function save_game()
+	if globals.saveFileName ~= nil then
+		helpers.save_game(worldMutation, globals.saveFileName)
 	end
+end
+
+function update_crafting_ui()
+	msg.post("/crafting_ui#crafting_ui", message_constants.UPDATE_RECIPE_LIST)
 end
 
 function update_current_chunk(self)
@@ -81,16 +81,16 @@ function update_current_chunk(self)
 	if globals.currentChunk ~= chunk then
 		globals.previousChunk = globals.currentChunk
 		globals.currentChunk = chunk
-		msg.post("/world#world_script", "update_chunk_render")
+		msg.post("/world#world_script", message_constants.UPDATE_CHUNK_RENDER)
 	end
 end
 
-function update_inventory()
-	msg.post("/ui#ui", "update_inventory")
+function update_inventory_ui()
+	msg.post("/ui#ui", message_constants.UPDATE_INVENTORY)
 end
 
-function update_toolbar()
-	msg.post("/ui#ui", "update_toolbar")
+function update_toolbar_ui()
+	msg.post("/ui#ui", message_constants.UPDATE_TOOLBAR)
 end
 
 -----------------
@@ -106,36 +106,31 @@ local handle_craft
 local handle_jump
 local handle_left
 local handle_left_click
+local handle_quit_game
 local handle_right
 local handle_right_click
+local handle_save_game
 local handle_switch_selected_toolbar_item
+local handle_toggle_pause_menu
 local handle_trigger_response
 local handle_update_toolbar_item
 
 function handle_craft(self, messageId, message, sender)
 	local recipeToCraft = message.recipe
+	if recipeToCraft == nil then
+		print("Recipe to craft was nil")
+		return
+	end
+
+	local canCraftRecipe = false
 	local componentsToCheck = {}
-	for id, requirement in pairs(recipeToCraft.components) do
-		componentsToCheck[id] = { requirement = requirement, actual = 0, fulfilled = false }
-	end
-
-	local function can_craft_recipe(componentsToCheck)
-		for i, component in pairs(componentsToCheck) do
-			if not component.fulfilled then
-				return false
-			end
-		end
-		return true
-	end
-
-	local canCraftRecipe = true
 	local toolbarMaterialsToUse = {}
 	local inventoryMaterialsToUse = {}
-	check_for_crafting_components(self, recipeToCraft, componentsToCheck, toolbarMaterialsToUse, self.toolbar)
-	canCraftRecipe = can_craft_recipe(componentsToCheck)
-	if not canCraftRecipe then
-		check_for_crafting_components(self, recipeToCraft, componentsToCheck, inventoryMaterialsToUse, self.inventory)
-		canCraftRecipe = can_craft_recipe(componentsToCheck)
+	if not recipeToCraft.needsFurnace or (recipeToCraft.needsFurnace and self.isInRangeOfFurnace) then
+		canCraftRecipe = helpers.check_for_crafting_components(self, recipeToCraft, componentsToCheck, toolbarMaterialsToUse, self.toolbar)
+		if not canCraftRecipe then
+			canCraftRecipe = helpers.check_for_crafting_components(self, recipeToCraft, componentsToCheck, inventoryMaterialsToUse, self.inventory)
+		end
 	end
 
 	local itemToCraft = item_constants.ALL_ITEMS[recipeToCraft.itemId]
@@ -164,84 +159,113 @@ function handle_craft(self, messageId, message, sender)
 		end
 		if not add_to_container(self.toolbar, itemToCraft) then
 			if not add_to_container(self.inventory, itemToCraft) then
-				msg.post("/world#world_script", "create_loose_pickup", { item = itemToCraft, position = go.get_position(camera_constants.CAMERA_ID) })
+				msg.post("/world#world_script", message_constants.CREATE_LOOSE_PICKUP, { item = itemToCraft, position = go.get_position(camera_constants.CAMERA_ID) })
 			end
 		end
-		msg.post("/ui#ui", "update_toolbar")
-		msg.post("/ui#ui", "update_inventory")
+		update_crafting_ui()
+		update_inventory_ui()
+		update_toolbar_ui()
 	else 
-		print("Cannot craft "..item_constants.ALL_ITEMS[recipeToCraft.itemId].name)
+		print("Cannot craft " .. item_constants.ALL_ITEMS[recipeToCraft.itemId].name)
 	end
 	return canCraftRecipe
 end
 
 function handle_jump(self, messageId, message, sender)
 	if message.pressed then
-		self.platypus.jump(player_constants.PLAYER_JUMP_FORCE)
+		self.platypus.jump(player_constants.JUMP_FORCE)
 	elseif message.released then
 		self.platypus.abort_jump(0.5)
 	end
 end
 
 function handle_left(self, messageId, message, sender)
-	self.platypus.left(player_constants.PLAYER_VELOCITY.x)
+	self.platypus.left(player_constants.VELOCITY.x)
 end
 
 function handle_left_click(self, messageId, message, sender)
-	self.miningMessage = message
+	local click_position = vmath.vector3(message.screen_x, message.screen_y, 0)
+	local player_position = position_helpers.player_to_screen_position(go.get_position())
+	self.leftClickDistanceFromPlayer = helpers.distance(click_position, player_position)
 
+	self.miningMessage = message
 	if message.pressed and self.placingMessage == nil then
-		self.miningTimerHandle = timer.delay(player_constants.PLAYER_BASE_MINING_INTERVAL, true, function (self, handle, timeElapsed)
-			msg.post("/world#world_script", "mine_block", self.miningMessage)
+		self.miningTimerHandle = timer.delay(player_constants.BASE_MINING_INTERVAL, true, function (self, handle, timeElapsed)
+			if self.leftClickDistanceFromPlayer <= player_constants.BASE_MINING_DISTANCE then
+				self.miningMessage.miningStrength = 2
+				msg.post("/world#world_script", message_constants.MINE_BLOCK, self.miningMessage)
+			end
 		end)
 	elseif message.released then
 		self.miningMessage = nil
-		timer.cancel(self.miningTimerHandle)
+		if self.miningTimerHandle ~= nil then
+			timer.cancel(self.miningTimerHandle)
+		end
 	end
 end
 
+function handle_quit_game(self, messageId, message, sender)
+	quit_game()
+end
+
 function handle_right(self, messageId, message, sender)
-	self.platypus.right(player_constants.PLAYER_VELOCITY.x)
+	self.platypus.right(player_constants.VELOCITY.x)
 end
 
 function handle_right_click(self, messageId, message, sender)
 	self.placingMessage = message
+	local click_position = vmath.vector3(message.screen_x, message.screen_y, 0)
+	local player_position = position_helpers.player_to_screen_position(go.get_position())
+	self.rightClickDistanceFromPlayer = helpers.distance(click_position, player_position)
+
 	if message.pressed and self.miningMessage == nil then
 		self.placingMessage.toolbarItem = self.toolbar[self.selectedToolbarItem]
 		if helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id then
-			msg.post("/world#world_script", "place_block", self.placingMessage)
+			msg.post("/world#world_script", message_constants.PLACE_BLOCK, self.placingMessage)
 		end
-		self.placingTimerHandle = timer.delay(player_constants.PLAYER_BASE_PLACING_INTERVAL, true, function (self, handle, timeElapsed)
+		self.placingTimerHandle = timer.delay(player_constants.BASE_PLACING_INTERVAL, true, function (self, handle, timeElapsed)
 			self.placingMessage.toolbarItem = self.toolbar[self.selectedToolbarItem]
-			if helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id then
-				msg.post("/world#world_script", "place_block", self.placingMessage)
+			if helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id and self.rightClickDistanceFromPlayer <= player_constants.BASE_PLACING_DISTANCE then
+				msg.post("/world#world_script", message_constants.PLACE_BLOCK, self.placingMessage)
 			end
 		end)
 	elseif message.released then
 		self.placingMessage = nil
-		timer.cancel(self.placingTimerHandle)
+		if self.placingTimerHandle ~= nil then
+			timer.cancel(self.placingTimerHandle)
+		end
 	end
+end
+
+function handle_save_game(self, messageId, message, sender)
+	save_game()
 end
 
 function handle_switch_selected_toolbar_item(self, messageId, message, sender)
 	self.selectedToolbarItem = message.toolbarIndex
 end
 
+function handle_toggle_pause_menu(self, messageId, message, sender)
+	msg.post("/pause_ui#pause_ui", messageId, message)
+	globals.isPaused = not globals.isPaused
+end
+
 function handle_trigger_response(self, messageId, message, sender)
-	if message.group == hash("pickup") then
+	if message.group == message_constants.PICKUP then
 		if add_loose_pickup_to_player(self, messageId, message, sender) then
 			go.delete(message.other_id)
 		end
+	elseif message.group == message_constants.FURNACE then
+		self.isInRangeOfFurnace = message.enter
 	end
 end
 
 function handle_update_toolbar_item(self, messageId, message, sender)
 	if message.count == 0 then
 		message.id = item_constants.NONE.id
-		message.name = item_constants.ALL_ITEMS[item_constants.NONE.id].name
 	end
 	self.toolbar[message.index] = message
-	msg.post("/ui#ui", "update_toolbar")
+	msg.post("/ui#ui", message_constants.UPDATE_TOOLBAR)
 end
 
 --------------------------
@@ -254,17 +278,19 @@ end
 ----------------------
 
 function init(self)
-	currentChunk = nil
+	globals.currentChunk = nil
 
+	self.leftClickDistanceFromPlayer = 0
+	self.rightClickDistanceFromPlayer = 0
 	self.inventory = globals.get_inventory()
+	globals.isPaused = false
 	self.miningTimerHandle = nil
 	self.placingTimerHandle = nil
-	self.platypus = platypus.create(config.PLATYPUS_CONFIG)
+	self.platypus = platypus.create(platypus_constants.CONFIG)
 	self.selectedToolbarItem = 1
 	self.toolbar = globals.get_toolbar()
 	self.craftableItems = {}
-
-	defos.set_cursor_visible(true)
+	self.inRangeOfFurnace = false
 end
 
 function update(self, dt)
@@ -276,23 +302,32 @@ end
 function on_message(self, messageId, message, sender)
 	self.platypus.on_message(messageId, message)
 
-	if messageId == hash("craft") then
-		handle_craft(self, messageId, message, sender)
-	elseif messageId == hash("jump") then
-		handle_jump(self, messageId, message, sender)
-	elseif messageId == hash("left") then
-		handle_left(self, messageId, message, sender)
-	elseif messageId == hash("left_click") then
-		handle_left_click(self, messageId, message, sender)
-	elseif messageId == hash("right") then
-		handle_right(self, messageId, message, sender)
-	elseif messageId == hash("right_click") then
-		handle_right_click(self, messageId, message, sender)
-	elseif messageId == hash("switch_selected_toolbar_item") then
-		handle_switch_selected_toolbar_item(self, messageId, message, sender)
-	elseif messageId == hash("trigger_response") then
+	if not globals.isPaused then
+		if messageId == message_constants.CRAFT then
+			handle_craft(self, messageId, message, sender)
+		elseif messageId == input_constants.JUMP then
+			handle_jump(self, messageId, message, sender)
+		elseif messageId == input_constants.LEFT then
+			handle_left(self, messageId, message, sender)
+		elseif messageId == input_constants.LEFT_CLICK then
+			handle_left_click(self, messageId, message, sender)
+		elseif messageId == input_constants.RIGHT then
+			handle_right(self, messageId, message, sender)
+		elseif messageId == input_constants.RIGHT_CLICK then
+			handle_right_click(self, messageId, message, sender)
+		elseif messageId == message_constants.SWITCH_SELECTED_TOOLBAR_ITEM then
+			handle_switch_selected_toolbar_item(self, messageId, message, sender)
+		end
+	end
+	if messageId == message_constants.QUIT_GAME then
+		handle_quit_game(self, messageId, message, sender)
+	elseif messageId == message_constants.SAVE_GAME then
+		handle_save_game(self, messageId, message, sender)
+	elseif messageId == input_constants.TOGGLE_PAUSE_MENU then
+		handle_toggle_pause_menu(self, messageId, message, sender)
+	elseif messageId == message_constants.TRIGGER_RESPONSE then
 		handle_trigger_response(self, messageId, message, sender)
-	elseif messageId == hash("update_toolbar_item") then
+	elseif messageId == message_constants.UPDATE_TOOLBAR_ITEM then
 		handle_update_toolbar_item(self, messageId, message, sender)
 	end
 end

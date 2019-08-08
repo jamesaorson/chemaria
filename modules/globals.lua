@@ -1,7 +1,4 @@
-currentChunk = nil
-previousChunk = nil
-
-local M = {}
+local GLOBALS = {}
 
 ---------------
 -- Inventory --
@@ -9,11 +6,11 @@ local M = {}
 
 local inventory = {}
 
-function M.get_inventory()
+function GLOBALS.get_inventory()
 	return inventory
 end
 
-function M.update_inventory_item(item)
+function GLOBALS.update_inventory_item(item)
 	inventory[item.index] = item
 end
 
@@ -28,11 +25,11 @@ end
 
 local toolbar = {}
 
-function M.get_toolbar()
+function GLOBALS.get_toolbar()
 	return toolbar
 end
 
-function M.update_toolbar_item(item)
+function GLOBALS.update_toolbar_item(item)
 	toolbar[item.index] = item
 end
 
@@ -40,4 +37,20 @@ end
 -- End Toolbar --
 -----------------
 
-return M
+
+-----------
+-- World --
+-----------
+
+GLOBALS.currentChunk = nil
+GLOBALS.isPaused = false
+GLOBALS.mouse_positon = vmath.vector3()
+GLOBALS.previousChunk = nil
+GLOBALS.saveFileName = nil
+GLOBALS.worldSeed = nil
+
+---------------
+-- End World --
+---------------
+
+return GLOBALS
