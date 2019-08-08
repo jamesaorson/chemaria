@@ -13,42 +13,49 @@ ITEMS.NONE = {
 
 ITEMS.DIRT = {
 	id = 010001,
+	maxDurability = 2,
 	name = "dirt",
 	displayName = "Dirt",
 	stackSize = 64
 }
 ITEMS.STONE = {
 	id = 010002,
+	maxDurability = 4,
 	name = "stone",
 	displayName = "Stone",
 	stackSize = 64
 }
 ITEMS.SAND = {
 	id = 010003,
+	maxDurability = 1,
 	name = "sand",
 	displayName = "Sand",
 	stackSize = 64
 }
 ITEMS.CLAY = {
 	id = 010004,
+	maxDurability = 3,
 	name = "clay",
 	displayName = "Clay",
 	stackSize = 64
 }
 ITEMS.CLAY_BRICKS = {
 	id = 010005,
+	maxDurability = 4,
 	name = "clay_bricks",
 	displayName = "Clay Bricks",
 	stackSize = 64
 }
 ITEMS.STONE_BRICKS = {
 	id = 010006,
+	maxDurability = 6,
 	name = "stone_bricks",
 	displayName = "Stone Bricks",
 	stackSize = 64
 }
 ITEMS.WOOD_WALL = {
 	id = 010007,
+	maxDurability = 3,
 	name = "wood_wall",
 	displayName = "Wood Wall",
 	stackSize = 64
@@ -62,6 +69,7 @@ ITEMS.WOOD_PLANKS = {
 }
 ITEMS.FURNACE = {
 	id = 010013,
+	maxDurability = 8,
 	name = "furnace",
 	displayName = "Furnace",
 	stackSize = 1
@@ -108,24 +116,28 @@ ITEMS.STONE_PICKAXE = {
 
 ITEMS.GOLD_ORE = {
 	id = 040008,
+	maxDurability = 3,
 	name = "gold_ore",
 	displayName = "Gold Ore",
 	stackSize = 64
 }
 ITEMS.IRON_ORE = {
 	id = 040009,
+	maxDurability = 6,
 	name = "iron_ore",
 	displayName = "Iron Ore",
 	stackSize = 64
 }
 ITEMS.PLATINUM_ORE = {
 	id = 040010,
+	maxDurability = 6,
 	name = "platinum_ore",
 	displayName = "Platinum Ore",
 	stackSize = 64
 }
 ITEMS.SILVER_ORE = {
 	id = 040011,
+	maxDurability = 6,
 	name = "silver_ore",
 	displayName = "Silver Ore",
 	stackSize = 64

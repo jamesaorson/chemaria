@@ -184,14 +184,15 @@ function handle_left(self, messageId, message, sender)
 end
 
 function handle_left_click(self, messageId, message, sender)
-	self.miningMessage = message
 	local click_position = vmath.vector3(message.screen_x, message.screen_y, 0)
 	local player_position = position_helpers.player_to_screen_position(go.get_position())
 	self.leftClickDistanceFromPlayer = helpers.distance(click_position, player_position)
 
+	self.miningMessage = message
 	if message.pressed and self.placingMessage == nil then
 		self.miningTimerHandle = timer.delay(player_constants.BASE_MINING_INTERVAL, true, function (self, handle, timeElapsed)
 			if self.leftClickDistanceFromPlayer <= player_constants.BASE_MINING_DISTANCE then
+				self.miningMessage.miningStrength = 2
 				msg.post("/world#world_script", message_constants.MINE_BLOCK, self.miningMessage)
 			end
 		end)
