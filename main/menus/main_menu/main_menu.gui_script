@@ -1,5 +1,5 @@
 local gooey = require "gooey.gooey"
-local theme = require "main.menus.theme.theme"
+local theme = require "main.ui.theme"
 
 -------------
 -- Helpers --

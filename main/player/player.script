@@ -173,22 +173,28 @@ end
 
 function handle_jump(self, messageId, message, sender)
 	if message.pressed then
-		self.platypus.jump(player_constants.PLAYER_JUMP_FORCE)
+		self.platypus.jump(player_constants.JUMP_FORCE)
 	elseif message.released then
 		self.platypus.abort_jump(0.5)
 	end
 end
 
 function handle_left(self, messageId, message, sender)
-	self.platypus.left(player_constants.PLAYER_VELOCITY.x)
+	self.platypus.left(player_constants.VELOCITY.x)
 end
 
 function handle_left_click(self, messageId, message, sender)
-	self.miningMessage = message
+	local click_position = vmath.vector3(message.screen_x, message.screen_y, 0)
+	local player_position = position_helpers.player_to_screen_position(go.get_position())
+	self.leftClickDistanceFromPlayer = helpers.distance(click_position, player_position)
 
+	self.miningMessage = message
 	if message.pressed and self.placingMessage == nil then
-		self.miningTimerHandle = timer.delay(player_constants.PLAYER_BASE_MINING_INTERVAL, true, function (self, handle, timeElapsed)
-			msg.post("/world#world_script", message_constants.MINE_BLOCK, self.miningMessage)
+		self.miningTimerHandle = timer.delay(player_constants.BASE_MINING_INTERVAL, true, function (self, handle, timeElapsed)
+			if self.leftClickDistanceFromPlayer <= player_constants.BASE_MINING_DISTANCE then
+				self.miningMessage.miningStrength = 2
+				msg.post("/world#world_script", message_constants.MINE_BLOCK, self.miningMessage)
+			end
 		end)
 	elseif message.released then
 		self.miningMessage = nil
@@ -203,19 +209,23 @@ function handle_quit_game(self, messageId, message, sender)
 end
 
 function handle_right(self, messageId, message, sender)
-	self.platypus.right(player_constants.PLAYER_VELOCITY.x)
+	self.platypus.right(player_constants.VELOCITY.x)
 end
 
 function handle_right_click(self, messageId, message, sender)
 	self.placingMessage = message
+	local click_position = vmath.vector3(message.screen_x, message.screen_y, 0)
+	local player_position = position_helpers.player_to_screen_position(go.get_position())
+	self.rightClickDistanceFromPlayer = helpers.distance(click_position, player_position)
+
 	if message.pressed and self.miningMessage == nil then
 		self.placingMessage.toolbarItem = self.toolbar[self.selectedToolbarItem]
 		if helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id then
 			msg.post("/world#world_script", message_constants.PLACE_BLOCK, self.placingMessage)
 		end
-		self.placingTimerHandle = timer.delay(player_constants.PLAYER_BASE_PLACING_INTERVAL, true, function (self, handle, timeElapsed)
+		self.placingTimerHandle = timer.delay(player_constants.BASE_PLACING_INTERVAL, true, function (self, handle, timeElapsed)
 			self.placingMessage.toolbarItem = self.toolbar[self.selectedToolbarItem]
-			if helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id then
+			if helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id and self.rightClickDistanceFromPlayer <= player_constants.BASE_PLACING_DISTANCE then
 				msg.post("/world#world_script", message_constants.PLACE_BLOCK, self.placingMessage)
 			end
 		end)
@@ -270,6 +280,8 @@ end
 function init(self)
 	globals.currentChunk = nil
 
+	self.leftClickDistanceFromPlayer = 0
+	self.rightClickDistanceFromPlayer = 0
 	self.inventory = globals.get_inventory()
 	globals.isPaused = false
 	self.miningTimerHandle = nil
@@ -279,8 +291,6 @@ function init(self)
 	self.toolbar = globals.get_toolbar()
 	self.craftableItems = {}
 	self.inRangeOfFurnace = false
-
-	defos.set_cursor_visible(true)
 end
 
 function update(self, dt)

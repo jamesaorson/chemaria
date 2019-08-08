@@ -1,7 +1,11 @@
 script: "/main/player/ui/crafting_ui/crafting_ui.gui_script"
 fonts {
-  name: "theme"
-  font: "/main/player/ui/crafting_ui/theme/fonts/theme.font"
+  name: "theme_small"
+  font: "/main/ui/fonts/theme_small.font"
+}
+fonts {
+  name: "theme_large"
+  font: "/main/ui/fonts/theme_large.font"
 }
 background_color {
   x: 0.0
@@ -100,7 +104,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/player/ui/crafting_ui/theme/components/title.gui"
+  template: "/main/ui/components/title.gui"
   template_node_child: false
 }
 nodes {
@@ -117,8 +121,8 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 2.0
-    y: 2.0
+    x: 0.6
+    y: 0.6
     z: 1.0
     w: 1.0
   }
@@ -137,7 +141,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "Crafting"
-  font: "theme"
+  font: "theme_large"
   id: "title/Title"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -158,12 +162,12 @@ nodes {
   line_break: false
   parent: "title"
   layer: ""
-  inherit_alpha: false
+  inherit_alpha: true
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
   overridden_fields: 3
-  overridden_fields: 21
+  overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
@@ -315,7 +319,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/player/ui/crafting_ui/theme/components/dynamiclist.gui"
+  template: "/main/ui/components/dynamiclist.gui"
   template_node_child: false
 }
 nodes {
@@ -338,8 +342,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 500.0
-    y: 450.0
+    x: 470.0
+    y: 440.0
     z: 0.0
     w: 1.0
   }
@@ -351,7 +355,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "theme/button_idle"
+  texture: "ui_theme/button_idle"
   id: "crafting_list/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -359,7 +363,7 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   parent: "crafting_list"
   layer: ""
-  inherit_alpha: false
+  inherit_alpha: true
   slice9 {
     x: 10.0
     y: 10.0
@@ -372,14 +376,13 @@ nodes {
   alpha: 1.0
   overridden_fields: 1
   overridden_fields: 4
-  overridden_fields: 21
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
 }
 nodes {
   position {
     x: 0.0
-    y: -40.0
+    y: -10.0
     z: 0.0
     w: 1.0
   }
@@ -396,8 +399,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 430.0
-    y: 370.0
+    x: 420.0
+    y: 400.0
     z: 0.0
     w: 1.0
   }
@@ -417,7 +420,7 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   parent: "crafting_list/bg"
   layer: "below"
-  inherit_alpha: false
+  inherit_alpha: true
   slice9 {
     x: 0.0
     y: 0.0
@@ -428,16 +431,14 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
-  overridden_fields: 1
   overridden_fields: 4
-  overridden_fields: 21
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
 }
 nodes {
   position {
     x: 0.0
-    y: -30.0
+    y: -29.0
     z: 0.0
     w: 1.0
   }
@@ -454,7 +455,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 410.0
+    x: 400.0
     y: 60.0
     z: 0.0
     w: 1.0
@@ -467,7 +468,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "theme/button_idle"
+  texture: "ui_theme/button_idle"
   id: "crafting_list/listitem_bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -475,7 +476,7 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   parent: "crafting_list/stencil"
   layer: "below"
-  inherit_alpha: false
+  inherit_alpha: true
   slice9 {
     x: 50.0
     y: 50.0
@@ -486,9 +487,6 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
-  overridden_fields: 1
-  overridden_fields: 4
-  overridden_fields: 21
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
 }
@@ -512,7 +510,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 310.0
+    x: 400.0
     y: 60.0
     z: 0.0
     w: 1.0
@@ -525,8 +523,8 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "LIST ITEM"
-  font: "kenneyblue"
+  text: ""
+  font: "theme_small"
   id: "crafting_list/listitem_text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -547,21 +545,19 @@ nodes {
   line_break: false
   parent: "crafting_list/listitem_bg"
   layer: "text"
-  inherit_alpha: false
+  inherit_alpha: true
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
-  overridden_fields: 1
-  overridden_fields: 4
-  overridden_fields: 21
+  overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
 }
 nodes {
   position {
-    x: 222.0
-    y: -450.0
+    x: 217.0
+    y: -320.0
     z: 0.0
     w: 1.0
   }
@@ -595,13 +591,13 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/player/ui/crafting_ui/theme/components/scrollbar.gui"
+  template: "/main/ui/components/scrollbar.gui"
   template_node_child: false
 }
 nodes {
   position {
     x: 0.0
-    y: 110.0
+    y: 0.0
     z: 0.0
     w: 1.0
   }
@@ -639,7 +635,7 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   parent: "scrollbar"
   layer: ""
-  inherit_alpha: false
+  inherit_alpha: true
   slice9 {
     x: 0.0
     y: 0.0
@@ -650,9 +646,6 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
-  overridden_fields: 1
-  overridden_fields: 4
-  overridden_fields: 21
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
 }
@@ -697,7 +690,7 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   parent: "scrollbar/bounds"
   layer: "below"
-  inherit_alpha: false
+  inherit_alpha: true
   slice9 {
     x: 6.0
     y: 6.0
@@ -708,8 +701,6 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
-  overridden_fields: 1
-  overridden_fields: 21
   template_node_child: true
   size_mode: SIZE_MODE_AUTO
 }
@@ -805,7 +796,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/player/ui/crafting_ui/theme/components/button.gui"
+  template: "/main/ui/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -829,7 +820,7 @@ nodes {
   }
   size {
     x: 150.0
-    y: 51.0
+    y: 50.0
     z: 0.0
     w: 1.0
   }
@@ -841,7 +832,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "gooey/button_idle"
+  texture: "ui_theme/button_idle"
   id: "tools_menu_button/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -851,25 +842,23 @@ nodes {
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-    w: 30.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
+    w: 40.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
-  overridden_fields: 1
   overridden_fields: 4
-  overridden_fields: 9
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
 }
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -900,7 +889,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "Tools"
-  font: "example"
+  font: "theme_small"
   id: "tools_menu_button/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -967,7 +956,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/player/ui/crafting_ui/theme/components/button.gui"
+  template: "/main/ui/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -991,7 +980,7 @@ nodes {
   }
   size {
     x: 150.0
-    y: 51.0
+    y: 50.0
     z: 0.0
     w: 1.0
   }
@@ -1003,7 +992,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "gooey/button_idle"
+  texture: "ui_theme/button_idle"
   id: "smelt_menu_button/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1013,16 +1002,15 @@ nodes {
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-    w: 30.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
+    w: 40.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
-  overridden_fields: 1
   overridden_fields: 4
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
@@ -1030,7 +1018,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -1047,7 +1035,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 200.0
+    x: 150.0
     y: 100.0
     z: 0.0
     w: 1.0
@@ -1060,9 +1048,8 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "Smelt\n"
-  ""
-  font: "example"
+  text: "Smelt"
+  font: "theme_small"
   id: "smelt_menu_button/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1087,6 +1074,7 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  overridden_fields: 4
   overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
@@ -1129,7 +1117,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/player/ui/crafting_ui/theme/components/button.gui"
+  template: "/main/ui/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -1153,7 +1141,7 @@ nodes {
   }
   size {
     x: 150.0
-    y: 51.0
+    y: 50.0
     z: 0.0
     w: 1.0
   }
@@ -1165,7 +1153,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "gooey/button_idle"
+  texture: "ui_theme/button_idle"
   id: "materials_menu_button/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1175,16 +1163,15 @@ nodes {
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-    w: 30.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
+    w: 40.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
-  overridden_fields: 1
   overridden_fields: 4
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
@@ -1192,7 +1179,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -1223,7 +1210,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "Materials"
-  font: "example"
+  font: "theme_small"
   id: "materials_menu_button/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE

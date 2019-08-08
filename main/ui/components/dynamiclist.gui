@@ -1,15 +1,15 @@
 script: ""
 fonts {
-  name: "kenneyblue"
-  font: "/gooey/themes/kenneyblue/fonts/kenneyblue.font"
+  name: "theme_small"
+  font: "/main/ui/fonts/theme_small.font"
 }
 textures {
   name: "kenneyblue"
   texture: "/gooey/themes/kenneyblue/images/kenneyblue.atlas"
 }
 textures {
-  name: "theme"
-  texture: "/main/player/ui/crafting/theme/images/theme.atlas"
+  name: "ui_theme"
+  texture: "/main/ui/images/theme.atlas"
 }
 background_color {
   x: 0.0
@@ -50,7 +50,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "theme/button_idle"
+  texture: "ui_theme/button_idle"
   id: "bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -159,7 +159,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "theme/button_idle"
+  texture: "ui_theme/button_idle"
   id: "listitem_bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -215,7 +215,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "LIST ITEM"
-  font: "kenneyblue"
+  font: "theme_small"
   id: "listitem_text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE

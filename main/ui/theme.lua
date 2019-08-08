@@ -3,23 +3,8 @@ local utils = require "gooey.themes.utils"
 
 local M = gooey.create_theme()
 
-local INPUT_FOCUS = hash("blue_button10")
-local INPUT = hash("blue_button10")
-
 local BUTTON_PRESSED = hash("button_pressed")
 local BUTTON = hash("button_idle")
-
-local LISTITEM_SELECTED = hash("button_pressed")
-local LISTITEM_PRESSED = hash("button_pressed")
-local LISTITEM = hash("button_idle")
-
-local CHECKBOX_PRESSED = hash("grey_boxCross")
-local CHECKBOX_CHECKED = hash("blue_boxCross")
-local CHECKBOX = hash("grey_box")
-
-local RADIO_PRESSED = hash("grey_boxTick")
-local RADIO_SELECTED = hash("blue_boxTick")
-local RADIO = hash("grey_circle")
 
 local function refresh_button(button)
 	if button.pressed then
@@ -87,15 +72,16 @@ local function update_input(input, config, node_id)
 	local cursor = gui.get_node(node_id .. "/cursor")
 	if input.selected then
 		gui.set_enabled(cursor, true)
-		gui.set_position(cursor, vmath.vector3(4 + input.total_width, 0, 0))
+		gui.set_position(cursor, vmath.vector3(input.total_width, 2, 0))
 		gui.cancel_animation(cursor, gui.PROP_COLOR)
 		gui.set_color(cursor, vmath.vector4(1))
-		gui.animate(cursor, gui.PROP_COLOR, vmath.vector4(1,1,1,0), gui.EASING_INSINE, 0.8, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+		gui.animate(cursor, gui.PROP_COLOR, vmath.vector4(1, 1, 1, 0), gui.EASING_INSINE, 1.0, 0, nil, gui.PLAYBACK_LOOP_FORWARD)
 	else
 		gui.set_enabled(cursor, false)
 		gui.cancel_animation(cursor, gui.PROP_COLOR)
 	end
 end
+
 function M.input(node_id, keyboard_type, action_id, action, config, refresh_input)
 	return gooey.input(node_id .. "/text", keyboard_type, action_id, action, config, function(input)
 		update_input(input, config, node_id)
@@ -105,26 +91,25 @@ function M.input(node_id, keyboard_type, action_id, action, config, refresh_inpu
 	end)
 end
 
-
 local function update_listitem(list, item)
-	local pos = gui.get_position(item.root)
-	if item.index == list.selected_item then
-		pos.x = 4
-		gui.play_flipbook(item.root, LISTITEM_SELECTED)
-	elseif item.index == list.pressed_item then
-		pos.x = 1
-		gui.play_flipbook(item.root, LISTITEM_PRESSED)
-	elseif item.index == list.over_item_now then
-		pos.x = 1
-		gui.play_flipbook(item.root, LISTITEM)
-	elseif item.index == list.out_item_now then
-		pos.x = 0
-		gui.play_flipbook(item.root, LISTITEM)
-	elseif item.index ~= list.over_item then
-		pos.x = 0
-		gui.play_flipbook(item.root, LISTITEM)
-	end
-	gui.set_position(item.root, pos)
+	--local pos = gui.get_position(item.root)
+	--if item.index == list.selected_item then
+	--	pos.x = 4
+	--	gui.play_flipbook(item.root, LISTITEM_SELECTED)
+	--elseif item.index == list.pressed_item then
+	--	pos.x = 1
+	--	gui.play_flipbook(item.root, LISTITEM_PRESSED)
+	--elseif item.index == list.over_item_now then
+	--	pos.x = 1
+	--	gui.play_flipbook(item.root, LISTITEM)
+	--elseif item.index == list.out_item_now then
+	--	pos.x = 0
+	--	gui.play_flipbook(item.root, LISTITEM)
+	--elseif item.index ~= list.over_item then
+	--	pos.x = 0
+	--	gui.play_flipbook(item.root, LISTITEM)
+	--end
+	--gui.set_position(item.root, pos)
 end
 
 
@@ -139,13 +124,13 @@ end
 
 
 local function update_dynamic_list(list)
-	for _,item in ipairs(list.items) do
-		update_listitem(list, item)
-		gui.set_text(item.nodes[hash(list.id .. "/listitem_text")], tostring(item.data or "-"))
-	end
+	--for _,item in ipairs(list.items) do
+	--	update_listitem(list, item)
+	--	gui.set_text(item.nodes[hash(list.id .. "/listitem_text")], tostring(item.data or "-"))
+	--end
 end
 function M.dynamic_list(list_id, data, action_id, action, fn)
-	return gooey.dynamic_list(list_id, list_id .. "/stencil", list_id .. "/listitem_bg", data, action_id, action, fn, update_dynamic_list)
+	--return gooey.dynamic_list(list_id, list_id .. "/stencil", list_id .. "/listitem_bg", data, action_id, action, fn, update_dynamic_list)
 end
 
 

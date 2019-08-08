@@ -1,6 +1,7 @@
 local config = require "modules.config"
 local globals = require "modules.globals"
 local helpers = require "modules.helpers"
+local camera_constants = require "modules.constants.camera"
 local item_constants = require "modules.constants.items"
 local message_constants = require "modules.constants.messages"
 local orthographic = require "orthographic.camera"
@@ -40,6 +41,7 @@ function create_block(self, block, addToMutation)
 	if truePosition then
 		local factoryBlock = factory.create(urls.get_factory_url(block.id), truePosition, rotation, properties, scale)
 		block.url = factoryBlock
+		block.durability = item_constants.ALL_ITEMS[block.id].maxDurability
 		local blockChunk = World.get_chunk_at_position(world, block.chunk)
 		if blockChunk then
 			Chunk.add_block(blockChunk, block)
@@ -202,37 +204,39 @@ function initialize_world_chunks()
 	end
 end
 
-function mine_block(blockUrl, message)
-	go.delete(blockUrl)
-
+function mine_block(blockUrl, message, chunkPosition, blockPosition)
 	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
-	local chunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
-	local blockPosition = position_helpers.screen_to_block_position(screenPosition)
 
 	local chunk = World.get_chunk_at_position(world, chunkPosition)
 	local block = Chunk.get_block_at_position(chunk, blockPosition)
+	block.durability = block.durability - message.miningStrength
 
-	local truePosition = position_helpers.block_to_screen_position(block)
-	truePosition.x = truePosition.x + math.random(-8, 8)
-	create_loose_pickup(block, truePosition)
+	if block.durability <= 0 then
+		go.delete(blockUrl)
+		local truePosition = position_helpers.block_to_screen_position(block)
+		truePosition.x = truePosition.x + math.random(-8, 8)
+		create_loose_pickup(block, truePosition)
 
-	local mutatedChunk = nil
-	if worldMutation.chunks[chunk.position.x] == nil then
-		worldMutation.chunks[chunk.position.x] = {}
+		local mutatedChunk = nil
+		if worldMutation.chunks[chunk.position.x] == nil then
+			worldMutation.chunks[chunk.position.x] = {}
+		end
+		if worldMutation.chunks[chunk.position.x][chunk.position.y] == nil then
+			mutatedChunk = {
+				position = { x = chunk.position.x, y = chunk.position.y, z = chunk.position.z },
+				blocks = {}
+			}
+			worldMutation.chunks[chunk.position.x][chunk.position.y] = mutatedChunk
+		else
+			mutatedChunk = worldMutation.chunks[chunk.position.x][chunk.position.y]
+		end
+		if mutatedChunk.blocks[block.position.x] == nil then
+			mutatedChunk.blocks[block.position.x] = {}
+		end
+		mutatedChunk.blocks[block.position.x][block.position.y] = {}
+
+		Chunk.remove_block_at_position(chunk, blockPosition)
 	end
-	if worldMutation.chunks[chunk.position.x][chunk.position.y] == nil then
-		mutatedChunk = {
-			position = { x = chunk.position.x, y = chunk.position.y, z = chunk.position.z },
-			blocks = {}
-		}
-		worldMutation.chunks[chunk.position.x][chunk.position.y] = mutatedChunk
-	else
-		mutatedChunk = worldMutation.chunks[chunk.position.x][chunk.position.y]
-	end
-	if mutatedChunk.blocks[block.position.x] == nil then
-		mutatedChunk.blocks[block.position.x] = {}
-	end
-	mutatedChunk.blocks[block.position.x][block.position.y] = {}
 end
 
 function mutate_world(worldMutation)
@@ -274,14 +278,16 @@ end
 
 function handle_mine_block(self, messageId, message, sender)
 	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
-	local miningBlockPosition = position_helpers.screen_to_block_position(screenPosition)
-	local miningChunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
-	local chunk = World.get_chunk_at_position(world, miningChunkPosition)
+	local blockPosition = position_helpers.screen_to_block_position(screenPosition)
+	local chunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
+	local chunk = World.get_chunk_at_position(world, chunkPosition)
 	if chunk then
-		local block = Chunk.get_block_at_position(chunk, miningBlockPosition)
+		local block = Chunk.get_block_at_position(chunk, blockPosition)
+		pprint("block")
+		pprint(blockPosition)
+		pprint(block)
 		if block then
-			mine_block(block.url, message)
-			Chunk.remove_block_at_position(chunk, miningBlockPosition)
+			mine_block(block.url, message, chunkPosition, blockPosition)
 		end
 	end
 end

@@ -1,8 +1,4 @@
 script: ""
-fonts {
-  name: "inventory"
-  font: "/main/player/ui/inventory_ui/inventory.font"
-}
 background_color {
   x: 0.0
   y: 0.0
@@ -192,7 +188,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_1/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -350,7 +346,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_2/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -508,7 +504,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_3/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -666,7 +662,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_4/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -824,7 +820,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_5/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -982,7 +978,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_6/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1140,7 +1136,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_7/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1298,7 +1294,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_8/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1456,7 +1452,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_9/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1614,7 +1610,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_10/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1826,7 +1822,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_11/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1984,7 +1980,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_12/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -2142,7 +2138,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_13/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -2300,7 +2296,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_14/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -2458,7 +2454,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_15/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -2616,7 +2612,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_16/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -2774,7 +2770,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_17/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -2932,7 +2928,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_18/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -3090,7 +3086,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_19/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -3248,7 +3244,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_20/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -3460,7 +3456,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_21/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -3618,7 +3614,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_22/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -3776,7 +3772,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_23/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -3934,7 +3930,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_24/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -4092,7 +4088,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_25/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -4250,7 +4246,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_26/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -4408,7 +4404,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_27/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -4566,7 +4562,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_28/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -4724,7 +4720,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_29/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -4882,7 +4878,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "inventory"
+  font: "theme_small"
   id: "inventory_slot_30/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE

@@ -1,7 +1,7 @@
 script: "/main/menus/main_menu/main_menu.gui_script"
 fonts {
-  name: "theme"
-  font: "/main/menus/theme/fonts/theme.font"
+  name: "theme_large"
+  font: "/main/ui/fonts/theme_large.font"
 }
 background_color {
   x: 0.0
@@ -100,7 +100,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/theme/components/button.gui"
+  template: "/main/ui/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -123,8 +123,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 192.0
-    y: 51.0
+    x: 200.0
+    y: 50.0
     z: 0.0
     w: 1.0
   }
@@ -136,7 +136,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "gooey/button_idle"
+  texture: "ui_theme/button_idle"
   id: "new_game/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -146,10 +146,10 @@ nodes {
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-    w: 30.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
+    w: 40.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
@@ -161,7 +161,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -192,7 +192,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "New Game"
-  font: "example"
+  font: "theme_small"
   id: "new_game/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -259,7 +259,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/theme/components/button.gui"
+  template: "/main/ui/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -282,8 +282,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 192.0
-    y: 51.0
+    x: 200.0
+    y: 50.0
     z: 0.0
     w: 1.0
   }
@@ -295,7 +295,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "gooey/button_idle"
+  texture: "ui_theme/button_idle"
   id: "load_game/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -305,10 +305,10 @@ nodes {
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-    w: 30.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
+    w: 40.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
@@ -320,7 +320,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -351,7 +351,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "Load Game"
-  font: "example"
+  font: "theme_small"
   id: "load_game/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -418,7 +418,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/theme/components/button.gui"
+  template: "/main/ui/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -441,8 +441,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 192.0
-    y: 51.0
+    x: 200.0
+    y: 50.0
     z: 0.0
     w: 1.0
   }
@@ -454,7 +454,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "gooey/button_idle"
+  texture: "ui_theme/button_idle"
   id: "settings/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -464,10 +464,10 @@ nodes {
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-    w: 30.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
+    w: 40.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
@@ -479,7 +479,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -510,7 +510,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "Settings"
-  font: "example"
+  font: "theme_small"
   id: "settings/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -577,7 +577,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/theme/components/button.gui"
+  template: "/main/ui/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -600,8 +600,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 192.0
-    y: 51.0
+    x: 200.0
+    y: 50.0
     z: 0.0
     w: 1.0
   }
@@ -613,7 +613,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "gooey/button_idle"
+  texture: "ui_theme/button_idle"
   id: "exit_game/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -623,10 +623,10 @@ nodes {
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-    w: 30.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
+    w: 40.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
@@ -638,7 +638,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -669,7 +669,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "Exit Game"
-  font: "example"
+  font: "theme_small"
   id: "exit_game/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -736,7 +736,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/menus/theme/components/title.gui"
+  template: "/main/ui/components/title.gui"
   template_node_child: false
 }
 nodes {
@@ -753,8 +753,8 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 5.0
-    y: 5.0
+    x: 1.0
+    y: 1.0
     z: 1.0
     w: 1.0
   }
@@ -773,7 +773,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "Chemaria"
-  font: "theme"
+  font: "theme_large"
   id: "title/Title"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -798,7 +798,6 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
-  overridden_fields: 1
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0

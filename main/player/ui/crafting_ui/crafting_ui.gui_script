@@ -5,7 +5,7 @@ local input_constants = require "modules.constants.input"
 local item_constants = require "modules.constants.items"
 local message_constants = require "modules.constants.messages"
 local recipes = require "modules.constants.recipes"
-local theme = require "main.player.ui.crafting_ui.theme.theme"
+local theme = require "main.ui.theme"
 
 local INPUT_FOCUS = hash("blue_button05")
 local INPUT = hash("blue_button03")

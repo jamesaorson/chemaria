@@ -1,8 +1,4 @@
 script: "/main/player/ui/pause_ui/pause_ui.gui_script"
-fonts {
-  name: "theme"
-  font: "/main/player/ui/pause_ui/theme/fonts/theme.font"
-}
 background_color {
   x: 0.0
   y: 0.0
@@ -66,7 +62,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: 10.0
     z: 0.0
     w: 1.0
   }
@@ -100,7 +96,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/player/ui/pause_ui/theme/components/button.gui"
+  template: "/main/ui/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -123,8 +119,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 192.0
-    y: 51.0
+    x: 200.0
+    y: 50.0
     z: 0.0
     w: 1.0
   }
@@ -136,7 +132,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "pause_ui_theme/button_idle"
+  texture: "ui_theme/button_idle"
   id: "save_button/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -146,10 +142,10 @@ nodes {
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-    w: 30.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
+    w: 40.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
@@ -161,7 +157,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -192,7 +188,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "Save"
-  font: "example"
+  font: "theme_small"
   id: "save_button/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -225,7 +221,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: -100.0
+    y: -90.0
     z: 0.0
     w: 1.0
   }
@@ -259,7 +255,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/player/ui/pause_ui/theme/components/button.gui"
+  template: "/main/ui/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -282,8 +278,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 192.0
-    y: 51.0
+    x: 200.0
+    y: 50.0
     z: 0.0
     w: 1.0
   }
@@ -295,7 +291,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "pause_ui_theme/button_idle"
+  texture: "ui_theme/button_idle"
   id: "exit_button/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -305,10 +301,10 @@ nodes {
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 30.0
-    y: 30.0
-    z: 30.0
-    w: 30.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
+    w: 40.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
@@ -320,7 +316,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -350,9 +346,8 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "Exit\n"
-  ""
-  font: "example"
+  text: "Exit Game"
+  font: "theme_small"
   id: "exit_button/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -474,7 +469,7 @@ nodes {
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/player/ui/pause_ui/theme/components/input.gui"
+  template: "/main/ui/components/input.gui"
   template_node_child: false
 }
 nodes {
@@ -510,7 +505,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "kenneyblue_theme/blue_button10"
+  texture: "ui_theme/button_disabled"
   id: "save_input/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -534,8 +529,8 @@ nodes {
 }
 nodes {
   position {
-    x: -190.0
-    y: 0.0
+    x: -180.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -566,7 +561,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: ""
-  font: "example"
+  font: "theme_small"
   id: "save_input/text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -591,7 +586,6 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
-  overridden_fields: 1
   overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
@@ -600,7 +594,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: 2.0
     z: 0.0
     w: 1.0
   }
