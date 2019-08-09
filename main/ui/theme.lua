@@ -5,6 +5,8 @@ local M = gooey.create_theme()
 
 local BUTTON_PRESSED = hash("button_pressed")
 local BUTTON = hash("button_idle")
+local CHECKBOX_CHECKED = hash("grey_boxCheckmark")
+local CHECKBOX = hash("grey_box")
 
 local function refresh_button(button)
 	if button.pressed then
@@ -23,21 +25,15 @@ function M.button(node_id, action_id, action, fn, is_selected)
 end
 
 local function refresh_checkbox(checkbox)
-	--if checkbox.pressed_now or checkbox.released_now then
-	--	utils.shake(checkbox.node, vmath.vector3(1))
-	--end
-	--if checkbox.pressed then
-	--	gui.play_flipbook(checkbox.node, CHECKBOX_PRESSED)
-	--elseif checkbox.checked then
-	--	gui.play_flipbook(checkbox.node, CHECKBOX_CHECKED)
-	--else
-	--	gui.play_flipbook(checkbox.node, CHECKBOX)
-	--end
+	if checkbox.checked then
+		gui.play_flipbook(checkbox.node, CHECKBOX_CHECKED)
+	else
+		gui.play_flipbook(checkbox.node, CHECKBOX)
+	end
 end
 function M.checkbox(node_id, action_id, action, fn)
-	--return gooey.checkbox(node_id .. "/box", action_id, action, fn, refresh_checkbox)
+	return gooey.checkbox(node_id .. "/box", action_id, action, fn, refresh_checkbox)
 end
-
 
 local function update_radiobutton(radio)
 	--if radio.pressed_now or radio.released_now then

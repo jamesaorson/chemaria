@@ -54,6 +54,11 @@ end
 
 local settingsFileName = "settings.bin"
 
+function HELPERS.apply_config()
+	HELPERS.init_config_data()
+	defos.set_fullscreen(HELPERS.get_config_data("FULLSCREEN"))
+end
+
 function HELPERS.init_config_data()
 	defsave.default_data = config
 	defsave.set_appname(config.APPNAME)

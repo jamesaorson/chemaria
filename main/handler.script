@@ -22,6 +22,8 @@ local send_player_action
 local send_ui_action
 
 function apply_config()
+	helpers.init_config_data()
+
 	defos.set_fullscreen(helpers.get_config_data("FULLSCREEN"))
 
 	screen_constants.SCREEN_SIZE.x, screen_constants.SCREEN_SIZE.y, screen_constants.SCREEN_SIZE.w, screen_constants.SCREEN_SIZE.h = defos.get_window_size()
@@ -116,7 +118,8 @@ function handle_toggle_crafting_menu(self, actionId, action)
 end
 
 function handle_toggle_fullscreen(self, actionId, action)
-	defos.set_fullscreen(not defos.is_fullscreen())
+	helpers.set_config_data("FULLSCREEN", not helpers.get_config_data("FULLSCREEN"))
+	defos.set_fullscreen(helpers.get_config_data("FULLSCREEN"))
 end
 
 function handle_toggle_inventory(self, actionId, action)
@@ -143,7 +146,6 @@ end
 function init(self)
 	msg.post("/world#main", "acquire_input_focus")
 	self.game_mode = "play"
-	helpers.init_config_data()
 	apply_config()
 end
 

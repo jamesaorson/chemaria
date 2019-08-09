@@ -3,11 +3,14 @@ local gooey = require "gooey.gooey"
 local input_constants = require "modules.constants.input"
 local theme = require "main.ui.theme"
 
+local SCOPED_SELF
+
 -------------
 -- Helpers --
 -------------
 
 local button_handler
+local checkbox_handler
 local exit_to_main_menu
 
 function button_handler(button, handler)
@@ -16,11 +19,18 @@ function button_handler(button, handler)
 	end
 end
 
-function exit_to_main_menu()
+function checkbox_handler(checkbox, handler)
+	if checkbox.released_now then
+		handler()
+	end
+end
+
+function exit_to_main_menu(self)
 	zoomLevel = tonumber(gui.get_text(gui.get_node("zoom_input/text")))
 	if zoomLevel and zoomLevel >= 0.5 and zoomLevel <= 3 then
 		helpers.set_config_data("CAMERA_ZOOM_LEVEL", { zoom = zoomLevel})
 	end
+	helpers.set_config_data("FULLSCREEN", self.fullscreen)
 	msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#main_menu_proxy" })
 end
 
@@ -33,10 +43,13 @@ end
 ----------------------
 
 function init(self)
+	SCOPED_SELF = self
+
 	helpers.init_config_data()
 	gooey.acquire_input()
-	
+
 	self.currentZoom = helpers.get_config_data("CAMERA_ZOOM_LEVEL").zoom
+	self.fullscreen = helpers.get_config_data("FULLSCREEN")
 	self.minZoom = 1
 	self.maxZoom = 3
 	self.zoomLabel = self.minZoom .. " to " .. self.maxZoom
@@ -44,16 +57,23 @@ function init(self)
 	gui.set_text(gui.get_node("current_zoom_label"), "Current Zoom: " .. self.currentZoom)
 	gui.set_text(gui.get_node("zoom_input/text"), self.zoomLabel)
 	gui.set_enabled(gui.get_node("zoom_input/cursor"), false)
+	theme.checkbox("fullscreen_checkbox").set_checked(self.fullscreen)
 end
 
 function on_input(self, actionId, action)
 	if actionId == input_constants.QUIT and action.released then
-		exit_to_main_menu()
+		exit_to_main_menu(self)
 	end
 
 	theme.button("return_to_main_menu", actionId, action, function(button)
 		button_handler(button, function()
-			exit_to_main_menu()
+			exit_to_main_menu(SCOPED_SELF)
+		end)
+	end)
+
+	theme.checkbox("fullscreen_checkbox", actionId, action, function(checkbox)
+		checkbox_handler(checkbox, function()
+			self.fullscreen = checkbox.checked
 		end)
 	end)
 
@@ -67,6 +87,7 @@ end
 function final(self)
 	gooey.release_input()
 	helpers.save_config_data()
+	helpers.apply_config()
 end
 
 --------------------------

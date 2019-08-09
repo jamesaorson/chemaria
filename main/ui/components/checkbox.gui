@@ -1,7 +1,7 @@
 script: ""
 fonts {
-  name: "example"
-  font: "/gooey/themes/kenneyblue/fonts/kenneyblue.font"
+  name: "theme_small"
+  font: "/main/ui/fonts/theme_small.font"
 }
 textures {
   name: "gooey"
@@ -100,8 +100,8 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "CHECKBOX"
-  font: "example"
+  text: ""
+  font: "theme_small"
   id: "label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
