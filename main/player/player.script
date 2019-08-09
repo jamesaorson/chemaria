@@ -26,6 +26,7 @@ local quit_game
 local save_game
 local update_crafting_ui
 local update_current_chunk
+local update_held_item
 local update_inventory_ui
 local update_toolbar_ui
 
@@ -82,6 +83,19 @@ function update_current_chunk(self)
 		globals.previousChunk = globals.currentChunk
 		globals.currentChunk = chunk
 		msg.post("/world#world_script", message_constants.UPDATE_CHUNK_RENDER)
+	end
+end
+
+function update_held_item(self)
+	self.selectedToolbarItem = self.toolbar[self.selectedToolbarItemIndex]
+	local spriteUrl = "/held_item#sprite"
+	if self.selectedToolbarItem.id == item_constants.NONE.id then
+		sprite.set_constant(spriteUrl, "tint", vmath.vector4(0, 0, 0, 0))
+	else
+		local selectedItem = item_constants.ALL_ITEMS[self.selectedToolbarItem.id]
+		sprite.reset_constant(spriteUrl, "tint")
+		sprite.play_flipbook(spriteUrl, hash(selectedItem.name))
+		go.set_position(selectedItem.holdingOffset, "/held_item")
 	end
 end
 
@@ -192,7 +206,11 @@ function handle_left_click(self, messageId, message, sender)
 	if message.pressed and self.placingMessage == nil then
 		self.miningTimerHandle = timer.delay(player_constants.BASE_MINING_INTERVAL, true, function (self, handle, timeElapsed)
 			if self.leftClickDistanceFromPlayer <= player_constants.BASE_MINING_DISTANCE then
-				self.miningMessage.miningStrength = 2
+				self.miningMessage.miningPower = player_constants.BASE_MINING_POWER
+				local selectedItem = item_constants.ALL_ITEMS[self.selectedToolbarItem.id]
+				if selectedItem.miningPower then
+					self.miningMessage.miningPower = selectedItem.miningPower
+				end
 				msg.post("/world#world_script", message_constants.MINE_BLOCK, self.miningMessage)
 			end
 		end)
@@ -219,12 +237,12 @@ function handle_right_click(self, messageId, message, sender)
 	self.rightClickDistanceFromPlayer = helpers.distance(click_position, player_position)
 
 	if message.pressed and self.miningMessage == nil then
-		self.placingMessage.toolbarItem = self.toolbar[self.selectedToolbarItem]
+		self.placingMessage.toolbarItem = self.toolbar[self.selectedToolbarItemIndex]
 		if helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id then
 			msg.post("/world#world_script", message_constants.PLACE_BLOCK, self.placingMessage)
 		end
 		self.placingTimerHandle = timer.delay(player_constants.BASE_PLACING_INTERVAL, true, function (self, handle, timeElapsed)
-			self.placingMessage.toolbarItem = self.toolbar[self.selectedToolbarItem]
+			self.placingMessage.toolbarItem = self.toolbar[self.selectedToolbarItemIndex]
 			if helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id and self.rightClickDistanceFromPlayer <= player_constants.BASE_PLACING_DISTANCE then
 				msg.post("/world#world_script", message_constants.PLACE_BLOCK, self.placingMessage)
 			end
@@ -242,7 +260,7 @@ function handle_save_game(self, messageId, message, sender)
 end
 
 function handle_switch_selected_toolbar_item(self, messageId, message, sender)
-	self.selectedToolbarItem = message.toolbarIndex
+	self.selectedToolbarItemIndex = message.toolbarIndex
 end
 
 function handle_toggle_pause_menu(self, messageId, message, sender)
@@ -287,7 +305,9 @@ function init(self)
 	self.miningTimerHandle = nil
 	self.placingTimerHandle = nil
 	self.platypus = platypus.create(platypus_constants.CONFIG)
-	self.selectedToolbarItem = 1
+	self.previousSelectedToolbarItem = {}
+	self.selectedToolbarItemIndex = 1
+	self.selectedToolbarItem = {}
 	self.toolbar = globals.get_toolbar()
 	self.craftableItems = {}
 	self.inRangeOfFurnace = false
@@ -297,6 +317,7 @@ function update(self, dt)
 	self.platypus.update(dt)
 
 	update_current_chunk(self)
+	update_held_item(self)
 end
 
 function on_message(self, messageId, message, sender)
