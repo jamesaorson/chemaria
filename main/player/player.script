@@ -87,17 +87,15 @@ function update_current_chunk(self)
 end
 
 function update_held_item(self)
-	self.previousSelectedToolbarItem = self.selectedToolbarItem
 	self.selectedToolbarItem = self.toolbar[self.selectedToolbarItemIndex]
-	if self.previousSelectedToolbarItem.id ~= self.selectedToolbarItem.id then
-		local spriteUrl = "/held_item#sprite"
-		if self.selectedToolbarItem.id == item_constants.NONE.id then
-			sprite.set_constant(spriteUrl, "tint", vmath.vector4(0, 0, 0, 0))
-		else
-			local selectedItemName = item_constants.ALL_ITEMS[self.selectedToolbarItem.id].name
-			sprite.reset_constant(spriteUrl, "tint")
-			sprite.play_flipbook(spriteUrl, hash(selectedItemName))
-		end
+	local spriteUrl = "/held_item#sprite"
+	if self.selectedToolbarItem.id == item_constants.NONE.id then
+		sprite.set_constant(spriteUrl, "tint", vmath.vector4(0, 0, 0, 0))
+	else
+		local selectedItem = item_constants.ALL_ITEMS[self.selectedToolbarItem.id]
+		sprite.reset_constant(spriteUrl, "tint")
+		sprite.play_flipbook(spriteUrl, hash(selectedItem.name))
+		go.set_position(selectedItem.holdingOffset, "/held_item")
 	end
 end
 
@@ -208,7 +206,11 @@ function handle_left_click(self, messageId, message, sender)
 	if message.pressed and self.placingMessage == nil then
 		self.miningTimerHandle = timer.delay(player_constants.BASE_MINING_INTERVAL, true, function (self, handle, timeElapsed)
 			if self.leftClickDistanceFromPlayer <= player_constants.BASE_MINING_DISTANCE then
-				self.miningMessage.miningStrength = 2
+				self.miningMessage.miningPower = player_constants.BASE_MINING_POWER
+				local selectedItem = item_constants.ALL_ITEMS[self.selectedToolbarItem.id]
+				if selectedItem.miningPower then
+					self.miningMessage.miningPower = selectedItem.miningPower
+				end
 				msg.post("/world#world_script", message_constants.MINE_BLOCK, self.miningMessage)
 			end
 		end)
