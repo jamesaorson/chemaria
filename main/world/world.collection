@@ -55,6 +55,7 @@ instances {
 instances {
   id: "player"
   prototype: "/main/player/player.go"
+  children: "held_item"
   position {
     x: 32.0
     y: 600.0
@@ -574,7 +575,7 @@ instances {
 }
 instances {
   id: "wood_pickaxe_pickup_factory"
-  prototype: "/main/pickup/wood_pickaxe/wood_pickaxe_pickup_factory.go"
+  prototype: "/main/pickup/wood_pickaxe_pickup/wood_pickaxe_pickup_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -594,7 +595,7 @@ instances {
 }
 instances {
   id: "wood_planks_pickup_factory"
-  prototype: "/main/pickup/wood_planks/wood_planks_pickup_factory.go"
+  prototype: "/main/pickup/wood_planks_pickup/wood_planks_pickup_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -614,7 +615,7 @@ instances {
 }
 instances {
   id: "stone_pickaxe_pickup_factory"
-  prototype: "/main/pickup/stone_pickaxe/stone_pickaxe_pickup_factory.go"
+  prototype: "/main/pickup/stone_pickaxe_pickup/stone_pickaxe_pickup_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -1007,6 +1008,46 @@ embedded_instances {
     x: 0.0
     y: 0.0
     z: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+embedded_instances {
+  id: "held_item"
+  data: "embedded_components {\n"
+  "  id: \"sprite\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"tile_set: \\\"/main/items/items.atlas\\\"\\n"
+  "default_animation: \\\"none\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "blend_mode: BLEND_MODE_ALPHA\\n"
+  "\"\n"
+  "  position {\n"
+  "    x: 12.0\n"
+  "    y: -11.0\n"
+  "    z: 2.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
   }
   rotation {
     x: 0.0

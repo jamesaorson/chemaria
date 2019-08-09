@@ -1,7 +1,7 @@
 embedded_components {
   id: "wood_pickaxe_pickup_factory"
   type: "factory"
-  data: "prototype: \"/main/pickup/wood_pickaxe/wood_pickaxe_pickup.go\"\n"
+  data: "prototype: \"/main/pickup/wood_pickaxe_pickup/wood_pickaxe_pickup.go\"\n"
   "load_dynamically: false\n"
   ""
   position {

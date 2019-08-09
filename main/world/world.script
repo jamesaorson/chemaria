@@ -209,7 +209,7 @@ function mine_block(blockUrl, message, chunkPosition, blockPosition)
 
 	local chunk = World.get_chunk_at_position(world, chunkPosition)
 	local block = Chunk.get_block_at_position(chunk, blockPosition)
-	block.durability = block.durability - message.miningStrength
+	block.durability = block.durability - message.miningPower
 
 	if block.durability <= 0 then
 		go.delete(blockUrl)
@@ -283,9 +283,6 @@ function handle_mine_block(self, messageId, message, sender)
 	local chunk = World.get_chunk_at_position(world, chunkPosition)
 	if chunk then
 		local block = Chunk.get_block_at_position(chunk, blockPosition)
-		pprint("block")
-		pprint(blockPosition)
-		pprint(block)
 		if block then
 			mine_block(block.url, message, chunkPosition, blockPosition)
 		end
