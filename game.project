@@ -42,11 +42,14 @@ app_icon_57x57 = /assets/app_icons/appicon.png
 
 [sprite]
 max_count = 16384
+subpixels = 0
 
 [graphics]
 max_draw_calls = 16384
 max_debug_vertices = 100000
 max_characters = 16384
+default_texture_min_filter = nearest
+default_texture_mag_filter = nearest
 
 [resource]
 max_resources = 16384

@@ -3,7 +3,6 @@ local camera_constants = require "modules.constants.camera"
 local globals = require "modules.globals"
 local helpers = require "modules.helpers"
 local input_constants = require "modules.constants.input"
-local screen_constants = require "modules.constants.screen"
 local toolbar_constants = require "modules.constants.toolbar"
 local world_constants = require "modules.constants.world"
 
@@ -25,8 +24,6 @@ function apply_config()
 	helpers.init_config_data()
 
 	defos.set_fullscreen(helpers.get_config_data("FULLSCREEN"))
-
-	screen_constants.SCREEN_SIZE.x, screen_constants.SCREEN_SIZE.y, screen_constants.SCREEN_SIZE.w, screen_constants.SCREEN_SIZE.h = defos.get_window_size()
 
 	msg.post(camera_constants.CAMERA_ID, "deadzone", helpers.get_config_data("CAMERA_DEADZONE"))
 	msg.post(camera_constants.CAMERA_ID, "zoom_to", helpers.get_config_data("CAMERA_ZOOM_LEVEL"))
