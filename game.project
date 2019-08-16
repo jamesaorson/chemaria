@@ -10,6 +10,7 @@ render = /orthographic/render/orthographic.renderc
 [input]
 game_binding = /input/game.input_bindingc
 use_accelerometer = 0
+repeat_interval = 0.1
 
 [display]
 width = 1920
@@ -33,6 +34,7 @@ gravity_y = -800.0
 max_collisions = 2048
 max_contacts = 8192
 trigger_overlap_capacity = 1024
+world_count = 2
 
 [android]
 app_icon_36x36 = /assets/app_icons/appicon.png
@@ -41,19 +43,28 @@ app_icon_36x36 = /assets/app_icons/appicon.png
 app_icon_57x57 = /assets/app_icons/appicon.png
 
 [sprite]
-max_count = 16384
+max_count = 8192
 subpixels = 0
 
 [graphics]
-max_draw_calls = 16384
-max_debug_vertices = 100000
-max_characters = 16384
+max_draw_calls = 8192
+max_debug_vertices = 8192
+max_characters = 8192
 default_texture_min_filter = nearest
 default_texture_mag_filter = nearest
 
-[resource]
-max_resources = 16384
-
 [collection]
-max_instances = 16384
+max_instances = 8192
+
+[spine]
+max_count = 0
+
+[model]
+max_count = 0
+
+[gui]
+max_count = 64
+
+[collection_proxy]
+max_count = 4
 
