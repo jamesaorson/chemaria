@@ -43,7 +43,7 @@ app_icon_36x36 = /assets/app_icons/appicon.png
 app_icon_57x57 = /assets/app_icons/appicon.png
 
 [sprite]
-max_count = 8192
+max_count = 10240
 subpixels = 0
 
 [graphics]
@@ -54,7 +54,7 @@ default_texture_min_filter = nearest
 default_texture_mag_filter = nearest
 
 [collection]
-max_instances = 8192
+max_instances = 10240
 
 [spine]
 max_count = 0

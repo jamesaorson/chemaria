@@ -92,15 +92,15 @@ function fill_world(self)
 	if globals.currentChunk then
 		local chunksToRender = {}
 		local chunksToUnrender = {}
-		for chunkX = globals.currentChunk.position.x - world_constants.RENDER_DISTANCE, globals.currentChunk.position.x + world_constants.RENDER_DISTANCE do
-			for chunkY = globals.currentChunk.position.y - world_constants.RENDER_DISTANCE, globals.currentChunk.position.y + world_constants.RENDER_DISTANCE do
+		for chunkX = globals.currentChunk.position.x - world_constants.RENDER_DISTANCE.x, globals.currentChunk.position.x + world_constants.RENDER_DISTANCE.x do
+			for chunkY = globals.currentChunk.position.y - world_constants.RENDER_DISTANCE.y, globals.currentChunk.position.y + world_constants.RENDER_DISTANCE.y do
 				local chunkPosition = vmath.vector3(chunkX, chunkY, 0)
 				chunksToRender[tostring(chunkPosition)] = chunkPosition
 			end
 		end
 		if globals.previousChunk then
-			for chunkX = globals.previousChunk.position.x - world_constants.RENDER_DISTANCE, globals.previousChunk.position.x + world_constants.RENDER_DISTANCE do
-				for chunkY = globals.previousChunk.position.y - world_constants.RENDER_DISTANCE, globals.previousChunk.position.y + world_constants.RENDER_DISTANCE do
+			for chunkX = globals.previousChunk.position.x - world_constants.RENDER_DISTANCE.x, globals.previousChunk.position.x + world_constants.RENDER_DISTANCE.x do
+				for chunkY = globals.previousChunk.position.y - world_constants.RENDER_DISTANCE.y, globals.previousChunk.position.y + world_constants.RENDER_DISTANCE.y do
 					local chunkPosition = vmath.vector3(chunkX, chunkY, 0)
 					chunksToUnrender[tostring(chunkPosition)] = chunkPosition
 				end
@@ -142,7 +142,7 @@ end
 function initialize_world()
 	for chunkX, chunkXColumn in pairs(world.chunks) do
 		-- Keep world from not rendering when you go out of the bounds
-		if chunkX > -world_constants.WORLD_DIMENSIONS.x + world_constants.RENDER_DISTANCE and chunkX < world_constants.WORLD_DIMENSIONS.x - world_constants.RENDER_DISTANCE then
+		if chunkX > -world_constants.WORLD_DIMENSIONS.x + world_constants.RENDER_DISTANCE.x and chunkX < world_constants.WORLD_DIMENSIONS.x - world_constants.RENDER_DISTANCE.x then
 			for chunkY, chunk in pairs(chunkXColumn) do
 				local blockInfo = nil
 				local randomNumber = math.random()
@@ -339,6 +339,8 @@ function init(self)
 	math.randomseed(world_constants.SEED)
 	worldMutation.seed = world_constants.SEED
 
+	world_constants.WORLD_DIMENSIONS.x = world_constants.WORLD_DIMENSIONS.x * world_constants.MEDIUM
+	world_constants.WORLD_DIMENSIONS.y = world_constants.WORLD_DIMENSIONS.y * world_constants.MEDIUM
 	initialize_world_chunks()
 	initialize_world()
 
