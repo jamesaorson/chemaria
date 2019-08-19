@@ -47,7 +47,6 @@ GLOBALS.isPaused = false
 GLOBALS.mouse_positon = vmath.vector3()
 GLOBALS.previousChunk = nil
 GLOBALS.saveFileName = nil
-GLOBALS.worldSeed = nil
 
 ---------------
 -- End World --

@@ -4,6 +4,7 @@ local helpers = require "modules.helpers"
 local camera_constants = require "modules.constants.camera"
 local item_constants = require "modules.constants.items"
 local message_constants = require "modules.constants.messages"
+local noise = require "modules.noise"
 local orthographic = require "orthographic.camera"
 local position_helpers = require "modules.position_helpers"
 local urls = require "modules.urls"
@@ -91,15 +92,15 @@ function fill_world(self)
 	if globals.currentChunk then
 		local chunksToRender = {}
 		local chunksToUnrender = {}
-		for chunkX = globals.currentChunk.position.x - world_constants.RENDER_DISTANCE, globals.currentChunk.position.x + world_constants.RENDER_DISTANCE do
-			for chunkY = globals.currentChunk.position.y - world_constants.RENDER_DISTANCE, globals.currentChunk.position.y + world_constants.RENDER_DISTANCE do
+		for chunkX = globals.currentChunk.position.x - world_constants.RENDER_DISTANCE.x, globals.currentChunk.position.x + world_constants.RENDER_DISTANCE.x do
+			for chunkY = globals.currentChunk.position.y - world_constants.RENDER_DISTANCE.y, globals.currentChunk.position.y + world_constants.RENDER_DISTANCE.y do
 				local chunkPosition = vmath.vector3(chunkX, chunkY, 0)
 				chunksToRender[tostring(chunkPosition)] = chunkPosition
 			end
 		end
 		if globals.previousChunk then
-			for chunkX = globals.previousChunk.position.x - world_constants.RENDER_DISTANCE, globals.previousChunk.position.x + world_constants.RENDER_DISTANCE do
-				for chunkY = globals.previousChunk.position.y - world_constants.RENDER_DISTANCE, globals.previousChunk.position.y + world_constants.RENDER_DISTANCE do
+			for chunkX = globals.previousChunk.position.x - world_constants.RENDER_DISTANCE.x, globals.previousChunk.position.x + world_constants.RENDER_DISTANCE.x do
+				for chunkY = globals.previousChunk.position.y - world_constants.RENDER_DISTANCE.y, globals.previousChunk.position.y + world_constants.RENDER_DISTANCE.y do
 					local chunkPosition = vmath.vector3(chunkX, chunkY, 0)
 					chunksToUnrender[tostring(chunkPosition)] = chunkPosition
 				end
@@ -141,7 +142,7 @@ end
 function initialize_world()
 	for chunkX, chunkXColumn in pairs(world.chunks) do
 		-- Keep world from not rendering when you go out of the bounds
-		if chunkX > -world_constants.WORLD_DIMENSIONS.x + world_constants.RENDER_DISTANCE and chunkX < world_constants.WORLD_DIMENSIONS.x - world_constants.RENDER_DISTANCE then
+		if chunkX > -world_constants.WORLD_SIZE.x + world_constants.RENDER_DISTANCE.x and chunkX < world_constants.WORLD_SIZE.x - world_constants.RENDER_DISTANCE.x then
 			for chunkY, chunk in pairs(chunkXColumn) do
 				local blockInfo = nil
 				local randomNumber = math.random()
@@ -193,8 +194,8 @@ function initialize_world()
 end
 
 function initialize_world_chunks()
-	for x = -world_constants.WORLD_DIMENSIONS.x, world_constants.WORLD_DIMENSIONS.x do
-		for y = -world_constants.WORLD_DIMENSIONS.y, world_constants.WORLD_DIMENSIONS.y do
+	for x = -world_constants.WORLD_SIZE.x, world_constants.WORLD_SIZE.x do
+		for y = -world_constants.WORLD_SIZE.y, world_constants.WORLD_SIZE.y do
 			local chunkToAdd = {}
 			chunkToAdd.blocks = {}
 			chunkToAdd.position = vmath.vector3(x, y, 0)
@@ -335,9 +336,18 @@ function init(self)
 			world_constants.SEED = os.time()
 		end
 	end
+	if world_constants.SCALE == nil then
+		if savedWorld and savedWorld.scale then
+			world_constants.SCALE = savedWorld.scale
+		end
+	end
 	math.randomseed(world_constants.SEED)
 	worldMutation.seed = world_constants.SEED
+	worldMutation.scale = world_constants.SCALE
 
+	local worldScale = world_constants.SCALES[string.upper(worldMutation.scale)]
+	world_constants.WORLD_SIZE.x = world_constants.BASE_WORLD_SIZE.x * worldScale
+	world_constants.WORLD_SIZE.y = world_constants.BASE_WORLD_SIZE.y * worldScale
 	initialize_world_chunks()
 	initialize_world()
 

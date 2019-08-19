@@ -54,6 +54,31 @@ end
 
 local settingsFileName = "settings.bin"
 
+function HELPERS.apply_config()
+	HELPERS.init_config_data()
+
+	local isFullscreen = HELPERS.get_config_data("FULLSCREEN")
+	if not isFullscreen then
+		isFullscreen = config.FULLSCREEN
+		HELPERS.set_config_data("FULLSCREEN", isFullscreen)
+	end
+	defos.set_fullscreen(isFullscreen)
+
+	local vsync = HELPERS.get_config_data("VSYNC")
+	if not vsync then
+		vsync = config.VSYNC
+		HELPERS.set_config_data("VSYNC", vsync)
+	end
+	if vsync then
+		vsync = 1
+	else
+		vsync = 0
+	end
+	sys.set_vsync_swap_interval(vsync)
+
+	HELPERS.save_config_data()
+end
+
 function HELPERS.init_config_data()
 	defsave.default_data = config
 	defsave.set_appname(config.APPNAME)
