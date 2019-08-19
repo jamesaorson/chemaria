@@ -5,8 +5,14 @@ local M = gooey.create_theme()
 
 local BUTTON_PRESSED = hash("button_pressed")
 local BUTTON = hash("button_idle")
+
 local CHECKBOX_CHECKED = hash("grey_boxCheckmark")
 local CHECKBOX = hash("grey_box")
+
+local RADIO_PRESSED = hash("radio_pressed")
+local RADIO_CHECKED_PRESSED = hash("radio_checked_pressed")
+local RADIO_CHECKED_NORMAL = hash("radio_checked_normal")
+local RADIO_NORMAL = hash("radio_normal")
 
 local function refresh_button(button)
 	if button.pressed then
@@ -36,22 +42,23 @@ function M.checkbox(node_id, action_id, action, fn)
 end
 
 local function update_radiobutton(radio)
-	--if radio.pressed_now or radio.released_now then
-	--	utils.shake(radio.node, vmath.vector3(1))
-	--end
-	--if radio.pressed then
-	--	gui.play_flipbook(radio.node, RADIO_PRESSED)
-	--elseif radio.selected then
-	--	gui.play_flipbook(radio.node, RADIO_SELECTED)
-	--else
-	--	gui.play_flipbook(radio.node, RADIO)
-	--end		
+	if radio.pressed and not radio.selected then
+		gui.play_flipbook(radio.node, RADIO_PRESSED)
+	elseif radio.pressed and radio.selected then
+		gui.play_flipbook(radio.node, RADIO_CHECKED_PRESSED)
+	elseif radio.selected then
+		gui.play_flipbook(radio.node, RADIO_CHECKED_NORMAL)
+	else
+		gui.play_flipbook(radio.node, RADIO_NORMAL)
+	end
 end
+
 function M.radiogroup(group_id, action_id, action, fn)
-	--return gooey.radiogroup(group_id, action_id, action, fn)
+	return gooey.radiogroup(group_id, action_id, action, fn)
 end
+
 function M.radio(node_id, group_id, action_id, action, fn)
-	--return gooey.radio(node_id .. "/button", group_id, action_id, action, fn, update_radiobutton)
+	return gooey.radio(node_id .. "/button", group_id, action_id, action, fn, update_radiobutton)
 end
 
 local function update_input(input, config, node_id)

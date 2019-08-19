@@ -32,6 +32,7 @@ CONFIG.SCREEN_SIZE = {
 	height = 1080,
 	width = 1920
 }
+CONFIG.VSYNC = true
 
 ---------------
 -- End Video --

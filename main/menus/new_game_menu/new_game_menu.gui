@@ -1,4 +1,4 @@
-script: "/main/menus/settings_menu/settings_menu.gui_script"
+script: "/main/menus/new_game_menu/new_game_menu.gui_script"
 fonts {
   name: "theme_small"
   font: "/main/ui/fonts/theme_small.font"
@@ -47,7 +47,7 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "settings_menu"
+  id: "new_game_menu"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -69,8 +69,8 @@ nodes {
 }
 nodes {
   position {
-    x: 0.0
-    y: -350.0
+    x: 130.0
+    y: -450.0
     z: 0.0
     w: 1.0
   }
@@ -100,7 +100,7 @@ nodes {
   }
   type: TYPE_TEMPLATE
   id: "return_to_main_menu"
-  parent: "settings_menu"
+  parent: "new_game_menu"
   layer: ""
   inherit_alpha: false
   alpha: 1.0
@@ -259,7 +259,7 @@ nodes {
   }
   type: TYPE_TEMPLATE
   id: "title"
-  parent: "settings_menu"
+  parent: "new_game_menu"
   layer: ""
   inherit_alpha: false
   alpha: 1.0
@@ -299,7 +299,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "Settings"
+  text: "New Game"
   font: "theme_large"
   id: "title/Title"
   xanchor: XANCHOR_NONE
@@ -364,12 +364,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "zoom"
+  id: "scales"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "settings_menu"
+  parent: "new_game_menu"
   layer: ""
   inherit_alpha: false
   slice9 {
@@ -388,7 +388,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: 100.0
     z: 0.0
     w: 1.0
   }
@@ -417,12 +417,12 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "zoom_input"
-  parent: "zoom"
+  id: "small_radio"
+  parent: "scales"
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/ui/components/input.gui"
+  template: "/main/ui/components/radio.gui"
   template_node_child: false
 }
 nodes {
@@ -445,8 +445,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 300.0
-    y: 60.0
+    x: 66.0
+    y: 70.0
     z: 0.0
     w: 1.0
   }
@@ -458,33 +458,33 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "ui_theme/button_disabled"
-  id: "zoom_input/bg"
+  texture: "theme/radio_normal"
+  id: "small_radio/button"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "zoom_input"
+  parent: "small_radio"
   layer: "below"
-  inherit_alpha: true
+  inherit_alpha: false
   slice9 {
-    x: 6.0
-    y: 6.0
-    z: 6.0
-    w: 6.0
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
-  overridden_fields: 4
+  overridden_fields: 21
   template_node_child: true
-  size_mode: SIZE_MODE_MANUAL
+  size_mode: SIZE_MODE_AUTO
 }
 nodes {
   position {
-    x: -130.0
-    y: -2.0
+    x: 60.0
+    y: 0.0
     z: 0.0
     w: 1.0
   }
@@ -514,9 +514,9 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: ""
+  text: "Small"
   font: "theme_small"
-  id: "zoom_input/text"
+  id: "small_radio/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_W
@@ -534,13 +534,12 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "zoom_input/bg"
+  parent: "small_radio"
   layer: "text"
   inherit_alpha: true
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
-  overridden_fields: 1
   overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
@@ -549,7 +548,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 2.0
+    y: 0.0
     z: 0.0
     w: 1.0
   }
@@ -566,8 +565,48 @@ nodes {
     w: 1.0
   }
   size {
-    x: 2.0
-    y: 20.0
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEMPLATE
+  id: "medium_radio"
+  parent: "scales"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  template: "/main/ui/components/radio.gui"
+  template_node_child: false
+}
+nodes {
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 66.0
+    y: 70.0
     z: 0.0
     w: 1.0
   }
@@ -579,15 +618,15 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: ""
-  id: "zoom_input/cursor"
+  texture: "theme/radio_normal"
+  id: "medium_radio/button"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "zoom_input/text"
-  layer: ""
-  inherit_alpha: true
+  parent: "medium_radio"
+  layer: "below"
+  inherit_alpha: false
   slice9 {
     x: 0.0
     y: 0.0
@@ -598,13 +637,14 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
+  overridden_fields: 21
   template_node_child: true
-  size_mode: SIZE_MODE_MANUAL
+  size_mode: SIZE_MODE_AUTO
 }
 nodes {
   position {
-    x: -160.0
-    y: -2.0
+    x: 60.0
+    y: 0.0
     z: 0.0
     w: 1.0
   }
@@ -634,72 +674,9 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "Zoom"
+  text: "Medium"
   font: "theme_small"
-  id: "zoom_label"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_E
-  outline {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  shadow {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "zoom"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  outline_alpha: 1.0
-  shadow_alpha: 1.0
-  template_node_child: false
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 160.0
-    y: -2.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: "Current Zoom:"
-  font: "theme_small"
-  id: "current_zoom_label"
+  id: "medium_radio/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_W
@@ -717,75 +694,181 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "zoom"
-  layer: ""
-  inherit_alpha: false
+  parent: "medium_radio"
+  layer: "text"
+  inherit_alpha: true
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  overridden_fields: 8
+  template_node_child: true
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 0.0
+    y: -100.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEMPLATE
+  id: "large_radio"
+  parent: "scales"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  template: "/main/ui/components/radio.gui"
   template_node_child: false
+}
+nodes {
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 66.0
+    y: 70.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: "theme/radio_normal"
+  id: "large_radio/button"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "large_radio"
+  layer: "below"
+  inherit_alpha: false
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 1.0
+  overridden_fields: 21
+  template_node_child: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 60.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "Large"
+  font: "theme_small"
+  id: "large_radio/label"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_W
+  outline {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  shadow {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "large_radio"
+  layer: "text"
+  inherit_alpha: true
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  overridden_fields: 8
+  template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
 }
 nodes {
   position {
     x: -130.0
-    y: -150.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: ""
-  id: "fullscreen"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "settings_menu"
-  layer: ""
-  inherit_alpha: false
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 0.0
-  template_node_child: false
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
+    y: -450.0
     z: 0.0
     w: 1.0
   }
@@ -814,12 +897,12 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "fullscreen_checkbox"
-  parent: "fullscreen"
+  id: "create_world"
+  parent: "new_game_menu"
   layer: ""
   inherit_alpha: false
   alpha: 1.0
-  template: "/main/ui/components/checkbox.gui"
+  template: "/main/ui/components/button.gui"
   template_node_child: false
 }
 nodes {
@@ -842,8 +925,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 38.0
-    y: 36.0
+    x: 200.0
+    y: 50.0
     z: 0.0
     w: 1.0
   }
@@ -855,33 +938,32 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "gooey/grey_box"
-  id: "fullscreen_checkbox/box"
+  texture: "ui_theme/button_idle"
+  id: "create_world/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "fullscreen_checkbox"
+  parent: "create_world"
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
+    x: 40.0
+    y: 40.0
+    z: 40.0
+    w: 40.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
-  overridden_fields: 1
   template_node_child: true
-  size_mode: SIZE_MODE_AUTO
+  size_mode: SIZE_MODE_MANUAL
 }
 nodes {
   position {
-    x: -30.0
-    y: 0.0
+    x: 0.0
+    y: -2.0
     z: 0.0
     w: 1.0
   }
@@ -911,12 +993,12 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "Fullscreen"
+  text: "Create World"
   font: "theme_small"
-  id: "fullscreen_checkbox/label"
+  id: "create_world/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
-  pivot: PIVOT_E
+  pivot: PIVOT_CENTER
   outline {
     x: 1.0
     y: 1.0
@@ -931,232 +1013,13 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "fullscreen_checkbox"
+  parent: "create_world/bg"
   layer: "text"
   inherit_alpha: true
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
-  overridden_fields: 1
   overridden_fields: 8
-  overridden_fields: 14
-  template_node_child: true
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 130.0
-    y: -150.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: ""
-  id: "vsync"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "settings_menu"
-  layer: ""
-  inherit_alpha: false
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 0.0
-  template_node_child: false
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEMPLATE
-  id: "vsync_checkbox"
-  parent: "vsync"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  template: "/main/ui/components/checkbox.gui"
-  template_node_child: false
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 38.0
-    y: 36.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: "gooey/grey_box"
-  id: "vsync_checkbox/box"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "vsync_checkbox"
-  layer: "below"
-  inherit_alpha: true
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 1.0
-  overridden_fields: 1
-  template_node_child: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: -30.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: "Vsync"
-  font: "theme_small"
-  id: "vsync_checkbox/label"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_E
-  outline {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  shadow {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "vsync_checkbox"
-  layer: "text"
-  inherit_alpha: true
-  alpha: 1.0
-  outline_alpha: 1.0
-  shadow_alpha: 1.0
-  overridden_fields: 1
-  overridden_fields: 8
-  overridden_fields: 14
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0

@@ -23,10 +23,10 @@ end
 ----------------------
 
 function init(self)
-	helpers.init_config_data()
+	helpers.apply_config()
 
+	helpers.init_config_data()
 	screen_size = helpers.get_config_data("SCREEN_SIZE")
-	defos.set_fullscreen(helpers.get_config_data("FULLSCREEN"))
 	defos.set_cursor_visible(false)
 	msg.post(".", "acquire_input_focus")
 	show_proxy(self, "#main_menu_proxy")

@@ -31,7 +31,7 @@ app_icon = /assets/app_icons/appicon.icns
 debug = 0
 debug_alpha = 0.2
 gravity_y = -800.0
-max_collisions = 2048
+max_collisions = 1024
 max_contacts = 8192
 trigger_overlap_capacity = 1024
 world_count = 2
@@ -47,9 +47,8 @@ max_count = 10240
 subpixels = 0
 
 [graphics]
-max_draw_calls = 8192
-max_debug_vertices = 8192
-max_characters = 8192
+max_draw_calls = 10240
+max_debug_vertices = 10240
 default_texture_min_filter = nearest
 default_texture_mag_filter = nearest
 
@@ -66,5 +65,5 @@ max_count = 0
 max_count = 64
 
 [collection_proxy]
-max_count = 4
+max_count = 5
 

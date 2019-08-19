@@ -142,7 +142,7 @@ end
 function initialize_world()
 	for chunkX, chunkXColumn in pairs(world.chunks) do
 		-- Keep world from not rendering when you go out of the bounds
-		if chunkX > -world_constants.WORLD_DIMENSIONS.x + world_constants.RENDER_DISTANCE.x and chunkX < world_constants.WORLD_DIMENSIONS.x - world_constants.RENDER_DISTANCE.x then
+		if chunkX > -world_constants.WORLD_SIZE.x + world_constants.RENDER_DISTANCE.x and chunkX < world_constants.WORLD_SIZE.x - world_constants.RENDER_DISTANCE.x then
 			for chunkY, chunk in pairs(chunkXColumn) do
 				local blockInfo = nil
 				local randomNumber = math.random()
@@ -194,8 +194,8 @@ function initialize_world()
 end
 
 function initialize_world_chunks()
-	for x = -world_constants.WORLD_DIMENSIONS.x, world_constants.WORLD_DIMENSIONS.x do
-		for y = -world_constants.WORLD_DIMENSIONS.y, world_constants.WORLD_DIMENSIONS.y do
+	for x = -world_constants.WORLD_SIZE.x, world_constants.WORLD_SIZE.x do
+		for y = -world_constants.WORLD_SIZE.y, world_constants.WORLD_SIZE.y do
 			local chunkToAdd = {}
 			chunkToAdd.blocks = {}
 			chunkToAdd.position = vmath.vector3(x, y, 0)
@@ -336,11 +336,18 @@ function init(self)
 			world_constants.SEED = os.time()
 		end
 	end
+	if world_constants.SCALE == nil then
+		if savedWorld and savedWorld.scale then
+			world_constants.SCALE = savedWorld.scale
+		end
+	end
 	math.randomseed(world_constants.SEED)
 	worldMutation.seed = world_constants.SEED
+	worldMutation.scale = world_constants.SCALE
 
-	world_constants.WORLD_DIMENSIONS.x = world_constants.WORLD_DIMENSIONS.x * world_constants.MEDIUM
-	world_constants.WORLD_DIMENSIONS.y = world_constants.WORLD_DIMENSIONS.y * world_constants.MEDIUM
+	local worldScale = world_constants.SCALES[string.upper(worldMutation.scale)]
+	world_constants.WORLD_SIZE.x = world_constants.BASE_WORLD_SIZE.x * worldScale
+	world_constants.WORLD_SIZE.y = world_constants.BASE_WORLD_SIZE.y * worldScale
 	initialize_world_chunks()
 	initialize_world()
 

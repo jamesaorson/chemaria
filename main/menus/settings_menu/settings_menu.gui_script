@@ -26,11 +26,15 @@ function checkbox_handler(checkbox, handler)
 end
 
 function exit_to_main_menu(self)
-	zoomLevel = tonumber(gui.get_text(gui.get_node("zoom_input/text")))
-	if zoomLevel and zoomLevel >= 0.5 and zoomLevel <= 3 then
+	helpers.set_config_data("FULLSCREEN", self.fullscreen)
+
+	helpers.set_config_data("VSYNC", self.vsync)
+
+	local zoomLevel = tonumber(gui.get_text(gui.get_node("zoom_input/text")))
+	if zoomLevel and zoomLevel >= self.minZoom and zoomLevel <= self.maxZoom then
 		helpers.set_config_data("CAMERA_ZOOM_LEVEL", { zoom = zoomLevel})
 	end
-	helpers.set_config_data("FULLSCREEN", self.fullscreen)
+
 	msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#main_menu_proxy" })
 end
 
@@ -48,16 +52,19 @@ function init(self)
 	helpers.init_config_data()
 	gooey.acquire_input()
 
-	self.currentZoom = helpers.get_config_data("CAMERA_ZOOM_LEVEL").zoom
 	self.fullscreen = helpers.get_config_data("FULLSCREEN")
+	theme.checkbox("fullscreen_checkbox").set_checked(self.fullscreen)
+
+	self.vsync = helpers.get_config_data("VSYNC")
+	theme.checkbox("vsync_checkbox").set_checked(self.vsync)
+	
+	self.currentZoom = helpers.get_config_data("CAMERA_ZOOM_LEVEL").zoom
 	self.minZoom = 1
 	self.maxZoom = 3
 	self.zoomLabel = self.minZoom .. " to " .. self.maxZoom
-
 	gui.set_text(gui.get_node("current_zoom_label"), "Current Zoom: " .. self.currentZoom)
 	gui.set_text(gui.get_node("zoom_input/text"), self.zoomLabel)
 	gui.set_enabled(gui.get_node("zoom_input/cursor"), false)
-	theme.checkbox("fullscreen_checkbox").set_checked(self.fullscreen)
 end
 
 function on_input(self, actionId, action)
@@ -73,13 +80,19 @@ function on_input(self, actionId, action)
 
 	theme.checkbox("fullscreen_checkbox", actionId, action, function(checkbox)
 		checkbox_handler(checkbox, function()
-			self.fullscreen = checkbox.checked
+			SCOPED_SELF.fullscreen = checkbox.checked
+		end)
+	end)
+
+	theme.checkbox("vsync_checkbox", actionId, action, function(checkbox)
+		checkbox_handler(checkbox, function()
+			SCOPED_SELF.vsync = checkbox.checked
 		end)
 	end)
 
 	theme.input("zoom_input", gui.KEYBOARD_TYPE_NUMBER_PAD, actionId, action, {
 		max_length = 4,
-		empty_text = self.zoomLabel,
+		empty_text = SCOPED_SELF.zoomLabel,
 		allowed_characters = "[%d%.]"
 	})
 end
