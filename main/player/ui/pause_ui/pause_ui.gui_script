@@ -71,7 +71,7 @@ function on_input(self, actionId, action)
 			end
 			if globals.saveFileName then
 				msg.post("/player#player_script", message_constants.SAVE_GAME, {})
-				self.isPauseUiEnabled = false
+				msg.post("/player#player_script", input_constants.TOGGLE_PAUSE_MENU, {})
 				self.shouldUpdatePauseUi = true
 				self.isSaveInputEnabled = false
 				self.shouldUpdateSaveInput = true

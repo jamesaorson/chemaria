@@ -7,6 +7,18 @@ images {
 images {
   image: "/main/ui/images/button_disabled.png"
 }
+images {
+  image: "/main/ui/images/radio_normal.png"
+}
+images {
+  image: "/main/ui/images/radio_pressed.png"
+}
+images {
+  image: "/main/ui/images/radio_checked_normal.png"
+}
+images {
+  image: "/main/ui/images/radio_checked_pressed.png"
+}
 margin: 0
 extrude_borders: 1
 inner_padding: 1

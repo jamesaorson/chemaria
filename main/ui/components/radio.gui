@@ -4,8 +4,8 @@ fonts {
   font: "/main/ui/fonts/theme_small.font"
 }
 textures {
-  name: "gooey"
-  texture: "/gooey/themes/kenneyblue/images/kenneyblue.atlas"
+  name: "theme"
+  texture: "/main/ui/images/theme.atlas"
 }
 background_color {
   x: 0.0
@@ -33,8 +33,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 38.0
-    y: 36.0
+    x: 66.0
+    y: 70.0
     z: 0.0
     w: 1.0
   }
@@ -46,8 +46,8 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "gooey/grey_box"
-  id: "box"
+  texture: "theme/radio_normal"
+  id: "button"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -69,7 +69,7 @@ nodes {
 }
 nodes {
   position {
-    x: 30.0
+    x: 60.0
     y: 0.0
     z: 0.0
     w: 1.0
@@ -100,7 +100,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: ""
+  text: "LABEL"
   font: "theme_small"
   id: "label"
   xanchor: XANCHOR_NONE
