@@ -144,47 +144,36 @@ function initialize_world()
 		-- Keep world from not rendering when you go out of the bounds
 		if chunkX > -world_constants.WORLD_SIZE.x + world_constants.RENDER_DISTANCE.x and chunkX < world_constants.WORLD_SIZE.x - world_constants.RENDER_DISTANCE.x then
 			for chunkY, chunk in pairs(chunkXColumn) do
-				local blockInfo = nil
-				local randomNumber = math.random()
-				if chunk.position.y <= 0 and chunk.position.y > -1 then
-					if randomNumber < 0.1 then
-						blockInfo = item_constants.STONE
-					elseif randomNumber < 0.2 then
-						blockInfo = item_constants.CLAY
-					elseif randomNumber < 0.4 then
-						blockInfo = item_constants.SAND
-					else
-						blockInfo = item_constants.DIRT
-					end
-				elseif chunk.position.y <= -1 then
-					if randomNumber < 0.1 then
-						blockInfo = item_constants.SAND
-					elseif randomNumber < 0.2 then
-						blockInfo = item_constants.DIRT
-					elseif randomNumber < 0.4 then
-						blockInfo = item_constants.CLAY
-					elseif randomNumber < 0.45 then
-						if randomNumber < 0.41 then
-							blockInfo = item_constants.GOLD_ORE
-						elseif randomNumber < 0.42 then
-							blockInfo = item_constants.SILVER_ORE
-						elseif randomNumber < 0.43 then
-							blockInfo = item_constants.PLATINUM_ORE
-						else
-							blockInfo = item_constants.IRON_ORE
-						end
-					else
-						blockInfo = item_constants.STONE
-					end
-				end
-				if blockInfo then
-					for y = 0, world_constants.CHUNK_SIZE - 1 do
-						for x = 0, world_constants.CHUNK_SIZE - 1 do
-							local blockToInsert = {}
-							blockToInsert.id = blockInfo.id
-							blockToInsert.position = vmath.vector3(x, y, 0)
-							
-							Chunk.add_block(chunk, blockToInsert)
+				for y = 0, world_constants.CHUNK_SIZE - 1 do
+					for x = 0, world_constants.CHUNK_SIZE - 1 do
+						if chunkY <= 0 then
+							local blockInfo = nil
+							local randomNumber = noise.Noise2D(x + chunkX * world_constants.CHUNK_SIZE, y + chunkY * world_constants.CHUNK_SIZE)
+							randomNumber = (randomNumber + 1) * 10
+							if randomNumber < 2 then
+								blockInfo = item_constants.SAND
+							elseif randomNumber < 4 then
+								blockInfo = item_constants.CLAY
+							elseif randomNumber < 8 then
+								blockInfo = item_constants.STONE
+							elseif randomNumber < 9 then
+								blockInfo = item_constants.GOLD_ORE
+							elseif randomNumber < 9.2 then
+								blockInfo = item_constants.SILVER_ORE
+							elseif randomNumber < 9.4 then
+								blockInfo = item_constants.PLATINUM_ORE
+							elseif randomNumber < 9.6 then
+								blockInfo = item_constants.IRON_ORE
+							elseif randomNumber < 18 then
+								blockInfo = item_constants.DIRT
+							end
+							if blockInfo then
+								local blockToInsert = {}
+								blockToInsert.id = blockInfo.id
+								blockToInsert.position = vmath.vector3(x, y, 0)
+								
+								Chunk.add_block(chunk, blockToInsert)
+							end
 						end
 					end
 				end
@@ -199,7 +188,7 @@ function initialize_world_chunks()
 			local chunkToAdd = {}
 			chunkToAdd.blocks = {}
 			chunkToAdd.position = vmath.vector3(x, y, 0)
-			
+
 			World.add_chunk(world, chunkToAdd)
 		end
 	end
