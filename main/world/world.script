@@ -140,6 +140,23 @@ function fill_world(self)
 end
 
 function initialize_world()
+	local NOISE_SCALE = {
+		x = 0.01,
+		y = 0.01
+	}
+	local NOISE_OFFSET = {
+		x = 20,
+		y = 30
+	}
+	local NOISE_RANGE = {
+		x = (world_constants.WORLD_SIZE.x * world_constants.CHUNK_SIZE),
+		y = (world_constants.WORLD_SIZE.y * world_constants.CHUNK_SIZE)
+	}
+	local NOISE_DENOMINATOR = {
+		x = NOISE_RANGE.x * NOISE_SCALE.x + NOISE_OFFSET.x,
+		y = NOISE_RANGE.y * NOISE_SCALE.y + NOISE_OFFSET.y
+	}
+	pprint(NOISE_DENOMINATOR)
 	for chunkX, chunkXColumn in pairs(world.chunks) do
 		-- Keep world from not rendering when you go out of the bounds
 		if chunkX > -world_constants.WORLD_SIZE.x + world_constants.RENDER_DISTANCE.x and chunkX < world_constants.WORLD_SIZE.x - world_constants.RENDER_DISTANCE.x then
@@ -148,24 +165,28 @@ function initialize_world()
 					for x = 0, world_constants.CHUNK_SIZE - 1 do
 						if chunkY <= 0 then
 							local blockInfo = nil
-							local randomNumber = noise.Noise2D(x + chunkX * world_constants.CHUNK_SIZE, y + chunkY * world_constants.CHUNK_SIZE)
-							randomNumber = (randomNumber + 1) * 10
-							if randomNumber < 2 then
-								blockInfo = item_constants.SAND
-							elseif randomNumber < 4 then
-								blockInfo = item_constants.CLAY
-							elseif randomNumber < 8 then
-								blockInfo = item_constants.STONE
-							elseif randomNumber < 9 then
-								blockInfo = item_constants.GOLD_ORE
-							elseif randomNumber < 9.2 then
-								blockInfo = item_constants.SILVER_ORE
-							elseif randomNumber < 9.4 then
-								blockInfo = item_constants.PLATINUM_ORE
-							elseif randomNumber < 9.6 then
-								blockInfo = item_constants.IRON_ORE
-							elseif randomNumber < 18 then
-								blockInfo = item_constants.DIRT
+							local worldX = x + (chunkX * world_constants.CHUNK_SIZE)
+							local worldY = y + (chunkY * world_constants.CHUNK_SIZE)
+							local randomNumber = noise.Noise2D(worldX / NOISE_DENOMINATOR.x, worldY / NOISE_DENOMINATOR.y)
+
+							if randomNumber < 0.2 then
+								if randomNumber > -0.1 then
+									blockInfo = item_constants.DIRT
+								elseif randomNumber > -0.25 then
+									blockInfo = item_constants.SAND
+								elseif randomNumber > -0.4 then
+									blockInfo = item_constants.STONE
+								elseif randomNumber > -0.55 then
+									blockInfo = item_constants.CLAY
+								elseif randomNumber > -0.65 then
+									blockInfo = item_constants.IRON_ORE
+								elseif randomNumber > -0.75 then
+									blockInfo = item_constants.SILVER_ORE
+								elseif randomNumber > -0.85 then
+									blockInfo = item_constants.GOLD_ORE
+								elseif randomNumber > -0.95 then
+									blockInfo = item_constants.PLATINUM_ORE
+								end
 							end
 							if blockInfo then
 								local blockToInsert = {}
