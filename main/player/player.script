@@ -238,12 +238,13 @@ function handle_right_click(self, messageId, message, sender)
 
 	if message.pressed and self.miningMessage == nil then
 		self.placingMessage.toolbarItem = self.toolbar[self.selectedToolbarItemIndex]
-		if helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id then
+		local canPlace = helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id and self.rightClickDistanceFromPlayer <= player_constants.BASE_PLACING_DISTANCE
+		if canPlace then
 			msg.post("/world#world_script", message_constants.PLACE_BLOCK, self.placingMessage)
 		end
 		self.placingTimerHandle = timer.delay(player_constants.BASE_PLACING_INTERVAL, true, function (self, handle, timeElapsed)
 			self.placingMessage.toolbarItem = self.toolbar[self.selectedToolbarItemIndex]
-			if helpers.is_placeable(self.placingMessage.toolbarItem) and self.placingMessage.toolbarItem.id ~= item_constants.NONE.id and self.rightClickDistanceFromPlayer <= player_constants.BASE_PLACING_DISTANCE then
+			if canPlace then
 				msg.post("/world#world_script", message_constants.PLACE_BLOCK, self.placingMessage)
 			end
 		end)
