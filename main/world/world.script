@@ -28,7 +28,7 @@ local create_block
 local create_loose_pickup
 local fill_world
 local initialize_new_world
-local initialize_world
+local generate_world
 local initialize_world_chunks
 local mine_block
 local mutate_world
@@ -139,7 +139,7 @@ function fill_world(self)
 	end
 end
 
-function initialize_world()
+function generate_world(worldSeed)
 	local NOISE_SCALE = {
 		x = 0.01,
 		y = 0.01
@@ -156,7 +156,7 @@ function initialize_world()
 		x = NOISE_RANGE.x * NOISE_SCALE.x + NOISE_OFFSET.x,
 		y = NOISE_RANGE.y * NOISE_SCALE.y + NOISE_OFFSET.y
 	}
-	pprint(NOISE_DENOMINATOR)
+	noise.shuffle_permutation(worldSeed)
 	for chunkX, chunkXColumn in pairs(world.chunks) do
 		-- Keep world from not rendering when you go out of the bounds
 		if chunkX > -world_constants.WORLD_SIZE.x + world_constants.RENDER_DISTANCE.x and chunkX < world_constants.WORLD_SIZE.x - world_constants.RENDER_DISTANCE.x then
@@ -339,19 +339,21 @@ end
 function init(self)
 	msg.post("@render:", "clear_color", { color = vmath.vector4(0.6, 0.5, 0.9, 1.0) })
 	local savedWorld = helpers.load_game(globals.saveFileName)
-	if world_constants.SEED == nil then
-		if savedWorld and savedWorld.seed then
+	if savedWorld then
+		if savedWorld.seed then
 			world_constants.SEED = savedWorld.seed
 		else
-			world_constants.SEED = os.time()
+			print("There was no world seed in the save file")
 		end
-	end
-	if world_constants.SCALE == nil then
-		if savedWorld and savedWorld.scale then
+		if savedWorld.scale then
 			world_constants.SCALE = savedWorld.scale
+		else
+			print("There was no world scale in the save file")
 		end
+	else
+		world_constants.SEED = os.time()
 	end
-	math.randomseed(world_constants.SEED)
+
 	worldMutation.seed = world_constants.SEED
 	worldMutation.scale = world_constants.SCALE
 
@@ -359,7 +361,7 @@ function init(self)
 	world_constants.WORLD_SIZE.x = world_constants.BASE_WORLD_SIZE.x * worldScale
 	world_constants.WORLD_SIZE.y = world_constants.BASE_WORLD_SIZE.y * worldScale
 	initialize_world_chunks()
-	initialize_world()
+	generate_world(world_constants.SEED)
 
 	if savedWorld and savedWorld.chunks then
 		worldMutation = savedWorld
