@@ -1,7 +1,7 @@
 local WORLD = {}
 
 WORLD.BLOCK_SIZE = 24
-WORLD.BASE_WORLD_SIZE = vmath.vector3(10, 10, 0)
+WORLD.BASE_WORLD_SIZE = vmath.vector3(10, 100, 0)
 WORLD.WORLD_SIZE = vmath.vector3()
 WORLD.CHUNK_SIZE = 12
 WORLD.RENDER_DISTANCE = vmath.vector3(5, 3, 0)
