@@ -141,16 +141,16 @@ end
 
 function generate_world(worldSeed)
 	local NOISE_SCALE = {
-		x = 0.01,
-		y = 0.01
+		x = 0.1,
+		y = 0.1
 	}
 	local NOISE_OFFSET = {
 		x = 20,
 		y = 30
 	}
 	local NOISE_RANGE = {
-		x = (world_constants.WORLD_SIZE.x * world_constants.CHUNK_SIZE),
-		y = (world_constants.WORLD_SIZE.y * world_constants.CHUNK_SIZE)
+		x = world_constants.WORLD_SIZE.x * world_constants.CHUNK_SIZE,
+		y = world_constants.WORLD_SIZE.y * world_constants.CHUNK_SIZE
 	}
 	local NOISE_DENOMINATOR = {
 		x = NOISE_RANGE.x * NOISE_SCALE.x + NOISE_OFFSET.x,
@@ -167,24 +167,26 @@ function generate_world(worldSeed)
 							local blockInfo = nil
 							local worldX = x + (chunkX * world_constants.CHUNK_SIZE)
 							local worldY = y + (chunkY * world_constants.CHUNK_SIZE)
-							local randomNumber = noise.Noise2D(worldX / NOISE_DENOMINATOR.x, worldY / NOISE_DENOMINATOR.y)
+							
+							local noiseNumber = noise.Noise2D(worldX / NOISE_DENOMINATOR.x, worldY / NOISE_DENOMINATOR.y)
+							noiseNumber = noiseNumber + 1
 
-							if randomNumber < 0.2 then
-								if randomNumber > -0.1 then
+							if noiseNumber < 1.7 then
+								if noiseNumber > 1.3 then
 									blockInfo = item_constants.DIRT
-								elseif randomNumber > -0.25 then
+								elseif noiseNumber > 1.0 then
 									blockInfo = item_constants.SAND
-								elseif randomNumber > -0.4 then
-									blockInfo = item_constants.STONE
-								elseif randomNumber > -0.55 then
+								elseif noiseNumber > 0.7 then
 									blockInfo = item_constants.CLAY
-								elseif randomNumber > -0.65 then
+								elseif noiseNumber > 0.4 then
+									blockInfo = item_constants.STONE
+								elseif noiseNumber > 0.3 then
 									blockInfo = item_constants.IRON_ORE
-								elseif randomNumber > -0.75 then
+								elseif noiseNumber > 0.2 then
 									blockInfo = item_constants.SILVER_ORE
-								elseif randomNumber > -0.85 then
+								elseif noiseNumber > 0.1 then
 									blockInfo = item_constants.GOLD_ORE
-								elseif randomNumber > -0.95 then
+								elseif noiseNumber > 0 then
 									blockInfo = item_constants.PLATINUM_ORE
 								end
 							end
@@ -192,7 +194,7 @@ function generate_world(worldSeed)
 								local blockToInsert = {}
 								blockToInsert.id = blockInfo.id
 								blockToInsert.position = vmath.vector3(x, y, 0)
-								
+
 								Chunk.add_block(chunk, blockToInsert)
 							end
 						end
@@ -359,7 +361,7 @@ function init(self)
 
 	local worldScale = world_constants.SCALES[string.upper(worldMutation.scale)]
 	world_constants.WORLD_SIZE.x = world_constants.BASE_WORLD_SIZE.x * worldScale
-	world_constants.WORLD_SIZE.y = world_constants.BASE_WORLD_SIZE.y * worldScale
+	world_constants.WORLD_SIZE.y = world_constants.BASE_WORLD_SIZE.y
 	initialize_world_chunks()
 	generate_world(world_constants.SEED)
 

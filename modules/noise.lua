@@ -45,14 +45,12 @@ local function set_up_permutation()
 		perm[i] = p[i]
 		perm[i + 256] = p[i]
 	end
-	print(perm[0])
 end
 
 function simplex.shuffle_permutation(worldSeed)
 	local count = #p
 	init_p_table()
 	math.randomseed(worldSeed)
-	print('seed', worldSeed)
 	for i = 1, (count * 20) do
 		local index_0 = math.random(1, count)
 		local index_1 = math.random(1, count)
