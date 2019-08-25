@@ -51,7 +51,7 @@ end
 
 function fill_crafting_list_ui(self, actionId, action)
 	self.scrollbar = gooey.vertical_scrollbar("scrollbar/handle", "scrollbar/bounds", actionId, action, function () end)
-	gooey.dynamic_list("crafting_list", "crafting_list/stencil", "crafting_list/listitem_bg", self.recipeList, actionId, action, on_item_selected, update_crafting_list).scroll_to(0, self.scrollbar.scroll.y)
+	theme.dynamic_list("crafting_list", self.recipeList, actionId, action, on_item_selected, update_crafting_list).scroll_to(0, self.scrollbar.scroll.y)
 end
 
 function fill_recipe_list(self)
@@ -108,20 +108,14 @@ end
 
 function update_list_item(list, item)
 	local pos = gui.get_position(item.root)
-	local selectedRecipe = SCOPED_SELF.recipeList[item.index]
+
+	local animationToPlay = LISTITEM
 	if selectedRecipe ~= nil and not selectedRecipe.canCraft then
-		gui.play_flipbook(item.root, LISTITEM_DISABLED)
-	elseif item.index == list.selected_item then
-		gui.play_flipbook(item.root, LISTITEM_PRESSED)
+		animationToPlay = LISTITEM_DISABLED
 	elseif item.index == list.pressed_item then
-		gui.play_flipbook(item.root, LISTITEM_PRESSED)
-	elseif item.index == list.over_item_now then
-		gui.play_flipbook(item.root, LISTITEM)
-	elseif item.index == list.out_item_now then
-		gui.play_flipbook(item.root, LISTITEM)
-	elseif item.index ~= list.over_item then
-		gui.play_flipbook(item.root, LISTITEM)
+		animationToPlay = LISTITEM_PRESSED
 	end
+	gui.play_flipbook(item.root, animationToPlay)
 	gui.set_position(item.root, pos)
 end
 
