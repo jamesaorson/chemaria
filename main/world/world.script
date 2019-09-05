@@ -139,10 +139,10 @@ function fill_world(self)
 	end
 end
 
-function generate_world(worldSeed)
+function generate_world(self, worldSeed)
 	local NOISE_SCALE = {
-		x = 0.1,
-		y = 0.1
+		x = 0.04,
+		y = 0.02
 	}
 	local NOISE_OFFSET = {
 		x = 20,
@@ -157,36 +157,47 @@ function generate_world(worldSeed)
 		y = NOISE_RANGE.y * NOISE_SCALE.y + NOISE_OFFSET.y
 	}
 	noise.shuffle_permutation(worldSeed)
+
+	self.yMaxes = {}
+	local worldHeight = world_constants.CHUNK_SIZE * world_constants.WORLD_SIZE.x
+	math.randomseed(worldSeed)
 	for chunkX, chunkXColumn in pairs(world.chunks) do
 		-- Keep world from not rendering when you go out of the bounds
 		if chunkX > -world_constants.WORLD_SIZE.x + world_constants.RENDER_DISTANCE.x and chunkX < world_constants.WORLD_SIZE.x - world_constants.RENDER_DISTANCE.x then
 			for chunkY, chunk in pairs(chunkXColumn) do
-				for y = 0, world_constants.CHUNK_SIZE - 1 do
-					for x = 0, world_constants.CHUNK_SIZE - 1 do
-						if chunkY <= 0 then
+				for x = 0, world_constants.CHUNK_SIZE - 1 do
+					local worldX = x + (chunkX * world_constants.CHUNK_SIZE)
+					local xForNoise = worldX / NOISE_DENOMINATOR.x
+					local yMaxFromNoise = noise.Noise2D(xForNoise, 0)
+					yMaxFromNoise = ((yMaxFromNoise + 1) / 2)
+					self.yMaxes[worldX] = world_constants.CHUNK_SIZE * yMaxFromNoise
+
+					local yMax = self.yMaxes[worldX]
+					for y = 0, world_constants.CHUNK_SIZE - 1 do
+						local worldY = y + (chunkY * world_constants.CHUNK_SIZE)
+						if worldY <= yMax then
+							local yDiff = 0.2 - ((yMax - worldY) / worldHeight)
 							local blockInfo = nil
-							local worldX = x + (chunkX * world_constants.CHUNK_SIZE)
-							local worldY = y + (chunkY * world_constants.CHUNK_SIZE)
-							
-							local noiseNumber = noise.Noise2D(worldX / NOISE_DENOMINATOR.x, worldY / NOISE_DENOMINATOR.y)
+							local noiseNumber = noise.Noise2D(xForNoise, worldY / NOISE_DENOMINATOR.y)
 							noiseNumber = noiseNumber + 1
 
 							if noiseNumber < 1.7 then
+								noiseNumber = noiseNumber + (0.5 * yDiff)
 								if noiseNumber > 1.3 then
 									blockInfo = item_constants.DIRT
-								elseif noiseNumber > 1.0 then
+								elseif noiseNumber > 0.9 then
 									blockInfo = item_constants.SAND
-								elseif noiseNumber > 0.7 then
+								elseif noiseNumber > 0.65 then
 									blockInfo = item_constants.CLAY
 								elseif noiseNumber > 0.4 then
 									blockInfo = item_constants.STONE
-								elseif noiseNumber > 0.3 then
-									blockInfo = item_constants.IRON_ORE
 								elseif noiseNumber > 0.2 then
-									blockInfo = item_constants.SILVER_ORE
+									blockInfo = item_constants.IRON_ORE
 								elseif noiseNumber > 0.1 then
+									blockInfo = item_constants.SILVER_ORE
+								elseif noiseNumber > 0.05 then
 									blockInfo = item_constants.GOLD_ORE
-								elseif noiseNumber > 0 then
+								elseif noiseNumber > 0.0 then
 									blockInfo = item_constants.PLATINUM_ORE
 								end
 							end
@@ -363,7 +374,7 @@ function init(self)
 	world_constants.WORLD_SIZE.x = world_constants.BASE_WORLD_SIZE.x * worldScale
 	world_constants.WORLD_SIZE.y = world_constants.BASE_WORLD_SIZE.y
 	initialize_world_chunks()
-	generate_world(world_constants.SEED)
+	generate_world(self, world_constants.SEED)
 
 	if savedWorld and savedWorld.chunks then
 		worldMutation = savedWorld
