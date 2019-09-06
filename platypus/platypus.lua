@@ -36,7 +36,7 @@ local ALLOWED_CONFIG_KEYS = {
 	allow_double_jump = true,
 	max_velocity = true,
 	gravity = true,
-	debug = true,
+	debug = false
 }
 
 M.DIR_UP = 0x01
