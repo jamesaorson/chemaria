@@ -110,6 +110,7 @@ function update_list_item(list, item)
 	local pos = gui.get_position(item.root)
 
 	local animationToPlay = LISTITEM
+	local selectedRecipe = SCOPED_SELF.recipeList[item.index]
 	if selectedRecipe ~= nil and not selectedRecipe.canCraft then
 		animationToPlay = LISTITEM_DISABLED
 	elseif item.index == list.pressed_item then
