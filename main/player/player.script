@@ -6,7 +6,6 @@ local input_constants = require "modules.constants.input"
 local inventory_constants = require "modules.constants.inventory"
 local item_constants = require "modules.constants.items"
 local message_constants = require "modules.constants.messages"
-local orthographic = require "orthographic.camera"
 local platypus = require "platypus.platypus"
 local platypus_constants = require "modules.constants.platypus"
 local player_constants = require "modules.constants.player"
@@ -306,6 +305,7 @@ function init(self)
 	self.miningTimerHandle = nil
 	self.placingTimerHandle = nil
 	self.platypus = platypus.create(platypus_constants.CONFIG)
+	self.platypus.debug = true
 	self.previousSelectedToolbarItem = {}
 	self.selectedToolbarItemIndex = 1
 	self.selectedToolbarItem = {}
