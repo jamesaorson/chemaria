@@ -43,7 +43,7 @@ function end_drag(self, message)
 
 	for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
 		local toolbarItem = gui.get_node(urls.get_toolbar_text_node_url(i))
-		if gui.pick_node(toolbarItem, message.screen_x, message.screen_y) then
+		if gui.pick_node(toolbarItem, message.x, message.y) then
 			isToolbarClicked = true
 			pickedIndex = i
 			nodeActedUpon = toolbarItem
@@ -54,7 +54,7 @@ function end_drag(self, message)
 	if not isToolbarClicked then
 		for i = 1, inventory_constants.INVENTORY_MAX_SLOTS do
 			local inventoryItem = gui.get_node(urls.get_inventory_node_url(i))
-			if gui.pick_node(inventoryItem, message.screen_x, message.screen_y) then
+			if gui.pick_node(inventoryItem, message.x, message.y) then
 				isInventoryClicked = true
 				pickedIndex = i
 				nodeActedUpon = inventoryItem
@@ -129,7 +129,7 @@ function start_drag(self, message)
 
 	for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
 		local toolbarItem = gui.get_node(urls.get_toolbar_text_node_url(i))
-		if gui.pick_node(toolbarItem, message.screen_x, message.screen_y) then
+		if gui.pick_node(toolbarItem, message.x, message.y) then
 			self.draggedItem = { startingUiElement = "toolbar", startingIndex = i }
 			break
 		end
@@ -137,7 +137,7 @@ function start_drag(self, message)
 	if not self.draggedItem then
 		for i = 1, inventory_constants.INVENTORY_MAX_SLOTS do
 			local inventoryItem = gui.get_node(urls.get_inventory_node_url(i))
-			if gui.pick_node(inventoryItem, message.screen_x, message.screen_y) then
+			if gui.pick_node(inventoryItem, message.x, message.y) then
 				self.draggedItem = { startingUiElement = "inventory", startingIndex = i } 
 				break
 			end
