@@ -229,7 +229,7 @@ function initialize_world_chunks()
 end
 
 function mine_block(blockUrl, message, chunkPosition, blockPosition)
-	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
+	local screenPosition = vmath.vector3(message.x, message.y, 0)
 
 	local chunk = World.get_chunk_at_position(world, chunkPosition)
 	local block = Chunk.get_block_at_position(chunk, blockPosition)
@@ -301,7 +301,7 @@ function handle_create_loose_pickup(self, messageId, message, sender)
 end
 
 function handle_mine_block(self, messageId, message, sender)
-	local screenPosition = vmath.vector3(message.screen_x, message.screen_y, 0)
+	local screenPosition = vmath.vector3(message.x, message.y, 0)
 	local blockPosition = position_helpers.screen_to_block_position(screenPosition)
 	local chunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
 	local chunk = World.get_chunk_at_position(world, chunkPosition)
@@ -316,7 +316,7 @@ end
 function handle_place_block(self, messageId, message, sender)
 	local toolbarItem = message.toolbarItem
 	if toolbarItem and toolbarItem.id ~= item_constants.NONE.id then
-		local messagePosition = vmath.vector3(message.screen_x, message.screen_y, 0)
+		local messagePosition = vmath.vector3(message.x, message.y, 0)
 		local chunkPosition = position_helpers.screen_to_chunk_position(messagePosition)
 		local chunk = World.get_chunk_at_position(world, chunkPosition)
 		if chunk then
