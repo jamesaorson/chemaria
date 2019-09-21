@@ -139,7 +139,7 @@ function fill_world(self)
 	end
 end
 
-function generate_world(self, worldSeed)
+function generate_world(self, worldSeed, savedWorld)
 	local NOISE_SCALE = {
 		x = 0.04,
 		y = 0.02
@@ -165,6 +165,9 @@ function generate_world(self, worldSeed)
 		-- Keep world from not rendering when you go out of the bounds
 		if chunkX > -world_constants.WORLD_SIZE.x + world_constants.RENDER_DISTANCE.x and chunkX < world_constants.WORLD_SIZE.x - world_constants.RENDER_DISTANCE.x then
 			for chunkY, chunk in pairs(chunkXColumn) do
+				if (socket.gettime() * 1000) - self.generationTime >= 100 then
+					coroutine.yield()
+				end
 				for x = 0, world_constants.CHUNK_SIZE - 1 do
 					local worldX = x + (chunkX * world_constants.CHUNK_SIZE)
 					local xForNoise = worldX / NOISE_DENOMINATOR.x
@@ -350,6 +353,16 @@ end
 ----------------------
 
 function init(self)
+	local gameObjectsToToggle = {
+		"/held_item",
+		"/mouse",
+		"/player",
+		"/ui"
+	}
+	for _, gameObjectToToggle in pairs(gameObjectsToToggle) do
+		msg.post(gameObjectToToggle, "disable")
+	end
+
 	msg.post("@render:", "clear_color", { color = vmath.vector4(0.6, 0.5, 0.9, 1.0) })
 	local savedWorld = helpers.load_game(globals.saveFileName)
 	if savedWorld then
@@ -374,24 +387,46 @@ function init(self)
 	world_constants.WORLD_SIZE.x = world_constants.BASE_WORLD_SIZE.x * worldScale
 	world_constants.WORLD_SIZE.y = world_constants.BASE_WORLD_SIZE.y
 	initialize_world_chunks()
-	generate_world(self, world_constants.SEED)
 
-	if savedWorld and savedWorld.chunks then
-		worldMutation = savedWorld
-		mutate_world(worldMutation)
+	self.generationCoroutine = coroutine.create(function()
+		globals.isPaused = true
+		self.generationTime = socket.gettime() * 1000
+		generate_world(self, world_constants.SEED, savedWorld)
+		if savedWorld and savedWorld.chunks then
+			worldMutation = savedWorld
+			mutate_world(worldMutation)
+		end
+		fill_world(self)
+		globals.isPaused = false
+
+		for _, gameObjectToToggle in pairs(gameObjectsToToggle) do
+			msg.post(gameObjectToToggle, "enable")
+		end
+	end)
+end
+
+function update(self, dt)
+	if self.generationCoroutine then
+		if coroutine.status(self.generationCoroutine) == "dead" then
+			self.generationCoroutine = nil
+		else
+			self.generationTime = socket.gettime() * 1000
+			coroutine.resume(self.generationCoroutine)
+		end
 	end
-	fill_world(self)
 end
 
 function on_message(self, messageId, message, sender)
-	if messageId == message_constants.CREATE_LOOSE_PICKUP then
-		handle_create_loose_pickup(self, messageId, message, sender)
-	elseif messageId == message_constants.MINE_BLOCK then
-		handle_mine_block(self, messageId, message, sender)
-	elseif messageId == message_constants.PLACE_BLOCK then
-		handle_place_block(self, messageId, message, sender)
-	elseif messageId == message_constants.UPDATE_CHUNK_RENDER then
-		handle_update_chunk_render(self, messageId, message, sender)
+	if not globals.isPaused then
+		if messageId == message_constants.CREATE_LOOSE_PICKUP then
+			handle_create_loose_pickup(self, messageId, message, sender)
+		elseif messageId == message_constants.MINE_BLOCK then
+			handle_mine_block(self, messageId, message, sender)
+		elseif messageId == message_constants.PLACE_BLOCK then
+			handle_place_block(self, messageId, message, sender)
+		elseif messageId == message_constants.UPDATE_CHUNK_RENDER then
+			handle_update_chunk_render(self, messageId, message, sender)
+		end
 	end
 end
 

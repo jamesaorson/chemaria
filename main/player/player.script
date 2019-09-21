@@ -305,7 +305,6 @@ function init(self)
 	self.miningTimerHandle = nil
 	self.placingTimerHandle = nil
 	self.platypus = platypus.create(platypus_constants.CONFIG)
-	self.platypus.debug = true
 	self.previousSelectedToolbarItem = {}
 	self.selectedToolbarItemIndex = 1
 	self.selectedToolbarItem = {}
