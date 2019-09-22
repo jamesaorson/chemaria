@@ -1,4 +1,4 @@
-image: anapsix/alpine-java:8_jdk
+image: openjdk:11
 
 stages:
   - build
@@ -7,22 +7,21 @@ stages:
 build:
   stage: build
   before_script:
-    - apk update
-    - apk add less zip curl
-  script: 
-    - ./build.sh
+    - apt update
+    - apt install -y less zip curl
+  script:
+    - bash ./build.sh
   artifacts:
     paths:
       - ./build/x86_64-darwin/Chemaria_x86_64-darwin.zip
       - ./build/x86_64-linux/Chemaria_x86_64-linux.zip
       - ./build/x86_64-win32/Chemaria_x86_64-win32.zip
-
 deploy:
   stage: deploy
   only:
     - master
   before_script:
-    - apk update
-    - apk add zip curl
+    - apt update
+    - apt install -y zip curl
   script:
-    - ./deploy.sh
+    - bash ./deploy.sh
