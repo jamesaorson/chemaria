@@ -57,12 +57,12 @@ local settingsFileName = "settings.bin"
 function HELPERS.apply_config()
 	HELPERS.init_config_data()
 
-	local isFullscreen = HELPERS.get_config_data("FULLSCREEN")
-	if not isFullscreen then
-		isFullscreen = config.FULLSCREEN
-		HELPERS.set_config_data("FULLSCREEN", isFullscreen)
-	end
-	defos.set_fullscreen(isFullscreen)
+	-- local isFullscreen = HELPERS.get_config_data("FULLSCREEN")
+	-- if not isFullscreen then
+	-- 	isFullscreen = config.FULLSCREEN
+	-- 	HELPERS.set_config_data("FULLSCREEN", isFullscreen)
+	-- end
+	-- defos.set_fullscreen(isFullscreen)
 
 	local vsync = HELPERS.get_config_data("VSYNC")
 	if not vsync then
@@ -100,12 +100,6 @@ function HELPERS.get_config_data(key)
 	return nil
 end
 
-function HELPERS.set_config_data(key, value)
-	if key ~= nil and type(key) == "string" and defsave.is_loaded(settingsFileName) then
-		defsave.set(settingsFileName, string.upper(key), value)
-	end
-end
-
 function HELPERS.save_config_data(filename)
 	if filename ~= nil and type(filename) == "string" then
 		defsave.save(filename)
@@ -116,6 +110,12 @@ function HELPERS.save_config_data(filename)
 			end
 		end
 		defsave.save_all()
+	end
+end
+
+function HELPERS.set_config_data(key, value)
+	if key ~= nil and type(key) == "string" and defsave.is_loaded(settingsFileName) then
+		defsave.set(settingsFileName, string.upper(key), value)
 	end
 end
 
@@ -203,9 +203,64 @@ function HELPERS.round(num)
 	end
 end
 
+function HELPERS.linear_scale(inputLow, inputHigh, outputLow, outputHigh, numberToScale)
+	local inputRange = (inputHigh - inputLow)  
+	local outputRange = (outputHigh - outputLow)  
+	return(((numberToScale - inputLow) * outputRange) / inputRange) + outputLow
+end
+
 --------------
 -- End Math --
 --------------
+
+
+-----------
+-- Mouse --
+-----------
+
+function HELPERS.load_cursor(cursorName)
+	if cursorName then
+		local systemName = sys.get_sys_info().system_name
+		local cursor = nil
+
+		if systemName == "Linux" then
+			local function extract_to_savefolder(res)
+				local appname = sys.get_config("project.title")
+				local resbuff = resource.load("/assets/" .. res)
+				local rawBytes = buffer.get_bytes(resbuff, hash("data"))
+				local path = sys.get_save_file(appname, res)
+				local f = io.open(path, "wb")
+				f:write(raw_bytes)
+				f:flush()
+				f:close()
+				return path
+			end
+			cursor = defos.load_cursor(extract_to_savefolder(cursorName .. ".xcur"))
+			-- Currently not using custom cursors
+			cursor = nil
+		elseif systemName == "Windows" then
+			cursor = defos.load_cursor("assets/mouse/" .. cursorName .. ".png")
+			-- Currently not using custom cursors
+			cursor = nil
+		elseif systemName == "Darwin" then
+			cursor = defos.load_cursor({
+				image = resource.load("/assets/mouse/" .. cursorName .. ".tiff"),
+				hot_spot_x = 0,
+				hot_spot_y = 0
+			})
+			-- TIFF is currently too small to be used
+			cursor = nil
+		end
+
+		if cursor then
+			defos.set_cursor(cursor)
+		end
+	end
+end
+
+---------------
+-- End Mouse --
+---------------
 
 
 ---------------
@@ -253,5 +308,48 @@ end
 -------------------
 -- End Save/Load --
 -------------------
+
+------------
+-- Screen --
+------------
+
+function HELPERS.get_current_display()
+	local displays = defos.get_displays()
+	local displayId = defos.get_current_display_id()
+	return displays[displayId]
+end
+
+function HELPERS.set_resolution(resolution)
+	local currentDisplay = HELPERS.get_current_display()
+	local modes = defos.get_display_modes(currentDisplay.id)
+
+	if not resolution or not (resolution.width and resolution.height) then
+		resolution = {
+			width = currentDisplay.mode.width,
+			height = currentDisplay.mode.height
+		}
+	end
+	local isValidResolution = false
+	for _, mode in pairs(modes) do
+		if mode.width == resolution.width and mode.height == resolution.height then
+			isValidResolution = true
+			break
+		end
+	end
+	if isValidResolution then
+		defos.set_fullscreen(true)
+		defos.set_window_size(0, 0, resolution.width, resolution.height)
+		defos.set_always_on_top(true)
+		defos.disable_maximize_button()
+		defos.disable_minimize_button()
+		defos.disable_window_resize()
+	end
+end
+
+----------------
+-- End Screen --
+----------------
+
+--
 
 return HELPERS
