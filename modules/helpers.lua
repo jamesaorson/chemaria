@@ -236,20 +236,14 @@ function HELPERS.load_cursor(cursorName)
 				return path
 			end
 			cursor = defos.load_cursor(extract_to_savefolder(cursorName .. ".xcur"))
-			-- Currently not using custom cursors
-			cursor = nil
 		elseif systemName == "Windows" then
-			cursor = defos.load_cursor("assets/mouse/" .. cursorName .. ".png")
-			-- Currently not using custom cursors
-			cursor = nil
+			cursor = defos.load_cursor("assets/mouse/" .. cursorName .. ".cur")
 		elseif systemName == "Darwin" then
 			cursor = defos.load_cursor({
 				image = resource.load("/assets/mouse/" .. cursorName .. ".tiff"),
 				hot_spot_x = 0,
 				hot_spot_y = 0
 			})
-			-- TIFF is currently too small to be used
-			cursor = nil
 		end
 
 		if cursor then
