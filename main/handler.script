@@ -14,16 +14,14 @@ require "modules.models.World"
 -- Helpers --
 -------------
 
-local apply_config
+local apply_camera_config
 local is_inventory_switch_action
 local send_crafting_ui_action
 local send_player_action
 local send_ui_action
 
-function apply_config()
+function apply_camera_config()
 	helpers.init_config_data()
-
-	defos.set_fullscreen(helpers.get_config_data("FULLSCREEN"))
 
 	msg.post(camera_constants.CAMERA_ID, "deadzone", helpers.get_config_data("CAMERA_DEADZONE"))
 	msg.post(camera_constants.CAMERA_ID, "zoom_to", helpers.get_config_data("CAMERA_ZOOM_LEVEL"))
@@ -141,9 +139,11 @@ end
 ----------------------
 
 function init(self)
+	helpers.init_config_data()
 	msg.post("/world#main", "acquire_input_focus")
 	self.game_mode = "play"
-	apply_config()
+	helpers.apply_config()
+	apply_camera_config()
 end
 
 function on_input(self, actionId, action)
