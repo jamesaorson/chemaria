@@ -355,7 +355,6 @@ end
 function init(self)
 	local gameObjectsToToggle = {
 		"/held_item",
-		"/mouse",
 		"/player",
 		"/ui"
 	}
