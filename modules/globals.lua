@@ -42,11 +42,11 @@ end
 -- World --
 -----------
 
-GLOBALS.currentChunk = nil
-GLOBALS.isPaused = false
+GLOBALS.current_chunk = nil
+GLOBALS.is_paused = false
 GLOBALS.mouse_positon = vmath.vector3()
-GLOBALS.previousChunk = nil
-GLOBALS.saveFileName = nil
+GLOBALS.previous_chunk = nil
+GLOBALS.save_file_name = nil
 
 ---------------
 -- End World --

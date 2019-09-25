@@ -7,162 +7,162 @@ local ITEMS = {}
 ITEMS.NONE = {
 	id = 000000,
 	name = "none",
-	displayName = "None",
-	holdingOffset = vmath.vector3(),
-	stackSize = 0
+	display_name = "None",
+	holding_offset = vmath.vector3(),
+	stack_size = 0
 }
 
 ITEMS.DIRT = {
 	id = 010001,
-	maxDurability = 2,
+	max_durability = 2,
 	name = "dirt",
-	displayName = "Dirt",
-	holdingOffset = vmath.vector3(),
-	stackSize = 64
+	display_name = "Dirt",
+	holding_offset = vmath.vector3(),
+	stack_size = 64
 }
 ITEMS.STONE = {
 	id = 010002,
-	maxDurability = 4,
+	max_durability = 4,
 	name = "stone",
-	displayName = "Stone",
-	holdingOffset = vmath.vector3(),
-	stackSize = 64
+	display_name = "Stone",
+	holding_offset = vmath.vector3(),
+	stack_size = 64
 }
 ITEMS.SAND = {
 	id = 010003,
-	maxDurability = 1,
+	max_durability = 1,
 	name = "sand",
-	displayName = "Sand",
-	holdingOffset = vmath.vector3(),
-	stackSize = 64
+	display_name = "Sand",
+	holding_offset = vmath.vector3(),
+	stack_size = 64
 }
 ITEMS.CLAY = {
 	id = 010004,
-	maxDurability = 3,
+	max_durability = 3,
 	name = "clay",
-	displayName = "Clay",
-	holdingOffset = vmath.vector3(),
-	stackSize = 64
+	display_name = "Clay",
+	holding_offset = vmath.vector3(),
+	stack_size = 64
 }
 ITEMS.CLAY_BRICKS = {
 	id = 010005,
-	maxDurability = 4,
+	max_durability = 4,
 	name = "clay_bricks",
-	displayName = "Clay Bricks",
-	holdingOffset = vmath.vector3(),
-	stackSize = 64
+	display_name = "Clay Bricks",
+	holding_offset = vmath.vector3(),
+	stack_size = 64
 }
 ITEMS.STONE_BRICKS = {
 	id = 010006,
-	maxDurability = 6,
+	max_durability = 6,
 	name = "stone_bricks",
-	displayName = "Stone Bricks",
-	holdingOffset = vmath.vector3(),
-	stackSize = 64
+	display_name = "Stone Bricks",
+	holding_offset = vmath.vector3(),
+	stack_size = 64
 }
 ITEMS.WOOD_WALL = {
 	id = 010007,
-	maxDurability = 3,
+	max_durability = 3,
 	name = "wood_wall",
-	displayName = "Wood Wall",
-	holdingOffset = vmath.vector3(),
-	stackSize = 64
+	display_name = "Wood Wall",
+	holding_offset = vmath.vector3(),
+	stack_size = 64
 }
 
 ITEMS.WOOD_PLANKS = {
 	id = 010012,
 	name = "wood_planks",
-	displayName = "Wood Planks",
-	holdingOffset = vmath.vector3(),
-	stackSize = 64
+	display_name = "Wood Planks",
+	holding_offset = vmath.vector3(),
+	stack_size = 64
 }
 ITEMS.FURNACE = {
 	id = 010013,
-	maxDurability = 8,
+	max_durability = 8,
 	name = "furnace",
-	displayName = "Furnace",
-	holdingOffset = vmath.vector3(),
-	stackSize = 1
+	display_name = "Furnace",
+	holding_offset = vmath.vector3(),
+	stack_size = 1
 }
 
 ITEMS.GOLD_INGOT = {
 	id = 020008,
 	name = "gold_ingot",
-	displayName = "Gold Ingot",
-	holdingOffset = vmath.vector3(),
-	stackSize = 64
+	display_name = "Gold Ingot",
+	holding_offset = vmath.vector3(),
+	stack_size = 64
 }
 ITEMS.IRON_INGOT = {
 	id = 020009,
 	name = "iron_ingot",
-	displayName = "Iron Ingot",
-	holdingOffset = vmath.vector3(),
-	stackSize = 64
+	display_name = "Iron Ingot",
+	holding_offset = vmath.vector3(),
+	stack_size = 64
 }
 ITEMS.PLATINUM_INGOT = {
 	id = 020010,
 	name = "platinum_ingot",
-	displayName = "Platinum Ingot",
-	holdingOffset = vmath.vector3(),
-	stackSize = 64
+	display_name = "Platinum Ingot",
+	holding_offset = vmath.vector3(),
+	stack_size = 64
 }
 ITEMS.SILVER_INGOT = {
 	id = 020011,
 	name = "silver_ingot",
-	displayName = "Silver Ingot",
-	holdingOffset = vmath.vector3(),
-	stackSize = 64
+	display_name = "Silver Ingot",
+	holding_offset = vmath.vector3(),
+	stack_size = 64
 }
 
 ITEMS.WOOD_PICKAXE = {
 	id = 030001,
 	name = "wood_pickaxe",
-	displayName = "Wood Pickaxe",
-	holdingOffset = vmath.vector3(9, 12, 0),
+	display_name = "Wood Pickaxe",
+	holding_offset = vmath.vector3(9, 12, 0),
 	miningPower = 2,
-	stackSize = 64
+	stack_size = 64
 }
 
 ITEMS.STONE_PICKAXE = {
 	id = 030002,
 	name = "stone_pickaxe",
-	displayName = "Stone Pickaxe",
-	holdingOffset = vmath.vector3(9, 12, 0),
+	display_name = "Stone Pickaxe",
+	holding_offset = vmath.vector3(9, 12, 0),
 	miningPower = 4,
-	stackSize = 64
+	stack_size = 64
 }
 
 ITEMS.GOLD_ORE = {
 	id = 040008,
-	maxDurability = 3,
+	max_durability = 3,
 	name = "gold_ore",
-	displayName = "Gold Ore",
-	holdingOffset = vmath.vector3(),
-	stackSize = 64
+	display_name = "Gold Ore",
+	holding_offset = vmath.vector3(),
+	stack_size = 64
 }
 ITEMS.IRON_ORE = {
 	id = 040009,
-	maxDurability = 6,
+	max_durability = 6,
 	name = "iron_ore",
-	displayName = "Iron Ore",
-	holdingOffset = vmath.vector3(),
-	stackSize = 64
+	display_name = "Iron Ore",
+	holding_offset = vmath.vector3(),
+	stack_size = 64
 }
 ITEMS.PLATINUM_ORE = {
 	id = 040010,
-	maxDurability = 6,
+	max_durability = 6,
 	name = "platinum_ore",
-	displayName = "Platinum Ore",
-	holdingOffset = vmath.vector3(),
-	stackSize = 64
+	display_name = "Platinum Ore",
+	holding_offset = vmath.vector3(),
+	stack_size = 64
 }
 ITEMS.SILVER_ORE = {
 	id = 040011,
-	maxDurability = 6,
+	max_durability = 6,
 	name = "silver_ore",
-	displayName = "Silver Ore",
-	holdingOffset = vmath.vector3(),
-	stackSize = 64
+	display_name = "Silver Ore",
+	holding_offset = vmath.vector3(),
+	stack_size = 64
 }
 
 ITEMS.ALL_ITEMS = {}
