@@ -8,8 +8,8 @@ local message_constants = require "modules.constants.messages"
 local show_proxy
 
 function show_proxy(self, proxy)
-	if self.currentProxy then
-		msg.post(self.currentProxy, "unload")
+	if self.current_proxy then
+		msg.post(self.current_proxy, "unload")
 	end
 	msg.post(proxy, "async_load")
 end
@@ -25,7 +25,7 @@ end
 function init(self)
 	helpers.init_config_data()
 
-	helpers.set_resolution()
+	helpers.set_resolution(nil, helpers.get_config_data("fullscreen"))
 	helpers.load_cursor("default")
 
 	helpers.apply_config()
@@ -34,12 +34,12 @@ function init(self)
 	show_proxy(self, "#main_menu_proxy")
 end
 
-function on_message(self, messageId, message, sender)
-	if messageId == message_constants.PROXY_LOADED then
-		self.currentProxy = sender
+function on_message(self, message_id, message, sender)
+	if message_id == message_constants.PROXY_LOADED then
+		self.current_proxy = sender
 		msg.post(sender, "enable")
-	elseif messageId == message_constants.SWITCH_PROXY then
-		show_proxy(self, message.switchTo)
+	elseif message_id == message_constants.SWITCH_PROXY then
+		show_proxy(self, message.switch_to)
 	end
 end
 

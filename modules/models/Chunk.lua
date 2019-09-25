@@ -1,18 +1,18 @@
 Chunk = {
 	blocks = {},
-	isRendered = false,
+	is_rendered = false,
 	position = vmath.vector3()
 }
 
-function Chunk.add_block(self, blockToAdd)
+function Chunk.add_block(self, block_to_add)
 	if not self.blocks then
 		self.blocks = {}
 	end
-	if not self.blocks[blockToAdd.position.x] then
-		self.blocks[blockToAdd.position.x] = {}
+	if not self.blocks[block_to_add.position.x] then
+		self.blocks[block_to_add.position.x] = {}
 	end
-	self.blocks[blockToAdd.position.x][blockToAdd.position.y] = blockToAdd
-	blockToAdd.chunk = self.position
+	self.blocks[block_to_add.position.x][block_to_add.position.y] = block_to_add
+	block_to_add.chunk = self.position
 end
 
 function Chunk.get_block_at_position(self, position)
@@ -27,10 +27,10 @@ function Chunk.remove_block(self, blockToRemove)
 end
 
 function Chunk.remove_block_at_position(self, position)
-	removed  = false
+	is_removed  = false
 	if self.blocks[position.x] and self.blocks[position.x][position.y] then
 		self.blocks[position.x][position.y] = nil
-		removed = true
+		is_removed = true
 	end
-	return removed
+	return is_removed
 end

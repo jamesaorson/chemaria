@@ -98,19 +98,19 @@ local function update_listitem(list, item)
 	local pos = gui.get_position(item.root)
 	if item.index == list.selected_item then
 		pos.x = 4
-		gui.play_flipbook(item.root, LISTITEM_SELECTED)
+		gui.play_flipbook(item.root, LIST_ITEM_SELECTED)
 	elseif item.index == list.pressed_item then
 		pos.x = 1
-		gui.play_flipbook(item.root, LISTITEM_PRESSED)
+		gui.play_flipbook(item.root, LIST_ITEM_PRESSED)
 	elseif item.index == list.over_item_now then
 		pos.x = 1
-		gui.play_flipbook(item.root, LISTITEM)
+		gui.play_flipbook(item.root, LIST_ITEM)
 	elseif item.index == list.out_item_now then
 		pos.x = 0
-		gui.play_flipbook(item.root, LISTITEM)
+		gui.play_flipbook(item.root, LIST_ITEM)
 	elseif item.index ~= list.over_item then
 		pos.x = 0
-		gui.play_flipbook(item.root, LISTITEM)
+		gui.play_flipbook(item.root, LIST_ITEM)
 	end
 	gui.set_position(item.root, pos)
 end
