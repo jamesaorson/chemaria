@@ -23,29 +23,37 @@ local send_ui_action
 function apply_camera_config()
 	helpers.init_config_data()
 
-	msg.post(camera_constants.CAMERA_ID, "deadzone", helpers.get_config_data("CAMERA_DEADZONE"))
-	msg.post(camera_constants.CAMERA_ID, "zoom_to", helpers.get_config_data("CAMERA_ZOOM_LEVEL"))
+	msg.post(
+		camera_constants.CAMERA_ID,
+		"deadzone",
+		helpers.get_config_data("CAMERA_DEADZONE")
+	)
+	msg.post(
+		camera_constants.CAMERA_ID,
+		"zoom_to",
+		helpers.get_config_data("CAMERA_ZOOM_LEVEL")
+	)
 end
 
-function is_inventory_switch_action(actionId)
+function is_inventory_switch_action(action_id)
 	for i = 1, toolbar_constants.TOOLBAR_MAX_SLOTS do
-		if actionId == input_constants.INVENTORY_SWITCH[i] then
+		if action_id == input_constants.INVENTORY_SWITCH[i] then
 			return true
 		end
 	end
 	return false
 end
 
-function send_crafting_ui_action(actionId, action)
-	msg.post("/crafting_ui#crafting_ui", actionId, action)
+function send_crafting_ui_action(action_id, action)
+	msg.post("/crafting_ui#crafting_ui", action_id, action)
 end
 
-function send_player_action(actionId, action)
-	msg.post("/player#player_script", actionId, action)
+function send_player_action(action_id, action)
+	msg.post("/player#player_script", action_id, action)
 end
 
-function send_ui_action(actionId, action)
-	msg.post("/ui#ui", actionId, action)
+function send_ui_action(action_id, action)
+	msg.post("/ui#ui", action_id, action)
 end
 
 -----------------
@@ -72,60 +80,60 @@ local handle_toggle_inventory
 local handle_toggle_pause_menu
 local handle_toggle_profile
 
-function handle_inventory_switch(self, actionId, action)
-	send_ui_action(actionId, action)
+function handle_inventory_switch(self, action_id, action)
+	send_ui_action(action_id, action)
 end
 
-function handle_jump(self, actionId, action)
-	send_player_action(actionId, action)
+function handle_jump(self, action_id, action)
+	send_player_action(action_id, action)
 end
 
-function handle_left(self, actionId, action)
-	send_player_action(actionId, action)
+function handle_left(self, action_id, action)
+	send_player_action(action_id, action)
 end
 
-function handle_left_click(self, actionId, action)
-	send_ui_action(actionId, action)
-	send_player_action(actionId, action)
+function handle_left_click(self, action_id, action)
+	send_ui_action(action_id, action)
+	send_player_action(action_id, action)
 end
 
-function handle_mouse_wheel_down(self, actionId, action)
-	send_ui_action(actionId, action)
+function handle_mouse_wheel_down(self, action_id, action)
+	send_ui_action(action_id, action)
 end
 
-function handle_mouse_wheel_up(self, actionId, action)
-	send_ui_action(actionId, action)
+function handle_mouse_wheel_up(self, action_id, action)
+	send_ui_action(action_id, action)
 end
 
-function handle_quit(self, actionId, action)
+function handle_quit(self, action_id, action)
 end
 
-function handle_right(self, actionId, action)
-	send_player_action(actionId, action)
+function handle_right(self, action_id, action)
+	send_player_action(action_id, action)
 end
 
-function handle_right_click(self, actionId, action)
-	send_player_action(actionId, action)
+function handle_right_click(self, action_id, action)
+	send_player_action(action_id, action)
 end
 
-function handle_toggle_crafting_menu(self, actionId, action)
-	send_crafting_ui_action(actionId, action)
+function handle_toggle_crafting_menu(self, action_id, action)
+	send_crafting_ui_action(action_id, action)
 end
 
-function handle_toggle_fullscreen(self, actionId, action)
+function handle_toggle_fullscreen(self, action_id, action)
 	helpers.set_config_data("FULLSCREEN", not helpers.get_config_data("FULLSCREEN"))
 	defos.set_fullscreen(helpers.get_config_data("FULLSCREEN"))
 end
 
-function handle_toggle_inventory(self, actionId, action)
-	send_ui_action(actionId, action)
+function handle_toggle_inventory(self, action_id, action)
+	send_ui_action(action_id, action)
 end
 
-function handle_toggle_pause_menu(self, actionId, action)
-	send_player_action(actionId, action)
+function handle_toggle_pause_menu(self, action_id, action)
+	send_player_action(action_id, action)
 end
 
-function handle_toggle_profile(self, actionId, action)
+function handle_toggle_profile(self, action_id, action)
 	msg.post("@system:", "toggle_profile")
 end
 
@@ -146,33 +154,33 @@ function init(self)
 	apply_camera_config()
 end
 
-function on_input(self, actionId, action)
-	if action.pressed and is_inventory_switch_action(actionId) then
-		handle_inventory_switch(self, actionId, action)
-	elseif actionId == input_constants.JUMP then
-		handle_jump(self, actionId, action)
-	elseif actionId == input_constants.LEFT then
-		handle_left(self, actionId, action)
-	elseif actionId == input_constants.LEFT_CLICK then
-		handle_left_click(self, actionId, action)
-	elseif actionId == input_constants.MOUSE_WHEEL_UP and action.pressed then
-		handle_mouse_wheel_up(self, actionId, action)
-	elseif actionId == input_constants.MOUSE_WHEEL_DOWN and action.pressed then
-		handle_mouse_wheel_down(self, actionId, action)
-	elseif actionId == input_constants.RIGHT then
-		handle_right(self, actionId, action)
-	elseif actionId == input_constants.RIGHT_CLICK then
-		handle_right_click(self, actionId, action)
-	elseif actionId == input_constants.TOGGLE_CRAFTING_MENU and action.released then
-		handle_toggle_crafting_menu(self, actionId, action)
-	elseif actionId == input_constants.TOGGLE_FULLSCREEN and action.released then
-		handle_toggle_fullscreen(self, actionId, action)
-	elseif actionId == input_constants.TOGGLE_INVENTORY and action.released then
-		handle_toggle_inventory(self, actionId, action)
-	elseif actionId == input_constants.TOGGLE_PAUSE_MENU and action.released then
-		handle_toggle_pause_menu(self, actionId, action)
-	elseif actionId == input_constants.TOGGLE_PROFILE and action.released then
-		handle_toggle_profile(self, actionId, action)
+function on_input(self, action_id, action)
+	if action.pressed and is_inventory_switch_action(action_id) then
+		handle_inventory_switch(self, action_id, action)
+	elseif action_id == input_constants.JUMP then
+		handle_jump(self, action_id, action)
+	elseif action_id == input_constants.LEFT then
+		handle_left(self, action_id, action)
+	elseif action_id == input_constants.LEFT_CLICK then
+		handle_left_click(self, action_id, action)
+	elseif action_id == input_constants.MOUSE_WHEEL_UP and action.pressed then
+		handle_mouse_wheel_up(self, action_id, action)
+	elseif action_id == input_constants.MOUSE_WHEEL_DOWN and action.pressed then
+		handle_mouse_wheel_down(self, action_id, action)
+	elseif action_id == input_constants.RIGHT then
+		handle_right(self, action_id, action)
+	elseif action_id == input_constants.RIGHT_CLICK then
+		handle_right_click(self, action_id, action)
+	elseif action_id == input_constants.TOGGLE_CRAFTING_MENU and action.released then
+		handle_toggle_crafting_menu(self, action_id, action)
+	elseif action_id == input_constants.TOGGLE_FULLSCREEN and action.released then
+		handle_toggle_fullscreen(self, action_id, action)
+	elseif action_id == input_constants.TOGGLE_INVENTORY and action.released then
+		handle_toggle_inventory(self, action_id, action)
+	elseif action_id == input_constants.TOGGLE_PAUSE_MENU and action.released then
+		handle_toggle_pause_menu(self, action_id, action)
+	elseif action_id == input_constants.TOGGLE_PROFILE and action.released then
+		handle_toggle_profile(self, action_id, action)
 	end
 end
 
