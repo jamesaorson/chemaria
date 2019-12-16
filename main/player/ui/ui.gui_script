@@ -1,11 +1,10 @@
-local globals = require "modules.globals"
-local input_constants = require "modules.constants.input"
-local inventory_constants = require "modules.constants.inventory"
-local item_constants = require "modules.constants.items"
-local message_constants = require "modules.constants.messages"
-local orthographic = require "orthographic.camera"
-local toolbar_constants = require "modules.constants.toolbar"
-local urls = require "modules.urls"
+local globals = require 'modules.globals'
+local input_constants = require 'modules.constants.input'
+local inventory_constants = require 'modules.constants.inventory'
+local item_constants = require 'modules.constants.items'
+local message_constants = require 'modules.constants.messages'
+local toolbar_constants = require 'modules.constants.toolbar'
+local urls = require 'modules.urls'
 
 -------------
 -- Helpers --
@@ -26,7 +25,7 @@ function change_slot_texture(slot_node, texture)
 	if not texture then
 		texture = item_constants.ALL_ITEMS[item_constants.NONE.id].name
 	end
-	gui.set_texture(slot_node, "block_textures")
+	gui.set_texture(slot_node, 'block_textures')
 	gui.play_flipbook(slot_node, texture)
 end
 
@@ -74,10 +73,10 @@ function end_drag(self, message)
 
 			local is_same_ui_collection = false
 			if is_toolbar_clicked then
-				is_same_ui_collection = self.dragged_item.starting_ui_collection == "toolbar"
+				is_same_ui_collection = self.dragged_item.starting_ui_collection == 'toolbar'
 				destination_ui_element = self.toolbar
 			elseif is_inventory_clicked then
-				is_same_ui_collection = self.dragged_item.starting_ui_collection == "inventory"
+				is_same_ui_collection = self.dragged_item.starting_ui_collection == 'inventory'
 				destination_ui_element = self.inventory
 			end
 
@@ -133,7 +132,7 @@ function start_drag(self, message)
 		local toolbar_item = gui.get_node(urls.get_toolbar_text_node_url(i))
 		if gui.pick_node(toolbar_item, message.x, message.y) then
 			self.dragged_item = {
-				starting_ui_collection = "toolbar",
+				starting_ui_collection = 'toolbar',
 				starting_index = i
 			}
 			break
@@ -144,7 +143,7 @@ function start_drag(self, message)
 			local inventory_item = gui.get_node(urls.get_inventory_node_url(i))
 			if gui.pick_node(inventory_item, message.x, message.y) then
 				self.dragged_item = {
-					starting_ui_collection = "inventory",
+					starting_ui_collection = 'inventory',
 					starting_index = i
 				}
 				break
@@ -162,7 +161,7 @@ function switch_selected_toolbar_item(self, index)
 	self.selected_toolbar_item = index
 	self.should_update_toolbar = true
 	msg.post(
-		"/player#player_script",
+		'/player#script',
 		message_constants.SWITCH_SELECTED_TOOLBAR_ITEM,
 		{
 			toolbar_index = index
@@ -184,7 +183,6 @@ function update_container(
 		gui.set_enabled(container_node, is_container_enabled)
 	end
 
-	-- pprint(container)
 	for i, container_item in pairs(container) do
 		local container_node = gui.get_node(container_node_url_function(i))
 		local container_text_node = gui.get_node(container_text_node_url_function(i))
@@ -192,8 +190,11 @@ function update_container(
 			container_item.id = item_constants.NONE.id
 			gui.set_text(container_text_node, item_constants.NONE.display_name)
 		elseif container_item and container_item.id ~= item_constants.NONE.id then
-			-- pprint(container_item)
-			gui.set_text(container_text_node, container_item.count)
+			local container_text = ''
+			if container_item.count > 1 then
+				container_text = container_item.count
+			end
+			gui.set_text(container_text_node, container_text)
 		end
 		change_slot_texture(container_node, item_constants.ALL_ITEMS[container_item.id].name)
 		gui.set_color(container_node, unselected_color)
@@ -211,7 +212,7 @@ function update_inventory(self)
 		inventory_constants.INVENTORY_UNSELECTED_COLOR,
 		urls.get_inventory_node_url,
 		urls.get_inventory_text_node_url,
-		gui.get_node("inventory_node"),
+		gui.get_node('inventory_node'),
 		self.is_inventory_enabled
 	)
 

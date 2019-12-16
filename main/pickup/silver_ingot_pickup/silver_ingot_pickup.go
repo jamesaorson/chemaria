@@ -1,6 +1,6 @@
 components {
   id: "sprite"
-  component: "/main/items/silver_ingot/silver_ingot.sprite"
+  component: "/main/items/ingots/silver_ingot/silver_ingot.sprite"
   position {
     x: 0.0
     y: 0.0

@@ -1,6 +1,6 @@
 components {
   id: "sprite"
-  component: "/main/items/gold_ore/gold_ore.sprite"
+  component: "/main/items/ores/gold_ore/gold_ore.sprite"
   position {
     x: 0.0
     y: 0.0

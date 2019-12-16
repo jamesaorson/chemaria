@@ -1,13 +1,13 @@
-local config = require "modules.config"
-local defsave = require "defsave.defsave"
-local globals = require "modules.globals"
-local item_constants = require "modules.constants.items"
-local world_constants = require "modules.constants.world"
-local luatexts = require "modules.luatexts"
+local config = require 'modules.config'
+local defsave = require 'defsave.defsave'
+local globals = require 'modules.globals'
+local item_constants = require 'modules.constants.items'
+local world_constants = require 'modules.constants.world'
+local luatexts = require 'modules.luatexts'
 
-require "modules.models.Block"
-require "modules.models.Chunk"
-require "modules.models.World"
+require 'modules.models.Block'
+require 'modules.models.Chunk'
+require 'modules.models.World'
 
 local HELPERS = {}
 
@@ -52,22 +52,22 @@ end
 -- Config --
 ------------
 
-local settings_file_name = "settings.bin"
+local settings_file_name = 'settings.bin'
 
 function HELPERS.apply_config()
 	HELPERS.init_config_data()
 
-	local is_fullscreen = HELPERS.get_config_data("FULLSCREEN")
+	local is_fullscreen = HELPERS.get_config_data('FULLSCREEN')
 	if not is_fullscreen then
 		is_fullscreen = config.FULLSCREEN
-		HELPERS.set_config_data("FULLSCREEN", is_fullscreen)
+		HELPERS.set_config_data('FULLSCREEN', is_fullscreen)
 	end
 	HELPERS.set_resolution(nil, is_fullscreen)
 
-	local vsync = HELPERS.get_config_data("VSYNC")
+	local vsync = HELPERS.get_config_data('VSYNC')
 	if not vsync then
 		vsync = config.VSYNC
-		HELPERS.set_config_data("VSYNC", vsync)
+		HELPERS.set_config_data('VSYNC', vsync)
 	end
 	if vsync then
 		vsync = 1
@@ -96,7 +96,7 @@ function HELPERS.get_config_data(key)
 	key = string.upper(key)
 	if (
 		key ~= nil
-		and type(key) == "string"
+		and type(key) == 'string'
 		and defsave.is_loaded(settings_file_name)
 		and defsave.key_exists(settings_file_name, key)
 		and defsave.isset(settings_file_name, key)
@@ -107,7 +107,7 @@ function HELPERS.get_config_data(key)
 end
 
 function HELPERS.save_config_data(file_name)
-	if file_name ~= nil and type(file_name) == "string" then
+	if file_name ~= nil and type(file_name) == 'string' then
 		defsave.save(file_name)
 	else
 		for key, value in pairs(config) do
@@ -120,7 +120,7 @@ function HELPERS.save_config_data(file_name)
 end
 
 function HELPERS.set_config_data(key, value)
-	if key ~= nil and type(key) == "string" and defsave.is_loaded(settings_file_name) then
+	if key ~= nil and type(key) == 'string' and defsave.is_loaded(settings_file_name) then
 		defsave.set(settings_file_name, string.upper(key), value)
 	end
 end
@@ -238,27 +238,29 @@ function HELPERS.load_cursor(cursor_name)
 		local system_name = sys.get_sys_info().system_name
 		local cursor = nil
 
-		if system_name == "Linux" then
+		if system_name == 'Linux' then
 			local function extract_to_savefolder(res)
-				local app_name = sys.get_config("project.title")
-				local resource_buffer = resource.load("/assets/" .. res)
-				local raw_bytes = buffer.get_bytes(resource_buffer, hash("data"))
+				local app_name = sys.get_config('project.title')
+				local resource_buffer = resource.load('/assets/' .. res)
+				local raw_bytes = buffer.get_bytes(resource_buffer, hash('data'))
 				local path = sys.get_save_file(app_name, res)
-				local f = io.open(path, "wb")
+				local f = io.open(path, 'wb')
 				f:write(raw_bytes)
 				f:flush()
 				f:close()
 				return path
 			end
-			cursor = defos.load_cursor(extract_to_savefolder(cursor_name .. ".xcur"))
-		elseif system_name == "Windows" then
-			cursor = defos.load_cursor("assets/mouse/" .. cursor_name .. ".cur")
-		elseif system_name == "Darwin" then
-			cursor = defos.load_cursor({
-				image = resource.load("/assets/mouse/" .. cursor_name .. ".tiff"),
-				hot_spot_x = 0,
-				hot_spot_y = 0
-			})
+			cursor = defos.load_cursor(extract_to_savefolder(cursor_name .. '.xcur'))
+		elseif system_name == 'Windows' then
+			cursor = defos.load_cursor('assets/mouse/' .. cursor_name .. '.cur')
+		elseif system_name == 'Darwin' then
+			cursor = defos.load_cursor(
+				{
+					image = resource.load('/assets/mouse/' .. cursor_name .. '.tiff'),
+					hot_spot_x = 0,
+					hot_spot_y = 0
+				}
+			)
 		end
 
 		if cursor then
@@ -280,17 +282,17 @@ function HELPERS.load_game(save_file_name)
 	if save_file_name == nil then
 		return nil
 	end
-	local world_file_name = sys.get_save_file(config.APP_NAME, save_file_name .. ".json")
+	local world_file_name = sys.get_save_file(config.APP_NAME, save_file_name .. '.json')
 
-	local saved_world_file = io.open(world_file_name, "r")
+	local saved_world_file = io.open(world_file_name, 'r')
 	if saved_world_file then
-		print("Begin reading '" .. world_file_name .. "' " .. os.clock())
-		local data = saved_world_file:read("*all")
-		print("Finished reading '" .. world_file_name .. "' " .. os.clock())
+		print('Begin reading "' .. world_file_name .. '" ' .. os.clock())
+		local data = saved_world_file:read('*all')
+		print('Finished reading "' .. world_file_name .. '" ' .. os.clock())
 
-		print("Begin parsing '" .. world_file_name .. "' " .. os.clock())
+		print('Begin parsing "' .. world_file_name .. '" ' .. os.clock())
 		_, data = luatexts.load(data)
-		print("Finished parsing '" .. world_file_name .. "' " .. os.clock())
+		print('Finished parsing "' .. world_file_name .. '" ' .. os.clock())
 
 		return data
 	end
@@ -303,16 +305,16 @@ function HELPERS.save_game(world_mutation, save_file_name)
 		return
 	end
 	pprint(world_mutation)
-	print("Begin world save stringification " .. os.clock())
+	print('Begin world save stringification ' .. os.clock())
 	local save_data = luatexts.save(world_mutation)
-	print("End world save stringification " .. os.clock())
+	print('End world save stringification ' .. os.clock())
 
-	print("Begin world save file write " .. os.clock())
-	local world_file_name = sys.get_save_file(config.APP_NAME, save_file_name .. ".json")
-	local world_file = io.open(world_file_name, "w+")
+	print('Begin world save file write ' .. os.clock())
+	local world_file_name = sys.get_save_file(config.APP_NAME, save_file_name .. '.json')
+	local world_file = io.open(world_file_name, 'w+')
 	world_file:write(save_data)
 	world_file:close()
-	print("Begin world save file write " .. os.clock())
+	print('Begin world save file write ' .. os.clock())
 end
 
 -------------------
@@ -366,8 +368,8 @@ end
 
 function HELPERS.switch_proxy(proxy)
 	msg.post(
-		"main:/loader#loader",
-		"switch_proxy",
+		'main:/loader#loader',
+		'switch_proxy',
 		{
 			switch_to = proxy
 		}

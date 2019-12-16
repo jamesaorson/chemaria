@@ -1,14 +1,14 @@
-local camera = require "orthographic.camera"
-local camera_constants = require "modules.constants.camera"
-local globals = require "modules.globals"
-local helpers = require "modules.helpers"
-local input_constants = require "modules.constants.input"
-local toolbar_constants = require "modules.constants.toolbar"
-local world_constants = require "modules.constants.world"
+local camera = require 'orthographic.camera'
+local camera_constants = require 'modules.constants.camera'
+local globals = require 'modules.globals'
+local helpers = require 'modules.helpers'
+local input_constants = require 'modules.constants.input'
+local toolbar_constants = require 'modules.constants.toolbar'
+local world_constants = require 'modules.constants.world'
 
-require "modules.models.Block"
-require "modules.models.Chunk"
-require "modules.models.World"
+require 'modules.models.Block'
+require 'modules.models.Chunk'
+require 'modules.models.World'
 
 -------------
 -- Helpers --
@@ -25,13 +25,13 @@ function apply_camera_config()
 
 	msg.post(
 		camera_constants.CAMERA_ID,
-		"deadzone",
-		helpers.get_config_data("CAMERA_DEADZONE")
+		'deadzone',
+		helpers.get_config_data('CAMERA_DEADZONE')
 	)
 	msg.post(
 		camera_constants.CAMERA_ID,
-		"zoom_to",
-		helpers.get_config_data("CAMERA_ZOOM_LEVEL")
+		'zoom_to',
+		helpers.get_config_data('CAMERA_ZOOM_LEVEL')
 	)
 end
 
@@ -45,15 +45,15 @@ function is_inventory_switch_action(action_id)
 end
 
 function send_crafting_ui_action(action_id, action)
-	msg.post("/crafting_ui#crafting_ui", action_id, action)
+	msg.post('/crafting_ui#crafting_ui', action_id, action)
 end
 
 function send_player_action(action_id, action)
-	msg.post("/player#player_script", action_id, action)
+	msg.post('/player#script', action_id, action)
 end
 
 function send_ui_action(action_id, action)
-	msg.post("/ui#ui", action_id, action)
+	msg.post('/ui#ui', action_id, action)
 end
 
 -----------------
@@ -121,8 +121,8 @@ function handle_toggle_crafting_menu(self, action_id, action)
 end
 
 function handle_toggle_fullscreen(self, action_id, action)
-	helpers.set_config_data("FULLSCREEN", not helpers.get_config_data("FULLSCREEN"))
-	defos.set_fullscreen(helpers.get_config_data("FULLSCREEN"))
+	helpers.set_config_data('FULLSCREEN', not helpers.get_config_data('FULLSCREEN'))
+	defos.set_fullscreen(helpers.get_config_data('FULLSCREEN'))
 end
 
 function handle_toggle_inventory(self, action_id, action)
@@ -134,7 +134,7 @@ function handle_toggle_pause_menu(self, action_id, action)
 end
 
 function handle_toggle_profile(self, action_id, action)
-	msg.post("@system:", "toggle_profile")
+	msg.post('@system:', 'toggle_profile')
 end
 
 -------------------------
@@ -148,8 +148,8 @@ end
 
 function init(self)
 	helpers.init_config_data()
-	msg.post("/world#main", "acquire_input_focus")
-	self.game_mode = "play"
+	msg.post('/world#main', 'acquire_input_focus')
+	self.game_mode = 'play'
 	helpers.apply_config()
 	apply_camera_config()
 end

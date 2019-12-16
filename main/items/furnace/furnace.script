@@ -1,0 +1,4 @@
+function init(self)
+	self.sprite_url = msg.url('#sprite')
+	sprite.play_flipbook(self.sprite_url, 'furnace_fire')
+end

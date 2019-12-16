@@ -1,0 +1,46 @@
+local position_helpers = require 'modules.position_helpers'
+
+go.property('scrolling_speed', vmath.vector3())
+go.property('index', vmath.vector3())
+go.property('max_y', 0)
+
+----------------------
+-- Helper functions --
+----------------------
+
+local update_position
+
+function update_position(self)
+	local new_position = position_helpers.get_updated_background_position(
+		self,
+		go.get_position()
+	)
+	print(self.index, new_position)
+	if new_position.y > self.max_y then
+		new_position.y = self.max_y
+	end
+	go.set_position(new_position)
+end
+
+--------------------------
+-- End Helper functions --
+--------------------------
+
+
+----------------------
+-- Defold functions --
+----------------------
+
+function init(self)
+	self.background_width = go.get('#sprite', 'size.x') * go.get_scale(go.get_id('/background')).x
+	self.background_height = go.get('#sprite', 'size.y') * go.get_scale(go.get_id('/background')).y
+	self.initial_position = go.get_position()
+end
+
+function update(self, dt)
+	update_position(self)
+end
+
+--------------------------
+-- End Defold functions --
+--------------------------
