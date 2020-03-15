@@ -1,5 +1,5 @@
 local CAMERA = {}
 
-CAMERA.CAMERA_ID = hash("/camera")
+CAMERA.CAMERA_ID = hash('/camera')
 
 return CAMERA

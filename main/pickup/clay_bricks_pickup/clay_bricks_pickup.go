@@ -1,6 +1,6 @@
 components {
   id: "sprite"
-  component: "/main/items/clay_bricks/clay_bricks.sprite"
+  component: "/main/items/bricks/clay_bricks/clay_bricks.sprite"
   position {
     x: 0.0
     y: 0.0

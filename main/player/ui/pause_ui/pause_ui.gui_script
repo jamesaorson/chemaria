@@ -1,17 +1,17 @@
-local globals = require "modules.globals"
-local gooey = require "gooey.gooey"
-local helpers = require "modules.helpers"
-local input_constants = require "modules.constants.input"
-local item_constants = require "modules.constants.items"
-local message_constants = require "modules.constants.messages"
-local recipes = require "modules.constants.recipes"
-local theme = require "main.ui.theme"
+local globals = require 'modules.globals'
+local gooey = require 'gooey.gooey'
+local helpers = require 'modules.helpers'
+local input_constants = require 'modules.constants.input'
+local item_constants = require 'modules.constants.items'
+local message_constants = require 'modules.constants.messages'
+local recipes = require 'modules.constants.recipes'
+local theme = require 'main.ui.theme'
 
-local INPUT_FOCUS = hash("blue_button05")
-local INPUT = hash("blue_button03")
+local INPUT_FOCUS = hash('blue_button05')
+local INPUT = hash('blue_button03')
 
-local BUTTON_PRESSED = hash("button_pressed")
-local BUTTON = hash("button_idle")
+local BUTTON_PRESSED = hash('button_pressed')
+local BUTTON = hash('button_idle')
 
 local SCOPED_SELF
 
@@ -29,18 +29,18 @@ function button_handler(button, handler)
 end
 
 function update_pause_ui(self)
-	if self.isPauseUiEnabled then
+	if self.is_pause_ui_enabled then
 		gooey.acquire_input()
 	else
 		gooey.release_input()
 	end
-	gui.set_enabled(gui.get_node("pause_ui"), self.isPauseUiEnabled)
-	self.shouldUpdatePauseUi = false
+	gui.set_enabled(gui.get_node('pause_ui'), self.is_pause_ui_enabled)
+	self.should_update_pause_ui = false
 end
 
 function update_save_input(self)
-	gui.set_enabled(gui.get_node("save_input_node"), self.isSaveInputEnabled)
-	self.shouldUpdateSaveInput = false
+	gui.set_enabled(gui.get_node('save_input_node'), self.is_save_input_enabled)
+	self.should_update_save_input = false
 end
 
 -----------------
@@ -54,59 +54,59 @@ end
 
 function init(self)
 	SCOPED_SELF = self
-	self.isPauseUiEnabled = false
-	self.shouldUpdatePauseUi = true
-	self.isSaveInputEnabled = false
-	self.shouldUpdateSaveInput = true
+	self.is_pause_ui_enabled = false
+	self.should_update_pause_ui = true
+	self.is_save_input_enabled = false
+	self.should_update_save_input = true
 	update_pause_ui(self)
 	update_save_input(self)
 end
 
-function on_input(self, actionId, action)
-	theme.button("save_button", actionId, action, function(button)
+function on_input(self, action_id, action)
+	theme.button('save_button', action_id, action, function(button)
 		button_handler(button, function()
-			save_input_text = gui.get_text(gui.get_node("save_input/text"))
+			save_input_text = gui.get_text(gui.get_node('save_input/text'))
 			if string.len(save_input_text) > 0 then
-				globals.saveFileName = save_input_text
+				globals.save_file_name = save_input_text
 			end
-			if globals.saveFileName then
-				msg.post("/player#player_script", message_constants.SAVE_GAME, {})
-				msg.post("/player#player_script", input_constants.TOGGLE_PAUSE_MENU, {})
-				self.shouldUpdatePauseUi = true
-				self.isSaveInputEnabled = false
-				self.shouldUpdateSaveInput = true
+			if globals.save_file_name then
+				msg.post('/world#world_script', message_constants.SAVE_GAME, {})
+				msg.post('/player#script', input_constants.TOGGLE_PAUSE_MENU, {})
+				self.should_update_pause_ui = true
+				self.is_save_input_enabled = false
+				self.should_update_save_input = true
 			else
-				self.isSaveInputEnabled = true
-				self.shouldUpdateSaveInput = true
+				self.is_save_input_enabled = true
+				self.should_update_save_input = true
 			end
 		end)
 	end)
 
-	theme.button("exit_button", actionId, action, function(button)
+	theme.button('exit_button', action_id, action, function(button)
 		button_handler(button, function()
-			msg.post("/player#player_script", message_constants.QUIT_GAME, {})
+			msg.post('/player#script', message_constants.QUIT_GAME, {})
 		end)
 	end)
 
-	theme.input("save_input", gui.KEYBOARD_TYPE_DEFAULT, actionId, action, {
+	theme.input('save_input', gui.KEYBOARD_TYPE_DEFAULT, action_id, action, {
 		max_length = 32,
-		empty_text = "Enter save file name...",
-		allowed_characters = "[%w%s-_]"
+		empty_text = 'Enter save file name...',
+		allowed_characters = '[%w%s-_]'
 	})
 end
 
-function on_message(self, messageId, message, sender)
-	if messageId == input_constants.TOGGLE_PAUSE_MENU then
-		self.isPauseUiEnabled = not self.isPauseUiEnabled
-		self.shouldUpdatePauseUi = true
+function on_message(self, message_id, message, sender)
+	if message_id == input_constants.TOGGLE_PAUSE_MENU then
+		self.is_pause_ui_enabled = not self.is_pause_ui_enabled
+		self.should_update_pause_ui = true
 	end
 end
 
 function update(self, dt)
-	if self.shouldUpdatePauseUi then
+	if self.should_update_pause_ui then
 		update_pause_ui(self)
 	end
-	if self.shouldUpdateSaveInput then
+	if self.should_update_save_input then
 		update_save_input(self)
 	end
 end
