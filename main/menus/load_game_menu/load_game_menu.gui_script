@@ -1,21 +1,22 @@
-local config = require "modules.config"
-local globals = require "modules.globals"
-local gooey = require "gooey.gooey"
-local input_constants = require "modules.constants.input"
-local theme = require "main.ui.theme"
+local config = require 'modules.config'
+local globals = require 'modules.globals'
+local gooey = require 'gooey.gooey'
+local helpers = require 'modules.helpers'
+local input_constants = require 'modules.constants.input'
+local theme = require 'main.ui.theme'
 
 local SCOPED_SELF
 
-local BUTTON_IDLE = hash("gooey/button_idle")
-local BUTTON_PRESSED = hash("gooey/button_pressed")
-local BUTTON_DISABLED = hash("gooey/button_disabled")
+local BUTTON_IDLE = hash('gooey/button_idle')
+local BUTTON_PRESSED = hash('gooey/button_pressed')
+local BUTTON_DISABLED = hash('gooey/button_disabled')
 
-local LISTITEM_SELECTED = hash("button_pressed")
-local LISTITEM_PRESSED = hash("button_pressed")
-local LISTITEM_DISABLED = hash("button_disabled")
-local LISTITEM = hash("button_idle")
+local LIST_ITEM_SELECTED = hash('button_pressed')
+local LIST_ITEM_PRESSED = hash('button_pressed')
+local LIST_ITEM_DISABLED = hash('button_disabled')
+local LIST_ITEM = hash('button_idle')
 
-local SAVE_FILE_EXTENSION = ".json"
+local SAVE_FILE_EXTENSION = '.json'
 
 -------------
 -- Helpers --
@@ -36,57 +37,73 @@ function button_handler(button, handler)
 end
 
 function exit_to_main_menu()
-	msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#main_menu_proxy" })
+	helpers.switch_proxy('#main_menu_proxy')
 end
 
-function fill_save_list(self, actionId, action)
-	self.scrollbar = gooey.vertical_scrollbar("scrollbar/handle", "scrollbar/bounds", actionId, action, function () end)
-	gooey.dynamic_list("save_list", "save_list/stencil", "save_list/listitem_bg", self.saveFiles, actionId, action, on_item_selected, update_save_list).scroll_to(0, self.scrollbar.scroll.y)
+function fill_save_list(self, action_id, action)
+	self.scrollbar = gooey.vertical_scrollbar(
+		'scrollbar/handle',
+		'scrollbar/bounds',
+		action_id,
+		action,
+		function() end
+	)
+	gooey.dynamic_list(
+		'save_list',
+		'save_list/stencil',
+		'save_list/listitem_bg',
+		self.save_files,
+		action_id,
+		action,
+		{},
+		on_item_selected,
+		update_save_list
+	).scroll_to(0, self.scrollbar.scroll.y)
 end
 
 function get_save_files(self)
-	self.saveFiles = {}
-	iter, directory = lfs.dir(sys.get_save_file(config.APPNAME, ""))
-	currentFileName = iter(directory)
-	while currentFileName ~= nil do
-		i, j = string.find(currentFileName, SAVE_FILE_EXTENSION)
+	self.save_files = {}
+	iter, directory = lfs.dir(sys.get_save_file(config.APP_NAME, ''))
+	local current_file_name = iter(directory)
+	while current_file_name ~= nil do
+		i, j = string.find(current_file_name, SAVE_FILE_EXTENSION)
 		if i ~= nil then
-			if j == string.len(currentFileName) then
-				table.insert(self.saveFiles, currentFileName)
+			if j == string.len(current_file_name) then
+				table.insert(self.save_files, current_file_name)
 			end
 		end
-		currentFileName = iter(directory)
+		current_file_name = iter(directory)
 	end
 end
 
 function on_item_selected(list)
-	SCOPED_SELF.selectedSave = list.data[list.selected_item]
+	SCOPED_SELF.selected_save = list.data[list.selected_item]
 end
 
 function update_list_item(list, item)
 	local pos = gui.get_position(item.root)
 	if item.index == list.selected_item then
-		gui.play_flipbook(item.root, LISTITEM_PRESSED)
+		gui.play_flipbook(item.root, LIST_ITEM_PRESSED)
 	elseif item.index == list.pressed_item then
-		gui.play_flipbook(item.root, LISTITEM_PRESSED)
+		gui.play_flipbook(item.root, LIST_ITEM_PRESSED)
 	elseif item.index == list.over_item_now then
-		gui.play_flipbook(item.root, LISTITEM)
+		gui.play_flipbook(item.root, LIST_ITEM)
 	elseif item.index == list.out_item_now then
-		gui.play_flipbook(item.root, LISTITEM)
+		gui.play_flipbook(item.root, LIST_ITEM)
 	elseif item.index ~= list.over_item then
-		gui.play_flipbook(item.root, LISTITEM)
+		gui.play_flipbook(item.root, LIST_ITEM)
 	end
 	gui.set_position(item.root, pos)
 end
 
 function update_save_list(list)
-	local itemTextId = hash("save_list/listitem_text")
+	local item_text_node_id = hash('save_list/listitem_text')
 	for key, item in pairs(list.items) do
 		update_list_item(list, item)
 		if item.data ~= nil then
 			i, _ = string.find(item.data, SAVE_FILE_EXTENSION)
 			if i then
-				gui.set_text(item.nodes[itemTextId], string.sub(item.data, 1, i - 1))
+				gui.set_text(item.nodes[item_text_node_id], string.sub(item.data, 1, i - 1))
 			end
 		end
 	end
@@ -101,46 +118,59 @@ end
 ----------------------
 
 function init(self)
+	self.frames = 0
+
 	gooey.acquire_input()
 	SCOPED_SELF = self
-	self.saveFiles = {}
+	self.save_files = {}
 	self.scrollbar = nil
-	self.selectedSave = nil
+	self.selected_save = nil
 
 	get_save_files(self)
 	fill_save_list(self)
+
+	-- Hides the UI so the user does not see an empty entry in the list
+	gui.set_enabled(gui.get_node('load_game_menu'), false)
 end
 
-function on_input(self, actionId, action)
-	if actionId == input_constants.QUIT and action.released then
+function on_input(self, action_id, action)
+	if action_id == input_constants.QUIT and action.released then
 		exit_to_main_menu()
 	end
-	theme.button("load_game", actionId, action, function(button)
-		if SCOPED_SELF.selectedSave then
+	theme.button('load_game', action_id, action, function(button)
+		if SCOPED_SELF.selected_save then
 			button_handler(button, function()
-				i, _ = string.find(SCOPED_SELF.selectedSave, SAVE_FILE_EXTENSION)
+				i, _ = string.find(SCOPED_SELF.selected_save, SAVE_FILE_EXTENSION)
 				if i then
-					globals.saveFileName = string.sub(SCOPED_SELF.selectedSave, 1, i - 1)
-					msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#world_proxy" })
+					globals.save_file_name = string.sub(SCOPED_SELF.selected_save, 1, i - 1)
+					helpers.switch_proxy('#world_proxy')
 				end
 			end)
 		end
 	end)
-	theme.button("delete", actionId, action, function(button)
-		if SCOPED_SELF.selectedSave then
+	theme.button('delete', action_id, action, function(button)
+		if SCOPED_SELF.selected_save then
 			button_handler(button, function()
-				os.remove(sys.get_save_file(config.APPNAME, SCOPED_SELF.selectedSave))
-				SCOPED_SELF.selectedSave = nil
+				os.remove(sys.get_save_file(config.APP_NAME, SCOPED_SELF.selected_save))
+				SCOPED_SELF.selected_save = nil
 				get_save_files(SCOPED_SELF)
 			end)
 		end
 	end)
-	theme.button("return_to_main_menu", actionId, action, function(button)
+	theme.button('return_to_main_menu', action_id, action, function(button)
 		button_handler(button, function()
 			exit_to_main_menu()
 		end)
 	end)
-	fill_save_list(self, actionId, action)
+	fill_save_list(self, action_id, action)
+end
+
+function update(self, dt)
+	-- Hides the UI on the first frame to keep user from seeing an empty entry in the list
+	if self.frames == 1 then
+		gui.set_enabled(gui.get_node('load_game_menu'), true)
+	end
+	self.frames = self.frames + 1
 end
 
 --------------------------

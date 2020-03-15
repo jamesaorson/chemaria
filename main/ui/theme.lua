@@ -1,18 +1,18 @@
-local gooey = require "gooey.gooey"
-local utils = require "gooey.themes.utils"
+local gooey = require 'gooey.gooey'
+local utils = require 'gooey.themes.utils'
 
 local M = gooey.create_theme()
 
-local BUTTON_PRESSED = hash("button_pressed")
-local BUTTON = hash("button_idle")
+local BUTTON_PRESSED = hash('button_pressed')
+local BUTTON = hash('button_idle')
 
-local CHECKBOX_CHECKED = hash("grey_boxCheckmark")
-local CHECKBOX = hash("grey_box")
+local CHECKBOX_CHECKED = hash('grey_boxCheckmark')
+local CHECKBOX = hash('grey_box')
 
-local RADIO_PRESSED = hash("radio_pressed")
-local RADIO_CHECKED_PRESSED = hash("radio_checked_pressed")
-local RADIO_CHECKED_NORMAL = hash("radio_checked_normal")
-local RADIO_NORMAL = hash("radio_normal")
+local RADIO_PRESSED = hash('radio_pressed')
+local RADIO_CHECKED_PRESSED = hash('radio_checked_pressed')
+local RADIO_CHECKED_NORMAL = hash('radio_checked_normal')
+local RADIO_NORMAL = hash('radio_normal')
 
 local function refresh_button(button)
 	if button.pressed then
@@ -23,9 +23,9 @@ local function refresh_button(button)
 end
 
 function M.button(node_id, action_id, action, fn, is_selected)
-	local result = gooey.button(node_id .. "/bg", action_id, action, fn, refresh_button)
+	local result = gooey.button(node_id .. '/bg', action_id, action, fn, refresh_button)
 	if is_selected then
-		gui.play_flipbook(gui.get_node(node_id .. "/bg"), BUTTON_PRESSED)
+		gui.play_flipbook(gui.get_node(node_id .. '/bg'), BUTTON_PRESSED)
 	end
 	return result
 end
@@ -38,7 +38,7 @@ local function refresh_checkbox(checkbox)
 	end
 end
 function M.checkbox(node_id, action_id, action, fn)
-	return gooey.checkbox(node_id .. "/box", action_id, action, fn, refresh_checkbox)
+	return gooey.checkbox(node_id .. '/box', action_id, action, fn, refresh_checkbox)
 end
 
 local function update_radiobutton(radio)
@@ -58,21 +58,21 @@ function M.radiogroup(group_id, action_id, action, fn)
 end
 
 function M.radio(node_id, group_id, action_id, action, fn)
-	return gooey.radio(node_id .. "/button", group_id, action_id, action, fn, update_radiobutton)
+	return gooey.radio(node_id .. '/button', group_id, action_id, action, fn, update_radiobutton)
 end
 
 local function update_input(input, config, node_id)
 	if input.selected_now then
-		gui.play_flipbook(gui.get_node(node_id .. "/bg"), INPUT_FOCUS)
+		gui.play_flipbook(gui.get_node(node_id .. '/bg'), INPUT_FOCUS)
 	elseif input.deselected_now then
-		gui.play_flipbook(gui.get_node(node_id .. "/bg"), INPUT)
+		gui.play_flipbook(gui.get_node(node_id .. '/bg'), INPUT)
 	end
 
 	if input.empty and not input.selected then
-		gui.set_text(input.node, config and config.empty_text or "")
+		gui.set_text(input.node, config and config.empty_text or '')
 	end
 
-	local cursor = gui.get_node(node_id .. "/cursor")
+	local cursor = gui.get_node(node_id .. '/cursor')
 	if input.selected then
 		gui.set_enabled(cursor, true)
 		gui.set_position(cursor, vmath.vector3(input.total_width, 2, 0))
@@ -86,7 +86,7 @@ local function update_input(input, config, node_id)
 end
 
 function M.input(node_id, keyboard_type, action_id, action, config, refresh_input)
-	return gooey.input(node_id .. "/text", keyboard_type, action_id, action, config, function(input)
+	return gooey.input(node_id .. '/text', keyboard_type, action_id, action, config, function(input)
 		update_input(input, config, node_id)
 		if refresh_input then
 			refresh_input(input)
@@ -98,19 +98,19 @@ local function update_listitem(list, item)
 	local pos = gui.get_position(item.root)
 	if item.index == list.selected_item then
 		pos.x = 4
-		gui.play_flipbook(item.root, LISTITEM_SELECTED)
+		gui.play_flipbook(item.root, LIST_ITEM_SELECTED)
 	elseif item.index == list.pressed_item then
 		pos.x = 1
-		gui.play_flipbook(item.root, LISTITEM_PRESSED)
+		gui.play_flipbook(item.root, LIST_ITEM_PRESSED)
 	elseif item.index == list.over_item_now then
 		pos.x = 1
-		gui.play_flipbook(item.root, LISTITEM)
+		gui.play_flipbook(item.root, LIST_ITEM)
 	elseif item.index == list.out_item_now then
 		pos.x = 0
-		gui.play_flipbook(item.root, LISTITEM)
+		gui.play_flipbook(item.root, LIST_ITEM)
 	elseif item.index ~= list.over_item then
 		pos.x = 0
-		gui.play_flipbook(item.root, LISTITEM)
+		gui.play_flipbook(item.root, LIST_ITEM)
 	end
 	gui.set_position(item.root, pos)
 end
@@ -122,21 +122,21 @@ local function update_static_list(list)
 	--end
 end
 function M.static_list(list_id, item_ids, action_id, action, fn)
-	--return gooey.static_list(list_id, list_id .. "/stencil", item_ids, action_id, action, fn, update_static_list)
+	--return gooey.static_list(list_id, list_id .. '/stencil', item_ids, action_id, action, fn, update_static_list)
 end
 
 
 local function update_dynamic_list(list)
 	for _,item in ipairs(list.items) do
 		update_listitem(list, item)
-		gui.set_text(item.nodes[hash(list.id .. "/listitem_text")], tostring(item.data or "-"))
+		gui.set_text(item.nodes[hash(list.id .. '/listitem_text')], tostring(item.data or '-'))
 	end
 end
 function M.dynamic_list(list_id, data, action_id, action, fn, update_list)
 	if not update_list then
 		update_list = update_dynamic_list
 	end
-	return gooey.dynamic_list(list_id, list_id .. "/stencil", list_id .. "/listitem_bg", data, action_id, action, fn, update_list)
+	return gooey.dynamic_list(list_id, list_id .. '/stencil', list_id .. '/listitem_bg', data, action_id, action, {}, fn, update_list)
 end
 
 

@@ -13,6 +13,21 @@ components {
     w: 1.0
   }
 }
+components {
+  id: "furnace"
+  component: "/main/items/furnace/furnace.script"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
 embedded_components {
   id: "collisionobject"
   type: "collisionobject"
@@ -41,9 +56,9 @@ embedded_components {
   "    index: 0\n"
   "    count: 3\n"
   "  }\n"
-  "  data: 12.0\n"
-  "  data: 12.0\n"
-  "  data: 10.0\n"
+  "  data: 16.0\n"
+  "  data: 16.0\n"
+  "  data: 0.5\n"
   "}\n"
   "linear_damping: 0.0\n"
   "angular_damping: 0.0\n"

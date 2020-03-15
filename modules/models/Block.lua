@@ -2,6 +2,6 @@ Block = {
 	chunk = nil,
 	position = vmath.vector3(),
 	url = nil,
-	maxDurability = 0,
+	max_durability = 0,
 	durability = 0
 }

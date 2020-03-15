@@ -30,7 +30,6 @@ app_icon = /assets/app_icons/appicon.icns
 
 [physics]
 debug = 0
-debug_alpha = 0.2
 gravity_y = -800.0
 max_collisions = 1024
 max_contacts = 8192
@@ -49,7 +48,7 @@ subpixels = 0
 
 [graphics]
 max_draw_calls = 20480
-max_debug_vertices = 20480
+max_debug_vertices = 40960
 default_texture_min_filter = nearest
 default_texture_mag_filter = nearest
 

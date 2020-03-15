@@ -1,0 +1,18 @@
+embedded_components {
+  id: "clay_bricks_factory"
+  type: "factory"
+  data: "prototype: \"/main/items/bricks/clay_bricks/clay_bricks.go\"\n"
+  "load_dynamically: false\n"
+  ""
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}

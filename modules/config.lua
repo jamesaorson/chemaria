@@ -4,19 +4,26 @@ local CONFIG = {}
 -- Camera --
 ------------
 
-CONFIG.CAMERA_DEADZONE = { left = 25, right = 25, bottom = 0, top = 0 }
-CONFIG.CAMERA_ZOOM_LEVEL = { zoom = 1.5 }
+CONFIG.CAMERA_DEADZONE = {
+	left = 25,
+	right = 25,
+	bottom = 0,
+	top = 0
+}
+CONFIG.CAMERA_ZOOM_LEVEL = {
+	zoom = 1.5
+}
 
 ----------------
 -- End Camera --
 ----------------
 
 
-----------screen
+----------
 -- Save --
 ----------
 
-CONFIG.APPNAME = "Chemaria"
+CONFIG.APP_NAME = 'Chemaria'
 
 --------------
 -- End Save --
@@ -29,8 +36,8 @@ CONFIG.APPNAME = "Chemaria"
 
 CONFIG.FULLSCREEN = true
 CONFIG.SCREEN_SIZE = {
-	height = 1080,
-	width = 1920
+	width = 1920,
+	height = 1080
 }
 CONFIG.VSYNC = true
 

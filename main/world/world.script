@@ -1,22 +1,21 @@
-local config = require "modules.config"
-local globals = require "modules.globals"
-local helpers = require "modules.helpers"
-local camera_constants = require "modules.constants.camera"
-local item_constants = require "modules.constants.items"
-local message_constants = require "modules.constants.messages"
-local noise = require "modules.noise"
-local orthographic = require "orthographic.camera"
-local position_helpers = require "modules.position_helpers"
-local urls = require "modules.urls"
-local world_constants = require "modules.constants.world"
+local config = require 'modules.config'
+local globals = require 'modules.globals'
+local helpers = require 'modules.helpers'
+local camera_constants = require 'modules.constants.camera'
+local item_constants = require 'modules.constants.items'
+local message_constants = require 'modules.constants.messages'
+local noise = require 'modules.noise'
+local position_helpers = require 'modules.position_helpers'
+local urls = require 'modules.urls'
+local world_constants = require 'modules.constants.world'
 
-require "modules.models.Block"
-require "modules.models.Chunk"
-require "modules.models.World"
-require "modules.set"
+require 'modules.models.Block'
+require 'modules.models.Chunk'
+require 'modules.models.World'
+require 'modules.set'
 
-world = {}
-worldMutation = {
+g_world = {}
+local world_mutation = {
 	chunks = {}
 }
 
@@ -32,46 +31,60 @@ local generate_world
 local initialize_world_chunks
 local mine_block
 local mutate_world
+local save_game
 
-function create_block(self, block, addToMutation)
-	local truePosition = position_helpers.block_to_screen_position(block)
+function create_block(self, block, add_to_mutation)
+	local true_position = position_helpers.block_to_screen_position(block)
 	local rotation = nil
 	local properties = {}
 	local scale = 1.0
 
-	if truePosition then
-		local factoryBlock = factory.create(urls.get_factory_url(block.id), truePosition, rotation, properties, scale)
-		block.url = factoryBlock
-		block.durability = item_constants.ALL_ITEMS[block.id].maxDurability
-		local blockChunk = World.get_chunk_at_position(world, block.chunk)
-		if blockChunk then
-			Chunk.add_block(blockChunk, block)
+	if true_position then
+		local factory_block = factory.create(
+			urls.get_factory_url(block.id),
+			true_position,
+			rotation,
+			properties,
+			scale
+		)
+		block.url = factory_block
+		block.durability = item_constants.ALL_ITEMS[block.id].max_durability
+		local block_chunk = World.get_chunk_at_position(g_world, block.chunk)
+		if block_chunk then
+			Chunk.add_block(block_chunk, block)
 		end
 
-		if addToMutation then
-			local mutatedChunk = nil
-			if worldMutation.chunks[blockChunk.position.x] == nil then
-				worldMutation.chunks[blockChunk.position.x] = {}
+		if add_to_mutation then
+			local mutated_chunk = nil
+			if world_mutation.chunks[block_chunk.position.x] == nil then
+				world_mutation.chunks[block_chunk.position.x] = {}
 			end
-			if worldMutation.chunks[blockChunk.position.x][blockChunk.position.y] == nil then
-				mutatedChunk = {
-					position = { x = blockChunk.position.x, y = blockChunk.position.y, z = blockChunk.position.z },
+			if world_mutation.chunks[block_chunk.position.x][block_chunk.position.y] == nil then
+				mutated_chunk = {
+					position = {
+						x = block_chunk.position.x,
+						y = block_chunk.position.y,
+						z = block_chunk.position.z
+					},
 					blocks = {}
 				}
-				worldMutation.chunks[blockChunk.position.x][blockChunk.position.y] = mutatedChunk
+				world_mutation.chunks[block_chunk.position.x][block_chunk.position.y] = mutated_chunk
 			else
-				mutatedChunk = worldMutation.chunks[blockChunk.position.x][blockChunk.position.y]
+				mutated_chunk = world_mutation.chunks[block_chunk.position.x][block_chunk.position.y]
 			end
-			if mutatedChunk.blocks[block.position.x] == nil then
-				mutatedChunk.blocks[block.position.x] = {}
+			if mutated_chunk.blocks[block.position.x] == nil then
+				mutated_chunk.blocks[block.position.x] = {}
 			end
-			local mutatedBlock = {
-				position = { x = block.position.x, y = block.position.y, z = block.position.z },
+			local mutated_block = {
+				position = {
+					x = block.position.x,
+					y = block.position.y,
+					z = block.position.z
+				},
 				id = block.id
 			}
-			mutatedChunk.blocks[block.position.x][block.position.y] = mutatedBlock
+			mutated_chunk.blocks[block.position.x][block.position.y] = mutated_block
 		end
-
 		return true
 	else
 		return false
@@ -83,63 +96,69 @@ function create_loose_pickup(item, position)
 	local properties = {}
 	local scale = 0.5
 
-	local loosePickupId = factory.create(urls.get_pickup_factory_url(item.id), position, rotation, properties, scale)
-	item.pickupId = loosePickupId
-	World.add_loose_pickup(world, item)
+	local loose_pickup_id = factory.create(
+		urls.get_pickup_factory_url(item.id),
+		position,
+		rotation,
+		properties,
+		scale
+	)
+	item.pickup_id = loose_pickup_id
+	World.add_loose_pickup(g_world, item)
 end
 
 function fill_world(self)
-	if globals.currentChunk then
-		local chunksToRender = {}
-		local chunksToUnrender = {}
-		for chunkX = globals.currentChunk.position.x - world_constants.RENDER_DISTANCE.x, globals.currentChunk.position.x + world_constants.RENDER_DISTANCE.x do
-			for chunkY = globals.currentChunk.position.y - world_constants.RENDER_DISTANCE.y, globals.currentChunk.position.y + world_constants.RENDER_DISTANCE.y do
-				local chunkPosition = vmath.vector3(chunkX, chunkY, 0)
-				chunksToRender[tostring(chunkPosition)] = chunkPosition
+	if globals.current_chunk then
+		local chunks_to_render = {}
+		local chunks_to_unrender = {}
+		for chunk_x = globals.current_chunk.position.x - world_constants.RENDER_DISTANCE.x, globals.current_chunk.position.x + world_constants.RENDER_DISTANCE.x do
+			for chunk_y = globals.current_chunk.position.y - world_constants.RENDER_DISTANCE.y, globals.current_chunk.position.y + world_constants.RENDER_DISTANCE.y do
+				local chunk_position = vmath.vector3(chunk_x, chunk_y, 0)
+				chunks_to_render[tostring(chunk_position)] = chunk_position
 			end
 		end
-		if globals.previousChunk then
-			for chunkX = globals.previousChunk.position.x - world_constants.RENDER_DISTANCE.x, globals.previousChunk.position.x + world_constants.RENDER_DISTANCE.x do
-				for chunkY = globals.previousChunk.position.y - world_constants.RENDER_DISTANCE.y, globals.previousChunk.position.y + world_constants.RENDER_DISTANCE.y do
-					local chunkPosition = vmath.vector3(chunkX, chunkY, 0)
-					chunksToUnrender[tostring(chunkPosition)] = chunkPosition
+		if globals.previous_chunk then
+			for chunk_x = globals.previous_chunk.position.x - world_constants.RENDER_DISTANCE.x, globals.previous_chunk.position.x + world_constants.RENDER_DISTANCE.x do
+				for chunk_y = globals.previous_chunk.position.y - world_constants.RENDER_DISTANCE.y, globals.previous_chunk.position.y + world_constants.RENDER_DISTANCE.y do
+					local chunk_position = vmath.vector3(chunk_x, chunk_y, 0)
+					chunks_to_unrender[tostring(chunk_position)] = chunk_position
 				end
 			end
-			local unrenderLookup = Set.subtraction(chunksToUnrender, chunksToRender, "position")
+			local unrender_set = Set.subtraction(chunks_to_unrender, chunks_to_render, 'position')
 
-			for i, chunkPosition in pairs(chunksToUnrender) do
-				if unrenderLookup[tostring(chunkPosition)] then
-					local chunkToUnrender = World.get_chunk_at_position(world, chunkPosition)
-					if chunkToUnrender then
-						for blockX, blockXColumn in pairs(chunkToUnrender.blocks) do
-							for blockY, _ in pairs(blockXColumn) do
-								local blockToDelete = Chunk.get_block_at_position(chunkToUnrender, vmath.vector3(blockX, blockY, 0))
-								if blockToDelete and blockToDelete.url then
-									go.delete(blockToDelete.url)
+			for i, chunk_position in pairs(chunks_to_unrender) do
+				if unrender_set[tostring(chunk_position)] then
+					local chunk_to_unrender = World.get_chunk_at_position(g_world, chunk_position)
+					if chunk_to_unrender then
+						for block_x, block_x_column in pairs(chunk_to_unrender.blocks) do
+							for block_y, _ in pairs(block_x_column) do
+								local block_to_delete = Chunk.get_block_at_position(chunk_to_unrender, vmath.vector3(block_x, block_y, 0))
+								if block_to_delete and block_to_delete.url then
+									go.delete(block_to_delete.url)
 								end
 							end
 						end
-						chunkToUnrender.isRendered = false
+						chunk_to_unrender.is_rendered = false
 					end
 				end
 			end
 		end
 
-		for i, chunkPosition in pairs(chunksToRender) do
-			local chunkToRender = World.get_chunk_at_position(world, chunkPosition)
-			if chunkToRender and not chunkToRender.isRendered then
-				for blockX, blockXColumn in pairs(chunkToRender.blocks) do
-					for blockY, block in pairs(blockXColumn) do
+		for i, chunk_position in pairs(chunks_to_render) do
+			local chunk_to_render = World.get_chunk_at_position(g_world, chunk_position)
+			if chunk_to_render and not chunk_to_render.is_rendered then
+				for block_x, block_x_column in pairs(chunk_to_render.blocks) do
+					for block_y, block in pairs(block_x_column) do
 						create_block(self, block)
 					end
 				end
-				chunkToRender.isRendered = true
+				chunk_to_render.is_rendered = true
 			end
 		end
 	end
 end
 
-function generate_world(self, worldSeed, savedWorld)
+function generate_world(self, world_seed)
 	local NOISE_SCALE = {
 		x = 0.04,
 		y = 0.02
@@ -156,60 +175,60 @@ function generate_world(self, worldSeed, savedWorld)
 		x = NOISE_RANGE.x * NOISE_SCALE.x + NOISE_OFFSET.x,
 		y = NOISE_RANGE.y * NOISE_SCALE.y + NOISE_OFFSET.y
 	}
-	noise.shuffle_permutation(worldSeed)
+	noise.shuffle_permutation(world_seed)
 
-	self.yMaxes = {}
-	local worldHeight = world_constants.CHUNK_SIZE * world_constants.WORLD_SIZE.x
-	math.randomseed(worldSeed)
-	for chunkX, chunkXColumn in pairs(world.chunks) do
+	self.y_maxes = {}
+	local world_height = world_constants.CHUNK_SIZE * world_constants.WORLD_SIZE.x
+	math.randomseed(world_seed)
+	for chunk_x, chunk_x_column in pairs(g_world.chunks) do
 		-- Keep world from not rendering when you go out of the bounds
-		if chunkX > -world_constants.WORLD_SIZE.x + world_constants.RENDER_DISTANCE.x and chunkX < world_constants.WORLD_SIZE.x - world_constants.RENDER_DISTANCE.x then
-			for chunkY, chunk in pairs(chunkXColumn) do
-				if (socket.gettime() * 1000) - self.generationTime >= 100 then
+		if chunk_x > -world_constants.WORLD_SIZE.x + world_constants.RENDER_DISTANCE.x and chunk_x < world_constants.WORLD_SIZE.x - world_constants.RENDER_DISTANCE.x then
+			for chunk_y, chunk in pairs(chunk_x_column) do
+				if (socket.gettime() * 1000) - self.generation_time >= 100 then
 					coroutine.yield()
 				end
 				for x = 0, world_constants.CHUNK_SIZE - 1 do
-					local worldX = x + (chunkX * world_constants.CHUNK_SIZE)
-					local xForNoise = worldX / NOISE_DENOMINATOR.x
-					local yMaxFromNoise = noise.Noise2D(xForNoise, 0)
-					yMaxFromNoise = ((yMaxFromNoise + 1) / 2)
-					self.yMaxes[worldX] = world_constants.CHUNK_SIZE * yMaxFromNoise
+					local world_x = x + (chunk_x * world_constants.CHUNK_SIZE)
+					local x_for_noise = world_x / NOISE_DENOMINATOR.x
+					local y_max_from_noise = noise.Noise2D(x_for_noise, 0)
+					y_max_from_noise = ((y_max_from_noise + 1) / 2)
+					self.y_maxes[world_x] = world_constants.CHUNK_SIZE * y_max_from_noise
 
-					local yMax = self.yMaxes[worldX]
+					local y_max = self.y_maxes[world_x]
 					for y = 0, world_constants.CHUNK_SIZE - 1 do
-						local worldY = y + (chunkY * world_constants.CHUNK_SIZE)
-						if worldY <= yMax then
-							local yDiff = 0.2 - ((yMax - worldY) / worldHeight)
-							local blockInfo = nil
-							local noiseNumber = noise.Noise2D(xForNoise, worldY / NOISE_DENOMINATOR.y)
-							noiseNumber = noiseNumber + 1
+						local world_y = y + (chunk_y * world_constants.CHUNK_SIZE)
+						if world_y <= y_max then
+							local y_difference = 0.2 - ((y_max - world_y) / world_height)
+							local block_info = nil
+							local noise_number = noise.Noise2D(x_for_noise, world_y / NOISE_DENOMINATOR.y)
+							noise_number = noise_number + 1
 
-							if noiseNumber < 1.7 then
-								noiseNumber = noiseNumber + (0.5 * yDiff)
-								if noiseNumber > 1.3 then
-									blockInfo = item_constants.DIRT
-								elseif noiseNumber > 0.9 then
-									blockInfo = item_constants.SAND
-								elseif noiseNumber > 0.65 then
-									blockInfo = item_constants.CLAY
-								elseif noiseNumber > 0.4 then
-									blockInfo = item_constants.STONE
-								elseif noiseNumber > 0.2 then
-									blockInfo = item_constants.IRON_ORE
-								elseif noiseNumber > 0.1 then
-									blockInfo = item_constants.SILVER_ORE
-								elseif noiseNumber > 0.05 then
-									blockInfo = item_constants.GOLD_ORE
-								elseif noiseNumber > 0.0 then
-									blockInfo = item_constants.PLATINUM_ORE
+							if noise_number < 1.7 then
+								noise_number = noise_number + (0.5 * y_difference)
+								if noise_number > 1.3 then
+									block_info = item_constants.DIRT
+								elseif noise_number > 0.9 then
+									block_info = item_constants.SAND
+								elseif noise_number > 0.65 then
+									block_info = item_constants.CLAY
+								elseif noise_number > 0.4 then
+									block_info = item_constants.STONE
+								elseif noise_number > 0.2 then
+									block_info = item_constants.IRON_ORE
+								elseif noise_number > 0.1 then
+									block_info = item_constants.SILVER_ORE
+								elseif noise_number > 0.05 then
+									block_info = item_constants.GOLD_ORE
+								elseif noise_number > 0.0 then
+									block_info = item_constants.PLATINUM_ORE
 								end
 							end
-							if blockInfo then
-								local blockToInsert = {}
-								blockToInsert.id = blockInfo.id
-								blockToInsert.position = vmath.vector3(x, y, 0)
+							if block_info then
+								local block_to_insert = {}
+								block_to_insert.id = block_info.id
+								block_to_insert.position = vmath.vector3(x, y, 0)
 
-								Chunk.add_block(chunk, blockToInsert)
+								Chunk.add_block(chunk, block_to_insert)
 							end
 						end
 					end
@@ -222,66 +241,86 @@ end
 function initialize_world_chunks()
 	for x = -world_constants.WORLD_SIZE.x, world_constants.WORLD_SIZE.x do
 		for y = -world_constants.WORLD_SIZE.y, world_constants.WORLD_SIZE.y do
-			local chunkToAdd = {}
-			chunkToAdd.blocks = {}
-			chunkToAdd.position = vmath.vector3(x, y, 0)
+			local chunk_to_add = {}
+			chunk_to_add.blocks = {}
+			chunk_to_add.position = vmath.vector3(x, y, 0)
 
-			World.add_chunk(world, chunkToAdd)
+			World.add_chunk(g_world, chunk_to_add)
 		end
 	end
 end
 
-function mine_block(blockUrl, message, chunkPosition, blockPosition)
-	local screenPosition = vmath.vector3(message.x, message.y, 0)
+function mine_block(block_url, message, chunk_position, block_position)
+	local screen_position = vmath.vector3(message.x, message.y, 0)
 
-	local chunk = World.get_chunk_at_position(world, chunkPosition)
-	local block = Chunk.get_block_at_position(chunk, blockPosition)
-	block.durability = block.durability - message.miningPower
+	local chunk = World.get_chunk_at_position(g_world, chunk_position)
+	local block = Chunk.get_block_at_position(chunk, block_position)
+	block.durability = block.durability - message.mining_power
 
 	if block.durability <= 0 then
-		go.delete(blockUrl)
-		local truePosition = position_helpers.block_to_screen_position(block)
-		truePosition.x = truePosition.x + math.random(-8, 8)
-		create_loose_pickup(block, truePosition)
+		go.delete(block_url)
+		local true_position = position_helpers.block_to_screen_position(block)
+		true_position.x = true_position.x + math.random(-8, 8)
+		create_loose_pickup(block, true_position)
 
-		local mutatedChunk = nil
-		if worldMutation.chunks[chunk.position.x] == nil then
-			worldMutation.chunks[chunk.position.x] = {}
+		local mutated_chunk = nil
+		if world_mutation.chunks[chunk.position.x] == nil then
+			world_mutation.chunks[chunk.position.x] = {}
 		end
-		if worldMutation.chunks[chunk.position.x][chunk.position.y] == nil then
-			mutatedChunk = {
-				position = { x = chunk.position.x, y = chunk.position.y, z = chunk.position.z },
+		if world_mutation.chunks[chunk.position.x][chunk.position.y] == nil then
+			mutated_chunk = {
+				position = {
+					x = chunk.position.x,
+					y = chunk.position.y,
+					z = chunk.position.z
+				},
 				blocks = {}
 			}
-			worldMutation.chunks[chunk.position.x][chunk.position.y] = mutatedChunk
+			world_mutation.chunks[chunk.position.x][chunk.position.y] = mutated_chunk
 		else
-			mutatedChunk = worldMutation.chunks[chunk.position.x][chunk.position.y]
+			mutated_chunk = world_mutation.chunks[chunk.position.x][chunk.position.y]
 		end
-		if mutatedChunk.blocks[block.position.x] == nil then
-			mutatedChunk.blocks[block.position.x] = {}
+		if mutated_chunk.blocks[block.position.x] == nil then
+			mutated_chunk.blocks[block.position.x] = {}
 		end
-		mutatedChunk.blocks[block.position.x][block.position.y] = {}
+		mutated_chunk.blocks[block.position.x][block.position.y] = {}
 
-		Chunk.remove_block_at_position(chunk, blockPosition)
+		Chunk.remove_block_at_position(chunk, block_position)
 	end
 end
 
-function mutate_world(worldMutation)
-	for chunkX, chunkXColumn in pairs(worldMutation.chunks) do
-		for chunkY, chunk in pairs(chunkXColumn) do
-			local worldChunk = World.get_chunk_at_position(world, chunk.position)
+function mutate_world()
+	for chunk_x, chunk_x_column in pairs(world_mutation.chunks) do
+		for chunk_y, chunk in pairs(chunk_x_column) do
+			local world_chunk = World.get_chunk_at_position(g_world, chunk.position)
 
-			for blockX, blockXColumn in pairs(chunk.blocks) do
-				for blockY, block in pairs(blockXColumn) do
+			for block_x, block_x_column in pairs(chunk.blocks) do
+				for block_y, block in pairs(block_x_column) do
 					if block.position == nil then
-						Chunk.remove_block_at_position(worldChunk, { x = blockX, y = blockY })
+						Chunk.remove_block_at_position(
+							world_chunk,
+							{
+								x = block_x,
+								y = block_y
+							}
+						)
 					else
-						local blockToAdd = { position = vmath.vector3(blockX, blockY, 0), id = block.id, chunk = vmath.vector3(chunkX, chunkY, 0) }
-						Chunk.add_block(worldChunk, blockToAdd)
+						local block_to_add = {
+							position = vmath.vector3(block_x, block_y, 0),
+							id = block.id,
+							chunk = vmath.vector3(chunk_x, chunk_y, 0)
+						}
+						Chunk.add_block(world_chunk, block_to_add)
 					end
 				end
 			end
 		end
+	end
+end
+
+function save_game()
+	if globals.save_file_name ~= nil then
+		helpers.save_game(world_mutation, globals.save_file_name)
 	end
 end
 
@@ -297,49 +336,54 @@ end
 local handle_create_loose_pickup
 local handle_mine_block
 local handle_place_block
+local handle_save_game
 local handle_update_chunk_render
 
-function handle_create_loose_pickup(self, messageId, message, sender)
+function handle_create_loose_pickup(self, message_id, message, sender)
 	create_loose_pickup(message.item, message.position)
 end
 
-function handle_mine_block(self, messageId, message, sender)
-	local screenPosition = vmath.vector3(message.x, message.y, 0)
-	local blockPosition = position_helpers.screen_to_block_position(screenPosition)
-	local chunkPosition = position_helpers.screen_to_chunk_position(screenPosition)
-	local chunk = World.get_chunk_at_position(world, chunkPosition)
+function handle_mine_block(self, message_id, message, sender)
+	local screen_position = vmath.vector3(message.x, message.y, 0)
+	local block_position = position_helpers.screen_to_block_position(screen_position)
+	local chunk_position = position_helpers.screen_to_chunk_position(screen_position)
+	local chunk = World.get_chunk_at_position(g_world, chunk_position)
 	if chunk then
-		local block = Chunk.get_block_at_position(chunk, blockPosition)
+		local block = Chunk.get_block_at_position(chunk, block_position)
 		if block then
-			mine_block(block.url, message, chunkPosition, blockPosition)
+			mine_block(block.url, message, chunk_position, block_position)
 		end
 	end
 end
 
-function handle_place_block(self, messageId, message, sender)
-	local toolbarItem = message.toolbarItem
-	if toolbarItem and toolbarItem.id ~= item_constants.NONE.id then
-		local messagePosition = vmath.vector3(message.x, message.y, 0)
-		local chunkPosition = position_helpers.screen_to_chunk_position(messagePosition)
-		local chunk = World.get_chunk_at_position(world, chunkPosition)
+function handle_place_block(self, message_id, message, sender)
+	local toolbar_item = message.toolbar_item
+	if toolbar_item and toolbar_item.id ~= item_constants.NONE.id then
+		local message_position = vmath.vector3(message.x, message.y, 0)
+		local chunk_position = position_helpers.screen_to_chunk_position(message_position)
+		local chunk = World.get_chunk_at_position(g_world, chunk_position)
 		if chunk then
-			local blockPosition = position_helpers.screen_to_block_position(messagePosition)
-			if not Chunk.get_block_at_position(chunk, blockPosition) then
+			local block_position = position_helpers.screen_to_block_position(message_position)
+			if not Chunk.get_block_at_position(chunk, block_position) then
 				local block = {
 					chunk = chunk.position,
-					id = toolbarItem.id,
-					position = blockPosition
+					id = toolbar_item.id,
+					position = block_position
 				}
 				if create_block(self, block, true) then
-					toolbarItem.count = toolbarItem.count - 1
-					msg.post("/player#player_script", message_constants.UPDATE_TOOLBAR_ITEM, toolbarItem)
+					toolbar_item.count = toolbar_item.count - 1
+					msg.post('/player#script', message_constants.UPDATE_TOOLBAR_ITEM, toolbar_item)
 				end
 			end
 		end
 	end
 end
 
-function handle_update_chunk_render(self, messageId, message, sender)
+function handle_save_game(self, message_id, message, sender)
+	save_game()
+end
+
+function handle_update_chunk_render(self, message_id, message, sender)
 	fill_world(self)
 end
 
@@ -353,79 +397,91 @@ end
 ----------------------
 
 function init(self)
-	local gameObjectsToToggle = {
-		"/held_item",
-		"/player",
-		"/ui"
+	local game_objects_to_toggle = {
+		'/held_item',
+		'/player',
+		'/ui',
+		'/background'
 	}
-	for _, gameObjectToToggle in pairs(gameObjectsToToggle) do
-		msg.post(gameObjectToToggle, "disable")
+	for _, game_object_to_toggle in pairs(game_objects_to_toggle) do
+		msg.post(game_object_to_toggle, 'disable')
 	end
 
-	msg.post("@render:", "clear_color", { color = vmath.vector4(0.6, 0.5, 0.9, 1.0) })
-	local savedWorld = helpers.load_game(globals.saveFileName)
-	if savedWorld then
-		if savedWorld.seed then
-			world_constants.SEED = savedWorld.seed
+	msg.post(
+		'@render:',
+		'clear_color',
+		{
+			color = vmath.vector4(0.6, 0.5, 0.9, 1.0)
+		}
+	)
+	local saved_world = helpers.load_game(globals.save_file_name)
+	if saved_world then
+		if saved_world.seed then
+			world_constants.SEED = saved_world.seed
 		else
-			print("There was no world seed in the save file")
+			print('There was no world seed in the save file')
 		end
-		if savedWorld.scale then
-			world_constants.SCALE = savedWorld.scale
+		if saved_world.scale then
+			world_constants.SCALE = saved_world.scale
 		else
-			print("There was no world scale in the save file")
+			print('There was no world scale in the save file')
 		end
 	else
 		world_constants.SEED = os.time()
 	end
 
-	worldMutation.seed = world_constants.SEED
-	worldMutation.scale = world_constants.SCALE
+	world_mutation.seed = world_constants.SEED
+	world_mutation.scale = world_constants.SCALE
 
-	local worldScale = world_constants.SCALES[string.upper(worldMutation.scale)]
-	world_constants.WORLD_SIZE.x = world_constants.BASE_WORLD_SIZE.x * worldScale
+	local world_scale = world_constants.SCALES[string.upper(world_mutation.scale)]
+	world_constants.WORLD_SIZE.x = world_constants.BASE_WORLD_SIZE.x * world_scale
 	world_constants.WORLD_SIZE.y = world_constants.BASE_WORLD_SIZE.y
 	initialize_world_chunks()
 
-	self.generationCoroutine = coroutine.create(function()
-		globals.isPaused = true
-		self.generationTime = socket.gettime() * 1000
-		generate_world(self, world_constants.SEED, savedWorld)
-		if savedWorld and savedWorld.chunks then
-			worldMutation = savedWorld
-			mutate_world(worldMutation)
-		end
-		fill_world(self)
-		globals.isPaused = false
+	self.generation_coroutine = coroutine.create(
+		function()
+			globals.is_paused = true
+			self.generation_time = socket.gettime() * 1000
+			generate_world(self, world_constants.SEED)
+			if saved_world and saved_world.chunks then
+				world_mutation = saved_world
+				mutate_world()
+			end
+			fill_world(self)
+			globals.is_paused = false
 
-		for _, gameObjectToToggle in pairs(gameObjectsToToggle) do
-			msg.post(gameObjectToToggle, "enable")
+			for _, game_object_to_toggle in pairs(game_objects_to_toggle) do
+				msg.post(game_object_to_toggle, 'enable')
+			end
 		end
-	end)
+	)
 end
 
 function update(self, dt)
-	if self.generationCoroutine then
-		if coroutine.status(self.generationCoroutine) == "dead" then
-			self.generationCoroutine = nil
+	if self.generation_coroutine then
+		if coroutine.status(self.generation_coroutine) == 'dead' then
+			self.generation_coroutine = nil
 		else
-			self.generationTime = socket.gettime() * 1000
-			coroutine.resume(self.generationCoroutine)
+			self.generation_time = socket.gettime() * 1000
+			coroutine.resume(self.generation_coroutine)
 		end
 	end
 end
 
-function on_message(self, messageId, message, sender)
-	if not globals.isPaused then
-		if messageId == message_constants.CREATE_LOOSE_PICKUP then
-			handle_create_loose_pickup(self, messageId, message, sender)
-		elseif messageId == message_constants.MINE_BLOCK then
-			handle_mine_block(self, messageId, message, sender)
-		elseif messageId == message_constants.PLACE_BLOCK then
-			handle_place_block(self, messageId, message, sender)
-		elseif messageId == message_constants.UPDATE_CHUNK_RENDER then
-			handle_update_chunk_render(self, messageId, message, sender)
+function on_message(self, message_id, message, sender)
+	if not globals.is_paused then
+		if message_id == message_constants.CREATE_LOOSE_PICKUP then
+			handle_create_loose_pickup(self, message_id, message, sender)
+		elseif message_id == message_constants.MINE_BLOCK then
+			handle_mine_block(self, message_id, message, sender)
+		elseif message_id == message_constants.PLACE_BLOCK then
+			handle_place_block(self, message_id, message, sender)
+		elseif message_id == message_constants.UPDATE_CHUNK_RENDER then
+			handle_update_chunk_render(self, message_id, message, sender)
 		end
+	end
+	if message_id == message_constants.SAVE_GAME then
+		handle_save_game(self, message_id, message, sender)
 	end
 end
 

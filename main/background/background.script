@@ -1,0 +1,113 @@
+local camera_constants = require 'modules.constants.camera'
+local message_constants = require 'modules.constants.messages'
+local orthographic = require 'orthographic.camera'
+
+go.property('background_y', 400)
+
+----------------------
+-- Helper functions --
+----------------------
+
+local spawn_background
+local spawn_background_back
+local spawn_background_front
+local spawn_background_middle
+local spawn_background_underground
+
+function spawn_background(self, backgrounds, factory_url, y_index, y_offset)
+	if not y_offset then
+		y_offset = 0
+	end
+	backgrounds[1] = factory.create(
+		factory_url, vmath.vector3(
+			0.0,
+			self.background_y + y_offset,
+			0.0),
+		nil,
+		{index = vmath.vector3(1, y_index, 0)}
+	)
+	backgrounds[2] = factory.create(
+		factory_url,
+		vmath.vector3(
+			self.background_width,
+			self.background_y + y_offset,
+			0.0
+		),
+		nil,
+		{index = vmath.vector3(2, y_index, 0)}
+	)
+end
+
+function spawn_background_back(self)
+	spawn_background(self, self.backs, '#background_back_factory', 0)
+end
+
+function spawn_background_front(self)
+	spawn_background(self, self.fronts, '#background_front_factory', 0)
+end
+
+function spawn_background_middle(self)
+	spawn_background(self, self.middles, '#background_middle_factory', 0)
+end
+
+function spawn_background_underground(self)
+	spawn_background(self, self.undergrounds[1], '#background_underground_factory', 1, 0)
+	spawn_background(self, self.undergrounds[2], '#background_underground_factory', 2, -self.background_height)
+end
+
+--------------------------
+-- End Helper functions --
+--------------------------
+
+
+----------------------
+-- Defold functions --
+----------------------
+
+function init(self)
+	self.current_position = go.get_position()
+	self.background_width = 320 * go.get_scale().x
+	self.background_height = 100 * go.get_scale().x
+	self.backs = {}
+	self.fronts = {}
+	self.middles = {}
+	self.undergrounds = {}
+
+	for i = 1, 2 do
+		table.insert(self.fronts, nil)
+		table.insert(self.middles, nil)
+		table.insert(self.backs, nil)
+
+		table.insert(self.undergrounds, {})
+	end
+
+	for i = 1, 2 do
+		for j = 1, 2 do
+			table.insert(self.undergrounds[i], nil)
+		end
+	end
+
+	spawn_background_front(self)
+	spawn_background_middle(self)
+	spawn_background_back(self)
+	spawn_background_underground(self)
+end
+
+function update(self, dt)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == message_constants.SPAWN_BACKGROUND_BACK then
+		spawn_background_back(self)
+	elseif message_id == message_constants.SPAWN_BACKGROUND_FRONT then
+		spawn_background_front(self)
+	elseif message_id == message_constants.SPAWN_BACKGROUND_MIDDLE then
+		spawn_background_middle(self)
+	elseif message_id == message_constants.SPAWN_BACKGROUND_UNDERGROUND then
+		spawn_background_underground(self)
+	end
+end
+
+--------------------------
+-- End Defold functions --
+--------------------------

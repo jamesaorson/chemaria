@@ -1,7 +1,8 @@
-local gooey = require "gooey.gooey"
-local input_constants = require "modules.constants.input"
-local theme = require "main.ui.theme"
-local world_constants = require "modules.constants.world"
+local gooey = require 'gooey.gooey'
+local helpers = require 'modules.helpers'
+local input_constants = require 'modules.constants.input'
+local theme = require 'main.ui.theme'
+local world_constants = require 'modules.constants.world'
 
 local SCOPED_SELF
 
@@ -26,7 +27,7 @@ function radio_handler(radio, handler)
 end
 
 function exit_to_main_menu(self)
-	msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#main_menu_proxy" })
+	helpers.switch_proxy('#main_menu_proxy')
 end
 
 -----------------
@@ -43,41 +44,41 @@ function init(self)
 	gooey.acquire_input()
 end
 
-function on_input(self, actionId, action)
-	if actionId == input_constants.QUIT and action.released then
+function on_input(self, action_id, action)
+	if action_id == input_constants.QUIT and action.released then
 		exit_to_main_menu(self)
 	end
 
-	theme.button("return_to_main_menu", actionId, action, function(button)
+	theme.button('return_to_main_menu', action_id, action, function(button)
 		button_handler(button, function()
 			exit_to_main_menu(SCOPED_SELF)
 		end)
 	end)
 
-	theme.button("create_world", actionId, action, function(button)
+	theme.button('create_world', action_id, action, function(button)
 		button_handler(button, function()
 			if world_constants.SCALE then
-				msg.post("main:/loader#loader", "switch_proxy", { switchTo = "#world_proxy" })
+				helpers.switch_proxy('#world_proxy')
 			end
 		end)
 	end)
 
-	theme.radiogroup("scale_group", actionId, action, function(groupId, actionId, action)
-		theme.radio("small_radio", groupId, actionId, action, function(radio)
+	theme.radiogroup('scale_group', action_id, action, function(group_id, action_id, action)
+		theme.radio('small_radio', group_id, action_id, action, function(radio)
 			radio_handler(radio, function()
-				world_constants.SCALE = "SMALL"
+				world_constants.SCALE = 'SMALL'
 			end)
 		end)
 
-		theme.radio("medium_radio", groupId, actionId, action, function(radio)
+		theme.radio('medium_radio', group_id, action_id, action, function(radio)
 			radio_handler(radio, function()
-				world_constants.SCALE = "MEDIUM"
+				world_constants.SCALE = 'MEDIUM'
 			end)
 		end)
 
-		theme.radio("large_radio", groupId, actionId, action, function(radio)
+		theme.radio('large_radio', group_id, action_id, action, function(radio)
 			radio_handler(radio, function()
-				world_constants.SCALE = "LARGE"
+				world_constants.SCALE = 'LARGE'
 			end)
 		end)
 	end)
