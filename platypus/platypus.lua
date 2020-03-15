@@ -2,7 +2,7 @@
 
 local M = {}
 
-local CONTACT_POINT_RESPONSE = hash("contact_point_response")
+local CONTACT_POINT_RESPONSE = hash('contact_point_response')
 
 local RAY_COLOR = vmath.vector4(0.5, 0.9, 1, 1)
 
@@ -17,15 +17,15 @@ local function clamp(v, min, max)
 end
 
 
-M.FALLING = hash("platypus_falling")
-M.GROUND_CONTACT = hash("platypus_ground_contact")
-M.WALL_CONTACT = hash("platypus_wall_contact")
-M.WALL_JUMP = hash("platypus_wall_jump")
-M.DOUBLE_JUMP = hash("platypus_double_jump")
-M.JUMP = hash("platypus_jump")
+M.FALLING = hash('platypus_falling')
+M.GROUND_CONTACT = hash('platypus_ground_contact')
+M.WALL_CONTACT = hash('platypus_wall_contact')
+M.WALL_JUMP = hash('platypus_wall_jump')
+M.DOUBLE_JUMP = hash('platypus_double_jump')
+M.JUMP = hash('platypus_jump')
 
-M.SEPARATION_RAYS = hash("separation_rays")
-M.SEPARATION_SHAPES = hash("separation_shapes")
+M.SEPARATION_RAYS = hash('separation_rays')
+M.SEPARATION_SHAPES = hash('separation_shapes')
 
 local ALLOWED_CONFIG_KEYS = {
 	collisions = true,
@@ -52,29 +52,29 @@ M.DIR_ALL = M.DIR_UP + M.DIR_LEFT + M.DIR_RIGHT + M.DIR_DOWN
 -- @param config Configuration table. Refer to documentation for details
 -- @return Platypus instance
 function M.create(config)
-	assert(config, "You must provide a config")
-	assert(config.collisions, "You must provide a collisions config")
-	assert(config.collisions.ground or config.collisions.groups, "You must provide a list of collision hashes")
-	assert(config.collisions.left, "You must provide distance to left edge of collision shape")
-	assert(config.collisions.right, "You must provide distance to right edge of collision shape")
-	assert(config.collisions.top, "You must provide distance to top edge of collision shape")
-	assert(config.collisions.bottom, "You must provide distance to bottom edge of collision shape")
+	assert(config, 'You must provide a config')
+	assert(config.collisions, 'You must provide a collisions config')
+	assert(config.collisions.ground or config.collisions.groups, 'You must provide a list of collision hashes')
+	assert(config.collisions.left, 'You must provide distance to left edge of collision shape')
+	assert(config.collisions.right, 'You must provide distance to right edge of collision shape')
+	assert(config.collisions.top, 'You must provide distance to top edge of collision shape')
+	assert(config.collisions.bottom, 'You must provide distance to bottom edge of collision shape')
 	config.collisions.offset = config.collisions.offset or vmath.vector3(0, 0, 0)
 
 	-- validate configuration
 	for config_key,_ in pairs(config) do
 		if not ALLOWED_CONFIG_KEYS[config_key] then
-			error(("Unknown config key %s"):format(config_key))
+			error(('Unknown config key %s'):format(config_key))
 		end
 	end
 
 	-- warn for deprecations
 	if config.separation then
-		print("WARNING! Config key 'separation' is deprecated and should be moved to the 'collisions' table!")
+		print('WARNING! Config key "separation" is deprecated and should be moved to the "collisions" table!')
 		config.collisions.separation = config.collisions.separation or config.separation or M.SEPARATION_SHAPES
 	end
 	if config.collisions.ground then
-		print("WARNING! Config key 'collisions.ground' is deprecated. Use 'collisions.groups' key-value pairs instead!")
+		print('WARNING! Config key "collisions.ground" is deprecated. Use "collisions.groups" key-value pairs instead!')
 		config.collisions.groups = {}
 		for _,id in ipairs(config.collisions.ground) do
 			config.collisions.groups[id] = M.DIR_ALL
@@ -241,7 +241,7 @@ function M.create(config)
 	-- Move the game object left
 	-- @param velocity Horizontal velocity
 	function platypus.left(velocity)
-		assert(velocity, "You must provide a velocity")
+		assert(velocity, 'You must provide a velocity')
 		if state.current.wall_contact ~= 1 then
 			local slope_normal = state.current.slope and state.current.slope.normal
 			if slope_normal then
@@ -268,7 +268,7 @@ function M.create(config)
 	--- Move the game object right
 	-- @param velocity Horizontal velocity
 	function platypus.right(velocity)
-		assert(velocity, "You must provide a velocity")
+		assert(velocity, 'You must provide a velocity')
 		if state.current.wall_contact ~= -1 then
 			local slope_normal = state.current.slope and state.current.slope.normal
 			if slope_normal then
@@ -292,41 +292,41 @@ function M.create(config)
 	-- Move the game object up
 	-- @param velocity Vertical velocity
 	function platypus.up(velocity)
-		assert(velocity, "You must provide a velocity")
+		assert(velocity, 'You must provide a velocity')
 		movement.y = velocity
 	end
 
 	--- Move the game object down
 	-- @param velocity Vertical velocity
 	function platypus.down(velocity)
-		assert(velocity, "You must provide a velocity")
+		assert(velocity, 'You must provide a velocity')
 		movement.y = -velocity
 	end
 
 	--- Move the game object
 	-- @param velocity Velocity as a vector3
 	function platypus.move(velocity)
-		assert(velocity, "You must provide a velocity")
+		assert(velocity, 'You must provide a velocity')
 		movement = velocity
 	end
 
 	--- Try to make the game object jump.
 	-- @param power The power of the jump (ie how high)
 	function platypus.jump(power)
-		assert(power, "You must provide a jump takeoff power")
+		assert(power, 'You must provide a jump takeoff power')
 		if state.current.ground_contact then
 			state.current.ground_contact = false
 			state.previous.ground_contact = false
 			platypus.velocity.y = power
-			msg.post("#", M.JUMP)
+			msg.post('#', M.JUMP)
 		elseif state.current.wall_contact and platypus.allow_wall_jump then
 			platypus.velocity.y = power * platypus.wall_jump_power_ratio_y
 			platypus.velocity.x = state.current.wall_contact * power * platypus.wall_jump_power_ratio_x
-			msg.post("#", M.WALL_JUMP)
+			msg.post('#', M.WALL_JUMP)
 		elseif platypus.allow_double_jump and jumping_up() and not state.current.double_jumping then
 			platypus.velocity.y = platypus.velocity.y + power
 			state.current.double_jumping = true
-			msg.post("#", M.DOUBLE_JUMP)
+			msg.post('#', M.DOUBLE_JUMP)
 		end
 	end
 
@@ -334,12 +334,12 @@ function M.create(config)
 	-- Useful when creating rope mechanics or other functionality that requires a jump without
 	-- ground or wall contact
 	function platypus.force_jump(power)
-		assert(power, "You must provide a jump takeoff power")
+		assert(power, 'You must provide a jump takeoff power')
 		platypus.velocity.y = power
-		msg.post("#", M.JUMP)
+		msg.post('#', M.JUMP)
 	end
 
-	--- Abort a jump by "cutting it short"
+	--- Abort a jump by 'cutting it short'
 	-- @param reduction The amount to reduce the vertical speed (default 0.5)
 	function platypus.abort_jump(reduction)
 		if jumping_up() then
@@ -373,7 +373,7 @@ function M.create(config)
 
 	local function raycast(id, from, to)
 		if platypus.debug then
-			msg.post("@render:", "draw_line", { start_point = from, end_point = to, color = RAY_COLOR } )
+			msg.post('@render:', 'draw_line', { start_point = from, end_point = to, color = RAY_COLOR } )
 		end
 		local result = physics.raycast(from, to, collision_groups_list)
 		if result then
@@ -449,7 +449,7 @@ function M.create(config)
 				if ray.fraction < 0.8 then
 					separate_ray(RAYS[ray.request_id], ray, true)
 				end
-				msg.post(".", "set_parent", { parent_id = ray.id })
+				msg.post('.', 'set_parent', { parent_id = ray.id })
 				platypus.parent_id = ray.id
 			-- no prior ground contact - landed! Unless still traveling upwards from a jump.
 			elseif not state.current.ground_contact and platypus.velocity.y <= 0 then
@@ -461,7 +461,7 @@ function M.create(config)
 
 				-- get one ray that hit and separate based on
 				local ray = down_rays[next(down_rays)]
-				msg.post(".", "set_parent", { parent_id = ray.id })
+				msg.post('.', 'set_parent', { parent_id = ray.id })
 				platypus.parent_id = ray.id
 				separate_ray(RAYS[ray.request_id], ray, true)
 			end
@@ -470,14 +470,14 @@ function M.create(config)
 		else
 			state.current.ground_contact = false
 			platypus.parent_id = nil
-			msg.post(".", "set_parent", { parent_id = nil })
+			msg.post('.', 'set_parent', { parent_id = nil })
 		end
 	end
 	
 	--- Call this every frame to update the platformer physics
 	-- @param dt
 	function platypus.update(dt)
-		assert(dt, "You must provide a delta time")
+		assert(dt, 'You must provide a delta time')
 
 		-- was the ground we're standing on removed?
 		if platypus.parent_id then
@@ -511,7 +511,7 @@ function M.create(config)
 		if not state.current.ground_contact and not state.previous.ground_contact and platypus.velocity.y < 0 then
 			state.current.falling = true
 			if state.current.falling and not state.previous.falling then
-				msg.post("#", M.FALLING)
+				msg.post('#', M.FALLING)
 			end
 		end
 		
@@ -529,14 +529,14 @@ function M.create(config)
 
 		-- notify wall contact state change
 		if state.current.wall_contact and not state.previous.wall_contact then
-			msg.post("#", M.WALL_CONTACT)
+			msg.post('#', M.WALL_CONTACT)
 		end
 
 		-- notify ground or air state change
 		if state.current.ground_contact and not state.previous.ground_contact then
 			platypus.velocity.x = 0
 			platypus.velocity.y = 0
-			msg.post("#", M.GROUND_CONTACT)
+			msg.post('#', M.GROUND_CONTACT)
 		end
 
 		-- reset transient state
@@ -550,8 +550,8 @@ function M.create(config)
 	-- @param message_id
 	-- @param message
 	function platypus.on_message(message_id, message)
-		assert(message_id, "You must provide a message_id")
-		assert(message, "You must provide a message")
+		assert(message_id, 'You must provide a message_id')
+		assert(message, 'You must provide a message')
 		if message_id == CONTACT_POINT_RESPONSE then
 			separate_collision(message)
 		end

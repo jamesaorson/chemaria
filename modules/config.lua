@@ -23,7 +23,7 @@ CONFIG.CAMERA_ZOOM_LEVEL = {
 -- Save --
 ----------
 
-CONFIG.APP_NAME = "Chemaria"
+CONFIG.APP_NAME = 'Chemaria'
 
 --------------
 -- End Save --
