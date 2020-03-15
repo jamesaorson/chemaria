@@ -1,4 +1,4 @@
-local item_constants = require "modules.constants.items"
+local item_constants = require 'modules.constants.items'
 
 local RECIPES = {}
 
@@ -9,18 +9,19 @@ RECIPES.CRAFTABLES.FURNACE = {
 }
 RECIPES.CRAFTABLES.FURNACE.components[item_constants.STONE.id] = 9
 
-RECIPES.CRAFTABLES.WOOD_PICKAXE = {
-	item_id = item_constants.WOOD_PICKAXE.id,
-	components = {}
-}
-RECIPES.CRAFTABLES.WOOD_PICKAXE.components[item_constants.WOOD_PLANKS.id] = 5
-
 RECIPES.CRAFTABLES.STONE_PICKAXE = {
 	item_id = item_constants.STONE_PICKAXE.id,
 	components = {}
 }
 RECIPES.CRAFTABLES.STONE_PICKAXE.components[item_constants.WOOD_PLANKS.id] = 3
 RECIPES.CRAFTABLES.STONE_PICKAXE.components[item_constants.STONE.id] = 2
+
+RECIPES.CRAFTABLES.IRON_PICKAXE = {
+	item_id = item_constants.IRON_PICKAXE.id,
+	components = {}
+}
+RECIPES.CRAFTABLES.IRON_PICKAXE.components[item_constants.WOOD_PLANKS.id] = 3
+RECIPES.CRAFTABLES.IRON_PICKAXE.components[item_constants.IRON_INGOT.id] = 2
 
 RECIPES.CRAFTABLES.WOOD_WALL = {
 	item_id = item_constants.WOOD_WALL.id,
@@ -29,6 +30,12 @@ RECIPES.CRAFTABLES.WOOD_WALL = {
 RECIPES.CRAFTABLES.WOOD_WALL.components[item_constants.WOOD_PLANKS.id] = 2
 
 RECIPES.SMELTABLES = {}
+RECIPES.SMELTABLES.CLAY_BRICKS = {
+	item_id = item_constants.CLAY_BRICKS.id,
+	components = {}
+}
+RECIPES.SMELTABLES.CLAY_BRICKS.components[item_constants.CLAY.id] = 4
+
 RECIPES.SMELTABLES.GOLD_INGOT = {
 	item_id = item_constants.GOLD_INGOT.id,
 	components = {}
@@ -52,5 +59,13 @@ RECIPES.SMELTABLES.SILVER_INGOT = {
 	components = {}
 }
 RECIPES.SMELTABLES.SILVER_INGOT.components[item_constants.SILVER_ORE.id] = 1
+
+RECIPES.SMELTABLES.STONE_BRICKS = {
+	item_id = item_constants.STONE_BRICKS.id,
+	components = {}
+}
+RECIPES.SMELTABLES.STONE_BRICKS.components[item_constants.STONE.id] = 4
+
+RECIPES.MATERIALS = {}
 
 return RECIPES

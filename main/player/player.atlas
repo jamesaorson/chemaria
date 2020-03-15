@@ -1,5 +1,122 @@
-images {
-  image: "/assets/player/player.png"
+animations {
+  id: "idle"
+  images {
+    image: "/assets/player/idle/player_idle_01.png"
+  }
+  images {
+    image: "/assets/player/idle/player_idle_02.png"
+  }
+  images {
+    image: "/assets/player/idle/player_idle_03.png"
+  }
+  images {
+    image: "/assets/player/idle/player_idle_04.png"
+  }
+  images {
+    image: "/assets/player/idle/player_idle_05.png"
+  }
+  images {
+    image: "/assets/player/idle/player_idle_06.png"
+  }
+  playback: PLAYBACK_LOOP_PINGPONG
+  fps: 1
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "jump_start"
+  images {
+    image: "/assets/player/jump_start/player_jump_start_01.png"
+  }
+  images {
+    image: "/assets/player/jump_start/player_jump_start_02.png"
+  }
+  images {
+    image: "/assets/player/jump_start/player_jump_start_03.png"
+  }
+  images {
+    image: "/assets/player/jump_start/player_jump_start_04.png"
+  }
+  images {
+    image: "/assets/player/jump_start/player_jump_start_05.png"
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 15
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "jump_end"
+  images {
+    image: "/assets/player/jump_end/player_jump_end_01.png"
+  }
+  images {
+    image: "/assets/player/jump_end/player_jump_end_02.png"
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 10
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "jump_rise"
+  images {
+    image: "/assets/player/jump_rise/player_jump_rise_01.png"
+  }
+  images {
+    image: "/assets/player/jump_rise/player_jump_rise_02.png"
+  }
+  images {
+    image: "/assets/player/jump_rise/player_jump_rise_03.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 4
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "jump_descent"
+  images {
+    image: "/assets/player/jump_descent/player_jump_descent_01.png"
+  }
+  images {
+    image: "/assets/player/jump_descent/player_jump_descent_02.png"
+  }
+  images {
+    image: "/assets/player/jump_descent/player_jump_descent_03.png"
+  }
+  images {
+    image: "/assets/player/jump_descent/player_jump_descent_04.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 4
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "walk"
+  images {
+    image: "/assets/player/walk/player_walk_01.png"
+  }
+  images {
+    image: "/assets/player/walk/player_walk_02.png"
+  }
+  images {
+    image: "/assets/player/walk/player_walk_03.png"
+  }
+  images {
+    image: "/assets/player/walk/player_walk_04.png"
+  }
+  images {
+    image: "/assets/player/walk/player_walk_05.png"
+  }
+  images {
+    image: "/assets/player/walk/player_walk_06.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 6
+  flip_horizontal: 0
+  flip_vertical: 0
 }
 margin: 0
 extrude_borders: 0

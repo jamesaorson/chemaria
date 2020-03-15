@@ -1,20 +1,23 @@
-local camera_constants = require "modules.constants.camera"
-local config = require "modules.config"
-local globals = require "modules.globals"
-local helpers = require "modules.helpers"
-local input_constants = require "modules.constants.input"
-local inventory_constants = require "modules.constants.inventory"
-local item_constants = require "modules.constants.items"
-local message_constants = require "modules.constants.messages"
-local platypus = require "platypus.platypus"
-local platypus_constants = require "modules.constants.platypus"
-local player_constants = require "modules.constants.player"
-local position_helpers = require "modules.position_helpers"
-local toolbar_constants = require "modules.constants.toolbar"
+local camera_constants = require 'modules.constants.camera'
+local config = require 'modules.config'
+local globals = require 'modules.globals'
+local helpers = require 'modules.helpers'
+local input_constants = require 'modules.constants.input'
+local inventory_constants = require 'modules.constants.inventory'
+local item_constants = require 'modules.constants.items'
+local message_constants = require 'modules.constants.messages'
+local platypus = require 'platypus.platypus'
+local platypus_constants = require 'modules.constants.platypus'
+local player_constants = require 'modules.constants.player'
+local position_helpers = require 'modules.position_helpers'
+local toolbar_constants = require 'modules.constants.toolbar'
 
-require "modules.models.Block"
-require "modules.models.Chunk"
-require "modules.models.World"
+require 'modules.models.Block'
+require 'modules.models.Chunk'
+require 'modules.models.World'
+
+local LEFT = -1
+local RIGHT = 1
 
 -------------
 -- Helpers --
@@ -59,11 +62,53 @@ end
 
 function quit_game()
 	globals.save_file_name = nil
-	helpers.switch_proxy("#main_menu_proxy")
+	helpers.switch_proxy('#main_menu_proxy')
+end
+
+function set_animation(self, animation, callback)
+	sprite.play_flipbook(self.sprite_url, animation, callback)
+end
+
+function jump_state_machine(self)
+	local jump_animation = nil
+	local callback = nil
+
+	if self.platypus.is_jumping() then
+		if not self.current_jump_animation then
+			jump_animation = 'jump_start'
+			callback = function(self, message_id, message, sender)
+				if message_id == message_constants.ANIMATION_DONE then
+					self.current_jump_animation = 'jump_rise'
+					set_animation(self, 'jump_rise', callback)
+				end
+			end
+		else
+			jump_animation = self.current_jump_animation
+		end
+	elseif self.platypus.is_falling() then
+		jump_animation = 'jump_descent'
+		callback = function(self, message_id, message, sender)
+			if message_id == message_constants.ANIMATION_DONE then
+				jump_state_machine(self)
+			end
+		end
+	elseif self.current_jump_animation then
+		jump_animation = 'jump_end'
+		callback = function(self, message_id, message, sender)
+			if message_id == message_constants.ANIMATION_DONE then
+				set_animation(self, 'idle')
+				self.current_jump_animation = nil
+			end
+		end
+	end
+	if self.current_jump_animation ~= jump_animation then
+		set_animation(self, jump_animation, callback)
+		self.current_jump_animation = jump_animation
+	end
 end
 
 function update_crafting_ui()
-	msg.post("/crafting_ui#crafting_ui", message_constants.UPDATE_RECIPE_LIST)
+	msg.post('/crafting_ui#crafting_ui', message_constants.UPDATE_RECIPE_LIST)
 end
 
 function update_current_chunk(self)
@@ -74,29 +119,57 @@ function update_current_chunk(self)
 	if globals.current_chunk ~= chunk then
 		globals.previous_chunk = globals.current_chunk
 		globals.current_chunk = chunk
-		msg.post("/world#world_script", message_constants.UPDATE_CHUNK_RENDER)
+		msg.post('/world#world_script', message_constants.UPDATE_CHUNK_RENDER)
 	end
 end
 
 function update_held_item(self)
 	self.selected_toolbar_item = self.toolbar[self.selected_toolbar_item_index]
-	local sprite_url = "/held_item#sprite"
+	local sprite_url = '/held_item#sprite'
 	if self.selected_toolbar_item.id == item_constants.NONE.id then
-		sprite.set_constant(sprite_url, "tint", vmath.vector4(0, 0, 0, 0))
+		sprite.set_constant(sprite_url, 'tint', vmath.vector4(0, 0, 0, 0))
 	else
 		local selected_item = item_constants.ALL_ITEMS[self.selected_toolbar_item.id]
-		sprite.reset_constant(sprite_url, "tint")
+		sprite.reset_constant(sprite_url, 'tint')
 		sprite.play_flipbook(sprite_url, hash(selected_item.name))
-		go.set_position(selected_item.holding_offset, "/held_item")
+		go.set_position(
+			vmath.vector3(
+				self.direction * selected_item.holding_offset.x,
+				selected_item.holding_offset.y,
+				selected_item.holding_offset.z
+			),
+			'/held_item'
+		)
+		go.set_scale(selected_item.holding_scale, '/held_item')
+		if self.direction == LEFT then
+			sprite.set_hflip(sprite_url, true)
+		else
+			sprite.set_hflip(sprite_url, false)
+		end
 	end
 end
 
 function update_inventory_ui()
-	msg.post("/ui#ui", message_constants.UPDATE_INVENTORY)
+	msg.post('/ui#ui', message_constants.UPDATE_INVENTORY)
 end
 
 function update_toolbar_ui()
-	msg.post("/ui#ui", message_constants.UPDATE_TOOLBAR)
+	msg.post('/ui#ui', message_constants.UPDATE_TOOLBAR)
+end
+
+function walk_state_machine(self, message)
+	if self.platypus.has_ground_contact() then
+		if message.released then
+			self.is_walking = false
+			set_animation(self, 'idle')
+		elseif message.pressed or not self.is_walking then
+			self.is_walking = true
+			set_animation(self, 'walk')
+		end
+		self.current_jump_animation = nil
+	else
+		self.is_walking = false
+	end
 end
 
 -----------------
@@ -123,7 +196,7 @@ local handle_update_toolbar_item
 function handle_craft(self, message_id, message, sender)
 	local recipe_to_craft = message.recipe
 	if recipe_to_craft == nil then
-		print("Recipe to craft was nil")
+		print('Recipe to craft was nil')
 		return
 	end
 
@@ -165,7 +238,7 @@ function handle_craft(self, message_id, message, sender)
 		if not add_to_container(self.toolbar, item_to_craft) then
 			if not add_to_container(self.inventory, item_to_craft) then
 				msg.post(
-					"/world#world_script",
+					'/world#world_script',
 					message_constants.CREATE_LOOSE_PICKUP,
 					{
 						item = item_to_craft,
@@ -178,7 +251,7 @@ function handle_craft(self, message_id, message, sender)
 		update_inventory_ui()
 		update_toolbar_ui()
 	else 
-		print("Cannot craft " .. item_constants.ALL_ITEMS[recipe_to_craft.item_id].name)
+		print('Cannot craft ' .. item_constants.ALL_ITEMS[recipe_to_craft.item_id].name)
 	end
 	return can_craft_recipe
 end
@@ -186,6 +259,7 @@ end
 function handle_jump(self, message_id, message, sender)
 	if message.pressed then
 		self.platypus.jump(player_constants.JUMP_FORCE)
+		jump_state_machine(self)
 	elseif message.released then
 		self.platypus.abort_jump(0.5)
 	end
@@ -193,6 +267,10 @@ end
 
 function handle_left(self, message_id, message, sender)
 	self.platypus.left(player_constants.VELOCITY.x)
+	self.direction = LEFT
+	sprite.set_hflip(self.sprite_url, true)
+	walk_state_machine(self, message)
+	update_held_item(self)
 end
 
 function handle_left_click(self, message_id, message, sender)
@@ -212,7 +290,7 @@ function handle_left_click(self, message_id, message, sender)
 					if selected_item.mining_power then
 						self.mining_message.mining_power = selected_item.mining_power
 					end
-					msg.post("/world#world_script", message_constants.MINE_BLOCK, self.mining_message)
+					msg.post('/world#world_script', message_constants.MINE_BLOCK, self.mining_message)
 				end
 			end
 		)
@@ -230,6 +308,10 @@ end
 
 function handle_right(self, message_id, message, sender)
 	self.platypus.right(player_constants.VELOCITY.x)
+	self.direction = RIGHT
+	sprite.set_hflip(self.sprite_url, false)
+	walk_state_machine(self, message)
+	update_held_item(self)
 end
 
 function handle_right_click(self, message_id, message, sender)
@@ -246,7 +328,7 @@ function handle_right_click(self, message_id, message, sender)
 			and self.right_click_distance_from_player <= player_constants.BASE_PLACING_DISTANCE
 		)
 		if can_place then
-			msg.post("/world#world_script", message_constants.PLACE_BLOCK, self.placing_message)
+			msg.post('/world#world_script', message_constants.PLACE_BLOCK, self.placing_message)
 		end
 		self.placing_timer_handle = timer.delay(
 			player_constants.BASE_PLACING_INTERVAL,
@@ -254,7 +336,7 @@ function handle_right_click(self, message_id, message, sender)
 			function (self, handle, time_elapsed)
 				self.placing_message.toolbar_item = self.toolbar[self.selected_toolbar_item_index]
 				if can_place then
-					msg.post("/world#world_script", message_constants.PLACE_BLOCK, self.placing_message)
+					msg.post('/world#world_script', message_constants.PLACE_BLOCK, self.placing_message)
 				end
 			end
 		)
@@ -271,7 +353,7 @@ function handle_switch_selected_toolbar_item(self, message_id, message, sender)
 end
 
 function handle_toggle_pause_menu(self, message_id, message, sender)
-	msg.post("/pause_ui#pause_ui", message_id, message)
+	msg.post('/pause_ui#pause_ui', message_id, message)
 	globals.is_paused = not globals.is_paused
 end
 
@@ -290,7 +372,7 @@ function handle_update_toolbar_item(self, message_id, message, sender)
 		message.id = item_constants.NONE.id
 	end
 	self.toolbar[message.index] = message
-	msg.post("/ui#ui", message_constants.UPDATE_TOOLBAR)
+	msg.post('/ui#ui', message_constants.UPDATE_TOOLBAR)
 end
 
 --------------------------
@@ -305,6 +387,7 @@ end
 function init(self)
 	globals.current_chunk = nil
 
+	self.direction = RIGHT
 	self.left_click_distance_from_player = 0
 	self.right_click_distance_from_player = 0
 	self.inventory = globals.get_inventory()
@@ -315,9 +398,14 @@ function init(self)
 	self.previous_selected_toolbar_item = {}
 	self.selected_toolbar_item_index = 1
 	self.selected_toolbar_item = {}
+	self.sprite_url = msg.url('#sprite')
 	self.toolbar = globals.get_toolbar()
 	self.craftable_items = {}
 	self.is_in_range_of_furnace = false
+	self.is_walking = false
+	self.current_jump_animation = nil
+
+	set_animation(self, 'idle')
 end
 
 function update(self, dt)
@@ -325,6 +413,10 @@ function update(self, dt)
 
 	update_current_chunk(self)
 	update_held_item(self)
+
+	if self.current_jump_animation or not self.platypus.has_ground_contact() then
+		jump_state_machine(self)
+	end
 end
 
 function on_message(self, message_id, message, sender)

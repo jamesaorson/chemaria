@@ -1,72 +1,98 @@
 images {
-  image: "/assets/items/dirt.png"
+  image: "/assets/items/dirt/dirt.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/stone.png"
+  image: "/assets/items/stone/stone.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/none.png"
+  image: "/assets/items/none/none.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/wood_planks.png"
+  image: "/assets/items/wood_planks/wood_planks.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/wood_pickaxe.png"
+  image: "/assets/items/sand/sand.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/sand.png"
+  image: "/assets/items/clay/clay.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/clay.png"
+  image: "/assets/items/bricks/clay_bricks/clay_bricks.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/clay_bricks.png"
+  image: "/assets/items/bricks/stone_bricks/stone_bricks.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/stone_bricks.png"
+  image: "/assets/items/walls/wood_wall/wood_wall.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/wood_wall.png"
+  image: "/assets/items/ores/gold_ore/gold_ore.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/gold_ore.png"
+  image: "/assets/items/ores/iron_ore/iron_ore.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/iron_ore.png"
+  image: "/assets/items/ores/platinum_ore/platinum_ore.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/platinum_ore.png"
+  image: "/assets/items/ores/silver_ore/silver_ore.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/silver_ore.png"
+  image: "/assets/items/pickaxes/stone_pickaxe/stone_pickaxe.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/stone_pickaxe.png"
+  image: "/assets/items/ingots/gold_ingot/gold_ingot.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/gold_ingot.png"
+  image: "/assets/items/ingots/iron_ingot/iron_ingot.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/iron_ingot.png"
+  image: "/assets/items/ingots/platinum_ingot/platinum_ingot.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/platinum_ingot.png"
+  image: "/assets/items/ingots/silver_ingot/silver_ingot.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/silver_ingot.png"
+  image: "/assets/items/furnace/furnace.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/items/furnace.png"
+  image: "/assets/items/pickaxes/iron_pickaxe/iron_pickaxe.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 animations {
-  id: "furnace_lit"
+  id: "furnace_fire"
   images {
-    image: "/assets/items/furnace_lit_1.png"
+    image: "/assets/items/furnace/furnace_fire_1.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   images {
-    image: "/assets/items/furnace_lit_2.png"
+    image: "/assets/items/furnace/furnace_fire_2.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
-  playback: PLAYBACK_LOOP_FORWARD
+  images {
+    image: "/assets/items/furnace/furnace_fire_3.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_PINGPONG
   fps: 2
   flip_horizontal: 0
   flip_vertical: 0

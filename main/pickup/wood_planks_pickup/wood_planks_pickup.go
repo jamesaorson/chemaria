@@ -1,6 +1,6 @@
 components {
   id: "sprite"
-  component: "/main/items/sprites/wood_planks.sprite"
+  component: "/main/items/wood_planks/wood_planks.sprite"
   position {
     x: 0.0
     y: 0.0

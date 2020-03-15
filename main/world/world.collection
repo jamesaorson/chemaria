@@ -335,7 +335,7 @@ instances {
 }
 instances {
   id: "clay_bricks_factory"
-  prototype: "/main/items/clay_bricks/clay_bricks_factory.go"
+  prototype: "/main/items/bricks/clay_bricks/clay_bricks_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -355,7 +355,7 @@ instances {
 }
 instances {
   id: "stone_bricks_factory"
-  prototype: "/main/items/stone_bricks/stone_bricks_factory.go"
+  prototype: "/main/items/bricks/stone_bricks/stone_bricks_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -375,7 +375,7 @@ instances {
 }
 instances {
   id: "wood_wall_factory"
-  prototype: "/main/items/wood_wall/wood_wall_factory.go"
+  prototype: "/main/items/walls/wood_wall/wood_wall_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -395,7 +395,7 @@ instances {
 }
 instances {
   id: "iron_ore_factory"
-  prototype: "/main/items/iron_ore/iron_ore_factory.go"
+  prototype: "/main/items/ores/iron_ore/iron_ore_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -415,7 +415,7 @@ instances {
 }
 instances {
   id: "gold_ore_factory"
-  prototype: "/main/items/gold_ore/gold_ore_factory.go"
+  prototype: "/main/items/ores/gold_ore/gold_ore_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -435,7 +435,7 @@ instances {
 }
 instances {
   id: "silver_ore_factory"
-  prototype: "/main/items/silver_ore/silver_ore_factory.go"
+  prototype: "/main/items/ores/silver_ore/silver_ore_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -455,7 +455,7 @@ instances {
 }
 instances {
   id: "platinum_ore_factory"
-  prototype: "/main/items/platinum_ore/platinum_ore_factory.go"
+  prototype: "/main/items/ores/platinum_ore/platinum_ore_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -574,26 +574,6 @@ instances {
   }
 }
 instances {
-  id: "wood_pickaxe_pickup_factory"
-  prototype: "/main/pickup/wood_pickaxe_pickup/wood_pickaxe_pickup_factory.go"
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-  }
-}
-instances {
   id: "wood_planks_pickup_factory"
   prototype: "/main/pickup/wood_planks_pickup/wood_planks_pickup_factory.go"
   position {
@@ -635,7 +615,7 @@ instances {
 }
 instances {
   id: "gold_ingot_factory"
-  prototype: "/main/items/gold_ingot/gold_ingot_factory.go"
+  prototype: "/main/items/ingots/gold_ingot/gold_ingot_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -655,7 +635,7 @@ instances {
 }
 instances {
   id: "iron_ingot_factory"
-  prototype: "/main/items/iron_ingot/iron_ingot_factory.go"
+  prototype: "/main/items/ingots/iron_ingot/iron_ingot_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -675,7 +655,7 @@ instances {
 }
 instances {
   id: "platinum_ingot_factory"
-  prototype: "/main/items/platinum_ingot/platinum_ingot_factory.go"
+  prototype: "/main/items/ingots/platinum_ingot/platinum_ingot_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -695,7 +675,7 @@ instances {
 }
 instances {
   id: "silver_ingot_factory"
-  prototype: "/main/items/silver_ingot/silver_ingot_factory.go"
+  prototype: "/main/items/ingots/silver_ingot/silver_ingot_factory.go"
   position {
     x: 0.0
     y: 0.0
@@ -853,6 +833,26 @@ instances {
     z: 1.0
   }
 }
+instances {
+  id: "background"
+  prototype: "/main/background/background.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 6.0
+    y: 6.0
+    z: 1.0
+  }
+}
 scale_along_z: 0
 embedded_instances {
   id: "factories"
@@ -894,7 +894,6 @@ embedded_instances {
   children: "stone_bricks_pickup_factory"
   children: "stone_pickaxe_pickup_factory"
   children: "stone_pickup_factory"
-  children: "wood_pickaxe_pickup_factory"
   children: "wood_planks_pickup_factory"
   children: "wood_wall_pickup_factory"
   data: ""
@@ -992,14 +991,14 @@ embedded_instances {
   "  id: \"sprite\"\n"
   "  type: \"sprite\"\n"
   "  data: \"tile_set: \\\"/main/items/items.atlas\\\"\\n"
-  "default_animation: \\\"none\\\"\\n"
+  "default_animation: \\\"wood_planks\\\"\\n"
   "material: \\\"/builtins/materials/sprite.material\\\"\\n"
   "blend_mode: BLEND_MODE_ALPHA\\n"
   "\"\n"
   "  position {\n"
-  "    x: 12.0\n"
-  "    y: -11.0\n"
-  "    z: 2.0\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
   "  }\n"
   "  rotation {\n"
   "    x: 0.0\n"
@@ -1010,9 +1009,9 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
+    x: -6.0
+    y: -4.0
+    z: 1.0
   }
   rotation {
     x: 0.0
@@ -1021,8 +1020,8 @@ embedded_instances {
     w: 1.0
   }
   scale3 {
-    x: 1.0
-    y: 1.0
+    x: 0.75
+    y: 0.75
     z: 1.0
   }
 }

@@ -1,9 +1,70 @@
-local camera_constants = require "modules.constants.camera"
-local helpers = require "modules.helpers"
-local orthographic = require "orthographic.camera"
-local world_constants = require "modules.constants.world"
+local camera_constants = require 'modules.constants.camera'
+local helpers = require 'modules.helpers'
+local orthographic = require 'orthographic.camera'
+local world_constants = require 'modules.constants.world'
 
 local POSITION_HELPERS = {}
+
+------------------------
+-- Background Helpers --
+------------------------
+
+function POSITION_HELPERS.get_updated_background_position(background_self, current_position)
+	local camera_position = go.get_position(camera_constants.CAMERA_ID)
+	local relative_camera = vmath.vector3()
+	relative_camera.x = math.floor(
+		camera_position.x
+		/ background_self.background_width
+	)
+	relative_camera.y = math.floor(
+		camera_position.y
+		/ background_self.background_height
+	)
+
+	local new_position = vmath.vector3()
+
+	background_self.initial_position.x = (
+		background_self.background_width
+		* (
+			(
+				background_self.index.x
+				- 1
+			)
+			+ relative_camera.x
+		)
+	)
+	background_self.initial_position.y = current_position.y
+	if background_self.index.y > 0 then
+		background_self.initial_position.y = (
+			background_self.background_height
+			* (
+				(
+					background_self.index.y
+					- 1
+				)
+				+ relative_camera.y
+			)
+		)
+	end
+	new_position = vmath.vector3(
+		background_self.initial_position.x,
+		background_self.initial_position.y,
+		current_position.z
+	)
+
+	background_self.offset_from_camera = vmath.vector3()
+	background_self.offset_from_camera.x = camera_position.x * -1 * background_self.scrolling_speed.x
+
+	local position = new_position
+	position.x = position.x + background_self.offset_from_camera.x
+
+	return position
+end
+
+----------------------------
+-- End Background Helpers --
+----------------------------
+
 
 --------------------------
 -- Block Transformation --

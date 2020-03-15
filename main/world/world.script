@@ -1,19 +1,18 @@
-local config = require "modules.config"
-local globals = require "modules.globals"
-local helpers = require "modules.helpers"
-local camera_constants = require "modules.constants.camera"
-local item_constants = require "modules.constants.items"
-local message_constants = require "modules.constants.messages"
-local noise = require "modules.noise"
-local orthographic = require "orthographic.camera"
-local position_helpers = require "modules.position_helpers"
-local urls = require "modules.urls"
-local world_constants = require "modules.constants.world"
+local config = require 'modules.config'
+local globals = require 'modules.globals'
+local helpers = require 'modules.helpers'
+local camera_constants = require 'modules.constants.camera'
+local item_constants = require 'modules.constants.items'
+local message_constants = require 'modules.constants.messages'
+local noise = require 'modules.noise'
+local position_helpers = require 'modules.position_helpers'
+local urls = require 'modules.urls'
+local world_constants = require 'modules.constants.world'
 
-require "modules.models.Block"
-require "modules.models.Chunk"
-require "modules.models.World"
-require "modules.set"
+require 'modules.models.Block'
+require 'modules.models.Chunk'
+require 'modules.models.World'
+require 'modules.set'
 
 g_world = {}
 local world_mutation = {
@@ -125,7 +124,7 @@ function fill_world(self)
 					chunks_to_unrender[tostring(chunk_position)] = chunk_position
 				end
 			end
-			local unrender_set = Set.subtraction(chunks_to_unrender, chunks_to_render, "position")
+			local unrender_set = Set.subtraction(chunks_to_unrender, chunks_to_render, 'position')
 
 			for i, chunk_position in pairs(chunks_to_unrender) do
 				if unrender_set[tostring(chunk_position)] then
@@ -320,7 +319,6 @@ function mutate_world()
 end
 
 function save_game()
-	pprint(globals)
 	if globals.save_file_name ~= nil then
 		helpers.save_game(world_mutation, globals.save_file_name)
 	end
@@ -374,7 +372,7 @@ function handle_place_block(self, message_id, message, sender)
 				}
 				if create_block(self, block, true) then
 					toolbar_item.count = toolbar_item.count - 1
-					msg.post("/player#player_script", message_constants.UPDATE_TOOLBAR_ITEM, toolbar_item)
+					msg.post('/player#script', message_constants.UPDATE_TOOLBAR_ITEM, toolbar_item)
 				end
 			end
 		end
@@ -400,17 +398,18 @@ end
 
 function init(self)
 	local game_objects_to_toggle = {
-		"/held_item",
-		"/player",
-		"/ui"
+		'/held_item',
+		'/player',
+		'/ui',
+		'/background'
 	}
 	for _, game_object_to_toggle in pairs(game_objects_to_toggle) do
-		msg.post(game_object_to_toggle, "disable")
+		msg.post(game_object_to_toggle, 'disable')
 	end
 
 	msg.post(
-		"@render:",
-		"clear_color",
+		'@render:',
+		'clear_color',
 		{
 			color = vmath.vector4(0.6, 0.5, 0.9, 1.0)
 		}
@@ -420,12 +419,12 @@ function init(self)
 		if saved_world.seed then
 			world_constants.SEED = saved_world.seed
 		else
-			print("There was no world seed in the save file")
+			print('There was no world seed in the save file')
 		end
 		if saved_world.scale then
 			world_constants.SCALE = saved_world.scale
 		else
-			print("There was no world scale in the save file")
+			print('There was no world scale in the save file')
 		end
 	else
 		world_constants.SEED = os.time()
@@ -452,7 +451,7 @@ function init(self)
 			globals.is_paused = false
 
 			for _, game_object_to_toggle in pairs(game_objects_to_toggle) do
-				msg.post(game_object_to_toggle, "enable")
+				msg.post(game_object_to_toggle, 'enable')
 			end
 		end
 	)
@@ -460,7 +459,7 @@ end
 
 function update(self, dt)
 	if self.generation_coroutine then
-		if coroutine.status(self.generation_coroutine) == "dead" then
+		if coroutine.status(self.generation_coroutine) == 'dead' then
 			self.generation_coroutine = nil
 		else
 			self.generation_time = socket.gettime() * 1000
